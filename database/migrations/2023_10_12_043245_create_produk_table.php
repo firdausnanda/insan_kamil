@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('produk', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('id_kategori')->constrained('kategori');
+            $table->foreignId('id_pengarang')->constrained('pengarang');
+            $table->foreignId('id_penerbit')->constrained('penerbit');
+            $table->string('nama_produk');
+            $table->float('berat_produk');
+            $table->string('ukuran_produk')->nullable();
+            $table->string('bahasa')->nullable();
+            $table->string('isbn')->nullable();
+            $table->string('jenis_cover')->nullable();
+            $table->string('halaman_produk')->nullable();
+            $table->text('keterangan')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('produk');
+    }
+};
