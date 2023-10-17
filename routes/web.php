@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Landing\HomeController;
+use App\Http\Controllers\Produk\ProdukController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -21,8 +22,20 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', [HomeController::class, 'index'])->name('landing.home');
-Route::get('/admin', [DashboardController::class, 'index'])->name('dashboard');
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Admin
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+  
+	// Dashboard
+	Route::get('', [DashboardController::class, 'index'])->name('index');
+
+  // Produk
+  Route::group(['prefix' => 'produk', 'as' => 'produk.'], function () {
+		Route::get('', [ProdukController::class, 'index'])->name('index');
+	});
+  
+});
