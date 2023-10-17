@@ -10,7 +10,7 @@
             <ul class="navbar-nav flex-column" id="sideNavbar">
 
                 <li class="nav-item ">
-                    <a class="nav-link  active " href="../dashboard/index.html">
+                    <a class="nav-link {{ request()->routeIs('admin.index') ? 'active' : '' }}" href="{{ route('admin.index') }}">
                         <div class="d-flex align-items-center">
                             <span class="nav-link-icon"> <i class="bi bi-house"></i></span>
                             <span class="nav-link-text">Dashboard</span>
@@ -21,7 +21,7 @@
                     <span class="nav-label">Store Managements</span>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link " href="../dashboard/products.html">
+                    <a class="nav-link {{ request()->routeIs('admin.produk.index') ? 'active' : '' }}" href="{{ route('admin.produk.index') }}">
                         <div class="d-flex align-items-center">
                             <span class="nav-link-icon"> <i class="bi bi-cart"></i></span>
                             <span class="nav-link-text">Products</span>
