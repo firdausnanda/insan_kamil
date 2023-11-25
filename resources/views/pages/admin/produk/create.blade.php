@@ -57,8 +57,8 @@
                                                 </select>
                                             </div>
                                             <div class="col-2 ps-0">
-                                                <button class="btn btn-sm btn-info"><i
-                                                        class="fa-solid fa-plus"></i></button>
+                                                <a href="{{ route('admin.kategori.index') }}" class="btn btn-sm btn-info"><i
+                                                        class="fa-solid fa-plus"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -87,7 +87,7 @@
                                         <label class="form-label">Penerbit</label>
                                         <div class="row align-items-center">
                                             <div class="col-10">
-                                                <select class="form-select" name="penerbit">
+                                                <select class="form-select" name="penerbit" id="penerbit">
                                                     <option selected>Pilih Penerbit</option>
                                                     @foreach ($penerbit as $p)
                                                         <option value="{{ $p->id }}">{{ $p->nama_penerbit }}</option>
@@ -242,7 +242,7 @@
         Dropzone.autoDiscover = !1;
         $(document).ready(function() {
 
-            //masking
+            // Masking
             $('#berat').mask('0000');
             $('#panjang').mask('0000');
             $('#lebar').mask('0000');
@@ -254,6 +254,18 @@
                 reverse: true
             });
 
+            // Init Select 2
+            $('#kategori').select2({
+                theme: 'bootstrap-5',
+                placeholder: '-- Pilih Kategori --',
+            });
+
+            $('#penerbit').select2({
+                theme: 'bootstrap-5',
+                placeholder: '-- Pilih Kategori --',
+            });
+
+            // Upload Image
             var uploadedDocumentMap = {}
             const myDropzone = new Dropzone("#my-dropzone", {
                 url: "{{ route('admin.produk.image') }}",
