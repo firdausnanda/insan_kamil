@@ -56,6 +56,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 	// Kategori
   Route::group(['prefix' => 'kategori', 'as' => 'kategori.'], function () {
 		Route::get('', [KategoriController::class, 'index'])->name('index');
+		Route::post('', [KategoriController::class, 'store'])->name('store');
+		Route::put('', [KategoriController::class, 'update'])->name('update');
 	});
 
 	// Order

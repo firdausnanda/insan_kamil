@@ -19,7 +19,7 @@
                         </div>
                         <!-- button -->
                         <div>
-                            <a href="add-product.html" class="btn btn-primary">Tambah Kategori</a>
+                            <a class="btn btn-primary btn-tambah">Tambah Kategori</a>
                         </div>
                     </div>
                 </div>
@@ -34,81 +34,17 @@
                         <div class="card-body p-0">
 
                             <div class="table-responsive p-5">
-                                <table class="table table-striped" id="produks">
+                                <table class="table table-striped" id="kategori">
                                     <thead>
                                         <th scope="col">No.</th>
                                         <th scope="col">Kategori Produk</th>
                                         <th scope="col">Aksi</th>
                                     </thead>
                                     <tbody>
-                                        <tr class="">
-                                            <td>1</td>
-                                            <td>Buku Anak</td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
-                                                       <i class="feather-icon icon-more-vertical fs-5"></i>
-                                                    </a>
-                                                    <ul class="dropdown-menu">
-                                                       <li>
-                                                          <a class="dropdown-item" href="#">
-                                                             <i class="bi bi-trash me-3"></i>
-                                                             Delete
-                                                          </a>
-                                                       </li>
-                                                       <li>
-                                                          <a class="dropdown-item" href="#">
-                                                             <i class="bi bi-pencil-square me-3"></i>
-                                                             Edit
-                                                          </a>
-                                                       </li>
-                                                    </ul>
-                                                 </div>
-                                            </td>
-                                        </tr>
-                                        <tr class="">
-                                            <td>2</td>
-                                            <td>Buku Belajar</td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <a href="#" class="text-reset" data-bs-toggle="dropdown"
-                                                        aria-expanded="false">
-                                                        <i class="feather-icon icon-more-vertical fs-5"></i>
-                                                    </a>
-                                                    <ul class="dropdown-menu">
-                                                        <li>
-                                                            <a class="dropdown-item" href="#">
-                                                                <i class="bi bi-trash me-3"></i>
-                                                                Delete
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="#">
-                                                                <i class="bi bi-pencil-square me-3"></i>
-                                                                Edit
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
-                        {{-- <div class=" border-top d-md-flex justify-content-between align-items-center px-6 py-6">
-                            <span>Showing 1 to 8 of 12 entries</span>
-                            <nav class="mt-2 mt-md-0">
-                                <ul class="pagination mb-0 ">
-                                    <li class="page-item disabled"><a class="page-link " href="#!">Previous</a></li>
-                                    <li class="page-item"><a class="page-link active" href="#!">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#!">Next</a></li>
-                                </ul>
-                            </nav>
-                        </div> --}}
                     </div>
 
                 </div>
@@ -116,12 +52,182 @@
             </div>
         </div>
     </main>
+
+    {{-- Modal Tambah --}}
+    <div class="modal fade" id="modal-tambah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Tambah Data Kategori</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-tambah">
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Nama Kategori</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="nama" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    {{-- Modal Edit --}}
+    <div class="modal fade" id="modal-edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Data Kategori</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-edit">
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Nama Kategori</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="nama" id="nama" required>
+                                <input type="hidden" class="form-control" name="id" id="id">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-sm">Ubah</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
     <script>
         $(document).ready(function() {
-            var table = $('#produks').DataTable();
+
+            // Init Datatable
+            var table = $('#kategori').DataTable({
+                ajax: {
+                    url: "{{ route('admin.kategori.index') }}",
+                    type: "GET"
+                },
+                lengthChange: false,
+                ordering: false,
+                processing: true,
+                columnDefs: [{
+                        targets: 0,
+                        width: '10%',
+                        className: 'align-middle text-center',
+                        render: function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        targets: 1,
+                        className: 'align-middle',
+                        data: 'nama_kategori',
+                    },
+                    {
+                        targets: 2,
+                        className: 'align-middle text-center',
+                        render: function(data, type, row, meta) {
+                            return `<div class="dropdown">
+                                        <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="feather-icon icon-more-vertical fs-5"></i>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <button class="dropdown-item btn-edit" type="button">
+                                                    <i class="bi bi-pencil-square me-3"></i>
+                                                    Edit
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>`;
+                        }
+                    },
+                ]
+            });
+
+            // Modal Tambah Show
+            $(".btn-tambah").click(function (e) { 
+                e.preventDefault();
+                $("#modal-tambah").modal('show')
+            });
+
+            // Submit Form Tambah
+            $("#form-tambah").submit(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('admin.kategori.store') }}",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        if (response.meta.status == "success") {
+                            $(':input').val('');
+                            $('#modal-tambah').modal('hide');
+                            table.ajax.reload();
+                            Swal.fire('Sukses!', response.meta.message, 'success');
+                        }
+                    },
+                    error: function(response) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
+                        console.log(response.responseJSON.message);
+                    },
+                });
+            });
+
+            // Modal Edit
+            $('#kategori tbody').on('click', '.btn-edit', function(event) {
+                event.preventDefault();
+                var data = table.row($(this).parents('tr')).data();
+                console.log(data);
+                var id = data.id;
+                var nama = data.nama_kategori;
+
+                $('#id').val(id);
+                $('#nama').val(nama);
+                $('#modal-edit').modal('show');
+            });
+
+            // Submit Edit
+            $("#form-edit").submit(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "PUT",
+                    url: "{{ route('admin.kategori.update') }}",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        if (response.meta.status == "success") {
+                            $('#modal-edit').modal('hide');
+                            table.ajax.reload();
+                            Swal.fire('Sukses!', response.meta.message, 'success');
+                        }
+                    },
+                    error: function(response) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
+                        console.log(response.responseJSON.message);
+                    },
+                });
+            });
         });
     </script>
 @endsection
