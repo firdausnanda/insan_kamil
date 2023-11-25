@@ -3,7 +3,7 @@
     <div class="navbar-vertical">
         <div class="px-4 py-5">
             <a href="../index.html" class="navbar-brand">
-                <img src="{{ asset('images/logo/freshcart-logo.svg') }}" alt="">
+                <img style="width: 160px; height: 31px;" src="{{ asset('images/logo/logo.png') }}" alt="">
             </a>
         </div>
         <div class="navbar-vertical-content flex-grow-1" data-simplebar="">
@@ -21,7 +21,7 @@
                     <span class="nav-label">Store Managements</span>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('admin.produk.index') ? 'active' : '' }}" href="{{ route('admin.produk.index') }}">
+                    <a class="nav-link {{ request()->routeIs('admin.produk.*') ? 'active' : '' }}" href="{{ route('admin.produk.index') }}">
                         <div class="d-flex align-items-center">
                             <span class="nav-link-icon"> <i class="bi bi-cart"></i></span>
                             <span class="nav-link-text">Products</span>
@@ -29,123 +29,84 @@
                     </a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link " href="../dashboard/categories.html">
+                    <a class="nav-link {{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}" href="{{ route('admin.kategori.index') }}">
                         <div class="d-flex align-items-center">
                             <span class="nav-link-icon"> <i class="bi bi-list-task"></i></span>
-                            <span class="nav-link-text">Categories</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link   collapsed " href="#" data-bs-toggle="collapse"
-                        data-bs-target="#navCategoriesOrders" aria-expanded="false" aria-controls="navCategoriesOrders">
-                        <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"> <i class="bi bi-bag"></i></span>
-                            <span class="nav-link-text">Orders</span>
-                        </div>
-                    </a>
-                    <div id="navCategoriesOrders" class="collapse " data-bs-parent="#sideNavbar">
-                        <ul class="nav flex-column">
-                            <li class="nav-item ">
-                                <a class="nav-link " href="../dashboard/order-list.html">
-                                    List
-                                </a>
-                            </li>
-                            <!-- Nav item -->
-                            <li class="nav-item ">
-                                <a class="nav-link " href="../dashboard/order-single.html">
-                                    Single
-
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <li class="nav-item ">
-                    <a class="nav-link " href="../dashboard/vendor-grid.html">
-                        <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"> <i class="bi bi-shop"></i></span>
-                            <span class="nav-link-text">Sellers / Vendors</span>
+                            <span class="nav-link-text">Kategori</span>
                         </div>
                     </a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link " href="../dashboard/customers.html">
+                    <a class="nav-link {{ request()->routeIs('admin.order.*') ? 'active' : '' }}" href="{{ route('admin.order.index') }}">
+                        <div class="d-flex align-items-center">
+                            <span class="nav-link-icon"><i class="bi bi-bag"></i></span>
+                            <span class="nav-link-text">Order</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link {{ request()->routeIs('admin.pengguna.*') ? 'active' : '' }}" href="{{ route('admin.pengguna.index') }}">
                         <div class="d-flex align-items-center">
                             <span class="nav-link-icon"> <i class="bi bi-people"></i></span>
-                            <span class="nav-link-text">Customers</span>
+                            <span class="nav-link-text">Pengguna</span>
                         </div>
                     </a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link " href="../dashboard/reviews.html">
+                    <a class="nav-link {{ request()->routeIs('admin.ulasan.*') ? 'active' : '' }}" href="{{ route('admin.ulasan.index') }}">
                         <div class="d-flex align-items-center">
                             <span class="nav-link-icon"> <i class="bi bi-star"></i></span>
-                            <span class="nav-link-text">Reviews</span>
+                            <span class="nav-link-text">Ulasan</span>
                         </div>
                     </a>
                 </li>
-                <!-- Nav item -->
-                <li class="nav-item">
-                    <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse"
-                        data-bs-target="#navMenuLevelFirst" aria-expanded="false" aria-controls="navMenuLevelFirst">
-                        <span class="nav-link-icon"><i class=" bi bi-arrow-90deg-down"></i></span>
-                        <span class="nav-link-text">Menu Level</span>
+                <li class="nav-item ">
+                    <a class="nav-link {{ request()->routeIs('admin.blog.*') ? 'active' : '' }}" href="{{ route('admin.blog.index') }}">
+                        <div class="d-flex align-items-center">
+                            <span class="nav-link-icon"> <i class="bi bi-brush"></i></span>
+                            <span class="nav-link-text">Blog</span>
+                        </div>
                     </a>
-                    <div id="navMenuLevelFirst" class="collapse " data-bs-parent="#sideNavbar">
-                        <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link " href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#navMenuLevelSecond1" aria-expanded="false"
-                                    aria-controls="navMenuLevelSecond1">
-                                    Two Level
-                                </a>
-                                <div id="navMenuLevelSecond1" class="collapse" data-bs-parent="#navMenuLevel">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link " href="#">NavItem 1</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link " href="#">NavItem 2</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  collapsed  " href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#navMenuLevelThreeOne1" aria-expanded="false"
-                                    aria-controls="navMenuLevelThreeOne1">
-                                    Three Level
-                                </a>
-                                <div id="navMenuLevelThreeOne1" class="collapse " data-bs-parent="#navMenuLevel">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse"
-                                                data-bs-target="#navMenuLevelThreeTwo" aria-expanded="false"
-                                                aria-controls="navMenuLevelThreeTwo">
-                                                NavItem 1
-                                            </a>
-                                            <div id="navMenuLevelThreeTwo" class="collapse collapse "
-                                                data-bs-parent="#navMenuLevelThree">
-                                                <ul class="nav flex-column">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link " href="#">
-                                                            NavChild Item 1
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link " href="#">Nav
-                                                Item 2</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                </li>
+
+                <li class="nav-item mt-6 mb-3">
+                    <span class="nav-label">System Monitoring</span>
+                </li>
+
+                <li class="nav-item ">
+                    <a class="nav-link " href="{{ route('queue-monitor::index') }}">
+                        <div class="d-flex align-items-center">
+                            <span class="nav-link-icon"> <i class="bi bi-display"></i></span>
+                            <span class="nav-link-text">Queue Monitor</span>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="nav-item ">
+                    <a class="nav-link {{ request()->routeIs('admin.activity.*') ? 'active' : '' }}" href="{{ route('admin.activity.index') }}">
+                        <div class="d-flex align-items-center">
+                            <span class="nav-link-icon"> <i class="bi bi-activity"></i></span>
+                            <span class="nav-link-text">Activity Logs</span>
+                        </div>
+                    </a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link {{ request()->routeIs('admin.backupdb.*') ? 'active' : '' }}" href="{{ route('admin.backupdb.index') }}">
+                        <div class="d-flex align-items-center">
+                            <span class="nav-link-icon"> <i class="bi bi-database"></i></span>
+                            <span class="nav-link-text">Database Backup</span>
+                        </div>
+                    </a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link " href="{{ url('/log-viewer') }}">
+                        <div class="d-flex align-items-center">
+                            <span class="nav-link-icon"> <i class="bi bi-bug"></i></span>
+                            <span class="nav-link-text">Error Logs</span>
+                        </div>
+                    </a>
                 </li>
 
             </ul>

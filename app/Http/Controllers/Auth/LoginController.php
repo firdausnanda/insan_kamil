@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Str;
 class LoginController extends Controller
 {
     /*
@@ -36,5 +40,59 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    protected function redirectTo()
+    {
+        switch (Auth::user()->roles[0]->name) {
+            case 'admin':
+                return '/admin';
+                break;
+
+            case 'superadmin':
+                return '/admin';
+                break;
+            
+            default:
+                return '/';
+                break;
+        }
+    }
+
+    public function redirectToProvider()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function handleProviderCallback()
+    {
+        try {
+            $user_google    = Socialite::driver('google')->user();
+            $user           = User::where('email', $user_google->getEmail())->first();
+
+            if($user != null){
+                \auth()->login($user, true);
+                return redirect()->route('home');
+            }else{
+                $user = \App\Models\User::create([
+                    'uuid' => Str::uuid(),
+                    'email' => $user_google->getEmail(),
+                    'name' => $user_google->getName(),
+                    'username' => $user_google->getName(),
+                    'google_id' => $user_google->getId(),
+                    'avatar' => $user_google->getAvatar(),
+                    'password' => 0,
+                    'email_verified_at' => now()
+                ]);
+
+                $user->assignRole('user');
+
+                Auth::login($user);
+                return redirect()->route('home');
+            }
+        } catch (\Exception $e) {
+            Log::error($e, 'Kesalahan Server!');
+            return redirect()->route('login');
+        }
     }
 }
