@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/fontawesome.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/brands.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/solid.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/select2/select2-bootstrap-5-theme.min.css') }}">
 
 
     <!-- Theme CSS -->
@@ -63,6 +65,7 @@
     <script src="{{ asset('js/vendors/editor.js') }}"></script>
     <script src="{{ asset('vendor/loading-overlay/loadingoverlay.min.js') }}"></script>
     <script src="{{ asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
+    <script src="{{ asset('vendor/select2/select2.min.js') }}"></script>
 
     <script>
         $(document).ready(function() {

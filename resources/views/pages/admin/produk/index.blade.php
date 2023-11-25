@@ -128,12 +128,19 @@
 @section('script')
     <script>
         $(document).ready(function() {
+
+            // Filter
+            $('#kategori').select2({
+                theme: 'bootstrap-5',
+                placeholder: '-- Pilih Kategori --',
+            });
+
             // Init Datatable
             var table = $('#produks').DataTable({
                 ajax: {
                     url: "{{ route('admin.produk.index') }}",
                     type: "GET",
-                    data: function (d) { 
+                    data: function(d) {
                         d.kategori = $('#kategori').val()
                     }
                 },
