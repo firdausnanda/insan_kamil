@@ -8,18 +8,18 @@
                     <!-- page header -->
                     <div class="d-md-flex justify-content-between align-items-center">
                         <div>
-                            <h2>Kategori</h2>
+                            <h2>Penerbit</h2>
                             <!-- breacrumb -->
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb mb-0">
                                     <li class="breadcrumb-item"><a href="#" class="text-inherit">Dashboard</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Kategori</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Penerbit</li>
                                 </ol>
                             </nav>
                         </div>
                         <!-- button -->
                         <div>
-                            <a class="btn btn-primary btn-tambah">Tambah Kategori</a>
+                            <a class="btn btn-primary btn-tambah">Tambah Penerbit</a>
                         </div>
                     </div>
                 </div>
@@ -34,10 +34,10 @@
                         <div class="card-body p-0">
 
                             <div class="table-responsive p-5">
-                                <table class="table table-striped" id="kategori">
+                                <table class="table table-striped" id="penerbit">
                                     <thead>
                                         <th scope="col">No.</th>
-                                        <th scope="col">Kategori Produk</th>
+                                        <th scope="col">Penerbit</th>
                                         <th scope="col">Aksi</th>
                                     </thead>
                                     <tbody>
@@ -58,13 +58,13 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Tambah Data Kategori</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Tambah Data Penerbit</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="form-tambah">
                     <div class="modal-body">
                         <div class="row mb-3">
-                            <label for="colFormLabel" class="col-sm-4 col-form-label">Nama Kategori</label>
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Nama Penerbit</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" name="nama" required>
                             </div>
@@ -83,13 +83,13 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Data Kategori</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Data Penerbit</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="form-edit">
                     <div class="modal-body">
                         <div class="row mb-3">
-                            <label for="colFormLabel" class="col-sm-4 col-form-label">Nama Kategori</label>
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Nama Penerbit</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" name="nama" id="nama" required>
                                 <input type="hidden" class="form-control" name="id" id="id">
@@ -110,9 +110,9 @@
         $(document).ready(function() {
 
             // Init Datatable
-            var table = $('#kategori').DataTable({
+            var table = $('#penerbit').DataTable({
                 ajax: {
-                    url: "{{ route('admin.kategori.index') }}",
+                    url: "{{ route('admin.penerbit.index') }}",
                     type: "GET"
                 },
                 lengthChange: false,
@@ -129,7 +129,7 @@
                     {
                         targets: 1,
                         className: 'align-middle',
-                        data: 'nama_kategori',
+                        data: 'nama_penerbit',
                     },
                     {
                         targets: 2,
@@ -165,7 +165,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('admin.kategori.store') }}",
+                    url: "{{ route('admin.penerbit.store') }}",
                     data: $(this).serialize(),
                     dataType: "JSON",
                     beforeSend: function() {
@@ -189,11 +189,11 @@
             });
 
             // Modal Edit
-            $('#kategori tbody').on('click', '.btn-edit', function(event) {
+            $('#penerbit tbody').on('click', '.btn-edit', function(event) {
                 event.preventDefault();
                 var data = table.row($(this).parents('tr')).data();
                 var id = data.id;
-                var nama = data.nama_kategori;
+                var nama = data.nama_penerbit;
 
                 $('#id').val(id);
                 $('#nama').val(nama);
@@ -206,7 +206,7 @@
 
                 $.ajax({
                     type: "PUT",
-                    url: "{{ route('admin.kategori.update') }}",
+                    url: "{{ route('admin.penerbit.update') }}",
                     data: $(this).serialize(),
                     dataType: "JSON",
                     beforeSend: function() {

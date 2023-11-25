@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ProdukController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\PenerbitController;
 use App\Http\Controllers\Admin\PenggunaController;
 use App\Http\Controllers\Admin\UlasanController;
 use App\Http\Controllers\Auth\LoginController;
@@ -58,6 +59,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 		Route::get('', [KategoriController::class, 'index'])->name('index');
 		Route::post('', [KategoriController::class, 'store'])->name('store');
 		Route::put('', [KategoriController::class, 'update'])->name('update');
+	});
+
+	// Penerbit
+  Route::group(['prefix' => 'penerbit', 'as' => 'penerbit.'], function () {
+		Route::get('', [PenerbitController::class, 'index'])->name('index');
+		Route::post('', [PenerbitController::class, 'store'])->name('store');
+		Route::put('', [PenerbitController::class, 'update'])->name('update');
 	});
 
 	// Order

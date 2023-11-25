@@ -150,7 +150,7 @@
                                 <div class="list-inline-item">
                                     <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         @if (Auth::user()->avatar == null)
-                                            <img src="{{ asset('images/avatar/avatar-1.jpg') }}" alt=""
+                                            <img src="{{ asset('images/avatar/user.png') }}" alt=""
                                                 class="avatar avatar-md rounded-circle">
                                         @else
                                             <img src="{{ Auth::user()->avatar }}" alt=""

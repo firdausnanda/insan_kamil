@@ -95,8 +95,8 @@
                                                 </select>
                                             </div>
                                             <div class="col-2 ps-0">
-                                                <button class="btn btn-sm btn-info"><i
-                                                        class="fa-solid fa-plus"></i></button>
+                                                <a href="{{ route('admin.penerbit.index') }}" class="btn btn-sm btn-info"><i
+                                                        class="fa-solid fa-plus"></i></a>
                                             </div>
                                         </div>
                                     </div>

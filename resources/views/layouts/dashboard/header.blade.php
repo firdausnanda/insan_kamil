@@ -14,7 +14,6 @@
             </div>
             <div>
                 <ul class="list-unstyled d-flex align-items-center mb-0 ms-5 ms-lg-0">
-
                     <li class="dropdown-center ">
                         <a class="position-relative btn-icon btn-ghost-secondary btn rounded-circle" href="#"
                             role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -26,8 +25,7 @@
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-lg p-0 border-0 ">
-                            <div class="border-bottom p-5 d-flex
-    justify-content-between align-items-center">
+                            <div class="border-bottom p-5 d-flex justify-content-between align-items-center">
                                 <div>
                                     <h5 class="mb-1">Notifications</h5>
                                     <p class="mb-0 small">You have 2 unread messages</p>
@@ -138,23 +136,17 @@
                     </li>
                     <li class="dropdown ms-4">
                         <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{{ asset('images/avatar/avatar-1.jpg') }}" alt=""
+                            <img src="{{ asset('images/avatar/user.png') }}" alt=""
                                 class="avatar avatar-md rounded-circle">
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-end p-0">
-
-
-
                             <div class="lh-1 px-5 py-4 border-bottom">
                                 <h5 class="mb-1 h6">FreshCart Admin</h5>
                                 <small>admindemo@email.com</small>
                             </div>
 
-
-
                             <ul class="list-unstyled px-2 py-3">
-
                                 <li>
                                     <a class="dropdown-item" href="#!">
                                         Home
@@ -164,18 +156,12 @@
                                     <a class="dropdown-item" href="#!">
                                         Profile
                                     </a>
-
-
                                 </li>
-
-
                                 <li>
                                     <a class="dropdown-item" href="#!">
-
                                         Settings
                                     </a>
                                 </li>
-
                             </ul>
                             <div class="border-top px-5 py-3">
                                 <a class="d-block" href="{{ route('logout') }}"
@@ -188,16 +174,10 @@
                                     @csrf
                                 </form>
                             </div>
-
-
-
                         </div>
-
                     </li>
                 </ul>
-
             </div>
-
         </div>
     </div>
 </nav>

@@ -37,6 +37,14 @@
                     </a>
                 </li>
                 <li class="nav-item ">
+                    <a class="nav-link {{ request()->routeIs('admin.penerbit.*') ? 'active' : '' }}" href="{{ route('admin.penerbit.index') }}">
+                        <div class="d-flex align-items-center">
+                            <span class="nav-link-icon"> <i class="bi bi-book"></i></span>
+                            <span class="nav-link-text">Penerbit</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="nav-item ">
                     <a class="nav-link {{ request()->routeIs('admin.order.*') ? 'active' : '' }}" href="{{ route('admin.order.index') }}">
                         <div class="d-flex align-items-center">
                             <span class="nav-link-icon"><i class="bi bi-bag"></i></span>
