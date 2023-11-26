@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PenggunaController extends Controller
@@ -10,8 +12,14 @@ class PenggunaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $pengguna = User::with('roles')->whereHas('roles', function($query) use($request) {
+                $query->where('name', $request->role);
+            })->get();
+            return ResponseFormatter::success($pengguna, 'Data berhasil diambil!');
+        }
         return view('pages.admin.pengguna.index');
     }
 

@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Stok extends Model
+class Keranjang extends Model
 {
     use HasFactory;
 
-    protected $table = 'stok';
+    protected $table = 'keranjang';
 
     protected $fillable = [
+        'id_produk',
         'jumlah_produk',
-        'sisa_produk',
     ];
 }

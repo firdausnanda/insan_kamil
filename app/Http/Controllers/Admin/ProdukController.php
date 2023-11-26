@@ -75,12 +75,18 @@ class ProdukController extends Controller
                 'harga_akhir' => $request->harga_normal_clean,
             ]);
 
+            // Create on Stok
+            $stok = Stok::create([
+                'jumlah_produk' => $request->stok,
+                'sisa_produk' => $request->stok,
+            ]);
 
             // Create on Produk
             $produk = Produk::create([
                 'id_kategori' => $request->kategori,
                 'id_penerbit' => $request->penerbit,
                 'id_harga' => $harga->id,
+                'id_stok' => $stok->id,
                 'kode_produk' => $request->kode_produk,
                 'nama_produk' => $request->judul,
                 'berat_produk' => $request->berat,
@@ -101,13 +107,6 @@ class ProdukController extends Controller
                     'gambar' => $d,
                 ]);
             }
-
-            // Create on Stok
-            $stok = Stok::create([
-                'id_produk' => $produk->id,
-                'jumlah_produk' => $request->stok,
-                'sisa_produk' => $request->stok,
-            ]);
 
             return ResponseFormatter::success($produk, 'Data berhasil disimpan!', 200);
             

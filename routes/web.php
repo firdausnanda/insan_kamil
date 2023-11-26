@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', [HomeController::class, 'index'])->name('landing.home');
-Route::get('/detail', [HomeController::class, 'detail'])->name('landing.detail');
+Route::get('/detail/{id}', [HomeController::class, 'detail'])->name('landing.detail');
 
 // Auth
 Auth::routes();

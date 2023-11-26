@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_kategori')->constrained('kategori');
             $table->string('id_penerbit')->nullable();
+            $table->string('id_stok');
             $table->string('id_harga');
             $table->string('kode_produk');
             $table->string('nama_produk');

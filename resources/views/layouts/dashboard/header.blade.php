@@ -142,16 +142,11 @@
 
                         <div class="dropdown-menu dropdown-menu-end p-0">
                             <div class="lh-1 px-5 py-4 border-bottom">
-                                <h5 class="mb-1 h6">FreshCart Admin</h5>
-                                <small>admindemo@email.com</small>
+                                <h5 class="mb-1 h6">{{ Auth::user()->name }}</h5>
+                                <small>{{ Auth::user()->email }}</small>
                             </div>
 
                             <ul class="list-unstyled px-2 py-3">
-                                <li>
-                                    <a class="dropdown-item" href="#!">
-                                        Home
-                                    </a>
-                                </li>
                                 <li>
                                     <a class="dropdown-item" href="#!">
                                         Profile

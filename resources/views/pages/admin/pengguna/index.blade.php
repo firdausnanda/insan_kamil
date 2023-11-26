@@ -19,7 +19,7 @@
                         </div>
                         <!-- button -->
                         <div>
-                            <a href="add-product.html" class="btn btn-primary">Tambah Pengguna</a>
+                            <button type="button" class="btn btn-primary btn-tambah">Tambah Pengguna</button>
                         </div>
                     </div>
                 </div>
@@ -35,86 +35,175 @@
 
                             <div class="row pt-5 ps-5">
                                 <div class="col-lg-4">
-                                    <label for="status">Role</label>
-                                    <select name="status" class="form-select">
-                                        <option value="selesai">User</option>
-                                        <option value="selesai">Admin</option>
-                                        <option value="selesai">Superadmin</option>
+                                    <label for="role">Role</label>
+                                    <select name="role" id="role" class="form-select">
+                                        <option value="user">User</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="superadmin">Superadmin</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="table-responsive p-5">
-                                <table class="table table-striped" id="produks">
+                                <table class="table table-striped" id="pengguna">
                                     <thead>
                                         <th scope="col">No.</th>
                                         <th scope="col">Nama Pengguna</th>
                                         <th scope="col">Email</th>
                                         <th scope="col">No. Telp</th>
-                                        <th scope="col">Role</th>
+                                        <th scope="col">Registrasi</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Aksi</th>
                                     </thead>
                                     <tbody>
-                                        <tr class="">
-                                            <td>1</td>
-                                            <td>John Doe</td>
-                                            <td>admin@admin.com</td>
-                                            <td>081 081 081 081</td>
-                                            <td>User</td>
-                                            <td><span class="badge bg-light-primary text-dark-primary">Aktif</span></td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
-                                                       <i class="feather-icon icon-more-vertical fs-5"></i>
-                                                    </a>
-                                                    <ul class="dropdown-menu">
-                                                       <li>
-                                                          <a class="dropdown-item" href="#">
-                                                             <i class="bi bi-trash me-3"></i>
-                                                             Delete
-                                                          </a>
-                                                       </li>
-                                                       <li>
-                                                          <a class="dropdown-item" href="#">
-                                                             <i class="bi bi-pencil-square me-3"></i>
-                                                             Edit
-                                                          </a>
-                                                       </li>
-                                                    </ul>
-                                                 </div>
-                                            </td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
-                        {{-- <div class=" border-top d-md-flex justify-content-between align-items-center px-6 py-6">
-                            <span>Showing 1 to 8 of 12 entries</span>
-                            <nav class="mt-2 mt-md-0">
-                                <ul class="pagination mb-0 ">
-                                    <li class="page-item disabled"><a class="page-link " href="#!">Previous</a></li>
-                                    <li class="page-item"><a class="page-link active" href="#!">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#!">Next</a></li>
-                                </ul>
-                            </nav>
-                        </div> --}}
                     </div>
-
                 </div>
-
             </div>
         </div>
     </main>
+
+    {{-- Modal Tambah --}}
+    <div class="modal fade" id="modal-tambah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Tambah Data Pengguna</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-tambah">
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Nama Pengguna</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="nama" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
     <script>
         $(document).ready(function() {
-            var table = $('#produks').DataTable();
+
+            // Init Datatable
+            var table = $('#pengguna').DataTable({
+                ajax: {
+                    url: "{{ route('admin.pengguna.index') }}",
+                    type: "GET",
+                    data: function(d) {
+                        d.role = $('#role').val()
+                    }
+                },
+                lengthChange: false,
+                ordering: false,
+                processing: true,
+                columnDefs: [{
+                        targets: 0,
+                        width: '10%',
+                        className: 'align-middle text-center',
+                        render: function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        targets: 1,
+                        className: 'align-middle',
+                        data: 'avatar',
+                        render: function(data, type, row, meta) {
+                            if (data == '' || data == null) {
+                                return `<img src="{{ asset('images/avatar/user.png') }}" alt="" class="avatar avatar-xs rounded-circle me-2" /> ${row.name}`
+                            } else {
+                                return `<img src="${data}" alt="" class="avatar avatar-xs rounded-circle me-2" /> ${row.name}`
+                            }
+                        }
+                    },
+                    {
+                        targets: 2,
+                        className: 'align-middle',
+                        data: 'email',
+                        render: function(data, type, row, meta) {
+                            if (data) {
+                                return data
+                            }
+                            return '-'
+                        }
+                    },
+                    {
+                        targets: 3,
+                        className: 'align-middle',
+                        data: 'no_telp',
+                        render: function(data, type, row, meta) {
+                            if (data) {
+                                return data
+                            }
+                            return '-'
+                        }
+                    },
+                    {
+                        targets: 4,
+                        className: 'align-middle',
+                        data: 'created_at',
+                        render: function(data, type, row, meta) {
+                            if (data)
+                            return `${moment(row.created_at).format('DD-MM-YYYY', 'de')} <br> <i>${moment(row.created_at).format('hh:mm:ss', 'de')}`
+                            return `-`
+                        }
+                    },
+                    {
+                        targets: 5,
+                        className: 'align-middle',
+                        data: 'status',
+                        render: function(data, type, row, meta) {
+                            if (data == 1) {
+                                return `<span class="badge bg-light-primary text-dark-primary">Aktif</span>`
+                            }
+                            return '<span class="badge bg-light-danger text-dark-danger">Tidak Aktif</span>'
+                        }
+                    },
+                    {
+                        targets: 6,
+                        className: 'align-middle text-center',
+                        render: function(data, type, row, meta) {
+                            return `<div class="dropdown">
+                                        <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="feather-icon icon-more-vertical fs-5"></i>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <button class="dropdown-item btn-edit" type="button">
+                                                    <i class="bi bi-pencil-square me-3"></i>
+                                                    Edit
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>`;
+                        }
+                    },
+                ]
+            });
+
+            // Filter
+            $('#role').change(function(e) {
+                e.preventDefault();
+                table.ajax.reload()
+            });
+
+            // Modal Tambah Show
+            $(".btn-tambah").click(function(e) {
+                e.preventDefault();
+                $("#modal-tambah").modal('show')
+            });
         });
     </script>
 @endsection

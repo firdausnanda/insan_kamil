@@ -78,44 +78,16 @@
                                         <!-- nav -->
                                         <div class="card">
                                             <ul class="nav nav-category" id="categoryCollapseMenu">
-                                                <li class="nav-item border-bottom w-100 collapsed px-4 py-1">
-                                                    <a href="javascript:void(0)" class="nav-link" data-bs-toggle="collapse"
-                                                        data-bs-target="#categoryFlushOne" aria-expanded="false"
-                                                        aria-controls="categoryFlushOne">
-                                                        <span class="d-flex align-items-center">
-                                                            <span class="ms-2">Remaja dan Anak</span>
-                                                        </span><i class="feather-icon icon-chevron-right"></i></a>
-                                                </li>
-                                                <!-- nav item -->
-                                                <li class="nav-item border-bottom w-100 collapsed px-4 py-1"><a
-                                                        href="javascript:void(0)" class="nav-link"
-                                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo"
-                                                        aria-expanded="false" aria-controls="flush-collapseTwo">
-                                                        <span class="d-flex align-items-center">
-                                                            <span class="ms-2">Fiksi</span>
-                                                        </span>
-                                                        <i class="feather-icon icon-chevron-right"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item border-bottom w-100 collapsed px-4 py-1">
-                                                    <a href="javascript:void(0)" class="nav-link"
-                                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
-                                                        aria-expanded="false" aria-controls="flush-collapseThree">
-                                                        <span class="d-flex align-items-center">
-                                                            <span class="ms-2"> Buku Internasional </span>
-                                                        </span>
-                                                        <i class="feather-icon icon-chevron-right"></i></a>
-                                                </li>
-                                                <li class="nav-item border-bottom w-100 collapsed px-4 py-1">
-                                                    <a href="javascript:void(0)" class="nav-link"
-                                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseFour"
-                                                        aria-expanded="false" aria-controls="flush-collapseFour">
-                                                        <span class="d-flex align-items-center">
-                                                            <span class="ms-2">Komik </span>
-                                                        </span>
-                                                        <i class="feather-icon icon-chevron-right"></i></a>
-                                                </li>
-
+                                                @foreach ($kategori as $k)
+                                                    <li class="nav-item border-bottom w-100 collapsed px-4 py-1">
+                                                        <a href="#" class="nav-link" data-bs-toggle="collapse"
+                                                            data-bs-target="#categoryFlushOne" aria-expanded="false"
+                                                            aria-controls="categoryFlushOne">
+                                                            <span class="d-flex align-items-center">
+                                                                <span class="ms-2">{{ $k->nama_kategori }}</span>
+                                                            </span><i class="feather-icon icon-chevron-right"></i></a>
+                                                    </li>
+                                                @endforeach
                                             </ul>
 
                                         </div>
@@ -186,270 +158,61 @@
                     </div>
                 </aside>
                 <div class="col-xl-9 col-lg-8 col-md-12 mb-6 mb-md-0">
+                    {{-- Buku Baru --}}
                     <div class="mb-12 product-content">
                         <div class="mb-6">
                             <h3 class="mb-0">Buku Best Seller</h3>
                         </div>
                         <div class="product-slider-four-column">
+                            @foreach ($produk_laris as $p)
+                                <!-- item -->
+                                <div class="item">
+                                    <!-- card -->
+                                    <div class="card card-product mb-4">
+                                        <a href="{{ route('landing.detail', $p->id) }}">
+                                            <div class="card-body text-center py-8">
+                                                <!-- img -->
+                                                @if ($p->gambar_produk)
+                                                    <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
+                                                        alt="{{ $p->nama_produk }}" class="mb-3"
+                                                        style="max-height: 120px; max-width: 120px;">
+                                                @else
+                                                    <img src="{{ asset('images/avatar/no-image.png') }}"
+                                                        alt="{{ $p->nama_produk }}" class="mb-3"
+                                                        style="max-height: 120px; max-width: 120px;">
+                                                @endif
+                                                <!-- text -->
 
-                            <!-- item -->
-                            <div class="item">
-                                <!-- card -->
-                                <div class="card card-product mb-4">
-                                    <div class="card-body text-center py-8">
-                                        <!-- img -->
-                                        <a href="#"><img
-                                                src="{{ asset('images/category/category-snack-munchies.jpg') }}"
-                                                alt="Grocery Ecommerce Template" class="mb-3"></a>
-                                        <!-- text -->
-
+                                            </div>
+                                        </a>
                                     </div>
-                                </div>
-                                <div>
-                                    <span class="badge bg-danger rounded-pill">-45%</span>
-                                    <h2 class="mt-3 fs-6"> <a href="#" class="text-inherit">Salted Instant
-                                            Popcorn</a></h2>
-                                    <div><span class="text-dark fs-5 fw-bold">Rp. 18.000</span> <span
-                                            class="text-decoration-line-through text-muted">Rp. 20.000</span>
-                                    </div>
-                                    <div class="text-warning">
-                                        <!-- rating -->
-                                        <small> <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-half"></i></small> <span
-                                            class="text-muted small">4.5</span>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <!-- item -->
-                            <div class="item">
-                                <!-- card -->
-                                <div class="card card-product mb-4">
-                                    <div class="card-body text-center py-8">
-                                        <!-- img -->
-                                        <a href="#"><img
-                                                src="{{ asset('images/category/category-dairy-bread-eggs.jpg') }}"
-                                                alt="Grocery Ecommerce Template" class="mb-3"></a>
-                                        <!-- text -->
-
-                                    </div>
-                                </div>
-                                <div>
-                                    <span class="badge bg-danger rounded-pill">-12%</span>
-                                    <h2 class="mt-3 fs-6"> <a href="#" class="text-inherit">Blueberry Greek
-                                            Yogurt</a></h2>
-                                    <div><span class="text-dark fs-5 fw-bold">$15</span> <span
-                                            class="text-decoration-line-through text-muted">$20</span>
-                                    </div>
-                                    <div class="text-warning">
-                                        <!-- rating -->
-                                        <small> <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i></small> <span
-                                            class="text-muted small">5.0</span>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <!-- item -->
-                            <div class="item">
-                                <!-- card -->
-                                <div class="card card-product mb-4">
-                                    <div class="card-body text-center py-8">
-                                        <!-- img -->
-                                        <a href="#"><img
-                                                src="{{ asset('images/category/category-snack-munchies.jpg') }}"
-                                                alt="Grocery Ecommerce Template" class="mb-3"></a>
-                                        <!-- text -->
+                                    <div>
+                                        @if ($p->harga->diskon > 0)
+                                            <span class="badge bg-danger rounded-pill">{{ $p->harga->diskon . '%' }}</span>
+                                        @endif
+                                        <h2 class="mt-3 fs-6"> <a href="{{ route('landing.detail', $p->id) }}"
+                                                class="text-inherit">{{ $p->nama_produk }}</a></h2>
+                                        <div>
+                                            <span
+                                                class="text-dark fs-5 fw-bold">{{ rupiah($p->harga->harga_akhir) }}</span>
+                                            @if ($p->harga->diskon > 0)
+                                                <span
+                                                    class="text-decoration-line-through text-muted">{{ rupiah($p->harga->harga_awal) }}</span>
+                                            @endif
+                                        </div>
+                                        <div class="text-warning">
+                                            <!-- rating -->
+                                            <small> <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-half"></i></small> <span
+                                                class="text-muted small">4.5</span>
+                                        </div>
 
                                     </div>
                                 </div>
-                                <div>
-                                    <span class="badge bg-danger rounded-pill">-55%</span>
-                                    <h2 class="mt-3 fs-6"> <a href="#" class="text-inherit">Kellogg s Original
-                                            Cereals
-                                        </a></h2>
-                                    <div><span class="text-dark fs-5 fw-bold">$18</span> <span
-                                            class="text-decoration-line-through text-muted">$24</span>
-                                    </div>
-                                    <div class="text-warning">
-                                        <!-- rating -->
-                                        <small> <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-half"></i>
-                                            <i class="bi bi-star-half"></i></small> <span
-                                            class="text-muted small">3.5</span>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <!-- item -->
-                            <div class="item">
-                                <!-- card -->
-                                <div class="card card-product mb-4">
-                                    <div class="card-body text-center py-8">
-                                        <!-- img -->
-                                        <a href="#"><img
-                                                src="{{ asset('images/category/category-tea-coffee-drinks.jpg') }}"
-                                                alt="Grocery Ecommerce Template" class="mb-3"></a>
-                                        <!-- text -->
-
-                                    </div>
-                                </div>
-                                <div>
-                                    <span class="badge bg-danger rounded-pill">-45%</span>
-                                    <h2 class="mt-3 fs-6"> <a href="#" class="text-inherit">Tea Coffee & Drinks</a>
-                                    </h2>
-                                    <div><span class="text-dark fs-5 fw-bold">$18</span> <span
-                                            class="text-decoration-line-through text-muted">$24</span>
-                                    </div>
-                                    <div class="text-warning">
-                                        <!-- rating -->
-                                        <small> <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-half"></i></small> <span
-                                            class="text-muted small">4.5</span>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <!-- item -->
-                            <div class="item">
-                                <!-- card -->
-                                <div class="card card-product mb-4">
-                                    <div class="card-body text-center py-8">
-                                        <!-- img -->
-                                        <a href="#"><img
-                                                src="{{ asset('images/category/category-bakery-biscuits.jpg') }}"
-                                                alt="Grocery Ecommerce Template" class="mb-3"></a>
-                                        <!-- text -->
-
-                                    </div>
-                                </div>
-                                <div>
-                                    <span class="badge bg-danger rounded-pill">-25%</span>
-                                    <h2 class="mt-3 fs-6"> <a href="#" class="text-inherit">Slurrp Millet
-                                            Chocolate</a></h2>
-                                    <div><span class="text-dark fs-5 fw-bold">$120</span> <span
-                                            class="text-decoration-line-through text-muted">$165</span>
-                                    </div>
-                                    <div class="text-warning">
-                                        <!-- rating -->
-                                        <small> <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-half"></i></small> <span
-                                            class="text-muted small">4.5</span>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <!-- item -->
-                            <div class="item">
-                                <!-- card -->
-                                <div class="card card-product mb-4">
-                                    <div class="card-body text-center py-8">
-                                        <!-- img -->
-                                        <a href="#"><img
-                                                src="{{ asset('images/category/category-atta-rice-dal.jpg') }}"
-                                                alt="Grocery Ecommerce Template" class="mb-3"></a>
-                                        <!-- text -->
-
-                                    </div>
-                                </div>
-                                <div>
-                                    <span class="badge bg-danger rounded-pill">-55%</span>
-                                    <h2 class="mt-3 fs-6"> <a href="#" class="text-inherit">Atta, Rice & Dal
-                                        </a></h2>
-                                    <div><span class="text-dark fs-5 fw-bold">$18</span> <span
-                                            class="text-decoration-line-through text-muted">$24</span>
-                                    </div>
-                                    <div class="text-warning">
-                                        <!-- rating -->
-                                        <small> <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-half"></i>
-                                            <i class="bi bi-star-half"></i></small> <span
-                                            class="text-muted small">3.5</span>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <!-- item -->
-                            <div class="item">
-                                <!-- card -->
-                                <div class="card card-product mb-4">
-                                    <div class="card-body text-center py-8">
-                                        <!-- img -->
-                                        <a href="#"><img
-                                                src="{{ asset('images/category/category-chicken-meat-fish.jpg') }}"
-                                                alt="Grocery Ecommerce Template" class="mb-3"></a>
-                                        <!-- text -->
-
-                                    </div>
-                                </div>
-                                <div>
-                                    <span class="badge bg-danger rounded-pill">-45%</span>
-                                    <h2 class="mt-3 fs-6"> <a href="#" class="text-inherit">Chicken, Meat &
-                                            Fish</a></h2>
-                                    <div><span class="text-dark fs-5 fw-bold">$18</span> <span
-                                            class="text-decoration-line-through text-muted">$24</span>
-                                    </div>
-                                    <div class="text-warning">
-                                        <!-- rating -->
-                                        <small> <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-half"></i></small> <span
-                                            class="text-muted small">4.5</span>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <!-- item -->
-                            <div class="item">
-                                <!-- card -->
-                                <div class="card card-product mb-4">
-                                    <div class="card-body text-center py-8">
-                                        <!-- img -->
-                                        <a href="#"><img
-                                                src="{{ asset('images/category/category-cleaning-essentials.jpg') }}"
-                                                alt="Grocery Ecommerce Template" class="mb-3"></a>
-                                        <!-- text -->
-
-                                    </div>
-                                </div>
-                                <div>
-                                    <span class="badge bg-danger rounded-pill">-25%</span>
-                                    <h2 class="mt-3 fs-6"> <a href="#" class="text-inherit">Cleaning Essentials</a>
-                                    </h2>
-                                    <div><span class="text-dark fs-5 fw-bold">$120</span> <span
-                                            class="text-decoration-line-through text-muted">$165</span>
-                                    </div>
-                                    <div class="text-warning">
-                                        <!-- rating -->
-                                        <small> <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-half"></i></small> <span
-                                            class="text-muted small">4.5</span>
-                                    </div>
-
-                                </div>
-                            </div>
-
+                            @endforeach
                         </div>
                     </div>
                     <div class="mb-6">
@@ -462,7 +225,7 @@
                                 <div class="col-lg-5 text-center">
                                     <a href="./pages/shop-single.html"><img
                                             src="{{ asset('images/products/deal-img.jpg') }}"
-                                            alt="Grocery Ecommerce Template" class="img-fluid"></a>
+                                            alt="{{ $p->nama_produk }}" class="img-fluid"></a>
 
                                 </div>
                                 <div class="col-lg-7 text-center text-lg-start">
@@ -540,415 +303,58 @@
                                 </div>
                             </div>
                             <div class="row row-cols-xl-4 row-cols-lg-3 g-4">
-                                <div class="col">
-                                    <div class="mb-6">
-                                        <div class="card card-product mb-4">
-                                            <div class="card-body text-center py-8">
-                                                <!-- img -->
-                                                <a href="#"><img
-                                                        src="{{ asset('images/category/category-instant-food.jpg') }}"
-                                                        alt="Grocery Ecommerce Template" class="mb-3"></a>
-                                                <!-- text -->
+                                @foreach ($produk_laris as $p)
+                                    <!-- item -->
+                                    <div class="col">
+                                        <div class="mb-6">
+                                            <!-- card -->
+                                            <div class="card card-product mb-4">
+                                                <a href="{{ route('landing.detail', $p->id) }}">
+                                                    <div class="card-body text-center py-8">
+                                                        <!-- img -->
+                                                        @if ($p->gambar_produk)
+                                                            <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
+                                                                alt="{{ $p->nama_produk }}" class="mb-3"
+                                                                style="max-height: 120px; max-width: 120px;">
+                                                        @else
+                                                            <img src="{{ asset('images/avatar/no-image.png') }}"
+                                                                alt="{{ $p->nama_produk }}" class="mb-3"
+                                                                style="max-height: 120px; max-width: 120px;">
+                                                        @endif
+                                                        <!-- text -->
+
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div>
+                                                @if ($p->harga->diskon > 0)
+                                                    <span
+                                                        class="badge bg-danger rounded-pill">{{ $p->harga->diskon . '%' }}</span>
+                                                @endif
+                                                <h2 class="mt-3 fs-6"> <a href="{{ route('landing.detail', $p->id) }}"
+                                                        class="text-inherit">{{ $p->nama_produk }}</a></h2>
+                                                <div>
+                                                    <span
+                                                        class="text-dark fs-5 fw-bold">{{ rupiah($p->harga->harga_akhir) }}</span>
+                                                    @if ($p->harga->diskon > 0)
+                                                        <span
+                                                            class="text-decoration-line-through text-muted">{{ rupiah($p->harga->harga_awal) }}</span>
+                                                    @endif
+                                                </div>
+                                                <div class="text-warning">
+                                                    <!-- rating -->
+                                                    <small> <i class="bi bi-star-fill"></i>
+                                                        <i class="bi bi-star-fill"></i>
+                                                        <i class="bi bi-star-fill"></i>
+                                                        <i class="bi bi-star-fill"></i>
+                                                        <i class="bi bi-star-fill"></i></small> <span
+                                                        class="text-muted small">5.0</span>
+                                                </div>
 
                                             </div>
-                                        </div>
-                                        <div>
-                                            <span class="badge bg-danger rounded-pill">-45%</span>
-                                            <h2 class="mt-3 fs-6"> <a href="#" class="text-inherit">Instant
-                                                    Food</a></h2>
-                                            <div><span class="text-dark fs-5 fw-bold">$18</span> <span
-                                                    class="text-decoration-line-through text-muted">$24</span>
-                                            </div>
-                                            <div class="text-warning">
-                                                <!-- rating -->
-                                                <small> <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-half"></i></small> <span
-                                                    class="text-muted small">4.5</span>
-                                            </div>
-
                                         </div>
                                     </div>
-                                </div>
-                                <!-- item -->
-                                <div class="col">
-                                    <div class="mb-6">
-                                        <!-- card -->
-                                        <div class="card card-product mb-4">
-                                            <div class="card-body text-center py-8">
-                                                <!-- img -->
-                                                <a href="#"><img
-                                                        src="{{ asset('images/category/category-atta-rice-dal.jpg') }}"
-                                                        alt="Grocery Ecommerce Template" class="mb-3"></a>
-                                                <!-- text -->
-
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="badge bg-danger rounded-pill">-12%</span>
-                                            <h2 class="mt-3 fs-6"> <a href="#" class="text-inherit">Atta Rice &
-                                                    Dal</a></h2>
-                                            <div><span class="text-dark fs-5 fw-bold">$15</span> <span
-                                                    class="text-decoration-line-through text-muted">$20</span>
-                                            </div>
-                                            <div class="text-warning">
-                                                <!-- rating -->
-                                                <small> <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i></small> <span
-                                                    class="text-muted small">5.0</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- item -->
-                                <div class="col">
-                                    <div class="mb-6">
-                                        <!-- card -->
-                                        <div class="card card-product mb-4">
-                                            <div class="card-body text-center py-8">
-                                                <!-- img -->
-                                                <a href="#"><img
-                                                        src="{{ asset('images/category/category-baby-care.jpg') }}"
-                                                        alt="Grocery Ecommerce Template" class="mb-3"></a>
-                                                <!-- text -->
-
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="badge bg-danger rounded-pill">-55%</span>
-                                            <h2 class="mt-3 fs-6"> <a href="#" class="text-inherit">Baby Care
-                                                </a></h2>
-                                            <div><span class="text-dark fs-5 fw-bold">$18</span> <span
-                                                    class="text-decoration-line-through text-muted">$24</span>
-                                            </div>
-                                            <div class="text-warning">
-                                                <!-- rating -->
-                                                <small> <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-half"></i>
-                                                    <i class="bi bi-star-half"></i></small> <span
-                                                    class="text-muted small">3.5</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- item -->
-                                <div class="col">
-                                    <div class="mb-6">
-                                        <!-- card -->
-                                        <div class="card card-product mb-4">
-                                            <div class="card-body text-center py-8">
-                                                <!-- img -->
-                                                <a href="#"><img
-                                                        src="{{ asset('images/category/category-tea-coffee-drinks.jpg') }}"
-                                                        alt="Grocery Ecommerce Template" class="mb-3"></a>
-                                                <!-- text -->
-
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="badge bg-danger rounded-pill">-45%</span>
-                                            <h2 class="mt-3 fs-6"> <a href="#" class="text-inherit">Tea Coffee &
-                                                    Drinks</a></h2>
-                                            <div><span class="text-dark fs-5 fw-bold">$18</span> <span
-                                                    class="text-decoration-line-through text-muted">$24</span>
-                                            </div>
-                                            <div class="text-warning">
-                                                <!-- rating -->
-                                                <small> <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-half"></i></small> <span
-                                                    class="text-muted small">4.5</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- item -->
-                                <div class="col">
-                                    <div class="mb-6">
-                                        <!-- card -->
-                                        <div class="card card-product mb-4">
-                                            <div class="card-body text-center py-8">
-                                                <!-- img -->
-                                                <a href="#"><img
-                                                        src="{{ asset('images/category/category-cleaning-essentials.jpg') }}"
-                                                        alt="Grocery Ecommerce Template" class="mb-3"></a>
-                                                <!-- text -->
-
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="badge bg-danger rounded-pill">-25%</span>
-                                            <h2 class="mt-3 fs-6"> <a href="#" class="text-inherit">Cleaning
-                                                    Essentials</a></h2>
-                                            <div><span class="text-dark fs-5 fw-bold">$120</span> <span
-                                                    class="text-decoration-line-through text-muted">$165</span>
-                                            </div>
-                                            <div class="text-warning">
-                                                <!-- rating -->
-                                                <small> <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-half"></i></small> <span
-                                                    class="text-muted small">4.5</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- item -->
-                                <div class="col">
-                                    <div class="mb-6">
-                                        <!-- card -->
-                                        <div class="card card-product mb-4">
-                                            <div class="card-body text-center py-8">
-                                                <!-- img -->
-                                                <a href="#"><img
-                                                        src="{{ asset('images/category/category-pet-care.jpg') }}"
-                                                        alt="Grocery Ecommerce Template" class="mb-3"></a>
-                                                <!-- text -->
-
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="badge bg-danger rounded-pill">-55%</span>
-                                            <h2 class="mt-3 fs-6"> <a href="#" class="text-inherit">Pet Cares
-                                                </a></h2>
-                                            <div><span class="text-dark fs-5 fw-bold">$18</span> <span
-                                                    class="text-decoration-line-through text-muted">$24</span>
-                                            </div>
-                                            <div class="text-warning">
-                                                <!-- rating -->
-                                                <small> <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-half"></i>
-                                                    <i class="bi bi-star-half"></i></small> <span
-                                                    class="text-muted small">3.5</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- item -->
-                                <div class="col">
-                                    <div class="mb-6">
-                                        <!-- card -->
-                                        <div class="card card-product mb-4">
-                                            <div class="card-body text-center py-8">
-                                                <!-- img -->
-                                                <a href="#"><img
-                                                        src="{{ asset('images/category/category-chicken-meat-fish.jpg') }}"
-                                                        alt="Grocery Ecommerce Template" class="mb-3"></a>
-                                                <!-- text -->
-
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="badge bg-danger rounded-pill">-45%</span>
-                                            <h2 class="mt-3 fs-6"> <a href="#" class="text-inherit">Salted Instant
-                                                    Popcorn</a></h2>
-                                            <div><span class="text-dark fs-5 fw-bold">$18</span> <span
-                                                    class="text-decoration-line-through text-muted">$24</span>
-                                            </div>
-                                            <div class="text-warning">
-                                                <!-- rating -->
-                                                <small> <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-half"></i></small> <span
-                                                    class="text-muted small">4.5</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- item -->
-                                <div class="col">
-                                    <div class="mb-6">
-                                        <!-- card -->
-                                        <div class="card card-product mb-4">
-                                            <div class="card-body text-center py-8">
-                                                <!-- img -->
-                                                <a href="#"><img
-                                                        src="{{ asset('images/category/category-bakery-biscuits.jpg') }}"
-                                                        alt="Grocery Ecommerce Template" class="mb-3"></a>
-                                                <!-- text -->
-
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="badge bg-danger rounded-pill">-25%</span>
-                                            <h2 class="mt-3 fs-6"> <a href="#" class="text-inherit">Bakery &
-                                                    Biscuits</a></h2>
-                                            <div><span class="text-dark fs-5 fw-bold">$120</span> <span
-                                                    class="text-decoration-line-through text-muted">$165</span>
-                                            </div>
-                                            <div class="text-warning">
-                                                <!-- rating -->
-                                                <small> <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-half"></i></small> <span
-                                                    class="text-muted small">4.5</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- item -->
-                                <div class="col">
-                                    <div class="mb-6">
-                                        <!-- card -->
-                                        <div class="card card-product mb-4">
-                                            <div class="card-body text-center py-8">
-                                                <!-- img -->
-                                                <a href="#"><img
-                                                        src="{{ asset('images/category/category-pet-care.jpg') }}"
-                                                        alt="Grocery Ecommerce Template" class="mb-3"></a>
-                                                <!-- text -->
-
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="badge bg-danger rounded-pill">-55%</span>
-                                            <h2 class="mt-3 fs-6"> <a href="#" class="text-inherit">Pet Cares
-                                                </a></h2>
-                                            <div><span class="text-dark fs-5 fw-bold">$18</span> <span
-                                                    class="text-decoration-line-through text-muted">$24</span>
-                                            </div>
-                                            <div class="text-warning">
-                                                <!-- rating -->
-                                                <small> <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-half"></i>
-                                                    <i class="bi bi-star-half"></i></small> <span
-                                                    class="text-muted small">3.5</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- item -->
-                                <div class="col">
-                                    <div class="mb-6">
-                                        <!-- card -->
-                                        <div class="card card-product mb-4">
-                                            <div class="card-body text-center py-8">
-                                                <!-- img -->
-                                                <a href="#"><img
-                                                        src="{{ asset('images/category/category-cleaning-essentials.jpg') }}"
-                                                        alt="Grocery Ecommerce Template" class="mb-3"></a>
-                                                <!-- text -->
-
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="badge bg-danger rounded-pill">-25%</span>
-                                            <h2 class="mt-3 fs-6"> <a href="#" class="text-inherit">Cleaning
-                                                    Essentials</a></h2>
-                                            <div><span class="text-dark fs-5 fw-bold">$120</span> <span
-                                                    class="text-decoration-line-through text-muted">$165</span>
-                                            </div>
-                                            <div class="text-warning">
-                                                <!-- rating -->
-                                                <small> <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-half"></i></small> <span
-                                                    class="text-muted small">4.5</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- item -->
-                                <!-- item -->
-                                <div class="col">
-                                    <div class="mb-6">
-                                        <!-- card -->
-                                        <div class="card card-product mb-4">
-                                            <div class="card-body text-center py-8">
-                                                <!-- img -->
-                                                <a href="#"><img
-                                                        src="{{ asset('images/category/category-bakery-biscuits.jpg') }}"
-                                                        alt="Grocery Ecommerce Template" class="mb-3"></a>
-                                                <!-- text -->
-
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="badge bg-danger rounded-pill">-25%</span>
-                                            <h2 class="mt-3 fs-6"> <a href="#" class="text-inherit">Bakery &
-                                                    Biscuits</a></h2>
-                                            <div><span class="text-dark fs-5 fw-bold">$120</span> <span
-                                                    class="text-decoration-line-through text-muted">$165</span>
-                                            </div>
-                                            <div class="text-warning">
-                                                <!-- rating -->
-                                                <small> <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-half"></i></small> <span
-                                                    class="text-muted small">4.5</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="mb-6">
-                                        <!-- card -->
-                                        <div class="card card-product mb-4">
-                                            <div class="card-body text-center py-8">
-                                                <!-- img -->
-                                                <a href="#"><img
-                                                        src="{{ asset('images/category/category-chicken-meat-fish.jpg') }}"
-                                                        alt="Grocery Ecommerce Template" class="mb-3"></a>
-                                                <!-- text -->
-
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="badge bg-danger rounded-pill">-45%</span>
-                                            <h2 class="mt-3 fs-6"> <a href="#" class="text-inherit">Salted Instant
-                                                    Popcorn</a></h2>
-                                            <div><span class="text-dark fs-5 fw-bold">$18</span> <span
-                                                    class="text-decoration-line-through text-muted">$24</span>
-                                            </div>
-                                            <div class="text-warning">
-                                                <!-- rating -->
-                                                <small> <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-fill"></i>
-                                                    <i class="bi bi-star-half"></i></small> <span
-                                                    class="text-muted small">4.5</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-
+                                @endforeach
                             </div>
                         </div>
                     </div>

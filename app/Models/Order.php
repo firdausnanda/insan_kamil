@@ -5,14 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Stok extends Model
+class Order extends Model
 {
     use HasFactory;
 
-    protected $table = 'stok';
+    protected $table = 'order';
 
     protected $fillable = [
+        'id_produk',
+        'harga_jual',
         'jumlah_produk',
-        'sisa_produk',
+        'status',
     ];
 }

@@ -11,10 +11,10 @@
                     <!-- breadcrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Buku Anak</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('landing.home') }}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">{{ $produk->kategori->nama_kategori }}</a></li>
 
-                            <li class="breadcrumb-item active" aria-current="page">My First Book 100 Kata Pertamaku</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ $produk->nama_produk }}</li>
                         </ol>
                     </nav>
                 </div>
@@ -28,72 +28,37 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="slider slider-for">
-                        <div>
-                            <div class="zoom" onmousemove="zoom(event)"
-                                style="background-image: url(../images/products/product-single-img-1.jpg)">
-                                <!-- img -->
-                                <!-- img -->
-                                <img src="../images/products/product-single-img-1.jpg" alt="" />
+                        @foreach ($produk->gambar_produk as $g)
+                            <div>
+                                <div class="zoom" onmousemove="zoom(event)"
+                                    style="background-image: url({{ asset('storage/produk/' . $g->gambar) }})">
+                                    <!-- img -->
+                                    <!-- img -->
+                                    <img src="{{ asset('storage/produk/' . $g->gambar) }}" alt="" />
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <div class="zoom" onmousemove="zoom(event)"
-                                style="background-image: url(../images/products/product-single-img-2.jpg)">
-                                <!-- img -->
-                                <!-- img -->
-                                <img src="../images/products/product-single-img-2.jpg" alt="" />
-                            </div>
-                        </div>
-                        <div>
-                            <div class="zoom" onmousemove="zoom(event)"
-                                style="background-image: url(../images/products/product-single-img-3.jpg)">
-                                <!-- img -->
-                                <!-- img -->
-                                <img src="../images/products/product-single-img-3.jpg" alt="" />
-                            </div>
-                        </div>
-                        <div>
-                            <div class="zoom" onmousemove="zoom(event)"
-                                style="background-image: url(../images/products/product-single-img-1.jpg)">
-                                <!-- img -->
-                                <!-- img -->
-                                <img src="../images/products/product-single-img-1.jpg" alt="" />
-                            </div>
-                        </div>
-                        <div>
-                            <div class="zoom" onmousemove="zoom(event)"
-                                style="background-image: url(../images/products/product-single-img-4.jpg)">
-                                <!-- img -->
-                                <!-- img -->
-                                <img src="../images/products/product-single-img-4.jpg" alt="" />
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                     <div class="slider slider-nav mt-4">
-                        <div>
-                            <img src="../images/products/product-single-img-1.jpg" alt="" class="w-100 rounded" />
-                        </div>
-                        <div>
-                            <img src="../images/products/product-single-img-2.jpg" alt="" class="w-100 rounded" />
-                        </div>
-                        <div>
-                            <img src="../images/products/product-single-img-3.jpg" alt="" class="w-100 rounded" />
-                        </div>
-                        <div>
-                            <img src="../images/products/product-single-img-1.jpg" alt="" class="w-100 rounded" />
-                        </div>
-                        <div>
-                            <img src="../images/products/product-single-img-4.jpg" alt="" class="w-100 rounded" />
-                        </div>
+                        @forelse ($produk->gambar_produk as $g)
+                            <div>
+                                <img src="{{ asset('storage/produk/' . $g->gambar) }}" alt=""
+                                    class="w-100 rounded" />
+                            </div>
+                        @empty
+                            <div>
+                                <img src="{{ asset('images/avatar/no-image.png') }}" alt="" class="w-100 rounded" />
+                            </div>
+                        @endforelse
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="ps-lg-10 mt-6 mt-md-0">
                         <!-- content -->
-                        <a href="#!" class="mb-4 d-block">Buku Anak</a>
+                        <a href="#!" class="mb-4 d-block">{{ $produk->kategori->nama_kategori }}</a>
                         <!-- heading -->
-                        <h1 class="mb-1">My First Book 100 Kata Pertamaku</h1>
+                        <h1 class="mb-1">{{ $produk->nama_produk }}</h1>
                         <div class="mb-4">
                             <!-- rating -->
                             <!-- rating -->
@@ -108,8 +73,11 @@
                         </div>
                         <div class="fs-4">
                             <!-- price -->
-                            <span class="fw-bold text-dark">Rp. 15.000</span>
-                            <span class="text-decoration-line-through text-muted">Rp. 20.000</span>
+                            <span class="fw-bold text-dark">{{ rupiah($produk->harga->harga_akhir) }}</span>
+                            @if ($produk->harga->diskon > 0)
+                                <span
+                                    class="text-decoration-line-through text-muted">{{ rupiah($produk->harga->harga_awal) }}</span>
+                            @endif
                         </div>
                         <!-- hr -->
                         <hr class="my-6" />
@@ -133,9 +101,9 @@
                                 </button>
                             </div>
                             <div class="col-md-4 col-4">
-                              <!-- btn -->
-                              <a class="btn btn-primary" style="font-size: 12px">Beli Sekarang</a>
-                           </div>
+                                <!-- btn -->
+                                <a class="btn btn-primary" style="font-size: 12px">Beli Sekarang</a>
+                            </div>
                         </div>
                         <!-- hr -->
                         <hr class="my-6" />
@@ -145,25 +113,25 @@
                                 <tbody>
                                     <tr>
                                         <td>Kategori:</td>
-                                        <td>Buku Anak</td>
+                                        <td>{{ $produk->kategori->nama_kategori }}</td>
                                     </tr>
                                     <tr>
                                         <td>Bahasa:</td>
-                                        <td>Indonesia</td>
+                                        <td>{{ $produk->bahasa }}</td>
                                     </tr>
                                     <tr>
                                         <td>Ukuran:</td>
-                                        <td>25 x 25 <span class="text-muted">cm</span></td>
+                                        <td>{{ $produk->ukuran_produk }} <span class="text-muted">cm</span></td>
                                     </tr>
                                     <tr>
                                         <td>Berat:</td>
-                                        <td>585 <span class="text-muted">gr</span></td>
+                                        <td>{{ $produk->berat_produk }} <span class="text-muted">gr</span></td>
                                     </tr>
                                     <tr>
                                         <td>Halaman:</td>
                                         <td>
                                             <small>
-                                                24
+                                                {{ $produk->halaman_produk }}
                                                 <span class="text-muted">Halaman</span>
                                             </small>
                                         </td>
@@ -217,7 +185,7 @@
                             <button class="nav-link active" id="product-tab" data-bs-toggle="tab"
                                 data-bs-target="#product-tab-pane" type="button" role="tab"
                                 aria-controls="product-tab-pane" aria-selected="true">
-                                Product Details
+                                Deskripsi Buku
                             </button>
                         </li>
                     </ul>
@@ -229,17 +197,7 @@
                             <div class="my-8">
                                 <div class="mb-5">
                                     <!-- text -->
-                                    <p>MY FIRST BOOK 100 KATA PERTAMAKU</p>
-
-<p>Ayah Bunda, masa golden age adalah periode yang tepat untuk menstimulasi tumbuh kembang si kecil. Stimulasi harus diberikan sejak dini karena dapat meningkatkan perkembangan otak si kecil</p>
-
-<p>Maka berikan stimulus yang baik untuk buah hati dimulai dari mengenalkan benda-benda di sekitar dengan cara yang menyenangkan &#55357;&#56842;</p>
-
-<p>Kabar baiknya, kini telah kami hadirkan kembali, buku best seller &ldquo;MY FIRST BOOK 100 KATA PERTAMAKU&rdquo;</p>
-
-<p>Ada banyak benda yang dikenalkan di buku ini, mulai dari pakaian, anggota tubuh manusia, hewan peliharaan, kendaraan, benda-benda di kamar mandi, benda-benda di ruang makan, dan lainnya. Yuk perkaya kosa kata si kecil sejak dini agar wawasannya bertambah &#55357;&#56842;</p>
-
-<p>Dengan buku boardbook yang didesain aman untuk anak, harapannya si kecil memiliki beragam kosakata baru sehingga dapat meningkatkan kemampuan bahasa, kognitif, dan motoriknya. Yuk, manfaatkan dengan baik masa emas si kecil dengan memperkaya kosakatanya! &#55357;&#56835;</p>
+                                    {!! $produk->keterangan !!}
                                 </div>
                             </div>
                         </div>
@@ -256,316 +214,64 @@
             <div class="row">
                 <div class="col-12">
                     <!-- heading -->
-                    <h3>Related Items</h3>
+                    <h3>Produk Terkait</h3>
                 </div>
             </div>
             <!-- row -->
             <div class="row g-4 row-cols-lg-5 row-cols-2 row-cols-md-2 mt-2">
                 <!-- col -->
-                <div class="col">
-                    <div class="card card-product">
-                        <div class="card-body">
-                            <!-- badge -->
+                @foreach ($produk_related as $p)
+                    <div class="col">
+                        <div class="card card-product">
+                            <div class="card-body">
+                                <!-- badge -->
 
-                            <div class="text-center position-relative">
-                                <div class="position-absolute top-0 start-0">
-                                    <span class="badge bg-danger">Sale</span>
-                                </div>
-                                <a href="#!">
-                                    <!-- img -->
-                                    <img src="../images/products/product-img-1.jpg" alt="Grocery Ecommerce Template"
-                                        class="mb-3 img-fluid" />
-                                </a>
-                                <!-- action btn -->
-                                <div class="card-product-action">
-                                    <a href="#!" class="btn-action" data-bs-toggle="modal"
-                                        data-bs-target="#quickViewModal">
-                                        <i class="bi bi-eye" data-bs-toggle="tooltip" data-bs-html="true"
-                                            title="Quick View"></i>
+                                <div class="text-center position-relative">
+                                    <a href="{{ route('landing.detail', $p->id) }}">
+                                        @if ($p->gambar_produk)
+                                            <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
+                                                alt="{{ $p->nama_produk }}" style="max-height: 210px; max-width: 210px;"
+                                                class="mb-3 img-fluid" />
+                                        @else
+                                            <img src="{{ asset('images/avatar/no-image.png') }}"
+                                                alt="{{ $p->nama_produk }}" style="max-height: 210px; max-width: 210px;"
+                                                class="mb-3 img-fluid" />
+                                        @endif
                                     </a>
-                                    <a href="shop-wishlist.html" class="btn-action" data-bs-toggle="tooltip"
-                                        data-bs-html="true" title="Wishlist"><i class="bi bi-heart"></i></a>
-                                    <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true"
-                                        title="Compare"><i class="bi bi-arrow-left-right"></i></a>
+
                                 </div>
-                            </div>
-                            <!-- heading -->
-                            <div class="text-small mb-1">
-                                <a href="#!" class="text-decoration-none text-muted"><small>Snack &
-                                        Munchies</small></a>
-                            </div>
-                            <h2 class="fs-6"><a href="#!" class="text-inherit text-decoration-none">Haldiram's Sev
-                                    Bhujia</a></h2>
-                            <div>
-                                <!-- rating -->
-                                <small class="text-warning">
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-half"></i>
-                                </small>
-                                <span class="text-muted small">4.5(149)</span>
-                            </div>
-                            <!-- price -->
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <div>
-                                    <span class="text-dark">$18</span>
-                                    <span class="text-decoration-line-through text-muted">$24</span>
+                                <!-- heading -->
+                                <div class="text-small mb-1">
+                                    <a href="{{ route('landing.detail', $p->id) }}"
+                                        class="text-decoration-none text-muted"><small>{{ $p->kategori->nama_kategori }}</small></a>
                                 </div>
-                                <!-- btn -->
+                                <h2 class="fs-6"><a href="{{ route('landing.detail', $p->id) }}"
+                                        class="text-inherit text-decoration-none">{{ $p->nama_produk }}</a></h2>
                                 <div>
-                                    <a href="#!" class="btn btn-primary btn-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
-                                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        </svg>
-                                        Add
-                                    </a>
+                                    <!-- rating -->
+                                    <small class="text-warning">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-half"></i>
+                                    </small>
+                                    <span class="text-muted small">4.5(149)</span>
+                                </div>
+                                <!-- price -->
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <div>
+                                        <span class="text-dark">{{ rupiah($p->harga->harga_akhir) }}</span>
+                                        @if ($p->harga->diskon > 0)
+                                            <span
+                                                class="text-decoration-line-through text-muted">{{ rupiah($p->harga->harga_awal) }}</span>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- col -->
-                <div class="col">
-                    <div class="card card-product">
-                        <div class="card-body">
-                            <!-- badge -->
-                            <div class="text-center position-relative">
-                                <a href="#!"><img src="../images/products/product-img-2.jpg"
-                                        alt="Grocery Ecommerce Template" class="mb-3 img-fluid" /></a>
-                                <!-- action btn -->
-                                <div class="card-product-action">
-                                    <a href="#!" class="btn-action" data-bs-toggle="modal"
-                                        data-bs-target="#quickViewModal">
-                                        <i class="bi bi-eye" data-bs-toggle="tooltip" data-bs-html="true"
-                                            title="Quick View"></i>
-                                    </a>
-                                    <a href="shop-wishlist.html" class="btn-action" data-bs-toggle="tooltip"
-                                        data-bs-html="true" title="Wishlist"><i class="bi bi-heart"></i></a>
-                                    <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true"
-                                        title="Compare"><i class="bi bi-arrow-left-right"></i></a>
-                                </div>
-                            </div>
-                            <!-- heading -->
-                            <div class="text-small mb-1">
-                                <a href="#!" class="text-decoration-none text-muted"><small>Bakery &
-                                        Biscuits</small></a>
-                            </div>
-                            <h2 class="fs-6"><a href="#!" class="text-inherit text-decoration-none">NutriChoice
-                                    Digestive</a></h2>
-                            <div class="text-warning">
-                                <small>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-half"></i>
-                                </small>
-                                <span class="text-muted small">4.5 (25)</span>
-                            </div>
-                            <!-- price -->
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <div><span class="text-dark">$24</span></div>
-                                <!-- btn -->
-                                <div>
-                                    <a href="#!" class="btn btn-primary btn-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
-                                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        </svg>
-                                        Add
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- col -->
-                <div class="col">
-                    <div class="card card-product">
-                        <div class="card-body">
-                            <!-- badge -->
-                            <div class="text-center position-relative">
-                                <a href="#!"><img src="../images/products/product-img-3.jpg"
-                                        alt="Grocery Ecommerce Template" class="mb-3 img-fluid" /></a>
-                                <!-- action btn -->
-                                <div class="card-product-action">
-                                    <a href="#!" class="btn-action" data-bs-toggle="modal"
-                                        data-bs-target="#quickViewModal">
-                                        <i class="bi bi-eye" data-bs-toggle="tooltip" data-bs-html="true"
-                                            title="Quick View"></i>
-                                    </a>
-                                    <a href="shop-wishlist.html" class="btn-action" data-bs-toggle="tooltip"
-                                        data-bs-html="true" title="Wishlist"><i class="bi bi-heart"></i></a>
-                                    <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true"
-                                        title="Compare"><i class="bi bi-arrow-left-right"></i></a>
-                                </div>
-                            </div>
-                            <!-- heading -->
-                            <div class="text-small mb-1">
-                                <a href="#!" class="text-decoration-none text-muted"><small>Bakery &
-                                        Biscuits</small></a>
-                            </div>
-                            <h2 class="fs-6"><a href="#!" class="text-inherit text-decoration-none">Cadbury 5 Star
-                                    Chocolate</a></h2>
-                            <div class="text-warning">
-                                <small>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                </small>
-                                <span class="text-muted small">5 (469)</span>
-                            </div>
-                            <!-- price -->
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <div>
-                                    <span class="text-dark">$32</span>
-                                    <span class="text-decoration-line-through text-muted">$35</span>
-                                </div>
-                                <!-- btn -->
-                                <div>
-                                    <a href="#!" class="btn btn-primary btn-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
-                                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        </svg>
-                                        Add
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- col -->
-                <div class="col">
-                    <div class="card card-product">
-                        <div class="card-body">
-                            <!-- badge -->
-                            <div class="text-center position-relative">
-                                <a href="#!"><img src="../images/products/product-img-4.jpg"
-                                        alt="Grocery Ecommerce Template" class="mb-3 img-fluid" /></a>
-                                <!-- action btn -->
-                                <div class="card-product-action">
-                                    <a href="#!" class="btn-action" data-bs-toggle="modal"
-                                        data-bs-target="#quickViewModal">
-                                        <i class="bi bi-eye" data-bs-toggle="tooltip" data-bs-html="true"
-                                            title="Quick View"></i>
-                                    </a>
-                                    <a href="shop-wishlist.html" class="btn-action" data-bs-toggle="tooltip"
-                                        data-bs-html="true" title="Wishlist"><i class="bi bi-heart"></i></a>
-                                    <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true"
-                                        title="Compare"><i class="bi bi-arrow-left-right"></i></a>
-                                </div>
-                            </div>
-                            <!-- heading -->
-                            <div class="text-small mb-1">
-                                <a href="#!" class="text-decoration-none text-muted"><small>Snack &
-                                        Munchies</small></a>
-                            </div>
-                            <h2 class="fs-6"><a href="#!" class="text-inherit text-decoration-none">Onion Flavour
-                                    Potato</a></h2>
-                            <div class="text-warning">
-                                <small>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-half"></i>
-                                    <i class="bi bi-star"></i>
-                                </small>
-                                <span class="text-muted small">3.5 (456)</span>
-                            </div>
-                            <!-- price -->
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <div>
-                                    <span class="text-dark">$3</span>
-                                    <span class="text-decoration-line-through text-muted">$5</span>
-                                </div>
-                                <!-- btn -->
-                                <div>
-                                    <a href="#!" class="btn btn-primary btn-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
-                                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        </svg>
-                                        Add
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- col -->
-                <div class="col">
-                    <div class="card card-product">
-                        <div class="card-body">
-                            <!-- badge -->
-                            <div class="text-center position-relative">
-                                <a href="#!"><img src="../images/products/product-img-9.jpg"
-                                        alt="Grocery Ecommerce Template" class="mb-3 img-fluid" /></a>
-                                <!-- action btn -->
-                                <div class="card-product-action">
-                                    <a href="#!" class="btn-action" data-bs-toggle="modal"
-                                        data-bs-target="#quickViewModal">
-                                        <i class="bi bi-eye" data-bs-toggle="tooltip" data-bs-html="true"
-                                            title="Quick View"></i>
-                                    </a>
-                                    <a href="shop-wishlist.html" class="btn-action" data-bs-toggle="tooltip"
-                                        data-bs-html="true" title="Wishlist"><i class="bi bi-heart"></i></a>
-                                    <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true"
-                                        title="Compare"><i class="bi bi-arrow-left-right"></i></a>
-                                </div>
-                            </div>
-                            <!-- heading -->
-                            <div class="text-small mb-1">
-                                <a href="#!" class="text-decoration-none text-muted"><small>Snack &
-                                        Munchies</small></a>
-                            </div>
-                            <h2 class="fs-6"><a href="#!" class="text-inherit text-decoration-none">Slurrp Millet
-                                    Chocolate</a></h2>
-                            <div class="text-warning">
-                                <small>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-half"></i>
-                                </small>
-                                <span class="text-muted small">4.5 (67)</span>
-                            </div>
-                            <!-- price -->
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <div>
-                                    <span class="text-dark">$6</span>
-                                    <span class="text-decoration-line-through text-muted">$10</span>
-                                </div>
-                                <!-- btn -->
-                                <div>
-                                    <a href="#!" class="btn btn-primary btn-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
-                                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        </svg>
-                                        Add
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>

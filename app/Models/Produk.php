@@ -15,6 +15,7 @@ class Produk extends Model
         'id_kategori',
         'id_penerbit',
         'id_harga',
+        'id_stok',
         'kode_produk',
         'nama_produk',
         'berat_produk',
@@ -36,5 +37,15 @@ class Produk extends Model
     public function harga()
     {
         return $this->belongsTo(Harga::class, 'id_harga', 'id');
+    }
+    
+    public function stok()
+    {
+        return $this->belongsTo(Stok::class, 'id_stok', 'id');
+    }
+    
+    public function gambar_produk()
+    {
+        return $this->hasMany(GambarProduk::class, 'id_produk', 'id');
     }
 }
