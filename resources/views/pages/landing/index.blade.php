@@ -36,13 +36,10 @@
                     style="background: url({{ asset('images/slider/hero-img-slider-3.jpg') }})no-repeat; background-size: cover; border-radius: .5rem; background-position: center;">
                     <div class="ps-lg-12 py-lg-16 col-xxl-5 col-lg-7  col-md-8 py-14 px-8 text-xs-center">
 
-                        <h1 class="text-dark display-5 fw-bold mt-4">Midnight Munch Combo </h1>
-                        <p class="lead ">Snack on late-night munchies of delicious nuts & you’re guaranteed happiness
-                            before you
-                            doze!
+                        <h1 class="text-dark display-5 fw-bold mt-4">Kombo Paket Istimewa </h1>
+                        <p class="lead ">Buku adalah jendela dunia. Dapatkan pandangan eksklusif dengan diskon hebat di toko buku kami. Jelajahi dan belajar tanpa batas!
                         </p>
-                        <a href="#!" class="btn btn-dark mt-3">Shop Now <i
-                                class="feather-icon icon-arrow-right ms-1"></i></a>
+                        <a href="#!" class="btn btn-dark mt-3">Belanja Sekarang </a>
                     </div>
 
                 </div>
@@ -92,7 +89,6 @@
 
                                         </div>
                                     </div>
-
 
                                     <div class="card mb-6">
                                         <div class="card-body d-flex align-items-center border-top">
@@ -147,11 +143,6 @@
                                         </div>
 
                                     </div>
-
-
-
-
-
                                 </div>
                             </div>
                         </div>

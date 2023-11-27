@@ -69,4 +69,14 @@ class User extends Authenticatable
         ->logOnlyDirty(true)
         ->logUnguarded();
     }
+
+      public function province()
+      {
+          return $this->belongsTo(Province::class, 'provinsi', 'id');
+      }
+
+      public function city()
+      {
+          return $this->belongsTo(City::class, 'kota', 'id');
+      }
 }

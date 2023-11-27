@@ -13,7 +13,7 @@
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="{{ route('landing.home') }}">Home</a></li>
                             <li class="breadcrumb-item"><a href="#">{{ $produk->kategori->nama_kategori }}</a></li>
-
+                            <input type="hidden" value="{{ Auth::user() ? Auth::user()->id : '' }}" id="user_id">
                             <li class="breadcrumb-item active" aria-current="page">{{ $produk->nama_produk }}</li>
                         </ol>
                     </nav>
@@ -59,6 +59,7 @@
                         <a href="#!" class="mb-4 d-block">{{ $produk->kategori->nama_kategori }}</a>
                         <!-- heading -->
                         <h1 class="mb-1">{{ $produk->nama_produk }}</h1>
+                        <input type="hidden" id="id_produk" value="{{ $produk->id }}">
                         <div class="mb-4">
                             <!-- rating -->
                             <!-- rating -->
@@ -81,30 +82,40 @@
                         </div>
                         <!-- hr -->
                         <hr class="my-6" />
-                        <div>
-                            <!-- input -->
-                            <div class="input-group input-spinner">
-                                <input type="button" value="-" class="button-minus btn btn-sm"
-                                    data-field="quantity" />
-                                <input type="number" step="1" max="10" value="1" name="quantity"
-                                    class="quantity-field form-control-sm form-input" />
-                                <input type="button" value="+" class="button-plus btn btn-sm" data-field="quantity" />
+                        @auth
+                            <div>
+                                <!-- input -->
+                                <div class="input-group input-spinner">
+                                    <input type="button" value="-" class="button-minus btn btn-sm"
+                                        data-field="quantity" />
+                                    <input type="number" step="1" max="10" value="1" id="jumlah"
+                                        name="quantity" class="quantity-field form-control-sm form-input" />
+                                    <input type="button" value="+" class="button-plus btn btn-sm" data-field="quantity" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="mt-3 row justify-content-start g-2 align-items-center">
-                            <div class="col-xxl-4 col-lg-4 col-md-6 col-5 d-grid">
-                                <!-- button -->
-                                <!-- btn -->
-                                <button type="button" class="btn btn-outline-primary" style="font-size: 12px">
-                                    <i class="feather-icon icon-shopping-bag me-2"></i>
-                                    Masukkan Keranjang
-                                </button>
+                            <div class="mt-3 row justify-content-start g-2 align-items-center">
+                                <div class="col-xxl-4 col-lg-4 col-md-6 col-5 d-grid">
+                                    <!-- button -->
+                                    <!-- btn -->
+                                    <button type="button" class="btn btn-outline-primary" id="btn-keranjang"
+                                        style="font-size: 12px">
+                                        <i class="feather-icon icon-shopping-bag me-2"></i>
+                                        Masukkan Keranjang
+                                    </button>
+                                </div>
+                                <div class="col-md-4 col-4">
+                                    <!-- btn -->
+                                    <button id="btn-beli" class="btn btn-primary" style="font-size: 12px">Beli
+                                        Sekarang</button>
+                                </div>
                             </div>
-                            <div class="col-md-4 col-4">
-                                <!-- btn -->
-                                <a class="btn btn-primary" style="font-size: 12px">Beli Sekarang</a>
-                            </div>
-                        </div>
+                        @endauth
+
+                        @guest
+                            <a href="{{ route('login') }}" class="btn btn-primary w-100"><i
+                                    class="fa-solid fa-right-to-bracket me-2"></i> Login</a>
+
+                        @endguest
                         <!-- hr -->
                         <hr class="my-6" />
                         <div>
@@ -275,4 +286,49 @@
             </div>
         </div>
     </section>
+@endsection
+
+@section('script')
+    <script>
+        $(document).ready(function() {
+
+            $('#btn-keranjang').click(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('user.keranjang.store') }}",
+                    data: {
+                        id_user: $('#id_user').val(),
+                        id_produk: $('#id_produk').val(),
+                        jumlah: $('#jumlah').val(),
+                    },
+                    dataType: "JSON",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        if (response.meta.status == "success") {
+                            Swal.fire({
+                                icon: 'success',
+                                title: "Sukses!",
+                                text: response.meta.message,
+                            }).then((result) => {
+                                location.href = "{{ route('user.keranjang.index') }}";
+                            });
+                        }
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Data Gagal Disimpan!',
+                            'Kesalahan Server',
+                            'error');
+                    }
+                });
+
+            });
+
+        });
+    </script>
 @endsection

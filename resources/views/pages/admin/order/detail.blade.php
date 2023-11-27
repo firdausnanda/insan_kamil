@@ -35,7 +35,7 @@
                         <div class="card-body p-6">
                             <div class="d-md-flex justify-content-between">
                                 <div class="d-flex align-items-center mb-2 mb-md-0">
-                                    <h2 class="mb-0">ID Transaksi: #FC001</h2>
+                                    <h2 class="mb-0">Detail Transaksi</h2>
                                     <span class="badge bg-light-warning text-dark-warning ms-2">Pending</span>
                                 </div>
                                 <!-- select option -->
@@ -51,7 +51,7 @@
                                     <!-- button -->
                                     <div class="ms-md-3">
                                         <a href="#" class="btn btn-primary">Simpan</a>
-                                        <a href="#" class="btn btn-secondary">Download Invoice</a>
+                                        <a href="#" class="btn btn-secondary">Download Bukti Transaksi</a>
                                     </div>
                                 </div>
                             </div>

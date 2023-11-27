@@ -12,6 +12,9 @@ use App\Http\Controllers\Admin\PenggunaController;
 use App\Http\Controllers\Admin\UlasanController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Landing\HomeController;
+use App\Http\Controllers\User\KeranjangController;
+use App\Http\Controllers\User\OrderController as UserOrderController;
+use App\Http\Controllers\User\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -41,7 +44,7 @@ Route::get('/auth/callback', [LoginController::class, 'handleProviderCallback'])
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Admin
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admin|superadmin']], function () {
   
 	// Dashboard
 	Route::get('', [DashboardController::class, 'index'])->name('index');
@@ -102,4 +105,32 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 		Route::get('/download/{fileName}', [BackupdbController::class, 'databaseDownload'])->name('download');
 
 	});  
+});
+
+// User
+Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['role:user']], function () {
+
+	// Keranjang Belanja
+	Route::group(['prefix' => 'keranjang', 'as' => 'keranjang.'], function () {
+		Route::get('', [KeranjangController::class, 'index'])->name('index');
+		Route::post('', [KeranjangController::class, 'store'])->name('store');
+	});
+	
+	// Order
+	Route::group(['prefix' => 'order', 'as' => 'order.'], function () {
+		Route::get('', [UserOrderController::class, 'index'])->name('index');
+		Route::post('', [UserOrderController::class, 'store'])->name('store');
+		Route::get('/ongkir', [UserOrderController::class, 'ongkir'])->name('ongkir');
+		Route::post('/temp', [UserOrderController::class, 'temp'])->name('temp');
+	});
+
+	// Profile
+	Route::group(['prefix' => 'profile', 'as' => 'profile.'], function () {
+		Route::get('', [ProfileController::class, 'index'])->name('index');
+		Route::post('', [ProfileController::class, 'store'])->name('store');
+		Route::post('/password', [ProfileController::class, 'password'])->name('password');
+		Route::get('/provinsi', [ProfileController::class, 'provinsi'])->name('provinsi');
+		Route::get('/kota/{id}', [ProfileController::class, 'kota'])->name('kota');
+	});
+
 });

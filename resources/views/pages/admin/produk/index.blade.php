@@ -56,64 +56,6 @@
                                         <th scope="col">Aksi</th>
                                     </thead>
                                     <tbody>
-                                        <tr class="">
-                                            <td>1</td>
-                                            <td>My First Book 100 Kata Pertamaku</td>
-                                            <td>Buku Anak</td>
-                                            <td>Rp. 50.000</td>
-                                            <td><span class="badge bg-light-primary text-dark-primary">Aktif</span></td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <a href="#" class="text-reset" data-bs-toggle="dropdown"
-                                                        aria-expanded="false">
-                                                        <i class="feather-icon icon-more-vertical fs-5"></i>
-                                                    </a>
-                                                    <ul class="dropdown-menu">
-                                                        <li>
-                                                            <a class="dropdown-item" href="#">
-                                                                <i class="bi bi-trash me-3"></i>
-                                                                Delete
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="#">
-                                                                <i class="bi bi-pencil-square me-3"></i>
-                                                                Edit
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr class="">
-                                            <td>2</td>
-                                            <td>TANYA INI, TANYA ITU: VIRUS DAN BAKTERI</td>
-                                            <td>Buku Belajar</td>
-                                            <td>Rp. 100.000</td>
-                                            <td><span class="badge bg-light-warning text-dark-warning">Draft</span></td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <a href="#" class="text-reset" data-bs-toggle="dropdown"
-                                                        aria-expanded="false">
-                                                        <i class="feather-icon icon-more-vertical fs-5"></i>
-                                                    </a>
-                                                    <ul class="dropdown-menu">
-                                                        <li>
-                                                            <a class="dropdown-item" href="#">
-                                                                <i class="bi bi-trash me-3"></i>
-                                                                Delete
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="#">
-                                                                <i class="bi bi-pencil-square me-3"></i>
-                                                                Edit
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

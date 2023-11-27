@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Keranjang;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +21,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        view()->composer(['layouts.landing.header'], function($view) {
+            $view->with('cart', Keranjang::with('produk')->where('id_user', Auth::user()->id ?? 1)->count());
+        });
     }
 }
