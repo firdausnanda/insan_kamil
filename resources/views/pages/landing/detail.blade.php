@@ -13,9 +13,9 @@
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="{{ route('landing.home') }}">Home</a></li>
                             <li class="breadcrumb-item"><a href="#">{{ $produk->kategori->nama_kategori }}</a></li>
-                            <input type="hidden" value="{{ Auth::user() ? Auth::user()->id : '' }}" id="user_id">
                             <li class="breadcrumb-item active" aria-current="page">{{ $produk->nama_produk }}</li>
                         </ol>
+                        <input type="hidden" value="{{ Auth::user() ? Auth::user()->id : '' }}" id="user_id">
                     </nav>
                 </div>
             </div>

@@ -77,9 +77,7 @@
                                             <ul class="nav nav-category" id="categoryCollapseMenu">
                                                 @foreach ($kategori as $k)
                                                     <li class="nav-item border-bottom w-100 collapsed px-4 py-1">
-                                                        <a href="#" class="nav-link" data-bs-toggle="collapse"
-                                                            data-bs-target="#categoryFlushOne" aria-expanded="false"
-                                                            aria-controls="categoryFlushOne">
+                                                        <a href="{{ route('landing.kategori', $k->slug) }}" class="nav-link">
                                                             <span class="d-flex align-items-center">
                                                                 <span class="ms-2">{{ $k->nama_kategori }}</span>
                                                             </span><i class="feather-icon icon-chevron-right"></i></a>

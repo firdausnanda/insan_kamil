@@ -34,6 +34,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', [HomeController::class, 'index'])->name('landing.home');
+Route::get('/kategori/{kategori}', [HomeController::class, 'kategori'])->name('landing.kategori');
 Route::get('/detail/{id}', [HomeController::class, 'detail'])->name('landing.detail');
 
 // Auth

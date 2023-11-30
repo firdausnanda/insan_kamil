@@ -16,6 +16,17 @@ class HomeController extends Controller
         return view('pages.landing.index', compact('produk_laris', 'produk_baru', 'kategori'));
     }
     
+    public function kategori($kategori) {
+        $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori')->whereHas('kategori', function($query) use($kategori){
+            $query->where('slug', $kategori);
+        })->orderBy('created_at', 'desc')->paginate(10);
+
+        $kategori_all = Kategori::get();
+        $slug = $kategori_all->where('slug', $kategori)->first();
+
+        return view('pages.landing.produk-by-kategori', compact('produk', 'kategori_all', 'slug'));
+    }
+    
     public function detail($id) {
         $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori')->where('id', $id)->first();
         $produk_related = Produk::with('harga', 'stok', 'gambar_produk')->where('id_kategori', $produk->id_kategori)->orderBy('created_at', 'desc')->limit(5)->get();

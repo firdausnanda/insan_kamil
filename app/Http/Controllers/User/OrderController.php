@@ -4,14 +4,10 @@ namespace App\Http\Controllers\User;
 
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
-use App\Models\Keranjang;
-use App\Models\Order;
 use App\Models\TempOrder;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
 use Kavist\RajaOngkir\Facades\RajaOngkir;
 
 class OrderController extends Controller
