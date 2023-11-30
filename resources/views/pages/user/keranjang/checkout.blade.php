@@ -56,9 +56,9 @@
                                                 Jasa Pengiriman:
                                                 <select class="form-select" name="jasa_pengiriman" id="jasa_pengiriman">
                                                     <option value="">Pilih Jasa Pengiriman</option>
-                                                    <option value="jne">JNE</option>
-                                                    <option value="pos">Pos Indonesia</option>
-                                                    <option value="tiki">TIKI</option>
+                                                    @foreach ($courier as $c)
+                                                        <option value="{{ $c['kode'] }}">{{ $c['nama'] }}</option>
+                                                    @endforeach
                                                 </select>
                                             </p>
                                         </div>

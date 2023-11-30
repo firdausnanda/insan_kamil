@@ -15,6 +15,7 @@ class OrderController extends Controller
         
     public function index() 
     {
+
         $data = TempOrder::with('user.province', 'user.city', 'produk.gambar_produk')->whereHas('user', function($query){
             $query->where('id', Auth::user()->id);
         })->get();
@@ -27,9 +28,23 @@ class OrderController extends Controller
             return $q->jumlah_produk * $q->berat_produk; 
         });
 
+        switch (env('RAJAONGKIR_PACKAGE')) {
+            case 'starter':
+                $courier = config('rajaongkir.courier.starter');
+                break;
+            case 'basic':
+                $courier = config('rajaongkir.courier.basic');
+                break;
+            case 'pro':
+                $courier = config('rajaongkir.courier.pro');
+                break;            
+            default:
+                $courier = null;
+                break;
+        }
 
         if ($data->first() != '') {
-            return view('pages.user.keranjang.checkout', compact('data', 'subTotal', 'beratProduk'));
+            return view('pages.user.keranjang.checkout', compact('data', 'subTotal', 'beratProduk', 'courier'));
         }else{
             return redirect()->route('user.keranjang.index');
         }

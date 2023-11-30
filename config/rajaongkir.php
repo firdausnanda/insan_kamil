@@ -18,4 +18,72 @@ return [
      * Hanya berisi kode dari id kota dimaksud.
      */ 
     'origin' => 119,
+
+    /*
+     * Data jasa pengiriman berdasarkan tipe akun.
+     * Pilihan yang tersedia: ['starter', 'basic', 'pro'].
+     */ 
+    'courier' => [
+        'starter' => [
+            [
+                'kode' => 'jne',
+                'nama' => 'JNE',
+            ],[
+                'kode' => 'pos',
+                'nama' => 'POS INDONESIA',
+            ],[
+                'kode' => 'tiki',
+                'nama' => 'TIKI',
+            ]
+        ],
+        'basic' => [
+            [
+                'kode' => 'jne',
+                'nama' => 'JNE',
+            ],[
+                'kode' => 'pos',
+                'nama' => 'POS INDONESIA',
+            ],[
+                'kode' => 'tiki',
+                'nama' => 'TIKI',
+            ],[
+                'kode' => 'rpx',
+                'nama' => 'RPX',
+
+            ],[
+                'kode' => 'esl',
+                'nama' => 'ESL EXPRESS',
+
+            ],[
+                'kode' => 'pcp',
+                'nama' => 'PCP EXPRESS',
+            ]
+        ],
+        'pro' => [
+            [
+                'kode' => 'jne',
+                'nama' => 'JNE',
+            ],[
+                'kode' => 'pos',
+                'nama' => 'POS INDONESIA',
+            ],[
+                'kode' => 'tiki',
+                'nama' => 'TIKI',
+            ],[
+                'kode' => 'rpx',
+                'nama' => 'RPX',
+
+            ],[
+                'kode' => 'sicepat',
+                'nama' => 'SICEPAT',
+
+            ],[
+                'kode' => 'jnt',
+                'nama' => 'JNT',
+            ],[
+                'kode' => 'antareja',
+                'nama' => 'ANTAREJA',
+            ]
+        ],
+    ]
 ];
