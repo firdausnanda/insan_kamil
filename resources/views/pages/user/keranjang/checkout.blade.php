@@ -32,7 +32,8 @@
                                                 Kode Pos. {{ $data[0]->user->city->postal_code }}
                                                 <br />
                                             </p>
-                                            <a class="btn btn-info mt-2 btn-sm" href="#">Ubah Data</a>
+                                            <button class="btn btn-info mt-2 btn-sm btn-ubah" href="#">Ubah
+                                                Data</button>
                                         </div>
                                     </div>
                                     <!-- address -->
@@ -167,6 +168,76 @@
             </div>
         </div>
     </section>
+
+    {{-- Modal Edit --}}
+    <div class="modal fade" id="modal-edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ubah Data Pengguna</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-edit">
+                    <div class="modal-body">
+                        <div class="row">
+                            <!-- input -->
+                            <div class="col-md-12 mb-3">
+                                <!-- input -->
+                                <label class="form-label" for="nama">
+                                    Nama Lengkap
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" id="nama" name="nama" class="form-control"
+                                    placeholder="Nama Lengkap" value="{{ $data[0]->user->name }}" required />
+                                <input type="hidden" name="id_user"value="{{ $data[0]->user->id }}" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="no_telepon">
+                                    Nomor Telepon
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" id="no_telepon" name="no_telepon" class="form-control"
+                                    placeholder="Nomor Telepon" value="{{ $data[0]->user->no_telp }}" required />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <!-- input -->
+                                <label class="form-label" for="email">Email</label>
+                                <input type="text" id="email" name="email" class="form-control"
+                                    placeholder="Email" value="{{ $data[0]->user->no_telp }}" required />
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <!-- input -->
+                                <label class="form-label" for="alamat">Alamat</label>
+                                <textarea rows="3" id="alamat" name="alamat" class="form-control" placeholder="Nama Lengkap" required>{{ $data[0]->user->alamat }}</textarea>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <!-- input -->
+                                <label class="form-label" for="provinsi">Provinsi</label>
+                                <select name="provinsi" id="provinsi" class="form-select">
+                                    <option value="">Pilih Provinsi</option>
+                                    <option value="{{ $data[0]->user->provinsi }}" selected>
+                                        {{ $data[0]->user->province ? $data[0]->user->province->name : '' }}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <!-- input -->
+                                <label class="form-label" for="kota">Kota</label>
+                                <select name="kota" id="kota" class="form-select">
+                                    <option value="">Pilih Kota</option>
+                                    <option value="{{ $data[0]->user->kota }}" selected>
+                                        {{ $data[0]->user->city ? $data[0]->user->city->name : '' }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -192,6 +263,62 @@
 
                 return $state;
             };
+
+            // Init Select 2
+            $('#provinsi').select2({
+                theme: 'bootstrap-5',
+                placeholder: '-- Pilih Provinsi --',
+            });
+
+            // Select Provinsi
+            $.ajax({
+                url: "{{ route('user.profile.provinsi') }}",
+                data: $(this).serialize(),
+                dataType: "JSON",
+                success: function(response) {
+                    $.each(response.data, function(index, value) {
+                        $("#provinsi").append(
+                            `<option value="${value['id']}">${value['name']}</option>`);
+                    });
+                },
+            });
+
+            // Init Select 2
+            $('#kota').select2({
+                theme: 'bootstrap-5',
+                placeholder: '-- Pilih Kota --',
+            });
+
+            // Select Kota
+            $('#provinsi').on('select2:select', function(e) {
+                var id = e.params.data.id;
+
+                var link = "{{ route('user.profile.kota', ':id') }}";
+                link = link.replace(':id', id);
+
+                $.ajax({
+                    url: link,
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    delay: 250,
+                    beforeSend: function() {
+                        $('#kota').attr('disabled', 'disabled');
+                        $('#kota').empty().append(
+                            '<option value="" selected disabled>-- Pilih Kota/Kabupaten --</option>'
+                        );
+                    },
+                    success: function(data) {
+                        $.each(data.data, function(index, value) {
+                            $("#kota").append("<option value='" + value['id'] + "'>" +
+                                value['name'] + "</option>");
+                        });
+                        $('#kota').removeAttr('disabled');
+                    },
+                    error: function() {
+                        $('#kota').removeAttr('disabled');
+                    }
+                });
+            })
 
             // Init Select2
             $("#pilih_paket").select2().next().hide();
@@ -272,6 +399,96 @@
                 $('#pesan').text(buttonText)
                 $('#shipping_cost').text(kirim)
                 $('#grand_total').text(total)
+            });
+
+            const js = {{ Js::from($data) }}
+
+            // Pesan
+            $('#pesan').click(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('user.order.store') }}",
+                    data: {
+                        user: "{{ Auth::user()->id }}",
+                        courier: $('#jasa_pengiriman').val(),
+                        biaya_pengiriman: $('#pilih_paket').val(),
+                        origin: $('#pilih_paket').val(),
+                        destination: $('#pilih_paket').val(),
+                        data: js,
+                    },
+                    dataType: "JSON",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        snap.pay(response.data, {
+                            onSuccess: function(result) {
+                                console.log(result);
+                                console.log('1');
+                                // location.reload();
+                            },
+
+                            onPending: function(result) {
+                                console.log(result);
+                                console.log('2');
+                                // location.reload();
+                            },
+
+                            onError: function(result) {
+                                console.log(result);
+                                console.log('3');
+                                // location.reload();
+                            }
+
+                        });
+                        return false;
+                    },
+                    error: function(response) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
+                    },
+                });
+            });
+
+            // Ubah Data
+            $('.btn-ubah').click(function(e) {
+                e.preventDefault();
+                $('#modal-edit').modal('show')
+            });
+
+            // Update Data
+            $('#form-edit').submit(function(e) {
+                e.preventDefault();
+                
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('user.profile.store') }}",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        if (response.meta.status == "success") {
+                            Swal.fire({
+                                icon: 'success',
+                                title: "Sukses!",
+                                text: response.meta.message,
+                            }).then((result) => {
+                                location.reload()
+                            });
+                        }
+                    },
+                    error: function(response) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
+                    },
+                });
+
             });
 
         });

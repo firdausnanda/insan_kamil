@@ -12,10 +12,18 @@ class Order extends Model
     protected $table = 'order';
 
     protected $fillable = [
-        'id_produk',
         'id_user',
-        'harga_jual',
-        'jumlah_produk',
+        'harga_total',
+        'jumlah_produk_total',
+        'courier',
+        'biaya_pengiriman',
+        'origin',
+        'destination',
+        'no_resi',
         'status',
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class, 'id_user', 'id');
+    }
 }

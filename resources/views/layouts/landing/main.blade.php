@@ -151,6 +151,7 @@
     <script src="{{ asset('vendor/loading-overlay/loadingoverlay.min.js') }}"></script>
     <script src="{{ asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
     <script src="{{ asset('vendor/select2/select2.min.js') }}"></script>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
     <script>
         $(document).ready(function() {
             $.ajaxSetup({

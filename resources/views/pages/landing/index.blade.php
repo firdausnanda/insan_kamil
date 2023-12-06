@@ -204,7 +204,7 @@
                             @endforeach
                         </div>
                     </div>
-                    <div class="mb-6">
+                    {{-- <div class="mb-6">
 
                         <div class="mb-6">
                             <h3 class="mb-1">Promo Hari ini</h3>
@@ -276,7 +276,7 @@
                         </div>
 
 
-                    </div>
+                    </div> --}}
 
                     <div class="row">
                         <div class="col-12">

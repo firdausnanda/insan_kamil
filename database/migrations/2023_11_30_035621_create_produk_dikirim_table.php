@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pembayaran', function (Blueprint $table) {
+        Schema::create('produk_dikirim', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_order')->constrained('order');
-            $table->enum('status_pembayaran', [1, 2, 3])->default(1);
-            $table->string('snap_token')->nullable();
+            $table->string('id_produk');
             $table->integer('harga_jual');
-            $table->integer('jumlah_produk');
+            $table->float('jumlah_produk');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pembayaran');
+        Schema::dropIfExists('produk_dikirim');
     }
 };

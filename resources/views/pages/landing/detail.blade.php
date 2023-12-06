@@ -60,6 +60,7 @@
                         <!-- heading -->
                         <h1 class="mb-1">{{ $produk->nama_produk }}</h1>
                         <input type="hidden" id="id_produk" value="{{ $produk->id }}">
+                        <input type="hidden" id="id_user" value="{{ Auth::user()->id }}">
                         <div class="mb-4">
                             <!-- rating -->
                             <!-- rating -->
@@ -321,6 +322,43 @@
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         $.LoadingOverlay('hide');
+                        Swal.fire('Data Gagal Disimpan!',
+                            'Kesalahan Server',
+                            'error');
+                    }
+                });
+
+            });
+
+            $('#btn-beli').click(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('user.order.beli') }}",
+                    data: {
+                        id_user: $('#id_user').val(),
+                        id_produk: $('#id_produk').val(),
+                        jumlah: $('#jumlah').val(),
+                    },
+                    dataType: "JSON",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        if (response.meta.status == "success") {
+                            Swal.fire({
+                                icon: 'success',
+                                title: "Sukses!",
+                                text: response.meta.message,
+                            }).then((result) => {
+                                location.href = "{{ route('user.order.index') }}";
+                            });
+                        }
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        $.LoadingOverlay('hide');   
                         Swal.fire('Data Gagal Disimpan!',
                             'Kesalahan Server',
                             'error');

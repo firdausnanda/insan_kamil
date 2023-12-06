@@ -121,8 +121,10 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['role:user']
 	Route::group(['prefix' => 'order', 'as' => 'order.'], function () {
 		Route::get('', [UserOrderController::class, 'index'])->name('index');
 		Route::post('', [UserOrderController::class, 'store'])->name('store');
+		Route::post('/beli', [UserOrderController::class, 'beli'])->name('beli');
 		Route::get('/ongkir', [UserOrderController::class, 'ongkir'])->name('ongkir');
 		Route::post('/temp', [UserOrderController::class, 'temp'])->name('temp');
+		Route::get('/konfirmasi', [UserOrderController::class, 'konfirmasi'])->name('konfirmasi');
 	});
 
 	// Profile
