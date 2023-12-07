@@ -78,7 +78,7 @@
                             <!-- link -->
                             <div>
                                 Tidak Punya Akun?
-                                <a href="../pages/signup.html">Daftar</a>
+                                <a href="{{ route('register') }}">Daftar</a>
                             </div>
                         </div>
                     </form>
