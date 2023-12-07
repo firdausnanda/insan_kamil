@@ -226,26 +226,24 @@
                     <div class="row mt-8">
                         <div class="col">
                             @if ($produk->count() > 0)
-                                <!-- nav -->
-                                <nav>
-                                    <ul class="pagination">
-                                        <li class="page-item disabled">
-                                            <a class="page-link mx-1" href="#" aria-label="Previous">
-                                                <i class="feather-icon icon-chevron-left"></i>
-                                            </a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link mx-1 active" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link mx-1" href="#">2</a></li>
-
-                                        <li class="page-item"><a class="page-link mx-1" href="#">...</a></li>
-                                        <li class="page-item"><a class="page-link mx-1" href="#">12</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link mx-1" href="#" aria-label="Next">
-                                                <i class="feather-icon icon-chevron-right"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
+                                {{-- Pagination --}}
+                                @if ($produk instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <li class="page-item"><a class="page-link mx-1"
+                                                    href="{{ $produk->previousPageUrl() }}">Prev</a>
+                                            </li>
+                                            @for ($i = 1; $i <= $produk->lastPage(); $i++)
+                                                <li class="page-item {{ $produk->currentPage() == $i ? 'active' : '' }}">
+                                                    <a class="page-link mx-1"
+                                                        href="{{ $produk->url($i) }}">{{ $i }}</a>
+                                                </li>
+                                            @endfor
+                                            <li class="page-item"><a class="page-link mx-1"
+                                                    href="{{ $produk->nextPageUrl() }}">Next</a></li>
+                                        </ul>
+                                    </nav>
+                                @endif
                             @endif
                         </div>
                     </div>
