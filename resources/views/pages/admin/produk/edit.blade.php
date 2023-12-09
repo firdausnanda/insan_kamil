@@ -15,8 +15,10 @@
                             <!-- breacrumb -->
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb mb-0">
-                                    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}" class="text-inherit">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="{{ route('admin.produk.index') }}" class="text-inherit">Produk</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}"
+                                            class="text-inherit">Dashboard</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('admin.produk.index') }}"
+                                            class="text-inherit">Produk</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Edit Produk</li>
                                 </ol>
                             </nav>
@@ -52,7 +54,9 @@
                                                 <select class="form-select" name="kategori" id="kategori">
                                                     <option selected>Pilih Kategori</option>
                                                     @foreach ($kategori as $k)
-                                                        <option value="{{ $k->id }}" {{ $k->id == $produk->id_kategori ? 'Selected' : '' }}>{{ $k->nama_kategori }}</option>
+                                                        <option value="{{ $k->id }}"
+                                                            {{ $k->id == $produk->id_kategori ? 'Selected' : '' }}>
+                                                            {{ $k->nama_kategori }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -74,10 +78,12 @@
                                         <div class="row align-items-center">
                                             <div class="col-6 pe-0">
                                                 <input type="text" name="panjang" id="panjang" class="form-control"
-                                                    placeholder="Panjang" value="{{ $ukuran ? $ukuran[0] : '' }}" required />
+                                                    placeholder="Panjang" value="{{ $ukuran ? $ukuran[0] : '' }}"
+                                                    required />
                                             </div>
                                             <div class="col-6">
-                                                <input type="text" name="lebar" id="lebar" value="{{ $ukuran ? $ukuran[1] : '' }}" class="form-control"
+                                                <input type="text" name="lebar" id="lebar"
+                                                    value="{{ $ukuran ? $ukuran[1] : '' }}" class="form-control"
                                                     placeholder="Lebar" required />
                                             </div>
                                         </div>
@@ -90,13 +96,15 @@
                                                 <select class="form-select" name="penerbit" id="penerbit">
                                                     <option selected>Pilih Penerbit</option>
                                                     @foreach ($penerbit as $p)
-                                                        <option value="{{ $p->id }}" {{ $p->id == $produk->id_penerbit ? 'Selected' : '' }}>{{ $p->nama_penerbit }}</option>
+                                                        <option value="{{ $p->id }}"
+                                                            {{ $p->id == $produk->id_penerbit ? 'Selected' : '' }}>
+                                                            {{ $p->nama_penerbit }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                             <div class="col-2 ps-0">
-                                                <a href="{{ route('admin.penerbit.index') }}" class="btn btn-sm btn-info"><i
-                                                        class="fa-solid fa-plus"></i></a>
+                                                <a href="{{ route('admin.penerbit.index') }}"
+                                                    class="btn btn-sm btn-info"><i class="fa-solid fa-plus"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -104,35 +112,41 @@
                                     <div class="mb-3 col-lg-6">
                                         <label class="form-label">Bahasa</label>
                                         <select class="form-select" name="bahasa">
-                                            <option value="Indonesia" {{ $produk->bahasa == 'Indonesia' ? 'Selected' : '' }}>Indonesia</option>
-                                            <option value="Inggris" {{ $produk->bahasa == 'Inggris' ? 'Selected' : '' }}>Inggris</option>
-                                            <option value="Bilingual (Inggris - Indonesia)" {{ $produk->bahasa == 'Bilingual (Inggris - Indonesia)' ? 'Selected' : '' }}>Bilingual (Inggris - Indonesia)</option>
-                                            <option value="Arab" {{ $produk->bahasa == 'Arab' ? 'Selected' : '' }}>Arab</option>
+                                            <option value="Indonesia"
+                                                {{ $produk->bahasa == 'Indonesia' ? 'Selected' : '' }}>Indonesia</option>
+                                            <option value="Inggris" {{ $produk->bahasa == 'Inggris' ? 'Selected' : '' }}>
+                                                Inggris</option>
+                                            <option value="Bilingual (Inggris - Indonesia)"
+                                                {{ $produk->bahasa == 'Bilingual (Inggris - Indonesia)' ? 'Selected' : '' }}>
+                                                Bilingual (Inggris - Indonesia)</option>
+                                            <option value="Arab" {{ $produk->bahasa == 'Arab' ? 'Selected' : '' }}>Arab
+                                            </option>
                                         </select>
                                     </div>
                                     <!-- input -->
                                     <div class="mb-3 col-lg-6">
                                         <label class="form-label">ISBN</label>
-                                        <input type="text" name="isbn" class="form-control" value="{{ $produk->isbn }}" placeholder="ISBN"
-                                            required />
+                                        <input type="text" name="isbn" class="form-control"
+                                            value="{{ $produk->isbn }}" placeholder="ISBN" required />
                                     </div>
                                     <!-- input -->
                                     <div class="mb-3 col-lg-6">
                                         <label class="form-label">Jenis Cover</label>
-                                        <input type="text" name="jenis_cover" class="form-control" value="{{ $produk->jenis_cover }}"
-                                            placeholder="Jenis Cover" required />
+                                        <input type="text" name="jenis_cover" class="form-control"
+                                            value="{{ $produk->jenis_cover }}" placeholder="Jenis Cover" required />
                                     </div>
                                     <!-- input -->
                                     <div class="mb-3 col-lg-6">
                                         <label class="form-label">Jumlah Halaman</label>
-                                        <input type="text" name="jumlah_halaman" class="form-control" value="{{ $produk->halaman_produk }}"
-                                            placeholder="Jumlah Halaman" required />
+                                        <input type="text" name="jumlah_halaman" class="form-control"
+                                            value="{{ $produk->halaman_produk }}" placeholder="Jumlah Halaman"
+                                            required />
                                     </div>
                                     <!-- input -->
                                     <div class="mb-3 col-lg-6">
                                         <label class="form-label">Pengarang</label>
-                                        <input type="text" name="pengarang" class="form-control" value="{{ $produk->pengarang }}"
-                                            placeholder="Pengarang" required />
+                                        <input type="text" name="pengarang" class="form-control"
+                                            value="{{ $produk->pengarang }}" placeholder="Pengarang" required />
                                     </div>
                                     <div>
                                         <div class="mb-3 col-lg-12 mt-5">
@@ -169,7 +183,8 @@
                                     <!-- input -->
                                     <div class="mb-3">
                                         <label class="form-label">Stok Barang <i class="text-muted">(buah)</i></label>
-                                        <input type="text" class="form-control" id="stok" value="{{ $produk->stok->sisa_produk }}" name="stok"
+                                        <input type="text" class="form-control" id="stok"
+                                            value="{{ $produk->stok->sisa_produk }}" name="stok"
                                             placeholder="Stok Barang" />
                                     </div>
                                     <!-- input -->
@@ -178,18 +193,21 @@
                                         <br />
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="status"
-                                                id="inlineRadio1" value="3" {{ $produk->status == 3 ? 'checked' : '' }} />
+                                                id="inlineRadio1" value="3"
+                                                {{ $produk->status == 3 ? 'checked' : '' }} />
                                             <label class="form-check-label" for="inlineRadio1">Draft</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="status"
-                                                id="inlineRadio1" value="1" {{ $produk->status == 1 ? 'checked' : '' }} />
+                                                id="inlineRadio1" value="1"
+                                                {{ $produk->status == 1 ? 'checked' : '' }} />
                                             <label class="form-check-label" for="inlineRadio1">Publish</label>
                                         </div>
                                         <!-- input -->
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="status"
-                                                id="inlineRadio2" value="2" {{ $produk->status == 2 ? 'checked' : '' }} />
+                                                id="inlineRadio2" value="2"
+                                                {{ $produk->status == 2 ? 'checked' : '' }} />
                                             <label class="form-check-label" for="inlineRadio2">Non - Aktif</label>
                                         </div>
                                         <!-- input -->
@@ -205,14 +223,16 @@
                                 <!-- input -->
                                 <div class="mb-3">
                                     <label class="form-label">Harga Normal</label>
-                                    <input type="text" class="form-control" name="harga_normal" id="harga_normal" value="{{ $produk->harga->harga_awal }}"
-                                        placeholder="Rp. 0.00" />
+                                    <input type="text" class="form-control" name="harga_normal" id="harga_normal"
+                                        value="{{ $produk->harga->harga_awal }}" placeholder="Rp. 0.00" />
                                 </div>
                                 <!-- input -->
                                 <div class="mb-3">
-                                    <label class="form-label">Harga Promo</label>
-                                    <input type="text" class="form-control" name="harga_promo" id="harga_promo" value="{{ $produk->harga->diskon }}"
-                                        placeholder="Rp. 0.00" />
+                                    <label class="form-label">Harga Promo <span class="text-danger">*</span><span
+                                            class="text-secondary" style="font-size: 12px">jika tidak promo isi dengan
+                                            nilai 0</span></label>
+                                    <input type="text" class="form-control" name="harga_promo" id="harga_promo"
+                                        value="{{ $produk->harga->diskon }}" placeholder="Rp. 0.00" />
                                 </div>
                             </div>
                         </div>

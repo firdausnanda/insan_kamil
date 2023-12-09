@@ -107,7 +107,8 @@
                                             <option selected>Pilih Bahasa</option>
                                             <option value="Indonesia">Indonesia</option>
                                             <option value="Inggris">Inggris</option>
-                                            <option value="Bilingual (Inggris - Indonesia)">Bilingual (Inggris - Indonesia)</option>
+                                            <option value="Bilingual (Inggris - Indonesia)">Bilingual (Inggris - Indonesia)
+                                            </option>
                                             <option value="Arab">Arab</option>
                                         </select>
                                     </div>
@@ -216,8 +217,9 @@
                                 </div>
                                 <!-- input -->
                                 <div class="mb-3">
-                                    <label class="form-label">Harga Promo</label>
-                                    <input type="text" class="form-control" name="harga_promo" id="harga_promo"
+                                    <label class="form-label">Harga Promo <span class="text-danger">*</span><span
+                                            class="text-secondary" style="font-size: 12px">jika tidak promo isi dengan nilai 0</span></label>
+                                    <input type="text" class="form-control" name="harga_promo" id="harga_promo" value="0"
                                         placeholder="Rp. 0.00" />
                                 </div>
                             </div>
