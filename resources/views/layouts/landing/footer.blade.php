@@ -13,7 +13,7 @@
         <div class="row">
           <div class="col-10">
             <!-- list -->
-            Jl. Banyuanyar Selatan No. 4 Rt 002 Rw 012, Banyuanyar, Banjarsari, Surakarta, Jawa Tengah
+            Jl. Rajawali Raya No.9, RT.02/RW.03, Geduren, Gonilan, Kec. Kartasura, Kabupaten Sukoharjo, Jawa Tengah 57169
           </div>
         </div>
       </div>
