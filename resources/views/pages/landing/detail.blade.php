@@ -15,7 +15,6 @@
                             <li class="breadcrumb-item"><a href="#">{{ $produk->kategori->nama_kategori }}</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $produk->nama_produk }}</li>
                         </ol>
-                        <input type="hidden" value="{{ Auth::user() ? Auth::user()->id : '' }}" id="user_id">
                     </nav>
                 </div>
             </div>
@@ -60,7 +59,9 @@
                         <!-- heading -->
                         <h1 class="mb-1">{{ $produk->nama_produk }}</h1>
                         <input type="hidden" id="id_produk" value="{{ $produk->id }}">
+                        @auth
                         <input type="hidden" id="id_user" value="{{ Auth::user()->id }}">
+                        @endauth
                         <div class="mb-4">
                             <!-- rating -->
                             <!-- rating -->

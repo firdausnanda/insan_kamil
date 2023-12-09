@@ -163,12 +163,12 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item" href="#!">
+                                                <a class="dropdown-item" href="{{ route('user.order.konfirmasi') }}">
                                                     Pesanan
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item" href="#!">
+                                                <a class="dropdown-item" href="{{ route('user.order.konfirmasi') }}">
                                                     Riwayat Transaksi
                                                 </a>
                                             </li>
