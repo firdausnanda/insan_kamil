@@ -11,13 +11,13 @@
                     <div class="d-md-flex justify-content-between align-items-center">
                         <!-- page header -->
                         <div>
-                            <h2>Tambah Produk Baru</h2>
+                            <h2>Edit Produk</h2>
                             <!-- breacrumb -->
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb mb-0">
-                                    <li class="breadcrumb-item"><a href="#" class="text-inherit">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="#" class="text-inherit">Produk</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Tambah Produk Baru</li>
+                                    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}" class="text-inherit">Dashboard</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('admin.produk.index') }}" class="text-inherit">Produk</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Edit Produk</li>
                                 </ol>
                             </nav>
                         </div>
@@ -29,7 +29,7 @@
                 </div>
             </div>
             <!-- row -->
-            <form id="form-store" method="POST" enctype="multipart/form-data">
+            <form id="form-edit" method="POST" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-lg-8 col-12">
                         <!-- card -->
@@ -42,7 +42,7 @@
                                     <div class="mb-3 col-lg-6">
                                         <label class="form-label">Judul</label>
                                         <input type="text" name="judul" id="judul" class="form-control"
-                                            placeholder="Judul Produk" required />
+                                            placeholder="Judul Produk" value="{{ $produk->nama_produk ?? '' }}" required />
                                     </div>
                                     <!-- input -->
                                     <div class="mb-3 col-lg-6">
@@ -52,7 +52,7 @@
                                                 <select class="form-select" name="kategori" id="kategori">
                                                     <option selected>Pilih Kategori</option>
                                                     @foreach ($kategori as $k)
-                                                        <option value="{{ $k->id }}">{{ $k->nama_kategori }}</option>
+                                                        <option value="{{ $k->id }}" {{ $k->id == $produk->id_kategori ? 'Selected' : '' }}>{{ $k->nama_kategori }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -66,7 +66,7 @@
                                     <div class="mb-3 col-lg-6">
                                         <label class="form-label">Berat <i class="text-muted">(gram)</i></label>
                                         <input type="text" name="berat" id="berat" class="form-control"
-                                            placeholder="Berat" required />
+                                            placeholder="Berat" value="{{ $produk->berat_produk ?? '' }}" required />
                                     </div>
                                     <!-- input -->
                                     <div class="mb-3 col-lg-6">
@@ -74,10 +74,10 @@
                                         <div class="row align-items-center">
                                             <div class="col-6 pe-0">
                                                 <input type="text" name="panjang" id="panjang" class="form-control"
-                                                    placeholder="Panjang" required />
+                                                    placeholder="Panjang" value="{{ $ukuran ? $ukuran[0] : '' }}" required />
                                             </div>
                                             <div class="col-6">
-                                                <input type="text" name="lebar" id="lebar" class="form-control"
+                                                <input type="text" name="lebar" id="lebar" value="{{ $ukuran ? $ukuran[1] : '' }}" class="form-control"
                                                     placeholder="Lebar" required />
                                             </div>
                                         </div>
@@ -90,7 +90,7 @@
                                                 <select class="form-select" name="penerbit" id="penerbit">
                                                     <option selected>Pilih Penerbit</option>
                                                     @foreach ($penerbit as $p)
-                                                        <option value="{{ $p->id }}">{{ $p->nama_penerbit }}</option>
+                                                        <option value="{{ $p->id }}" {{ $p->id == $produk->id_penerbit ? 'Selected' : '' }}>{{ $p->nama_penerbit }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -104,35 +104,34 @@
                                     <div class="mb-3 col-lg-6">
                                         <label class="form-label">Bahasa</label>
                                         <select class="form-select" name="bahasa">
-                                            <option selected>Pilih Bahasa</option>
-                                            <option value="Indonesia">Indonesia</option>
-                                            <option value="Inggris">Inggris</option>
-                                            <option value="Bilingual (Inggris - Indonesia)">Bilingual (Inggris - Indonesia)</option>
-                                            <option value="Arab">Arab</option>
+                                            <option value="Indonesia" {{ $produk->bahasa == 'Indonesia' ? 'Selected' : '' }}>Indonesia</option>
+                                            <option value="Inggris" {{ $produk->bahasa == 'Inggris' ? 'Selected' : '' }}>Inggris</option>
+                                            <option value="Bilingual (Inggris - Indonesia)" {{ $produk->bahasa == 'Bilingual (Inggris - Indonesia)' ? 'Selected' : '' }}>Bilingual (Inggris - Indonesia)</option>
+                                            <option value="Arab" {{ $produk->bahasa == 'Arab' ? 'Selected' : '' }}>Arab</option>
                                         </select>
                                     </div>
                                     <!-- input -->
                                     <div class="mb-3 col-lg-6">
                                         <label class="form-label">ISBN</label>
-                                        <input type="text" name="isbn" class="form-control" placeholder="ISBN"
+                                        <input type="text" name="isbn" class="form-control" value="{{ $produk->isbn }}" placeholder="ISBN"
                                             required />
                                     </div>
                                     <!-- input -->
                                     <div class="mb-3 col-lg-6">
                                         <label class="form-label">Jenis Cover</label>
-                                        <input type="text" name="jenis_cover" class="form-control"
+                                        <input type="text" name="jenis_cover" class="form-control" value="{{ $produk->jenis_cover }}"
                                             placeholder="Jenis Cover" required />
                                     </div>
                                     <!-- input -->
                                     <div class="mb-3 col-lg-6">
                                         <label class="form-label">Jumlah Halaman</label>
-                                        <input type="text" name="jumlah_halaman" class="form-control"
+                                        <input type="text" name="jumlah_halaman" class="form-control" value="{{ $produk->halaman_produk }}"
                                             placeholder="Jumlah Halaman" required />
                                     </div>
                                     <!-- input -->
                                     <div class="mb-3 col-lg-6">
                                         <label class="form-label">Pengarang</label>
-                                        <input type="text" name="pengarang" class="form-control"
+                                        <input type="text" name="pengarang" class="form-control" value="{{ $produk->pengarang }}"
                                             placeholder="Pengarang" required />
                                     </div>
                                     <div>
@@ -148,7 +147,7 @@
                                     <!-- input -->
                                     <div class="mb-3 col-lg-12 mt-5">
                                         <h4 class="mb-3 h5">Deskripsi Produk</h4>
-                                        <div class="py-8" id="editor"></div>
+                                        <div class="py-8" id="editor">{!! $produk->keterangan !!}</div>
                                     </div>
                                 </div>
                             </div>
@@ -167,15 +166,10 @@
                                 </div>
                                 <!-- input -->
                                 <div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Kode Produk</label>
-                                        <input type="text" class="form-control" name="kode_produk"
-                                            placeholder="Kode Produk" />
-                                    </div>
                                     <!-- input -->
                                     <div class="mb-3">
                                         <label class="form-label">Stok Barang <i class="text-muted">(buah)</i></label>
-                                        <input type="text" class="form-control" id="stok" name="stok"
+                                        <input type="text" class="form-control" id="stok" value="{{ $produk->stok->sisa_produk }}" name="stok"
                                             placeholder="Stok Barang" />
                                     </div>
                                     <!-- input -->
@@ -184,18 +178,18 @@
                                         <br />
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="status"
-                                                id="inlineRadio1" value="3" checked />
+                                                id="inlineRadio1" value="3" {{ $produk->status == 3 ? 'checked' : '' }} />
                                             <label class="form-check-label" for="inlineRadio1">Draft</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="status"
-                                                id="inlineRadio1" value="1" checked />
+                                                id="inlineRadio1" value="1" {{ $produk->status == 1 ? 'checked' : '' }} />
                                             <label class="form-check-label" for="inlineRadio1">Publish</label>
                                         </div>
                                         <!-- input -->
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="status"
-                                                id="inlineRadio2" value="2" />
+                                                id="inlineRadio2" value="2" {{ $produk->status == 2 ? 'checked' : '' }} />
                                             <label class="form-check-label" for="inlineRadio2">Non - Aktif</label>
                                         </div>
                                         <!-- input -->
@@ -211,13 +205,13 @@
                                 <!-- input -->
                                 <div class="mb-3">
                                     <label class="form-label">Harga Normal</label>
-                                    <input type="text" class="form-control" name="harga_normal" id="harga_normal"
+                                    <input type="text" class="form-control" name="harga_normal" id="harga_normal" value="{{ $produk->harga->harga_awal }}"
                                         placeholder="Rp. 0.00" />
                                 </div>
                                 <!-- input -->
                                 <div class="mb-3">
                                     <label class="form-label">Harga Promo</label>
-                                    <input type="text" class="form-control" name="harga_promo" id="harga_promo"
+                                    <input type="text" class="form-control" name="harga_promo" id="harga_promo" value="{{ $produk->harga->diskon }}"
                                         placeholder="Rp. 0.00" />
                                 </div>
                             </div>
@@ -314,7 +308,7 @@
             });
 
             // Form Store
-            $('#form-store').submit(function(e) {
+            $('#form-edit').submit(function(e) {
                 e.preventDefault();
 
                 var harga_normal = $('#harga_normal').cleanVal();
@@ -327,7 +321,7 @@
                 formData.append('deskripsi', editor_content);
 
                 $.ajax({
-                    url: "{{ route('admin.produk.store') }}",
+                    url: "{{ route('admin.produk.update') }}",
                     type: "POST",
                     data: formData,
                     dataType: "JSON",
@@ -347,7 +341,7 @@
                                 title: "Sukses!",
                                 text: response.meta.message,
                             }).then((result) => {
-                                location.reload();
+                                location.href = "{{ route('admin.produk.index') }}";
                             });
                         }
                     },

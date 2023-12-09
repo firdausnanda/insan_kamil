@@ -2,7 +2,7 @@
 <nav class="navbar-vertical-nav d-none d-xl-block ">
     <div class="navbar-vertical">
         <div class="px-4 py-5">
-            <a href="../index.html" class="navbar-brand">
+            <a href="{{ route('admin.index') }}" class="navbar-brand">
                 <img style="max-width: 160px; max-height: 31px;" src="{{ asset('images/logo/logo2.png') }}" alt="">
             </a>
         </div>

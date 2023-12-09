@@ -133,14 +133,19 @@
                     {
                         targets: 5,
                         className: 'align-middle text-center',
+                        data: 'id',
                         render: function(data, type, row, meta) {
+
+                            var link = "{{ route('admin.produk.edit', ':id') }}";
+                            link = link.replace(':id', data);
+
                             return `<div class="dropdown">
                                         <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="feather-icon icon-more-vertical fs-5"></i>
                                         </a>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a class="dropdown-item" href="#">
+                                                <a class="dropdown-item" href="${link}">
                                                     <i class="bi bi-pencil-square me-3"></i>
                                                     Edit
                                                 </a>

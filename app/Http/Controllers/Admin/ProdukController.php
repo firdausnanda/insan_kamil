@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class ProdukController extends Controller
 {
@@ -133,5 +134,28 @@ class ProdukController extends Controller
             'name'          => $fileName,
             'original_name' => $file->getClientOriginalName(),
         ]);
+    }
+
+    public function edit($id) 
+    {
+        try {
+            $kategori = Kategori::all();
+            $penerbit = Penerbit::all();
+            $produk = Produk::with('stok')->where('id', $id)->first();
+            // dd($produk);
+            // string
+            $string = Str::replace('x', ',', $produk->ukuran_produk);
+            $ukuran = Str::of($string)->split('/[\s,]+/');
+
+            return view('pages.admin.produk.edit', compact('kategori', 'penerbit', 'produk', 'ukuran'));
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error('Error!', $e->getMessage(), 500);        
+        }
+    }
+
+    public function update() 
+    {
+     return ResponseFormatter::success('Sukses', 'Data berhasil diubah');   
     }
 }

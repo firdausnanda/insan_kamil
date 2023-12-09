@@ -4,7 +4,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-12 text-center text-md-start"><span> Penawaran Menarik - <a
-                            href="">Gunakan Kupon Gratis</a> </span> 
+                            href="">Gunakan Kupon Gratis</a> </span>
                 </div>
             </div>
         </div>
@@ -190,7 +190,18 @@
 
                                     </div>
                                 </div>
+                            @elseif (Auth::user()->roles[0]->name == 'admin')
+                                <a href="{{ route('login') }}" role="button">
+                                    @if (Auth::user()->avatar == null)
+                                        <img src="{{ asset('images/avatar/user.png') }}" alt=""
+                                            class="avatar avatar-md rounded-circle">
+                                    @else
+                                        <img src="{{ Auth::user()->avatar }}" alt=""
+                                            class="avatar avatar-md rounded-circle">
+                                    @endif
+                                </a>
                             @endif
+
                         @endauth
                     </div>
                 </div>

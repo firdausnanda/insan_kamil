@@ -56,6 +56,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 		Route::post('', [ProdukController::class, 'store'])->name('store');
 		Route::post('/image', [ProdukController::class, 'image'])->name('image');
 		Route::get('/create', [ProdukController::class, 'create'])->name('create');
+		Route::post('/update', [ProdukController::class, 'update'])->name('update');
+		Route::get('/edit/{id}', [ProdukController::class, 'edit'])->name('edit');
 	});
   
 	// Kategori
