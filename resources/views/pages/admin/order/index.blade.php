@@ -26,6 +26,25 @@
                     <!-- card -->
                     <div class="card h-100 card-lg">
 
+                        <div class="alert alert-primary" role="alert">
+                            <strong class="ms-2">Note</strong> 
+                            <ol>
+                                <li>
+                                    Belum Diproses : Data pembeli yang sudah melakukan order dan melakukan pembayaran
+                                </li>
+                                <li>
+                                    Diproses : Data order yang sedang dilakukan pengepakan produk
+                                </li>
+                                <li>
+                                    Pengiriman : Data order yang sudah dikirim dan memiliki resi
+                                </li>
+                                <li>
+                                    Selesai : Order sudah selesai dan diterima oleh pengguna
+                                </li>
+                            </ol>
+                        </div>
+
+
                         <!-- card body -->
                         <div class="card-body p-0">
 
@@ -170,7 +189,7 @@
             });
 
             // filter
-            $('#status').change(function (e) { 
+            $('#status').change(function(e) {
                 e.preventDefault();
                 table.ajax.reload()
             });

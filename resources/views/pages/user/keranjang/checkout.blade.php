@@ -27,9 +27,11 @@
                                             <p class="mb-1 lh-lg">
                                                 {{ $data[0]->user->alamat }}
                                                 <br>
-                                                {{ $data[0]->user->city->name }}, {{ $data[0]->user->province->name }}
+                                                {{ $data[0]->user->city ? $data[0]->user->city->name : '' }},
+                                                {{ $data[0]->user->province ? $data[0]->user->province->name : '' }}
                                                 <br>
-                                                Kode Pos. {{ $data[0]->user->city->postal_code }}
+                                                Kode Pos.
+                                                {{ $data[0]->user->city ? $data[0]->user->city->postal_code : '' }}
                                                 <br />
                                             </p>
                                             <button class="btn btn-info mt-2 btn-sm btn-ubah" href="#">Ubah
@@ -170,12 +172,12 @@
     </section>
 
     {{-- Modal Edit --}}
-    <div class="modal fade" id="modal-edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modal-edit" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
+        aria-labelledby="modalTitleId" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Ubah Data Pengguna</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="form-edit">
                     <div class="modal-body">
@@ -188,27 +190,22 @@
                                     <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" id="nama" name="nama" class="form-control"
-                                    placeholder="Nama Lengkap" value="{{ $data[0]->user->name }}" required />
+                                    placeholder="Nama Lengkap" value="{{ $data[0]->user->name }}" />
                                 <input type="hidden" name="id_user"value="{{ $data[0]->user->id }}" />
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-12 mb-3">
                                 <label class="form-label" for="no_telepon">
                                     Nomor Telepon
                                     <span class="text-danger">*</span>
                                 </label>
+                                <input type="hidden" value="{{ $data[0]->user->no_telp }}">
                                 <input type="text" id="no_telepon" name="no_telepon" class="form-control"
-                                    placeholder="Nomor Telepon" value="{{ $data[0]->user->no_telp }}" required />
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <!-- input -->
-                                <label class="form-label" for="email">Email</label>
-                                <input type="text" id="email" name="email" class="form-control"
-                                    placeholder="Email" value="{{ $data[0]->user->no_telp }}" required />
+                                    placeholder="Nomor Telepon" value="{{ $data[0]->user->no_telp }}" />
                             </div>
                             <div class="col-md-12 mb-3">
                                 <!-- input -->
                                 <label class="form-label" for="alamat">Alamat</label>
-                                <textarea rows="3" id="alamat" name="alamat" class="form-control" placeholder="Nama Lengkap" required>{{ $data[0]->user->alamat }}</textarea>
+                                <textarea rows="3" id="alamat" name="alamat" class="form-control" placeholder="Nama Lengkap">{{ $data[0]->user->alamat }}</textarea>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <!-- input -->
@@ -244,6 +241,11 @@
     <script>
         $(document).ready(function(state) {
 
+            // Modal
+            if ("{{ $data[0]->user->alamat }}" == '') {
+                $('#modal-edit').modal('show')
+            }
+
             // Format Select2
             function formatState(state) {
                 if (!state.id) {
@@ -264,7 +266,7 @@
                 return $state;
             };
 
-            // Init Select 2
+            // Init Select 2    
             $('#provinsi').select2({
                 theme: 'bootstrap-5',
                 placeholder: '-- Pilih Provinsi --',
@@ -462,7 +464,7 @@
             // Update Data
             $('#form-edit').submit(function(e) {
                 e.preventDefault();
-                
+
                 $.ajax({
                     type: "POST",
                     url: "{{ route('user.profile.store') }}",
@@ -483,9 +485,29 @@
                             });
                         }
                     },
-                    error: function(response) {
+                    error: function(xhr, ajaxOptions, thrownError) {
                         $.LoadingOverlay('hide');
-                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
+                        console.log(xhr);
+                        switch (xhr.status) {
+                            case 422:
+                                $.each(xhr.responseJSON.data, function(index, value) {
+                                    $('input[name="' + index + '"]').addClass(
+                                        "is-invalid")
+                                    $('textarea[name="' + index + '"]').addClass(
+                                        "is-invalid")
+                                    $('select[name="' + index + '"]').addClass(
+                                        "is-invalid")
+                                });
+                                Swal.fire('Data Gagal Disimpan!',
+                                    'Periksa Kembali data anda',
+                                    'error');
+                                break;
+                            default:
+                                Swal.fire('Data Gagal Disimpan!',
+                                    'xhr.responseJSON.meta.message',
+                                    'error');
+                                break;
+                        }
                     },
                 });
 

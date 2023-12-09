@@ -7,6 +7,10 @@
             <div class="row">
                 <!-- col -->
                 <div class="offset-lg-2 col-lg-8 col-12">
+                    <div class="alert alert-primary mb-8" role="alert">
+                        <strong>Perhatian</strong> <br>
+                        Harap melengkapi form berikut dengan benar 
+                    </div>
                     <div class="mb-8">
                         <!-- heading -->
                         <h1 class="h3">Profil Pengguna</h1>
@@ -186,8 +190,13 @@
                     success: function(response) {
                         $.LoadingOverlay('hide');
                         if (response.meta.status == "success") {
-                            Swal.fire('Sukses!', response.meta.message, 'success');
-                            location.reload()
+                            Swal.fire({
+                                icon: 'success',
+                                title: "Sukses!",
+                                text: response.meta.message,
+                            }).then((result) => {
+                                location.reload()
+                            });
                         }
                     },
                     error: function(response) {
