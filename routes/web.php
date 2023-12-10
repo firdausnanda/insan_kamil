@@ -125,6 +125,7 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['role:user']
 		Route::post('', [UserOrderController::class, 'store'])->name('store');
 		Route::post('/beli', [UserOrderController::class, 'beli'])->name('beli');
 		Route::get('/ongkir', [UserOrderController::class, 'ongkir'])->name('ongkir');
+		Route::get('/jumlah', [UserOrderController::class, 'jumlah'])->name('jumlah');
 		Route::post('/temp', [UserOrderController::class, 'temp'])->name('temp');
 		Route::get('/konfirmasi', [UserOrderController::class, 'konfirmasi'])->name('konfirmasi');
 	});

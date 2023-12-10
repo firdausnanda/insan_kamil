@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
+use App\Models\Keranjang;
 use App\Models\Order;
 use App\Models\Pembayaran;
 use App\Models\Produk;
@@ -61,6 +62,21 @@ class OrderController extends Controller
         }else{
             return redirect()->route('user.keranjang.index');
         }
+    }
+
+    public function jumlah(Request $request) 
+    {
+        try {
+            
+            $order = Keranjang::where('id', $request->id_keranjang)->update([
+                'jumlah_produk' => $request->jumlah
+            ]);
+
+            return ResponseFormatter::success($order, 'Data berhasil diubah!');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }   
     }
 
     public function store(Request $request)

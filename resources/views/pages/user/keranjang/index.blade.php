@@ -83,14 +83,6 @@
                 processing: true,
                 paginate: false,
                 info: false,
-                buttons: [{
-                    className: 'btn btn-success btn-sm btn-export',
-                    text: '<i class="fa-regular fa-floppy-disk"></i> Simpan Perubahan',
-                    action: function(e, dt, button, config) {
-                        var data = table.$('input, select').serialize();
-                        console.log(data);
-                    }
-                }],
                 columnDefs: [{
                         width: '3%',
                         targets: 0,
@@ -137,12 +129,19 @@
                         className: 'align-middle text-center',
                         data: 'jumlah_produk',
                         render: function(data, type, row, meta) {
-                            return `<input type="number" class="form-control form-control-sm jumlah" value='${data}'>`;
+                            return `<div class="input-group input-spinner">
+                                <button type="button" value="-" class="button-minus btn btn-sm"
+                                    data-field="quantity">-</button>
+                                <input type="number" step="1" max="10" value="${data}" id="jumlah"
+                                    name="quantity" class="quantity-field form-control-sm form-input" readonly />
+                                <button type="button" value="+" class="button-plus btn btn-sm" data-field="quantity" />+</button>
+                                </div>`
                         }
                     },
                     {
                         targets: 5,
                         className: 'align-middle text-center',
+                        data: 'produk.harga.harga_diskon',
                         render: function(data, type, row, meta) {
                             return $.fn.dataTable.render.number('.', ',', 0, 'Rp ', ',-').display(
                                 `${row.produk.harga.harga_akhir * row.jumlah_produk}`)
@@ -161,10 +160,72 @@
                 },
             });
 
-            // Edit Jumlah
-            $('#produks .dt-buttons').on('click', '.btn-export', function(event) {
+            // Edit Kurangi Jumlah
+            $('#produks tbody').on('click', 'button.button-minus', function(event) {
                 event.preventDefault();
-                var data = table.row($(this).parents('tr')).data();
+                var cell = table.cell( $(this).parents('td') );
+                var cell_harga = table.row($(this).parents('tr')).data();
+                var cell_harga_total = table.cell( $(this).parents('td') , 5 );
+
+                var a = cell.data( cell.data() - 1 ).draw();
+
+                if (a.data() < 1) {
+                    a = cell.data( cell.data() + 1 ).draw();
+                }
+
+                cell_harga_total.data( cell.data() * cell_harga.produk.harga.harga_akhir ).draw();
+
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('user.order.jumlah') }}",
+                    data: {
+                        id_keranjang: cell_harga.id,
+                        jumlah: a.data()
+                    },
+                    dataType: "json",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function (response) {
+                        $.LoadingOverlay('hide');
+                    },
+                    error: function(response) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
+                    },
+                });
+            });
+
+            // Edit Tambah Jumlah
+            $('#produks tbody').on('click', 'button.button-plus', function(event) {
+                event.preventDefault();
+                var cell = table.cell( $(this).parents('td') );
+                var cell_harga = table.row($(this).parents('tr')).data();
+                var cell_harga_total = table.cell( $(this).parents('td') , 5 );
+
+                var a = cell.data( cell.data() + 1 ).draw();
+                cell_harga_total.data( cell.data() * cell_harga.produk.harga.harga_akhir ).draw();
+
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('user.order.jumlah') }}",
+                    data: {
+                        id_keranjang: cell_harga.id,
+                        jumlah: a.data()
+                    },
+                    dataType: "json",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function (response) {
+                        $.LoadingOverlay('hide');
+                    },
+                    error: function(response) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
+                    },
+                });
+
             });
 
             // Checkout Action
