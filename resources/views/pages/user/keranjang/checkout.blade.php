@@ -191,14 +191,14 @@
                                 </label>
                                 <input type="text" id="nama" name="nama" class="form-control"
                                     placeholder="Nama Lengkap" value="{{ $data[0]->user->name }}" />
-                                <input type="hidden" name="id_user"value="{{ $data[0]->user->id }}" />
+                                <input type="hidden" name="id_user" value="{{ $data[0]->user->id }}" />
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label class="form-label" for="no_telepon">
                                     Nomor Telepon
                                     <span class="text-danger">*</span>
                                 </label>
-                                <input type="hidden" value="{{ $data[0]->user->no_telp }}">
+                                <input type="hidden" name="email" value="{{ $data[0]->user->email }}">
                                 <input type="text" id="no_telepon" name="no_telepon" class="form-control"
                                     placeholder="Nomor Telepon" value="{{ $data[0]->user->no_telp }}" />
                             </div>
@@ -270,6 +270,7 @@
             $('#provinsi').select2({
                 theme: 'bootstrap-5',
                 placeholder: '-- Pilih Provinsi --',
+                dropdownParent: $("#modal-edit")
             });
 
             // Select Provinsi
@@ -289,6 +290,7 @@
             $('#kota').select2({
                 theme: 'bootstrap-5',
                 placeholder: '-- Pilih Kota --',
+                dropdownParent: $("#modal-edit")
             });
 
             // Select Kota
