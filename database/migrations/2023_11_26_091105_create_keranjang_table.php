@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('keranjang', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_produk')->constrained('produk');
-            $table->float('jumlah_produk');
+            $table->integer('jumlah_produk');
             $table->timestamps();
         });
     }

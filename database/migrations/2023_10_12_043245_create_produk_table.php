@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('id_harga');
             $table->string('kode_produk');
             $table->string('nama_produk');
-            $table->float('berat_produk');
+            $table->integer('berat_produk');
             $table->string('ukuran_produk')->nullable();
             $table->string('pengarang')->nullable();
             $table->string('bahasa')->nullable();

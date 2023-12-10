@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('id_produk');
             $table->string('id_user');
             $table->integer('harga_jual');
-            $table->float('jumlah_produk');
-            $table->float('berat_produk');
+            $table->integer('jumlah_produk');
+            $table->integer('berat_produk');
             $table->timestamps();
         });
     }

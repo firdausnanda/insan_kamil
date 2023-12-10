@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('id_order')->constrained('order');
             $table->string('id_produk');
             $table->integer('harga_jual');
-            $table->float('jumlah_produk');
+            $table->integer('jumlah_produk');
             $table->timestamps();
         });
     }
