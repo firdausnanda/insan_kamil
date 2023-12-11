@@ -82,6 +82,128 @@
                                 <input type="text" class="form-control" name="nama" required>
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Nomor Telepon</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="no_telp" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Email</label>
+                            <div class="col-sm-8">
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Alamat</label>
+                            <div class="col-sm-8">
+                                <textarea name="alamat" class="form-control" cols="30" rows="2"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Provinsi</label>
+                            <div class="col-sm-8">
+                                <select name="provinsi" id="provinsi">
+                                    <option value="">-- Pilih Provinsi --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Kabupaten</label>
+                            <div class="col-sm-8">
+                                <select name="kota" id="kota">
+                                    <option value="">-- Pilih Kabupaten/Kota --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Password</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="password" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Role</label>
+                            <div class="col-sm-8">
+                                <select name="role" class="form-select">
+                                    <option value="">-- Pilih Role --</option>
+                                    @foreach ($role as $r)
+                                        <option value="{{ $r->name }}">{{ Str::title($r->name) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Edit --}}
+    <div class="modal fade" id="modal-edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Data Pengguna</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-edit">
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Nama Pengguna</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="nama" id="nama_e" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Nomor Telepon</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="no_telp" id="no_telp_e" required>
+                                <input type="hidden" name="id_e" id="id_e">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Email</label>
+                            <div class="col-sm-8">
+                                <input type="email" class="form-control" name="email" id="email_e" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Alamat</label>
+                            <div class="col-sm-8">
+                                <textarea name="alamat" id="alamat_e" class="form-control" cols="30" rows="2"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Provinsi</label>
+                            <div class="col-sm-8">
+                                <select name="provinsi" id="provinsi_e">
+                                    <option value="">-- Pilih Provinsi --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Kabupaten</label>
+                            <div class="col-sm-8">
+                                <select name="kota" id="kota_e">
+                                    <option value="">-- Pilih Kabupaten/Kota --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Role</label>
+                            <div class="col-sm-8">
+                                <select name="role" class="form-select" id="role_e">
+                                    <option value="">-- Pilih Role --</option>
+                                    @foreach ($role as $r)
+                                        <option value="{{ $r->name }}">{{ Str::title($r->name) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
@@ -156,7 +278,7 @@
                         data: 'created_at',
                         render: function(data, type, row, meta) {
                             if (data)
-                            return `${moment(row.created_at).format('DD-MM-YYYY', 'de')} <br> <i>${moment(row.created_at).format('hh:mm:ss', 'de')}`
+                                return `${moment(row.created_at).format('DD-MM-YYYY', 'de')} <br> <i>${moment(row.created_at).format('hh:mm:ss', 'de')}`
                             return `-`
                         }
                     },
@@ -175,7 +297,29 @@
                         targets: 6,
                         className: 'align-middle text-center',
                         render: function(data, type, row, meta) {
-                            return `<div class="dropdown">
+                            var button
+                            if (row.google_id == null) {
+                                button = `<div class="dropdown">
+                                        <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="feather-icon icon-more-vertical fs-5"></i>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <button class="dropdown-item btn-edit" type="button">
+                                                    <i class="bi bi-pencil-square me-3"></i>
+                                                    Edit
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item btn-password" type="button">
+                                                    <i class="bi bi-lock me-3"></i>
+                                                    Ubah Password
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>`
+                            } else {
+                                button = `<div class="dropdown">
                                         <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="feather-icon icon-more-vertical fs-5"></i>
                                         </a>
@@ -187,11 +331,119 @@
                                                 </button>
                                             </li>
                                         </ul>
-                                    </div>`;
+                                    </div>`
+                            }
+                            return button;
                         }
                     },
                 ]
             });
+
+            // Init Select 2
+            $('#provinsi').select2({
+                theme: 'bootstrap-5',
+                placeholder: '-- Pilih Provinsi --',
+                dropdownParent: $("#modal-tambah")
+            });
+
+            // Init Select 2
+            $('#provinsi_e').select2({
+                theme: 'bootstrap-5',
+                placeholder: '-- Pilih Provinsi --',
+                dropdownParent: $("#modal-edit")
+            });
+
+            // Select Provinsi
+            $.ajax({
+                url: "{{ route('admin.pengguna.provinsi') }}",
+                data: $(this).serialize(),
+                dataType: "JSON",
+                success: function(response) {
+                    $.each(response.data, function(index, value) {
+                        $("#provinsi").append(
+                            `<option value="${value['id']}">${value['name']}</option>`);
+
+                        $("#provinsi_e").append(
+                            `<option value="${value['id']}">${value['name']}</option>`);
+                    });
+                },
+            });
+
+            // Init Select 2
+            $('#kota').select2({
+                theme: 'bootstrap-5',
+                placeholder: '-- Pilih Kota/Kabupaten --',
+                dropdownParent: $("#modal-tambah")
+            });
+
+            // Init Select 2
+            $('#kota_e').select2({
+                theme: 'bootstrap-5',
+                placeholder: '-- Pilih Kota/Kabupaten --',
+                dropdownParent: $("#modal-edit")
+            });
+
+            // Select Kota
+            $('#provinsi').on('select2:select', function(e) {
+                var id = e.params.data.id;
+
+                var link = "{{ route('admin.pengguna.kota', ':id') }}";
+                link = link.replace(':id', id);
+
+                $.ajax({
+                    url: link,
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    delay: 250,
+                    beforeSend: function() {
+                        $('#kota').attr('disabled', 'disabled');
+                        $('#kota').empty().append(
+                            '<option value="" selected disabled>-- Pilih Kota/Kabupaten --</option>'
+                        );
+                    },
+                    success: function(data) {
+                        $.each(data.data, function(index, value) {
+                            $("#kota").append("<option value='" + value['id'] + "'>" +
+                                value['name'] + "</option>");
+                        });
+                        $('#kota').removeAttr('disabled');
+                    },
+                    error: function() {
+                        $('#kota').removeAttr('disabled');
+                    }
+                });
+            })
+
+            // Select Kota
+            $('#provinsi_e').on('select2:select', function(e) {
+                var id = e.params.data.id;
+
+                var link = "{{ route('admin.pengguna.kota', ':id') }}";
+                link = link.replace(':id', id);
+
+                $.ajax({
+                    url: link,
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    delay: 250,
+                    beforeSend: function() {
+                        $('#kota_e').attr('disabled', 'disabled');
+                        $('#kota_e').empty().append(
+                            '<option value="" selected disabled>-- Pilih Kota/Kabupaten --</option>'
+                        );
+                    },
+                    success: function(data) {
+                        $.each(data.data, function(index, value) {
+                            $("#kota_e").append("<option value='" + value['id'] + "'>" +
+                                value['name'] + "</option>");
+                        });
+                        $('#kota_e').removeAttr('disabled');
+                    },
+                    error: function() {
+                        $('#kota_e').removeAttr('disabled');
+                    }
+                });
+            })
 
             // Filter
             $('#role').change(function(e) {
@@ -203,6 +455,57 @@
             $(".btn-tambah").click(function(e) {
                 e.preventDefault();
                 $("#modal-tambah").modal('show')
+            });
+
+            // Form Submit
+            $("#form-tambah").submit(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('admin.pengguna.store') }}",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        if (response.meta.status == "success") {
+                            table.ajax.reload()
+                            $(':input').val('');
+                            $('#modal-tambah').modal('hide');
+                            Swal.fire('Sukses!', 'Data berhasil disimpan', 'success');
+                        }
+                    },
+                    error: function(response) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
+                    },
+                });
+            });
+
+            // Modal Edit
+            $('#pengguna tbody').on('click', '.btn-edit', function(event) {
+                event.preventDefault();
+                var data = table.row($(this).parents('tr')).data();
+
+                $('#id_e').val(data.id);
+                $('#nama_e').val(data.name);
+                $('#email_e').val(data.email);
+                $('#no_telp_e').val(data.no_telp);
+                $('#alamat_e').val(data.alamat);
+                $('#role_e').val(data.roles[0].name).change();
+                
+                if (data.provinsi != null) {
+                    $('#provinsi_e').val(data.provinsi).change();
+                }
+
+                if (data.kota != null) {
+                    $('#kota_e').val(data.kota).change();
+                }
+
+                $('#modal-edit').modal('show');
             });
         });
     </script>
