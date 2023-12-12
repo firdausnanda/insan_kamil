@@ -190,6 +190,9 @@
                             <div class="col-sm-8">
                                 <select name="kota" id="kota_e">
                                     <option value="">-- Pilih Kabupaten/Kota --</option>
+                                    @foreach ($kota as $i)
+                                        <option value="{{ $i->id }}">{{ $i->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -202,6 +205,44 @@
                                         <option value="{{ $r->name }}">{{ Str::title($r->name) }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Edit Password --}}
+    <div class="modal fade" id="modal-password" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Password Pengguna</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="password">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="password_baru">
+                                    Password Baru
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="password" id="password_baru" name="password_baru" class="form-control"
+                                    placeholder="*******" required />
+                                <input type="hidden" name="password_e" id="password_e">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="password_ulangi">
+                                    Ulangi Password Baru
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="password" id="password_ulangi" name="password_ulangi" class="form-control"
+                                    placeholder="*******" required />
                             </div>
                         </div>
                     </div>
@@ -496,7 +537,7 @@
                 $('#no_telp_e').val(data.no_telp);
                 $('#alamat_e').val(data.alamat);
                 $('#role_e').val(data.roles[0].name).change();
-                
+
                 if (data.provinsi != null) {
                     $('#provinsi_e').val(data.provinsi).change();
                 }
@@ -506,6 +547,69 @@
                 }
 
                 $('#modal-edit').modal('show');
+            });
+
+            // Modal Password Show
+            $('#pengguna tbody').on('click', '.btn-password', function(event) {
+                event.preventDefault();
+                var data = table.row($(this).parents('tr')).data();
+                $('#password_e').val(data.id)
+                $('#modal-password').modal('show');
+            });
+
+            // Form Submit Edit
+            $("#form-edit").submit(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "PUT",
+                    url: "{{ route('admin.pengguna.update') }}",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        if (response.meta.status == "success") {
+                            table.ajax.reload()
+                            $(this).closest('form').find(':input').val('');
+                            $('#modal-edit').modal('hide');
+                            Swal.fire('Sukses!', 'Data berhasil diubah', 'success');
+                        }
+                    },
+                    error: function(response) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
+                    },
+                });
+            });
+
+            // Form Submit Password
+            $("#password").submit(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('admin.pengguna.password') }}",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        if (response.meta.status == "success") {
+                            table.ajax.reload()
+                            $(':input').val('');
+                            $('#modal-password').modal('hide');
+                        }
+                    },
+                    error: function(response) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
+                    },
+                });
             });
         });
     </script>

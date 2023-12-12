@@ -85,6 +85,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
   Route::group(['prefix' => 'pengguna', 'as' => 'pengguna.'], function () {
 		Route::get('', [PenggunaController::class, 'index'])->name('index');		
 		Route::post('', [PenggunaController::class, 'store'])->name('store');		
+		Route::put('', [PenggunaController::class, 'update'])->name('update');		
+		Route::post('/password', [PenggunaController::class, 'password'])->name('password');		
 		Route::get('/provinsi', [ProfileController::class, 'provinsi'])->name('provinsi');
 		Route::get('/kota/{id}', [ProfileController::class, 'kota'])->name('kota');
 	});

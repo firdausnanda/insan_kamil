@@ -21,6 +21,7 @@ class PenggunaController extends Controller
     {
 
         $role = Role::all();
+        $kota = City::all();
 
         if ($request->ajax()) {
             $pengguna = User::with('roles')->whereHas('roles', function($query) use($request) {
@@ -28,7 +29,7 @@ class PenggunaController extends Controller
             })->get();
             return ResponseFormatter::success($pengguna, 'Data berhasil diambil!');
         }
-        return view('pages.admin.pengguna.index', compact('role'));
+        return view('pages.admin.pengguna.index', compact('role', 'kota'));
     }
 
     public function provinsi() 
@@ -89,23 +90,60 @@ class PenggunaController extends Controller
         }   
     }
 
-    public function show(string $id)
+    public function update(Request $request)
     {
-        //
+        try {
+
+            $update = User::where('id', $request->id_e)->update([
+                'name' => $request->nama,
+                'username' => $request->nama,
+                'no_telp' => $request->no_telp,
+                'email' => $request->email,
+                'alamat' => $request->alamat,
+                'provinsi' => $request->provinsi,
+                'kota' => $request->kota,
+            ]);
+
+            $user = User::where('id', $request->id_e)->first();
+
+            $user->syncRoles($request->role);
+
+            return ResponseFormatter::success($update, 'Data berhasil diubah!');
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }
     }
 
-    public function edit(string $id)
+    public function password(Request $request)
     {
-        //
-    }
+        $validator = Validator::make($request->all(), [
+			'password_e' => 'required|string|max:255',
+			'password_baru' => 'required|string|max:255',
+			'password_ulangi' => 'required|string|max:255',
+		]);
 
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+		if ($validator->fails()) {
+			return ResponseFormatter::error($validator->errors(), 'Data tidak valid', 422);
+		}
+        
+        try {
+            
+            if ($request->password_baru != $request->password_ulangi) {
+                return ResponseFormatter::error('Password tidak sama', 'Data tidak valid', 422);
+            }
 
-    public function destroy(string $id)
-    {
-        //
+            $user = User::where('id', $request->password_e)->update([
+                'password' => Hash::make($request->password_baru),
+            ]);
+
+            return ResponseFormatter::success($user, 'Data berhasil diubah!');
+            
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }  
+
     }
 }
