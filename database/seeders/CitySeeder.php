@@ -27,6 +27,7 @@ class CitySeeder extends Seeder
             foreach ($cities as $city) {
 
                 $data = [
+                    'id'            => $city['city_id'],
                     'province_id'   => $province->id,
                     'type'          => $city['type'],
                     'name'          => $city['type'] . ' ' . $city['city_name'],
