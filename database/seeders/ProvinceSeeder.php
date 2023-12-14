@@ -16,7 +16,7 @@ class ProvinceSeeder extends Seeder
     {
         $provinces = Http::withOptions(['verify' => false,])->withHeaders([
             'key' => env('RAJAONGKIR_API_KEY')
-        ])->get('https://api.rajaongkir.com/starter/province')->json()['rajaongkir']['results'];
+        ])->get('https://pro.rajaongkir.com/api/province')->json()['rajaongkir']['results'];
 
         foreach ($provinces as $province) {
             Province::create([

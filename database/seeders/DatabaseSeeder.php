@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             PenerbitSeeder::class,
             ProvinceSeeder::class,
             CitySeeder::class,
+            SubdistrictSeeder::class,
         ]);
     }
 }

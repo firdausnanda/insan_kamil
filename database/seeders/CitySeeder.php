@@ -20,7 +20,7 @@ class CitySeeder extends Seeder
         foreach ($provinces as $province) {
             $cities = Http::withOptions(['verify' => false,])->withHeaders([
                 'key' => env('RAJAONGKIR_API_KEY')
-            ])->get('https://api.rajaongkir.com/starter/city?province=' . $province->id)->json()['rajaongkir']['results'];
+            ])->get('https://pro.rajaongkir.com/api/city?province=' . $province->id)->json()['rajaongkir']['results'];
 
             $insert_city = [];
 
