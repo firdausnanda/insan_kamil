@@ -89,6 +89,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 		Route::post('/password', [PenggunaController::class, 'password'])->name('password');		
 		Route::get('/provinsi', [ProfileController::class, 'provinsi'])->name('provinsi');
 		Route::get('/kota/{id}', [ProfileController::class, 'kota'])->name('kota');
+		Route::get('/desa/{id}', [ProfileController::class, 'desa'])->name('desa');
 	});
 
 	// Ulasan
@@ -142,6 +143,7 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['role:user']
 		Route::post('/password', [ProfileController::class, 'password'])->name('password');
 		Route::get('/provinsi', [ProfileController::class, 'provinsi'])->name('provinsi');
 		Route::get('/kota/{id}', [ProfileController::class, 'kota'])->name('kota');
+		Route::get('/desa/{id}', [ProfileController::class, 'desa'])->name('desa');
 	});
 
 });

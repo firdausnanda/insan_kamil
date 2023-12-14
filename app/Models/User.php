@@ -30,6 +30,10 @@ class User extends Authenticatable
         'password',
         'avatar',
         'no_telp',
+        'alamat',
+        'provinsi',
+        'kota',
+        'desa',
         'status',
     ];
 
@@ -78,5 +82,10 @@ class User extends Authenticatable
       public function city()
       {
           return $this->belongsTo(City::class, 'kota', 'id');
+      }
+
+      public function district()
+      {
+          return $this->belongsTo(Subdistrict::class, 'desa', 'id');
       }
 }

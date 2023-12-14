@@ -6,6 +6,7 @@ use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Province;
+use App\Models\Subdistrict;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -22,6 +23,7 @@ class PenggunaController extends Controller
 
         $role = Role::all();
         $kota = City::all();
+        $district = Subdistrict::all();
 
         if ($request->ajax()) {
             $pengguna = User::with('roles')->whereHas('roles', function($query) use($request) {
@@ -29,7 +31,7 @@ class PenggunaController extends Controller
             })->get();
             return ResponseFormatter::success($pengguna, 'Data berhasil diambil!');
         }
-        return view('pages.admin.pengguna.index', compact('role', 'kota'));
+        return view('pages.admin.pengguna.index', compact('role', 'kota', 'district'));
     }
 
     public function provinsi() 
@@ -58,6 +60,7 @@ class PenggunaController extends Controller
 			'alamat' => 'required|string|max:255',
 			'provinsi' => 'required|string|max:255',
 			'kota' => 'required|string|max:255',
+			'desa' => 'required|string|max:255',
 			'password' => 'required|string|max:255',
 			'role' => 'required|string|max:255',
 		]);
@@ -77,6 +80,7 @@ class PenggunaController extends Controller
                 'alamat' => $request->alamat,
                 'provinsi' => $request->provinsi,
                 'kota' => $request->kota,
+                'desa' => $request->desa,
                 'password' => Hash::make($request->password),
             ]);
 
@@ -102,6 +106,7 @@ class PenggunaController extends Controller
                 'alamat' => $request->alamat,
                 'provinsi' => $request->provinsi,
                 'kota' => $request->kota,
+                'desa' => $request->desa,
             ]);
 
             $user = User::where('id', $request->id_e)->first();

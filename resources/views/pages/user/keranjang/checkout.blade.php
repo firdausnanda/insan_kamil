@@ -27,9 +27,10 @@
                                             <p class="mb-1 lh-lg">
                                                 {{ $data[0]->user->alamat }}
                                                 <br>
-                                                {{ $data[0]->user->city ? $data[0]->user->city->name : '' }},
-                                                {{ $data[0]->user->province ? $data[0]->user->province->name : '' }}
+                                                {{ $data[0]->user->district ? $data[0]->user->district->name : '' }},
+                                                {{ $data[0]->user->city ? $data[0]->user->city->name : '' }}
                                                 <br>
+                                                {{ $data[0]->user->province ? $data[0]->user->province->name : '' }}
                                                 Kode Pos.
                                                 {{ $data[0]->user->city ? $data[0]->user->city->postal_code : '' }}
                                                 <br />
@@ -226,6 +227,16 @@
                                     </option>
                                 </select>
                             </div>
+                            <div class="col-md-12 mb-3">
+                                <!-- input -->
+                                <label class="form-label" for="desa">Kelurahan/Desa</label>
+                                <select name="desa" id="desa" class="form-select">
+                                    <option value="">Pilih Kelurahan/Desa</option>
+                                    <option value="{{ $data[0]->user->district }}" selected>
+                                        {{ $data[0]->user->district ? $data[0]->user->district->name : '' }}
+                                    </option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -272,6 +283,13 @@
                 placeholder: '-- Pilih Provinsi --',
                 dropdownParent: $("#modal-edit")
             });
+            
+            // Init Select 2    
+            $('#desa').select2({
+                theme: 'bootstrap-5',
+                placeholder: '-- Pilih Kelurahan/Desa --',
+                dropdownParent: $("#modal-edit")
+            });
 
             // Select Provinsi
             $.ajax({
@@ -310,6 +328,11 @@
                         $('#kota').empty().append(
                             '<option value="" selected disabled>-- Pilih Kota/Kabupaten --</option>'
                         );
+
+                        $('#desa').attr('disabled', 'disabled');
+                        $('#desa').empty().append(
+                            '<option value="" selected disabled>-- Pilih Desa/Kelurahan --</option>'
+                        );
                     },
                     success: function(data) {
                         $.each(data.data, function(index, value) {
@@ -320,6 +343,37 @@
                     },
                     error: function() {
                         $('#kota').removeAttr('disabled');
+                    }
+                });
+            })
+
+            // Select Desa
+            $('#kota').on('select2:select', function(e) {
+                var id = e.params.data.id;
+
+                var link = "{{ route('user.profile.desa', ':id') }}";
+                link = link.replace(':id', id);
+
+                $.ajax({
+                    url: link,
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    delay: 250,
+                    beforeSend: function() {
+                        $('#desa').attr('disabled', 'disabled');
+                        $('#desa').empty().append(
+                            '<option value="" selected disabled>-- Pilih Desa/Kelurahan --</option>'
+                        );
+                    },
+                    success: function(data) {
+                        $.each(data.data, function(index, value) {
+                            $("#desa").append("<option value='" + value['id'] + "'>" +
+                                value['name'] + "</option>");
+                        });
+                        $('#desa').removeAttr('disabled');
+                    },
+                    error: function() {
+                        $('#desa').removeAttr('disabled');
                     }
                 });
             })
@@ -342,7 +396,7 @@
                     type: "GET",
                     url: "{{ route('user.order.ongkir') }}",
                     data: {
-                        city_destination: "{{ $data[0]->user->kota }}",
+                        city_destination: "{{ $data[0]->user->desa }}",
                         courier: $('#jasa_pengiriman').val(),
                         weight: "{{ $beratProduk }}"
                     },

@@ -9,7 +9,7 @@
                 <div class="offset-lg-2 col-lg-8 col-12">
                     <div class="alert alert-primary mb-8" role="alert">
                         <strong>Perhatian</strong> <br>
-                        Harap melengkapi form berikut dengan benar 
+                        Harap melengkapi form berikut dengan benar
                     </div>
                     <div class="mb-8">
                         <!-- heading -->
@@ -63,6 +63,16 @@
                             <select name="kota" id="kota" class="form-select">
                                 <option value="">Pilih Kota</option>
                                 <option value="{{ $user->kota }}" selected>{{ $user->city ? $user->city->name : '' }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <!-- input -->
+                            <label class="form-label" for="desa">Kelurahan/Desa</label>
+                            <select name="desa" id="desa" class="form-select">
+                                <option value="">Pilih Kelurahan/Desa</option>
+                                <option value="{{ $user->district }}" selected>
+                                    {{ $user->district ? $user->district->name : '' }}
                                 </option>
                             </select>
                         </div>
@@ -161,6 +171,11 @@
                         $('#kota').empty().append(
                             '<option value="" selected disabled>-- Pilih Kota/Kabupaten --</option>'
                         );
+
+                        $('#desa').attr('disabled', 'disabled');
+                        $('#desa').empty().append(
+                            '<option value="" selected disabled>-- Pilih Desa/Kelurahan --</option>'
+                        );
                     },
                     success: function(data) {
                         $.each(data.data, function(index, value) {
@@ -231,6 +246,43 @@
                     },
                 });
             });
+
+            // Init Select 2    
+            $('#desa').select2({
+                theme: 'bootstrap-5',
+                placeholder: '-- Pilih Kelurahan/Desa --'
+            });
+
+            // Select Desa
+            $('#kota').on('select2:select', function(e) {
+                var id = e.params.data.id;
+
+                var link = "{{ route('user.profile.desa', ':id') }}";
+                link = link.replace(':id', id);
+
+                $.ajax({
+                    url: link,
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    delay: 250,
+                    beforeSend: function() {
+                        $('#desa').attr('disabled', 'disabled');
+                        $('#desa').empty().append(
+                            '<option value="" selected disabled>-- Pilih Desa/Kelurahan --</option>'
+                        );
+                    },
+                    success: function(data) {
+                        $.each(data.data, function(index, value) {
+                            $("#desa").append("<option value='" + value['id'] + "'>" +
+                                value['name'] + "</option>");
+                        });
+                        $('#desa').removeAttr('disabled');
+                    },
+                    error: function() {
+                        $('#desa').removeAttr('disabled');
+                    }
+                });
+            })
         });
     </script>
 @endsection

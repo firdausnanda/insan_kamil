@@ -6,6 +6,7 @@ use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Province;
+use App\Models\Subdistrict;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,7 @@ class ProfileController extends Controller
 {
     public function index(Request $request) 
     {
-        $user = User::with('province', 'city')->where('id', Auth::user()->id)->first();
+        $user = User::with('province', 'city', 'district')->where('id', Auth::user()->id)->first();
         return view('pages.user.profil.index', compact('user'));
     }
 
@@ -33,6 +34,12 @@ class ProfileController extends Controller
         return ResponseFormatter::success($kota, 'Data berhasil diambil!');
     }
 
+    public function desa($id) 
+    {
+        $desa = Subdistrict::where('city_id', $id)->get();
+        return ResponseFormatter::success($desa, 'Data berhasil diambil!');
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -43,6 +50,7 @@ class ProfileController extends Controller
 			'alamat' => 'required|string|max:255',
 			'provinsi' => 'required|string|max:255',
 			'kota' => 'required|string|max:255',
+			'desa' => 'required|string|max:255',
 		]);
 
 		if ($validator->fails()) {
@@ -58,6 +66,7 @@ class ProfileController extends Controller
                 'alamat' => $request->alamat,
                 'provinsi' => $request->provinsi,
                 'kota' => $request->kota,
+                'desa' => $request->desa,
             ]);
 
             return ResponseFormatter::success($user, 'Data berhasil diubah!');

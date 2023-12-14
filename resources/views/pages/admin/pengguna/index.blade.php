@@ -117,6 +117,14 @@
                             </div>
                         </div>
                         <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Desa/Kelurahan</label>
+                            <div class="col-sm-8">
+                                <select name="desa" id="desa">
+                                    <option value="">-- Pilih Desa/Kelurahan --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
                             <label for="colFormLabel" class="col-sm-4 col-form-label">Password</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" name="password" required>
@@ -191,6 +199,18 @@
                                 <select name="kota" id="kota_e">
                                     <option value="">-- Pilih Kabupaten/Kota --</option>
                                     @foreach ($kota as $i)
+                                        <option value="{{ $i->id }}">{{ $i->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <!-- input -->
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Kelurahan/Desa</label>
+                            <div class="col-sm-8">
+                                <select name="desa" id="desa_e">
+                                    <option value="">-- Pilih Kelurahan/Desa --</option>
+                                    @foreach ($district as $i)
                                         <option value="{{ $i->id }}">{{ $i->name }}</option>
                                     @endforeach
                                 </select>
@@ -394,6 +414,20 @@
                 dropdownParent: $("#modal-edit")
             });
 
+            // Init Select 2
+            $('#desa').select2({
+                theme: 'bootstrap-5',
+                placeholder: '-- Pilih Kelurahan/Desa --',
+                dropdownParent: $("#modal-tambah")
+            });
+
+            // Init Select 2
+            $('#desa_e').select2({
+                theme: 'bootstrap-5',
+                placeholder: '-- Pilih Kelurahan/Desa --',
+                dropdownParent: $("#modal-edit")
+            });
+
             // Select Provinsi
             $.ajax({
                 url: "{{ route('admin.pengguna.provinsi') }}",
@@ -441,6 +475,11 @@
                         $('#kota').empty().append(
                             '<option value="" selected disabled>-- Pilih Kota/Kabupaten --</option>'
                         );
+
+                        $('#desa').attr('disabled', 'disabled');
+                        $('#desa').empty().append(
+                            '<option value="" selected disabled>-- Pilih Desa/Kelurahan --</option>'
+                        );
                     },
                     success: function(data) {
                         $.each(data.data, function(index, value) {
@@ -472,6 +511,11 @@
                         $('#kota_e').empty().append(
                             '<option value="" selected disabled>-- Pilih Kota/Kabupaten --</option>'
                         );
+
+                        $('#desa_e').attr('disabled', 'disabled');
+                        $('#desa_e').empty().append(
+                            '<option value="" selected disabled>-- Pilih Desa/Kelurahan --</option>'
+                        );
                     },
                     success: function(data) {
                         $.each(data.data, function(index, value) {
@@ -482,6 +526,68 @@
                     },
                     error: function() {
                         $('#kota_e').removeAttr('disabled');
+                    }
+                });
+            })
+
+            // Select Desa
+            $('#kota').on('select2:select', function(e) {
+                var id = e.params.data.id;
+
+                var link = "{{ route('admin.pengguna.desa', ':id') }}";
+                link = link.replace(':id', id);
+
+                $.ajax({
+                    url: link,
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    delay: 250,
+                    beforeSend: function() {
+                        $('#desa').attr('disabled', 'disabled');
+                        $('#desa').empty().append(
+                            '<option value="" selected disabled>-- Pilih Desa/Kelurahan --</option>'
+                        );
+                    },
+                    success: function(data) {
+                        $.each(data.data, function(index, value) {
+                            $("#desa").append("<option value='" + value['id'] + "'>" +
+                                value['name'] + "</option>");
+                        });
+                        $('#desa').removeAttr('disabled');
+                    },
+                    error: function() {
+                        $('#desa').removeAttr('disabled');
+                    }
+                });
+            })
+
+            // Select Desa
+            $('#kota_e').on('select2:select', function(e) {
+                var id = e.params.data.id;
+
+                var link = "{{ route('admin.pengguna.desa', ':id') }}";
+                link = link.replace(':id', id);
+
+                $.ajax({
+                    url: link,
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    delay: 250,
+                    beforeSend: function() {
+                        $('#desa_e').attr('disabled', 'disabled');
+                        $('#desa_e').empty().append(
+                            '<option value="" selected disabled>-- Pilih Kota/Kabupaten --</option>'
+                        );
+                    },
+                    success: function(data) {
+                        $.each(data.data, function(index, value) {
+                            $("#desa_e").append("<option value='" + value['id'] + "'>" +
+                                value['name'] + "</option>");
+                        });
+                        $('#desa_e').removeAttr('disabled');
+                    },
+                    error: function() {
+                        $('#desa_e').removeAttr('disabled');
                     }
                 });
             })
@@ -544,6 +650,10 @@
 
                 if (data.kota != null) {
                     $('#kota_e').val(data.kota).change();
+                }
+
+                if (data.kota != null) {
+                    $('#desa_e').val(data.desa).change();
                 }
 
                 $('#modal-edit').modal('show');
