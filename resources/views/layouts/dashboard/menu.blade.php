@@ -3,7 +3,7 @@
     <div class="navbar-vertical">
         <div class="px-4 py-5">
             <a href="{{ route('admin.index') }}" class="navbar-brand">
-                <img style="max-width: 160px; max-height: 31px;" src="{{ asset('images/logo/logo2.png') }}" alt="">
+                <img style="max-width: 160px;" src="{{ asset('images/logo/logo2.png') }}" alt="">
             </a>
         </div>
         <div class="navbar-vertical-content flex-grow-1" data-simplebar="">

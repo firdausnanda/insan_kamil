@@ -16,12 +16,12 @@
             <div class="row w-100 align-items-center gx-lg-2 gx-0">
                 <div class="col-xxl-2 col-lg-3">
                     <a class="navbar-brand d-none d-lg-block" href="{{ url('/') }}">
-                        <img src="{{ asset('images/logo/logo2.png') }}" style="max-width: 160px; max-height: 31px;"
+                        <img src="{{ asset('images/logo/logo2.png') }}" style="max-width: 160px;"
                             alt="Insan Kamil">
                     </a>
                     <div class="d-flex justify-content-between w-100 d-lg-none">
                         <a class="navbar-brand" href="{{ url('/') }}">
-                            <img src="{{ asset('images/logo/logo2.png') }}" style="max-width: 160px; max-height: 31px;"
+                            <img src="{{ asset('images/logo/logo2.png') }}" style="max-width: 160px;"
                                 alt="Insan Kamil">
 
                         </a>
