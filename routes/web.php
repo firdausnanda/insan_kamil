@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\PenggunaController;
 use App\Http\Controllers\Admin\UlasanController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Landing\HomeController;
+use App\Http\Controllers\PaymentCallbackController;
 use App\Http\Controllers\User\KeranjangController;
 use App\Http\Controllers\User\OrderController as UserOrderController;
 use App\Http\Controllers\User\ProfileController;
@@ -147,3 +148,6 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['role:user']
 	});
 
 });
+
+// Midtrans
+Route::post('payments/midtrans-notification', [PaymentCallbackController::class, 'receive']);

@@ -3,11 +3,11 @@
     <div class="navbar-vertical">
         <div class="px-4 py-5">
             <a href="{{ route('admin.index') }}" class="navbar-brand">
-                <img style="max-width: 160px;" src="{{ asset('images/logo/logo2.png') }}" alt="">
+                <img style="max-width: 160px; max-height: 60px" src="{{ asset('images/logo/logo2.png') }}" alt="">
             </a>
         </div>
         <div class="navbar-vertical-content flex-grow-1" data-simplebar="">
-            <ul class="navbar-nav flex-column" id="sideNavbar">
+            <ul class="navbar-nav flex-column pb-5" id="sideNavbar">
 
                 <li class="nav-item ">
                     <a class="nav-link {{ request()->routeIs('admin.index') ? 'active' : '' }}"
@@ -137,12 +137,13 @@
     <div class="navbar-vertical">
         <div class="px-4 py-5 d-flex justify-content-between align-items-center">
             <a href="../index.html" class="navbar-brand">
-                <img src="{{ asset('images/logo/freshcart-logo') }}.svg" alt="">
+                <img style="max-width: 160px; max-height: 60px" src="{{ asset('images/logo/logo2.png') }}" alt="">
+                {{-- <img src="{{ asset('images/logo/freshcart-logo') }}.svg" alt=""> --}}
             </a>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="navbar-vertical-content flex-grow-1" data-simplebar="">
-            <ul class="navbar-nav flex-column">
+            <ul class="navbar-nav flex-column pb-5">
                 <li class="nav-item ">
                     <a class="nav-link  active " href="../dashboard/index.html">
                         <div class="d-flex align-items-center">

@@ -37,9 +37,6 @@
                                         value="dikirim" autocomplete="off">
                                     <label class="btn btn-outline-primary" for="btnradio4">Dikirim</label>
 
-                                    <input type="radio" class="btn-check btn-status" name="status" id="btnradio5"
-                                        value="selesai" autocomplete="off">
-                                    <label class="btn btn-outline-primary" for="btnradio5">Selesai</label>
                                 </div>
 
                                 <div class="table-responsive mt-5">
