@@ -25,6 +25,7 @@
     <link href="{{ asset('vendor/datatables/datatables.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('vendor/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/select2/select2-bootstrap-5-theme.min.css') }}">
+    <link href="{{ asset('vendor/nouislider/dist/nouislider.min.css') }}" rel="stylesheet" />
 
 
     <!-- Theme CSS -->
@@ -151,6 +152,7 @@
     <script src="{{ asset('vendor/loading-overlay/loadingoverlay.min.js') }}"></script>
     <script src="{{ asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
     <script src="{{ asset('vendor/select2/select2.min.js') }}"></script>
+    <script src="{{ asset('vendor/nouislider/dist/nouislider.min.js') }}"></script>
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
     <script>
         $(document).ready(function() {
