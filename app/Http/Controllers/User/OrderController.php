@@ -79,6 +79,38 @@ class OrderController extends Controller
         }   
     }
 
+    public function pembayaran(Request $request)
+    {
+        try {
+
+            if ($request->status == 1) {
+
+                $pembayaran = Pembayaran::where('id_order', $request->id)->update([
+                    'status_pembayaran' => 2,
+                ]);
+                
+                Order::where('id', $request->id)->update([
+                    'status' => 2,
+                ]);
+    
+                Log::info("success!", $pembayaran);                
+                return ResponseFormatter::success($pembayaran, 'data berhasil disimpan');
+
+            }elseif ($request->status == 2) {
+
+                $pembayaran = Pembayaran::where('id_order', $request->id)->first();    
+                Log::error("Error!", $pembayaran);
+                return ResponseFormatter::error($pembayaran, 'data gagal disimpan');
+            }
+
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }
+
+    }
+
     public function store(Request $request)
     {
         try {

@@ -283,7 +283,7 @@
                 placeholder: '-- Pilih Provinsi --',
                 dropdownParent: $("#modal-edit")
             });
-            
+
             // Init Select 2    
             $('#desa').select2({
                 theme: 'bootstrap-5',
@@ -482,26 +482,52 @@
                     },
                     success: function(response) {
                         $.LoadingOverlay('hide');
+                        
                         snap.pay(response.data, {
                             onSuccess: function(result) {
-                                console.log(result);
-                                console.log('1');
-                                // location.reload();
-                            },
+                                // Success
+                                $.ajax({
+                                    type: "POST",
+                                    url: "{{ route('user.order.pembayaran') }}",
+                                    data: {
+                                        id: response.order_id,
+                                        status: 1
+                                    },
+                                    dataType: "JSON",
+                                    beforeSend: function() {
+                                        $.LoadingOverlay('show');
+                                    },
+                                    success: function(response) {
+                                        $.LoadingOverlay('hide');
+                                        location.href = "{{ route('user.order.konfirmasi') }}"
+                                    }
+                                });
 
-                            onPending: function(result) {
-                                console.log(result);
-                                console.log('2');
-                                // location.reload();
                             },
 
                             onError: function(result) {
-                                console.log(result);
-                                console.log('3');
-                                // location.reload();
+                                
+                                // Error
+                                $.ajax({
+                                    type: "POST",
+                                    url: "{{ route('user.order.pembayaran') }}",
+                                    data: {
+                                        id: response.order_id,
+                                        status: 2
+                                    },
+                                    dataType: "JSON",
+                                    beforeSend: function() {
+                                        $.LoadingOverlay('show');
+                                    },
+                                    success: function(response) {
+                                        $.LoadingOverlay('hide');
+                                        location.reload()
+                                    }
+                                });
                             }
 
                         });
+
                         return false;
                     },
                     error: function(response) {

@@ -131,6 +131,7 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['role:user']
 		Route::get('', [UserOrderController::class, 'index'])->name('index');
 		Route::post('', [UserOrderController::class, 'store'])->name('store');
 		Route::post('/beli', [UserOrderController::class, 'beli'])->name('beli');
+		Route::post('/pembayaran', [UserOrderController::class, 'pembayaran'])->name('pembayaran');
 		Route::get('/ongkir', [UserOrderController::class, 'ongkir'])->name('ongkir');
 		Route::get('/jumlah', [UserOrderController::class, 'jumlah'])->name('jumlah');
 		Route::post('/temp', [UserOrderController::class, 'temp'])->name('temp');
