@@ -93,13 +93,13 @@ class OrderController extends Controller
                     'status' => 2,
                 ]);
     
-                Log::info("success!", $pembayaran);                
+                Log::info("success! : . $pembayaran");                
                 return ResponseFormatter::success($pembayaran, 'data berhasil disimpan');
 
             }elseif ($request->status == 2) {
 
                 $pembayaran = Pembayaran::where('id_order', $request->id)->first();    
-                Log::error("Error!", $pembayaran);
+                Log::error("Error! : . $pembayaran");
                 return ResponseFormatter::error($pembayaran, 'data gagal disimpan');
             }
 
