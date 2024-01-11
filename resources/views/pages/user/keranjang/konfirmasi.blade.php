@@ -108,8 +108,9 @@
                         className: 'align-middle',
                         render: function(data, type, row, meta) {
                             if (row.harga_total != null && row.biaya_pengiriman != null) {
+                                var harga = parseInt(row.harga_total) + parseInt(row.biaya_pengiriman)
                                 return $.fn.dataTable.render.number('.', ',', 0, 'Rp ', ',-')
-                                    .display(row.harga_total + row.biaya_pengiriman)
+                                    .display(harga)
                             }
                         }
                     },
