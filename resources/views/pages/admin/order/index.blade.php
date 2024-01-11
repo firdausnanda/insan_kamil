@@ -27,7 +27,7 @@
                     <div class="card h-100 card-lg">
 
                         <div class="alert alert-primary" role="alert">
-                            <strong class="ms-2">Note</strong> 
+                            <strong class="ms-2">Note</strong>
                             <ol>
                                 <li>
                                     Belum Diproses : Data pembeli yang sudah melakukan order dan melakukan pembayaran
@@ -61,7 +61,7 @@
                             </div>
 
                             <div class="table-responsive p-5">
-                                <table class="table table-striped" id="produks">
+                                <table class="table table-striped w-100" id="produks">
                                     <thead>
                                         <th scope="col">No.</th>
                                         <th scope="col">ID Transaksi</th>
@@ -125,7 +125,8 @@
                         className: 'align-middle text-center',
                         data: 'created_at',
                         render: function(data, type, row, meta) {
-                            return moment(data).format('DD-MM-YYYY HH:mm')
+                            if (data) return `${moment(data).format('DD-MM-YYYY', 'de')} <br> <i>${moment(data).format('hh:mm:ss', 'de')}`
+                            return `-`
                         }
                     },
                     {
@@ -145,11 +146,11 @@
                             if (data == 2) {
                                 return `<span class="badge bg-light-danger text-dark-danger">Belum Diproses</span>`
                             } else if (data == 3) {
-                                return `<span class="badge bg-light-warning text-dark-warning">Tidak Aktif</span>`
+                                return `<span class="badge bg-light-warning text-dark-warning">Diproses</span>`
                             } else if (data == 4) {
-                                return `<span class="badge bg-light-info text-dark-info">Tidak Aktif</span>`
+                                return `<span class="badge bg-light-info text-dark-info">Dikirim</span>`
                             } else {
-                                return `<span class="badge bg-light-primary text-dark-primary">Draft</span>`
+                                return `<span class="badge bg-light-primary text-dark-primary">Selesai</span>`
                             }
                         }
                     },
@@ -159,7 +160,7 @@
                         data: 'id',
                         render: function(data, type, row, meta) {
 
-                            var link = "{{ route('admin.produk.edit', ':id') }}";
+                            var link = "{{ route('admin.order.detail', ':id') }}";
                             link = link.replace(':id', data);
 
                             return `<div class="dropdown">

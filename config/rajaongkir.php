@@ -70,8 +70,8 @@ return [
                 'kode' => 'tiki',
                 'nama' => 'TIKI',
             ],[
-                'kode' => 'rpx',
-                'nama' => 'RPX',
+                'kode' => 'ninja',
+                'nama' => 'NINJA',
 
             ],[
                 'kode' => 'sicepat',
@@ -83,6 +83,24 @@ return [
             ],[
                 'kode' => 'antareja',
                 'nama' => 'ANTAREJA',
+            ],[
+                'kode' => 'lion',
+                'nama' => 'LION',
+            ],[
+                'kode' => 'ide',
+                'nama' => 'ID EXPRESS',
+            ],[
+                'kode' => 'ncs',
+                'nama' => 'NUSANTARA CARD SEMESTA',
+            ],[
+                'kode' => 'sentral',
+                'nama' => 'SENTRAL CARGO',
+            ],[
+                'kode' => 'wahana',
+                'nama' => 'WAHANA PRESTASI LOGISTIK',
+            ],[
+                'kode' => 'jet',
+                'nama' => 'JET',
             ]
         ],
     ]

@@ -78,7 +78,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 	// Order
   Route::group(['prefix' => 'order', 'as' => 'order.'], function () {
 		Route::get('', [OrderController::class, 'index'])->name('index');
-		Route::get('/detail', [OrderController::class, 'detail'])->name('detail');
+		Route::post('', [OrderController::class, 'store'])->name('store');
+		Route::get('/detail/{id}', [OrderController::class, 'detail'])->name('detail');
 		
 	});
 

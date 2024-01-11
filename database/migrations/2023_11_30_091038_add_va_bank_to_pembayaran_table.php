@@ -24,7 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('pembayaran', function (Blueprint $table) {
-            //
+            $table->dropColumn('va_number');
+            $table->dropColumn('bank');
+            $table->dropColumn('tgl_transaksi');
         });
     }
 };

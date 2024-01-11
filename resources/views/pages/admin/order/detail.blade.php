@@ -36,21 +36,23 @@
                             <div class="d-md-flex justify-content-between">
                                 <div class="d-flex align-items-center mb-2 mb-md-0">
                                     <h2 class="mb-0">Detail Transaksi</h2>
-                                    <span class="badge bg-light-warning text-dark-warning ms-2">Pending</span>
                                 </div>
                                 <!-- select option -->
-                                <div class="d-md-flex">
+                                <div class="d-md-flex gap-2">
                                     <div class="mb-2 mb-md-0">
-                                        <select class="form-select">
-                                            <option value="selesai">Belum Diproses</option>
-                                            <option value="selesai">Diproses</option>
-                                            <option value="selesai">Pengiriman</option>
-                                            <option value="selesai">Selesai</option>
+                                        <select class="form-select" id="status">
+                                            <option value="2">Belum Diproses</option>
+                                            <option value="3">Diproses</option>
+                                            <option value="4">Pengiriman</option>
+                                            <option value="5">Selesai</option>
                                         </select>
+                                    </div>
+                                    <div class="mb-2 mb-md-0">
+                                        <input type="text" id="no_resi" value="{{ $order->no_resi }}" class="form-control d-none">
                                     </div>
                                     <!-- button -->
                                     <div class="ms-md-3">
-                                        <a href="#" class="btn btn-primary">Simpan</a>
+                                        <button id="btn-simpan" class="btn btn-primary">Simpan</button>
                                         <a href="#" class="btn btn-secondary">Download Bukti Transaksi</a>
                                     </div>
                                 </div>
@@ -62,11 +64,11 @@
                                         <div class="mb-6">
                                             <h6>Customer Details</h6>
                                             <p class="mb-1 lh-lg">
-                                                John Alex
+                                                {{ $order->user->name }}
                                                 <br />
-                                                anderalex@example.com
+                                                {{ $order->user->email }}
                                                 <br />
-                                                +998 99 22123456
+                                                {{ $order->user->no_telp }}
                                             </p>
                                             <a href="#">View Profile</a>
                                         </div>
@@ -76,12 +78,14 @@
                                         <div class="mb-6">
                                             <h6>Alamat Pengiriman</h6>
                                             <p class="mb-1 lh-lg">
-                                                Jl. Merdeka No. 28
+                                                {{ $order->user->alamat }}
                                                 <br>
-                                                Surabaya, Jawa Timur, 
-                                                Kode Pos. 235153
-                                                <br />
-                                                No. Kontak. +62 1234 12345
+                                                {{ $order->user->district ? $order->user->district->name : '' }},
+                                                {{ $order->user->city ? $order->user->city->name : '' }}
+                                                <br>
+                                                {{ $order->user->province ? $order->user->province->name : '' }}
+                                                Kode Pos.
+                                                {{ $order->user->city ? $order->user->city->postal_code : '' }}
                                             </p>
                                         </div>
                                     </div>
@@ -90,14 +94,13 @@
                                         <div class="mb-6">
                                             <h6>Detail Order</h6>
                                             <p class="mb-1 lh-lg">
-                                                ID Transaksi:
-                                                <span class="text-dark">FC001</span>
-                                                <br />
                                                 Tanggal Order:
-                                                <span class="text-dark">22 Oktober 2023</span>
+                                                <span
+                                                    class="text-dark">{{ \Carbon\Carbon::parse($order->created_at)->isoFormat('D MMMM Y') }}</span>
                                                 <br />
                                                 Total Order:
-                                                <span class="text-dark">Rp. 250.000</span>
+                                                <span
+                                                    class="text-dark">{{ rupiah($order->harga_total + $order->biaya_pengiriman) }}</span>
                                             </p>
                                         </div>
                                     </div>
@@ -112,67 +115,45 @@
                                         <!-- Table Head -->
                                         <thead class="bg-light">
                                             <tr>
-                                                <th>Products</th>
-                                                <th>Price</th>
-                                                <th>Quantity</th>
+                                                <th>Produk</th>
+                                                <th>Harga</th>
+                                                <th>Jumlah Produk</th>
                                                 <th>Total</th>
                                             </tr>
                                         </thead>
                                         <!-- tbody -->
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    <a href="#" class="text-inherit">
+                                            @foreach ($order->produk_dikirim as $i)
+                                                <tr>
+                                                    <td>
                                                         <div class="d-flex align-items-center">
                                                             <div>
-                                                                <img src="{{ asset('images/products/product-img-1.jpg') }}"
-                                                                    alt="" class="icon-shape icon-lg" />
+                                                                @if ($i->produk->gambar_produk)
+                                                                    <img src="{{ asset('storage/produk/' . $i->produk->gambar_produk[0]->gambar) }}"
+                                                                        alt="" class="icon-shape icon-lg" />
+                                                                @else
+                                                                    <img src="{{ asset('images/products/product-img-1.jpg') }}"
+                                                                        alt="" class="icon-shape icon-lg" />
+                                                                @endif
                                                             </div>
                                                             <div class="ms-lg-4 mt-2 mt-lg-0">
-                                                                <h5 class="mb-0 h6">Haldiram's Sev Bhujia</h5>
+                                                                <h5 class="mb-0 h6">{{ $i->produk->nama_produk }}</h5>
                                                             </div>
                                                         </div>
-                                                    </a>
-                                                </td>
-                                                <td><span class="text-body">Rp. 8.000</span></td>
-                                                <td>10</td>
-                                                <td>Rp. 80.000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="#" class="text-inherit">
-                                                        <div class="d-flex align-items-center">
-                                                            <div>
-                                                                <img src="{{ asset('images/products/product-img-2.jpg') }}"
-                                                                    alt="" class="icon-shape icon-lg" />
-                                                            </div>
-                                                            <div class="ms-lg-4 mt-2 mt-lg-0">
-                                                                <h5 class="mb-0 h6">NutriChoice Digestive</h5>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td><span class="text-body">Rp. 8.000</span></td>
-                                                <td>10</td>
-                                                <td>Rp. 80.000</td>
-                                            </tr>
-                                                <td>
-                                                    <a href="#" class="text-inherit">
-                                                        <div class="d-flex align-items-center">
-                                                            <div>
-                                                                <img src="{{ asset('images/products/product-img-4.jpg') }}"
-                                                                    alt="" class="icon-shape icon-lg" />
-                                                            </div>
-                                                            <div class="ms-lg-4 mt-2 mt-lg-0">
-                                                                <h5 class="mb-0 h6">Onion Flavour Potato</h5>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td><span class="text-body">Rp. 8.000</span></td>
-                                                <td>10</td>
-                                                <td>Rp. 80.000</td>
-                                            </tr>
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-body">{{ rupiah($i->harga_jual) }}</span>
+                                                    </td>
+                                                    <td>
+                                                        {{ $i->jumlah_produk }}
+                                                    </td>
+                                                    <td>
+                                                        {{ rupiah($i->harga_jual * $i->jumlah_produk) }}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+
+                                            {{-- Total --}}
                                             <tr>
                                                 <td class="border-bottom-0 pb-0"></td>
                                                 <td class="border-bottom-0 pb-0"></td>
@@ -182,7 +163,7 @@
                                                 </td>
                                                 <td class="fw-medium text-dark">
                                                     <!-- text -->
-                                                    Rp. 24.000
+                                                    {{ rupiah($subTotal) }}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -194,7 +175,7 @@
                                                 </td>
                                                 <td class="fw-medium text-dark">
                                                     <!-- text -->
-                                                    Rp. 10.000
+                                                    {{ rupiah($order->biaya_pengiriman) }}
                                                 </td>
                                             </tr>
 
@@ -207,7 +188,7 @@
                                                 </td>
                                                 <td class="fw-semibold text-dark">
                                                     <!-- text -->
-                                                    Rp. 250.000
+                                                    {{ rupiah($order->biaya_pengiriman + $subTotal) }}
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -217,16 +198,14 @@
                         </div>
                         <div class="card-body p-6">
                             <div class="row">
-                                <div class="col-md-6 mb-4 mb-lg-0">
-                                    <h6>Detail Pengiriman</h6>
-                                    <ul>
-                                        <li>Diterima Kurir</li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-6 mb-4 mb-lg-0">
-                                    <h6>Pembayaran</h6>
-                                    <span>Bank BNI</span>
-                                </div>
+                                @if ($order->status >= 4)
+                                    <div class="col-md-6 mb-4 mb-lg-0">
+                                        <h6>Detail Pengiriman</h6>
+                                        <ul>
+                                            <li>Diterima Kurir</li>
+                                        </ul>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -234,4 +213,44 @@
             </div>
         </div>
     </main>
+@endsection
+
+@section('script')
+    <script>
+        $(document).ready(function() {
+
+            // Filter
+            $("#status").change(function (e) { 
+                e.preventDefault();
+
+                if ($('#status').val() == 4) {
+                    $('#no_resi').addClass('d-block').removeClass('d-none')
+                }else{
+                    $('#no_resi').addClass('d-none').removeClass('d-block')
+                }
+            });
+
+            // Simpan
+            $('#btn-simpan').click(function (e) { 
+                e.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('admin.order.store') }}",
+                    data: {
+                        no_resi: $('#no_resi').val(),
+                        id_order: '{{ $order->id }}'
+                    },
+                    dataType: "json",
+                    beforeSend: function(){
+                        $.LoadingOverlay('show');
+                    },
+                    success: function (response) {
+                        $.LoadingOverlay('hide');
+                        location.reload()
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
