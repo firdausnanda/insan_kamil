@@ -16,4 +16,8 @@ class ProdukDikirim extends Model
         'harga_jual',
         'jumlah_produk',
     ];
+
+    public function produk() {
+        return $this->belongsTo(Produk::class, 'id_produk', 'id');
+    }
 }

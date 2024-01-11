@@ -48,7 +48,7 @@
                             </div>
                             <div class="row px-5 pb-5">
                                 <div class="col">
-                                    <button class="btn btn-secondary"><i class="fa-solid fa-arrow-left me-2"></i> Lanjutkan
+                                    <button class="btn btn-secondary btn-back"><i class="fa-solid fa-arrow-left me-2"></i> Lanjutkan
                                         Belanja</button>
                                 </div>
                                 <div class="col d-flex justify-content-end">
@@ -293,6 +293,12 @@
                     });
                 }
             };
+
+            // Kembali
+            $('.btn-back').click(function (e) { 
+                e.preventDefault();
+                location.href = "{{ route('landing.home') }}"
+            });
         });
     </script>
 @endsection

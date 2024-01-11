@@ -22,25 +22,25 @@
                                 {{-- Menu Navigation --}}
                                 <div class="gap-2" role="group" aria-label="Basic radio toggle button group">
                                     <input type="radio" class="btn-check btn-status" name="status" id="btnradio1"
-                                        value="semua" autocomplete="off" checked="">
+                                        value="1" autocomplete="off" checked="">
                                     <label class="btn btn-outline-primary" for="btnradio1">Semua</label>
 
                                     <input type="radio" class="btn-check btn-status" name="status" id="btnradio2"
-                                        value="menunggu pembayaran" autocomplete="off">
+                                        value="2" autocomplete="off">
                                     <label class="btn btn-outline-primary" for="btnradio2">Menunggu Pembayaran</label>
 
                                     <input type="radio" class="btn-check btn-status" name="status" id="btnradio3"
-                                        value="pengemasan" autocomplete="off">
+                                        value="3" autocomplete="off">
                                     <label class="btn btn-outline-primary" for="btnradio3">Pengemasan</label>
 
                                     <input type="radio" class="btn-check btn-status" name="status" id="btnradio4"
-                                        value="dikirim" autocomplete="off">
+                                        value="4" autocomplete="off">
                                     <label class="btn btn-outline-primary" for="btnradio4">Dikirim</label>
 
                                 </div>
 
                                 <div class="table-responsive mt-5">
-                                    <table class="table table-striped">
+                                    <table class="table table-striped w-100" id="konfirmasi">
                                         <thead>
                                             <tr>
                                                 <th scope="col">No.</th>
@@ -50,15 +50,6 @@
                                                 <th scope="col">Aksi</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr class="">
-                                                <td scope="row">R1C1</td>
-                                                <td>R1C2</td>
-                                                <td>R1C3</td>
-                                                <td>R1C3</td>
-                                                <td>R1C3</td>
-                                            </tr>
-                                        </tbody>
                                     </table>
                                 </div>
 
@@ -75,4 +66,108 @@
             </div>
         </div>
     </section>
+@endsection
+
+@section('script')
+    <script>
+        $(document).ready(function() {
+
+            // Init Datatable
+            var table = $('#konfirmasi').DataTable({
+                lengthChange: false,
+                ordering: false,
+                processing: true,
+                ajax: {
+                    url: "{{ route('user.order.konfirmasi') }}",
+                    type: "GET",
+                    data: function(d) {
+                        d.id_user = "{{ Auth::user()->id }}";
+                        d.status = $("input[type='radio'][name='status']:checked").val();
+                    }
+                },
+                columnDefs: [{
+                        targets: 0,
+                        width: '10%',
+                        className: 'align-middle text-center',
+                        render: function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        targets: 1,
+                        className: 'align-middle',
+                        data: 'created_at',
+                        render: function(data, type, row, meta) {
+                            if (data)
+                                return `${moment(row.created_at).format('DD-MM-YYYY', 'de')} <br> <i>${moment(row.created_at).format('hh:mm:ss', 'de')}`
+                            return `-`
+                        }
+                    },
+                    {
+                        targets: 2,
+                        className: 'align-middle',
+                        render: function(data, type, row, meta) {
+                            if (row.harga_total != null && row.biaya_pengiriman != null) {
+                                return $.fn.dataTable.render.number('.', ',', 0, 'Rp ', ',-')
+                                    .display(row.harga_total + row.biaya_pengiriman)
+                            }
+                        }
+                    },
+                    {
+                        targets: 3,
+                        className: 'align-middle',
+                        data: 'status',
+                        render: function(data, type, row, meta) {
+                            switch (data) {
+                                case '1':
+                                    return '<span class="badge bg-warning">Menunggu Pembayaran</span>'
+                                    break;
+                                case '2':
+                                    return '<span class="badge bg-primary">Sudah Dibayar</span>'
+                                    break;
+                                case '3':
+                                    return '<span class="badge bg-primary">Pengemasan</span>'
+                                    break;
+                                case '4':
+                                    return '<span class="badge bg-info">Proses Pengiriman</span>'
+                                    break;
+                                case '5':
+                                    return '<span class="badge bg-success">Selesai</span>'
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+                    },
+                    {
+                        targets: 4,
+                        className: 'align-middle',
+                        render: function(data, type, row, meta) {
+                            return '<button class="btn btn-info btn-detail btn-sm">Detail</button>';
+                        }
+                    },
+                ]
+            });
+
+            // Filter
+            $('input:radio').change(function() {
+                var radioClicked = $(this).attr('id');
+                table.ajax.reload();
+            });
+
+            // Detail
+            $('#konfirmasi tbody').on('click', '.btn-detail', function(event) {
+                event.preventDefault();
+
+                var data = table.row($(this).parents('tr')).data();
+
+                var link = "{{ route('user.order.detail_konfirmasi', ':id') }}"
+                var url = link.replace(':id', data.id);
+
+                location.href = url;
+            });
+
+        });
+    </script>
 @endsection

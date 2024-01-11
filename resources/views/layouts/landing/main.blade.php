@@ -153,6 +153,7 @@
     <script src="{{ asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
     <script src="{{ asset('vendor/select2/select2.min.js') }}"></script>
     <script src="{{ asset('vendor/nouislider/dist/nouislider.min.js') }}"></script>
+    <script src="{{ asset('vendor/momentjs/moment.min.js') }}"></script>
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
     <script>
         $(document).ready(function() {

@@ -99,6 +99,12 @@ class OrderController extends Controller
             }elseif ($request->status == 2) {
 
                 $pembayaran = Pembayaran::where('id_order', $request->id)->first();    
+                Log::error("Pending! : . $pembayaran");
+                return ResponseFormatter::error($pembayaran, 'data gagal disimpan');
+
+            }elseif ($request->status == 3) {
+
+                $pembayaran = Pembayaran::where('id_order', $request->id)->first();    
                 Log::error("Error! : . $pembayaran");
                 return ResponseFormatter::error($pembayaran, 'data gagal disimpan');
             }
@@ -262,8 +268,83 @@ class OrderController extends Controller
         }
     }
 
-    public function konfirmasi()
+    public function konfirmasi(Request $request)
     {
+        if ($request->ajax()) {
+            if ($request->status == 1) {
+                $penjualan = Order::where('id_user', $request->id_user)->get();
+                return ResponseFormatter::success($penjualan, "Data berhasil diambil!");
+            }else{
+                switch ($request->status) {
+                    case '2':
+                        $status = 1;
+                        break;
+                    case '3':
+                        $status = 3;
+                        break;
+                    case '4':
+                        $status = 4;
+                        break;                    
+                }
+                $penjualan = Order::where('id_user', $request->id_user)->where('status', $status)->get();
+                return ResponseFormatter::success($penjualan, "Data berhasil diambil!");
+            }
+        }
         return view('pages.user.keranjang.konfirmasi');
+    }
+
+    public function detail_konfirmasi(Request $request, $id)
+    {
+        $order = Order::with('user.province', 'user.city', 'user.district', 'produk_dikirim.produk.gambar_produk')->where('id', $id)->first();
+
+        // harga produk total
+        $subTotal = $order->produk_dikirim->sum(function($q) {
+            return $q['jumlah_produk'] * $q['harga_jual']; 
+        });
+
+        return view('pages.user.keranjang.detail_konfirmasi', compact('order', 'subTotal'));
+    }
+
+    public function detail_store(Request $request)
+    {
+        try {
+
+            // cek order User
+            $cekOrder = Order::with('user')->where('id', $request->order_id)->first();
+
+            $payload = [
+                'transaction_details' => [
+                    'order_id'     => $cekOrder->id,
+                    'gross_amount' => $cekOrder->harga_total + $cekOrder->biaya_pengiriman,
+                ],
+                'customer_details' => [
+                    'first_name' => $cekOrder->user->name,
+                    'email'      => $cekOrder->user->email,
+                ],
+                'item_details' => [
+                    [
+                        'id'            => $cekOrder->id,
+                        'name'          => 'Transaksi Order - ' . $cekOrder->id,
+                        'price'         => $cekOrder->harga_total + $cekOrder->biaya_pengiriman,
+                        'quantity'      => 1,
+                    ],
+                ],
+            ];
+
+            // MidTrans
+            $snapToken = Snap::getSnapToken($payload);
+
+            // Create Pembayaran
+            Pembayaran::where('id_order', $request->order_id)->update([
+                'snap_token' => $snapToken
+            ]);
+
+            return ResponseFormatter::success($snapToken, 'data berhasil disimpan');
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }
+        
     }
 }

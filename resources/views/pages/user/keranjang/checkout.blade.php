@@ -472,8 +472,8 @@
                         user: "{{ Auth::user()->id }}",
                         courier: $('#jasa_pengiriman').val(),
                         biaya_pengiriman: $('#pilih_paket').val(),
-                        origin: $('#pilih_paket').val(),
-                        destination: $('#pilih_paket').val(),
+                        origin: "{{ config('rajaongkir.origin') }}",
+                        destination: "{{ $data[0]->user->district->id }}",
                         data: js,
                     },
                     dataType: "JSON",
@@ -482,7 +482,7 @@
                     },
                     success: function(response) {
                         $.LoadingOverlay('hide');
-                        
+
                         snap.pay(response.data, {
                             onSuccess: function(result) {
                                 // Success
@@ -499,21 +499,43 @@
                                     },
                                     success: function(response) {
                                         $.LoadingOverlay('hide');
-                                        location.href = "{{ route('user.order.konfirmasi') }}"
+                                        location.href =
+                                            "{{ route('user.order.konfirmasi') }}"
                                     }
                                 });
 
                             },
 
-                            onError: function(result) {
-                                
-                                // Error
+                            onPending: function() {
+                                // Pending
                                 $.ajax({
                                     type: "POST",
                                     url: "{{ route('user.order.pembayaran') }}",
                                     data: {
                                         id: response.order_id,
                                         status: 2
+                                    },
+                                    dataType: "JSON",
+                                    beforeSend: function() {
+                                        $.LoadingOverlay('show');
+                                    },
+                                    success: function(response) {
+                                        $.LoadingOverlay('hide');
+                                        location.href =
+                                            "{{ route('user.order.konfirmasi') }}"
+                                    }
+                                });
+                            },
+
+                            onError: function(result) {
+
+                                // Error
+                                $.ajax({
+                                    type: "POST",
+                                    url: "{{ route('user.order.pembayaran') }}",
+                                    data: {
+                                        id: response.order_id,
+                                        status: 3
                                     },
                                     dataType: "JSON",
                                     beforeSend: function() {
