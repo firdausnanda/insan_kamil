@@ -387,7 +387,7 @@
                                 );
                         });
                     } else {
-                        $('#pengiriman').append(`Tidak ditemukan`);
+                        $('#pengiriman').append(`<li>Paket telah diserahkan ke kurir.</li>`);
                     }
                 }
             });

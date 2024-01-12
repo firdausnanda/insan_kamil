@@ -320,13 +320,14 @@
                 success: function(response) {
                     $('#pengiriman').empty();
                     if (response.data != null) {
+                        $('#pengiriman').append(`<li>Paket telah diserahkan ke kurir.</li>`);
                         $.each(response.data, function(i, v) {
                             $('#pengiriman').append(
                                 `<li>${v.manifest_date} ${v.manifest_time} - ${v.manifest_description} ${v.city_name}</li>`
                             );
                         });
                     } else {
-                        $('#pengiriman').append(`Tidak ditemukan`);
+                        $('#pengiriman').append(`<li>Paket telah diserahkan ke kurir.</li>`);
                     }
                 }
             });
