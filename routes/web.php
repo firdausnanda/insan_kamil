@@ -79,8 +79,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
   Route::group(['prefix' => 'order', 'as' => 'order.'], function () {
 		Route::get('', [OrderController::class, 'index'])->name('index');
 		Route::post('', [OrderController::class, 'store'])->name('store');
+		Route::get('/waybill', [OrderController::class, 'waybill'])->name('waybill');
 		Route::get('/detail/{id}', [OrderController::class, 'detail'])->name('detail');
-		
 	});
 
 	// Pengguna
@@ -138,6 +138,7 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['role:user']
 		Route::get('/jumlah', [UserOrderController::class, 'jumlah'])->name('jumlah');
 		Route::post('/temp', [UserOrderController::class, 'temp'])->name('temp');
 		Route::get('/konfirmasi', [UserOrderController::class, 'konfirmasi'])->name('konfirmasi');
+		Route::get('/waybill', [UserOrderController::class, 'waybill'])->name('waybill');
 		Route::get('/detail-konfirmasi/{id}', [UserOrderController::class, 'detail_konfirmasi'])->name('detail_konfirmasi');
 	});
 

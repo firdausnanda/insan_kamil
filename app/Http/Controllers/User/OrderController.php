@@ -12,6 +12,7 @@ use App\Models\ProdukDikirim;
 use App\Models\TempOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Kavist\RajaOngkir\Facades\RajaOngkir;
 use Midtrans\Snap;
@@ -258,7 +259,7 @@ class OrderController extends Controller
                 'destination'       => $request->city_destination, // ID kota/kabupaten tujuan
                 'destinationType'   => 'subdistrict', // ID kota/kabupaten tujuan
                 'weight'            => $request->weight, // berat barang dalam gram
-                'courier'           => $request->courier // kode kurir pengiriman: ['jne', 'tiki', 'pos'] untuk starter
+                'courier'           => $request->courier 
             ])->get();
 
             return ResponseFormatter::success($cost, 'Data berhasil diambil!');
@@ -346,5 +347,32 @@ class OrderController extends Controller
             return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
         }
         
+    }
+
+    public function waybill(Request $request)
+    {
+        try {
+
+            if ($request->waybill != '') {
+
+                $waybill = Http::withHeaders([
+                    'key' => env('RAJAONGKIR_API_KEY')
+                ])->post('https://pro.rajaongkir.com/api/waybill',[
+                    'waybill' => $request->waybill,
+                    'courier' => $request->courier
+                ])->json();
+
+                $tracking = $waybill['rajaongkir']['result'];
+
+                return ResponseFormatter::success($tracking, 'Data berhasil diambil!');
+            }
+
+            return '';
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error('Error!', $e->getMessage(), 500);
+        }
+
     }
 }

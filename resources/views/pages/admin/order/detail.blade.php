@@ -22,7 +22,7 @@
                         </div>
                         <!-- button -->
                         <div>
-                            <a href="#" class="btn btn-primary">Kembali</a>
+                            <a href="{{ route('admin.order.index') }}" class="btn btn-primary">Kembali</a>
                         </div>
                     </div>
                 </div>
@@ -41,14 +41,19 @@
                                 <div class="d-md-flex gap-2">
                                     <div class="mb-2 mb-md-0">
                                         <select class="form-select" id="status">
-                                            <option value="2">Belum Diproses</option>
-                                            <option value="3">Diproses</option>
-                                            <option value="4">Pengiriman</option>
-                                            <option value="5">Selesai</option>
+                                            <option value="2" {{ $order->status == 2 ? 'Selected' : '' }}>Belum
+                                                Diproses</option>
+                                            <option value="3" {{ $order->status == 3 ? 'Selected' : '' }}>Diproses
+                                            </option>
+                                            <option value="4" {{ $order->status == 4 ? 'Selected' : '' }}>Pengiriman
+                                            </option>
+                                            <option value="5" {{ $order->status == 5 ? 'Selected' : '' }}>Selesai
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="mb-2 mb-md-0">
-                                        <input type="text" id="no_resi" value="{{ $order->no_resi }}" class="form-control d-none">
+                                        <input type="text" id="no_resi" value="{{ $order->no_resi }}"
+                                            class="form-control d-none">
                                     </div>
                                     <!-- button -->
                                     <div class="ms-md-3">
@@ -59,6 +64,20 @@
                             </div>
                             <div class="mt-8">
                                 <div class="row">
+                                    {{-- address --}}
+                                    <div class="col-lg-12 col-md-12 col-12">
+                                        <div class="mb-6">
+                                            <div class="alert alert-warning" role="alert">
+                                                <strong>Courier:</strong>
+                                                {{ $courier_search }}<br>
+
+                                                <strong>Nomor Resi:</strong>
+                                                {{ $order->no_resi ?? '-' }}
+
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <!-- address -->
                                     <div class="col-lg-4 col-md-4 col-12">
                                         <div class="mb-6">
@@ -70,7 +89,8 @@
                                                 <br />
                                                 {{ $order->user->no_telp }}
                                             </p>
-                                            <a href="#">View Profile</a>
+                                            <button class="btn btn-link p-0 text-decoration-none btn-profil">View
+                                                Profile</button>
                                         </div>
                                     </div>
                                     <!-- address -->
@@ -201,8 +221,9 @@
                                 @if ($order->status >= 4)
                                     <div class="col-md-6 mb-4 mb-lg-0">
                                         <h6>Detail Pengiriman</h6>
+
                                         <ul>
-                                            <li>Diterima Kurir</li>
+                                            <div id="pengiriman"></div>
                                         </ul>
                                     </div>
                                 @endif
@@ -213,6 +234,74 @@
             </div>
         </div>
     </main>
+
+    {{-- Modal Show --}}
+    <div class="modal fade" id="modal-show" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Data Pengguna</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-edit">
+                    <div class="modal-body">
+                        <div class="row">
+                            <!-- input -->
+                            <div class="col-md-12 mb-3">
+                                <!-- input -->
+                                <label class="form-label" for="nama">
+                                    Nama Lengkap
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" id="nama" name="nama" class="form-control-plaintext"
+                                    placeholder="Nama Lengkap" value="{{ $order->user->name }}" />
+                                <input type="hidden" name="id_user" value="{{ $order->user->id }}" />
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="no_telepon">
+                                    Nomor Telepon
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="hidden" name="email" value="{{ $order->user->email }}">
+                                <input type="text" id="no_telepon" name="no_telepon" class="form-control-plaintext"
+                                    placeholder="Nomor Telepon" value="{{ $order->user->no_telp }}" />
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <!-- input -->
+                                <label class="form-label" for="alamat">Alamat</label>
+                                <textarea rows="3" id="alamat" name="alamat" class="form-control-plaintext" placeholder="Nama Lengkap">{{ $order->user->alamat }}</textarea>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <!-- input -->
+                                <label class="form-label" for="provinsi">Provinsi</label>
+                                <input type="text" id="no_telepon" name="no_telepon" class="form-control-plaintext"
+                                    placeholder="Nomor Telepon"
+                                    value="{{ $order->user->province ? $order->user->province->name : '' }}" />
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <!-- input -->
+                                <label class="form-label" for="kota">Kota</label>
+                                <input type="text" id="no_telepon" name="no_telepon" class="form-control-plaintext"
+                                    placeholder="Nomor Telepon"
+                                    value="{{ $order->user->city ? $order->user->city->name : '' }}" />
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <!-- input -->
+                                <label class="form-label" for="desa">Kelurahan/Desa</label>
+                                <input type="text" id="no_telepon" name="no_telepon" class="form-control-plaintext"
+                                    placeholder="Nomor Telepon"
+                                    value="{{ $order->user->district ? $order->user->district->name : '' }}" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -220,18 +309,25 @@
         $(document).ready(function() {
 
             // Filter
-            $("#status").change(function (e) { 
+            $("#status").change(function(e) {
                 e.preventDefault();
 
                 if ($('#status').val() == 4) {
                     $('#no_resi').addClass('d-block').removeClass('d-none')
-                }else{
+                } else {
                     $('#no_resi').addClass('d-none').removeClass('d-block')
                 }
             });
 
+            // Filter
+            if ($('#status').val() == 4) {
+                $('#no_resi').addClass('d-block').removeClass('d-none')
+            } else {
+                $('#no_resi').addClass('d-none').removeClass('d-block')
+            }
+
             // Simpan
-            $('#btn-simpan').click(function (e) { 
+            $('#btn-simpan').click(function(e) {
                 e.preventDefault();
 
                 $.ajax({
@@ -239,18 +335,63 @@
                     url: "{{ route('admin.order.store') }}",
                     data: {
                         no_resi: $('#no_resi').val(),
-                        id_order: '{{ $order->id }}'
+                        id_order: '{{ $order->id }}',
+                        status: $('#status').val()
                     },
                     dataType: "json",
-                    beforeSend: function(){
+                    beforeSend: function() {
                         $.LoadingOverlay('show');
                     },
-                    success: function (response) {
+                    success: function(response) {
                         $.LoadingOverlay('hide');
-                        location.reload()
+                        if (response.meta.status == "success") {
+                            Swal.fire({
+                                icon: 'success',
+                                title: "Sukses!",
+                                text: "Data berhasil disimpan",
+                            }).then((result) => {
+                                location.href = "{{ route('admin.order.index') }}";
+                            });
+                        }
                     }
                 });
             });
+
+            // Button Profile
+            $('.btn-profil').click(function(e) {
+                e.preventDefault();
+
+                $('#modal-show').modal('show')
+            });
+
+            // Get Waybill
+            $.ajax({
+                type: "GET",
+                url: "{{ route('admin.order.waybill') }}",
+                data: {
+                    waybill: $('#no_resi').val(),
+                    courier: '{{ $order->courier }}'
+                },
+                dataType: "json",
+                beforeSend: function() {
+                    $('#pengiriman').append(`<div class="spinner-border text-success" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                    </div>`);
+                },
+                success: function(response) {
+                    $('#pengiriman').empty();
+                    if (response.data != null) {
+                        $.each(response.data, function(i, v) {
+                            $('#pengiriman').append(
+                                `<li>${v.manifest_date} ${v.manifest_time} - ${v.manifest_description} ${v.city_name}</li>`
+                                );
+                        });
+                    } else {
+                        $('#pengiriman').append(`Tidak ditemukan`);
+                    }
+                }
+            });
+
         });
     </script>
 @endsection

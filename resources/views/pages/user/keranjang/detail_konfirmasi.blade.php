@@ -177,7 +177,7 @@
                                         <div class="col-md-6 mb-4 mb-lg-0">
                                             <h6>Detail Pengiriman</h6>
                                             <ul>
-                                                <li>Diterima Kurir</li>
+                                                <div id="pengiriman"></div>
                                             </ul>
                                         </div>
                                     @endif
@@ -301,6 +301,34 @@
                         Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
                     },
                 });
+            });
+
+            // Get Waybill
+            $.ajax({
+                type: "GET",
+                url: "{{ route('user.order.waybill') }}",
+                data: {
+                    waybill: '{{ $order->no_resi }}',
+                    courier: '{{ $order->courier }}'
+                },
+                dataType: "json",
+                beforeSend: function() {
+                    $('#pengiriman').append(`<div class="spinner-border text-success" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                    </div>`);
+                },
+                success: function(response) {
+                    $('#pengiriman').empty();
+                    if (response.data != null) {
+                        $.each(response.data, function(i, v) {
+                            $('#pengiriman').append(
+                                `<li>${v.manifest_date} ${v.manifest_time} - ${v.manifest_description} ${v.city_name}</li>`
+                            );
+                        });
+                    } else {
+                        $('#pengiriman').append(`Tidak ditemukan`);
+                    }
+                }
             });
 
         });
