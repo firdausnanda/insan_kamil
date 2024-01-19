@@ -490,7 +490,7 @@
                                     type: "POST",
                                     url: "{{ route('user.order.pembayaran') }}",
                                     data: {
-                                        id: response.order_id,
+                                        id: result.order_id,
                                         status: 1
                                     },
                                     dataType: "JSON",
@@ -506,13 +506,13 @@
 
                             },
 
-                            onPending: function() {
+                            onPending: function(result) {
                                 // Pending
                                 $.ajax({
                                     type: "POST",
                                     url: "{{ route('user.order.pembayaran') }}",
                                     data: {
-                                        id: response.order_id,
+                                        id: result.order_id,
                                         status: 2
                                     },
                                     dataType: "JSON",
@@ -534,7 +534,7 @@
                                     type: "POST",
                                     url: "{{ route('user.order.pembayaran') }}",
                                     data: {
-                                        id: response.order_id,
+                                        id: result.order_id,
                                         status: 3
                                     },
                                     dataType: "JSON",
