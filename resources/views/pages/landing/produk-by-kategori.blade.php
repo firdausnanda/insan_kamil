@@ -129,6 +129,10 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="mb-8">
+                                <button class="btn btn-primary"><i class="fa-solid fa-filter me-2"></i> Filter</button>
+                            </div>
                         </div>
                     </div>
                 </aside>

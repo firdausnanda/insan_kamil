@@ -179,6 +179,11 @@
                                             <ul>
                                                 <div id="pengiriman"></div>
                                             </ul>
+                                            @if ($order->status != 5)
+                                                <span class="text-secondary d-block mb-2">Paket Telah diterima?</span>
+                                                <button class="btn btn-info btn-sm btn-diterima"><i
+                                                        class="fa-solid fa-check me-2"></i>Paket Diterima</button>
+                                            @endif
                                         </div>
                                     @endif
                                 </div>
@@ -189,6 +194,53 @@
             </div>
         </div>
     </section>
+
+    <!-- Modal Body -->
+    <div class="modal fade" id="modal-rating" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId">
+                        Berikan Rating
+                    </h5>
+                </div>
+                <form id="form-rating">
+                    <div class="modal-body">
+                        @foreach ($order->produk_dikirim as $i)
+                            <div class="row mb-2">
+                                <div class="col-1">
+                                    @if ($i->produk->gambar_produk)
+                                        <img src="{{ asset('storage/produk/' . $i->produk->gambar_produk[0]->gambar) }}"
+                                            alt="" class="icon-shape icon-lg" />
+                                    @else
+                                        <img src="{{ asset('images/products/product-img-1.jpg') }}" alt=""
+                                            class="icon-shape icon-lg" />
+                                    @endif
+                                </div>
+                                <div class="col-11">
+                                    <h5>{{ $i->produk->nama_produk }}</h5>
+                                    <input type="hidden" name="id_produk[]" value="{{ $i->produk->id }}">
+                                    <h6 class="text-secondary fw-light fs-6">Bagaimana produk ini menurut anda?</h6>
+                                    <input name="rating[]" class="rating rating-loading input-1" value="5"
+                                        data-size="sm" data-show-clear="false" data-show-caption="true" data-min="0"
+                                        data-max="5" data-step="1">
+                                    <h6 class="text-secondary fw-light fs-6">Berikan ulasan untuk produk ini</h6>
+                                    <textarea name="ulasan[]" class="form-control" rows="3"></textarea>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ route('user.order.konfirmasi') }}" type="button" class="btn btn-secondary">
+                            Batal
+                        </a>
+                        <button type="submit" class="btn btn-primary">Kirimkan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -329,7 +381,79 @@
                     } else {
                         $('#pengiriman').append(`<li>Paket telah diserahkan ke kurir.</li>`);
                     }
+
+                    if ('{{ $order->status == 5 }}') {
+                        $('#pengiriman').append(`<li>Paket telah selesai dikirimkan.</li>`);    
+                    }
                 }
+            });
+
+            // Paket diterima
+            $('.btn-diterima').click(function(e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: "Barang sudah diterima?",
+                    text: "Pastikan barang yang anda pesan sudah diterima!",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#889397",
+                    confirmButtonText: "Sudah diterima",
+                    cancelButtonText: "Belum",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "GET",
+                            url: "{{ route('user.order.diterima') }}",
+                            data: {
+                                order_id: "{{ $order->id }}"
+                            },
+                            dataType: "JSON",
+                            beforeSend: function() {
+                                $.LoadingOverlay('show');
+                            },
+                            success: function(response) {
+                                $.LoadingOverlay('hide');
+                                $('#modal-rating').modal('show')
+                            }
+                        });
+                    }
+                });
+
+            });
+
+            // with plugin options
+            $(".input-id").rating();
+
+            $('#form-rating').submit(function(e) {
+                e.preventDefault();
+
+                var user = "{{ $order->user->id }}"
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('user.order.rating') }}",
+                    data: $(this).serialize() + `&user=${user}`,
+                    dataType: "JSON",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire({
+                            icon: 'success',
+                            title: "Sukses!",
+                            text: "Data berhasil disimpan",
+                        }).then((result) => {
+                            location.href = "{{ route('user.order.konfirmasi') }}"
+                        });
+                    },
+                    error: function(response) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Kesalahan!', 'Data gagal disimpan', 'error')
+                    }
+                });
             });
 
         });

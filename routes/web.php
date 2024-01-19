@@ -139,6 +139,8 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['role:user']
 		Route::post('/temp', [UserOrderController::class, 'temp'])->name('temp');
 		Route::get('/konfirmasi', [UserOrderController::class, 'konfirmasi'])->name('konfirmasi');
 		Route::get('/waybill', [UserOrderController::class, 'waybill'])->name('waybill');
+		Route::get('/diterima', [UserOrderController::class, 'diterima'])->name('diterima');
+		Route::post('/rating', [UserOrderController::class, 'rating'])->name('rating');
 		Route::get('/detail-konfirmasi/{id}', [UserOrderController::class, 'detail_konfirmasi'])->name('detail_konfirmasi');
 	});
 

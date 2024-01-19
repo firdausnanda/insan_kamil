@@ -375,4 +375,33 @@ class OrderController extends Controller
         }
 
     }
+
+    public function diterima(Request $request)
+    {
+        try {
+            $cekOrder = Order::where('id', $request->order_id)->update([
+                'status' => 5
+            ]);
+            return ResponseFormatter::success($cekOrder, 'data berhasil disimpan');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }
+    }
+
+    public function rating(Request $request)
+    {
+        try {
+            foreach ($request->id_produk as $k => $v) {
+                $produk = Produk::where('id', $v)->first();
+                $produk->rateOnce($request->rating[$k], $request->ulasan[$k]);
+            }
+
+            return ResponseFormatter::success($produk, 'data berhasil disimpan');
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error('Error!', $e->getMessage(), 500);
+        }
+    }
 }

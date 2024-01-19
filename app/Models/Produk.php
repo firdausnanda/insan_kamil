@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use willvincent\Rateable\Rateable;
 
 class Produk extends Model
 {
-    use HasFactory;
+    use HasFactory, Rateable;
 
     protected $table = 'produk';
     

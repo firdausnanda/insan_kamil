@@ -26,6 +26,8 @@
     <link rel="stylesheet" href="{{ asset('vendor/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/select2/select2-bootstrap-5-theme.min.css') }}">
     <link href="{{ asset('vendor/nouislider/dist/nouislider.min.css') }}" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/css/star-rating.min.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.css" media="all" rel="stylesheet" type="text/css" />
 
 
     <!-- Theme CSS -->
@@ -136,7 +138,6 @@
     <!-- Theme JS -->
     <script src="{{ asset('js/vendors/password.js') }}"></script>
     <script src="{{ asset('js/vendors/validation.js') }}"></script>
-    <script src="{{ asset('js/theme.min.js') }}"></script>
     <script src="{{ asset('vendor/slick-carousel/slick/slick.min.js') }}"></script>
     <script src="{{ asset('js/vendors/slick-slider.js') }}"></script>
     <script src="{{ asset('vendor/tiny-slider/dist/min/tiny-slider.js') }}"></script>
@@ -153,8 +154,13 @@
     <script src="{{ asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
     <script src="{{ asset('vendor/select2/select2.min.js') }}"></script>
     <script src="{{ asset('vendor/nouislider/dist/nouislider.min.js') }}"></script>
+    <script src="{{ asset('vendor/wnumb/wNumb.min.js') }}"></script>
     <script src="{{ asset('vendor/momentjs/moment.min.js') }}"></script>
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
+    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/locales/LANG.js"></script>
+    <script src="{{ asset('js/theme.min.js') }}"></script>
     <script>
         $(document).ready(function() {
             $.ajaxSetup({

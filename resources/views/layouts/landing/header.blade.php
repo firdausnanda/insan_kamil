@@ -254,11 +254,11 @@
                                         <div class="border-top px-5 py-3">
                                             <a class="d-block" href="{{ route('logout') }}"
                                                 onclick="event.preventDefault();
-                                                  document.getElementById('logout-form').submit();">
+                                                  document.getElementById('logout-formm').submit();">
                                                 Logout
                                             </a>
 
-                                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                            <form id="logout-formm" action="{{ route('logout') }}" method="POST"
                                                 class="d-none">
                                                 @csrf
                                             </form>
