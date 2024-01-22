@@ -84,6 +84,15 @@
                         </div>
                     </a>
                 </li>
+                <li class="nav-item ">
+                    <a class="nav-link {{ request()->routeIs('admin.slideshow.*') ? 'active' : '' }}"
+                        href="{{ route('admin.slideshow.index') }}">
+                        <div class="d-flex align-items-center">
+                            <span class="nav-link-icon"> <i class="bi bi-file-earmark-slides"></i></span>
+                            <span class="nav-link-text">Slideshow</span>
+                        </div>
+                    </a>
+                </li>
 
                 <li class="nav-item mt-6 mb-3">
                     <span class="nav-label">System Monitoring</span>

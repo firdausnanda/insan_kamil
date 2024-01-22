@@ -6,6 +6,7 @@ use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\Kategori;
 use App\Models\Produk;
+use App\Models\Slideshow;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
@@ -15,7 +16,8 @@ class HomeController extends Controller
         $produk_laris = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->limit(5)->get();
         $produk_baru = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->limit(12)->get();
         $kategori = Kategori::all();
-        return view('pages.landing.index', compact('produk_laris', 'produk_baru', 'kategori'));
+        $slide = Slideshow::where('status', 1)->orderBy('urutan', 'asc')->get();
+        return view('pages.landing.index', compact('produk_laris', 'produk_baru', 'kategori', 'slide'));
     }
     
     public function kategori($kategori, Request $request) {

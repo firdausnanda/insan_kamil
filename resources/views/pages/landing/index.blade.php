@@ -4,47 +4,32 @@
     <section class="mt-8">
         <div class="container">
             <div class="hero-slider ">
-                <div
-                    style="background: url({{ asset('images/slider/hero-img-slider-1.jpg') }})no-repeat; background-size: cover; border-radius: .5rem; background-position: center;">
-                    <div class="ps-lg-12 py-lg-16 col-xxl-5 col-lg-7 col-md-8 py-14 px-8 text-xs-center">
+                @forelse ($slide as $i)
+                    <div class=" "
+                        style="background: url({{ asset('storage/slideshow/' . $i->gambar) }}) no-repeat; background-size: cover; border-radius: .5rem; background-position: center;">
+                        <div class="ps-lg-12 py-lg-16 col-xxl-5 col-lg-7 col-md-8 py-14 px-8 text-xs-center">
 
 
-                        <h1 class="text-white display-5 fw-bold mt-4">SuperMarket For Fresh Grocery </h1>
-                        <p class="lead text-white">Introduced a new model for online grocery shopping
-                            and convenient home delivery at any time.</p>
-                        <a href="#!" class="btn btn-dark mt-3">Shop Now <i
-                                class="feather-icon icon-arrow-right ms-1"></i></a>
+                            <h1 class="text-white display-5 fw-bold mt-4"> </h1>
+                            <p class="lead text-white"></p>
+                        </div>
+
                     </div>
+                @empty
+                    <div class=" "
+                        style="background: url({{ asset('images/slider/hero-img-slider-1.jpg') }})no-repeat; background-size: cover; border-radius: .5rem; background-position: center;">
+                        <div class="ps-lg-12 py-lg-16 col-xxl-5 col-lg-7 col-md-8 py-14 px-8 text-xs-center">
 
-                </div>
-                <div class=" "
-                    style="background: url({{ asset('images/slider/hero-img-slider-2.jpg') }})no-repeat; background-size: cover; border-radius: .5rem; background-position: center;">
-                    <div class="ps-lg-12 py-lg-16 col-xxl-5 col-lg-7  col-md-8 py-14 px-8 text-xs-center">
 
-                        <h1 class="text-dark display-5 fw-bold mt-4">Opening Sale<br>
-                            Discount up to <span class="text-primary display-6">50%</span></h1>
-                        <p class="lead ">Snack on late-night munchies of delicious nuts & you’re guaranteed happiness
-                            before you
-                            doze!
-                        </p>
-                        <a href="#!" class="btn btn-dark mt-3">Shop Now <i
-                                class="feather-icon icon-arrow-right ms-1"></i></a>
+                            <h1 class="text-white display-5 fw-bold mt-4">SuperMarket For Fresh Grocery </h1>
+                            <p class="lead text-white">Introduced a new model for online grocery shopping
+                                and convenient home delivery at any time.</p>
+                            <a href="#!" class="btn btn-dark mt-3">Shop Now <i
+                                    class="feather-icon icon-arrow-right ms-1"></i></a>
+                        </div>
+
                     </div>
-
-                </div>
-                <div class=" "
-                    style="background: url({{ asset('images/slider/hero-img-slider-3.jpg') }})no-repeat; background-size: cover; border-radius: .5rem; background-position: center;">
-                    <div class="ps-lg-12 py-lg-16 col-xxl-5 col-lg-7  col-md-8 py-14 px-8 text-xs-center">
-
-                        <h1 class="text-dark display-5 fw-bold mt-4">Kombo Paket Istimewa </h1>
-                        <p class="lead ">Buku adalah jendela dunia. Dapatkan pandangan eksklusif dengan diskon hebat di
-                            toko buku kami. Jelajahi dan belajar tanpa batas!
-                        </p>
-                        <a href="#!" class="btn btn-dark mt-3">Belanja Sekarang </a>
-                    </div>
-
-                </div>
-
+                @endforelse
 
             </div>
         </div>

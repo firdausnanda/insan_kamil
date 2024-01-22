@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PenerbitController;
 use App\Http\Controllers\Admin\PenggunaController;
+use App\Http\Controllers\Admin\SlideshowController;
 use App\Http\Controllers\Admin\UlasanController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Landing\HomeController;
@@ -102,6 +103,15 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 	// Blog
   Route::group(['prefix' => 'blog', 'as' => 'blog.'], function () {
 		Route::get('', [BlogController::class, 'index'])->name('index');		
+	});
+
+	// Slideshow
+  Route::group(['prefix' => 'slideshow', 'as' => 'slideshow.'], function () {
+		Route::get('', [SlideshowController::class, 'index'])->name('index');		
+		Route::post('', [SlideshowController::class, 'store'])->name('store');		
+		Route::get('/aktif', [SlideshowController::class, 'aktif'])->name('aktif');		
+		Route::post('/update', [SlideshowController::class, 'update'])->name('update');		
+		Route::post('/image', [SlideshowController::class, 'image'])->name('image');		
 	});
 	
 	// Activity

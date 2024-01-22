@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/solid.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/select2/select2-bootstrap-5-theme.min.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('vendor/dropify/dropify.css') }}">
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="{{ asset('css/theme.min.css') }}">
@@ -67,6 +67,7 @@
     <script src="{{ asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
     <script src="{{ asset('vendor/select2/select2.min.js') }}"></script>
     <script src="{{ asset('vendor/momentjs/moment.min.js') }}"></script>
+    <script src="{{ asset('vendor/dropify/dropify.js') }}"></script>
 
     <script>
         $(document).ready(function() {
