@@ -39,6 +39,7 @@
         "files": [
             "app/Helpers/SizeFormatter.php",
             "app/Helpers/CurrencyFormatter.php",
+            "app/Helpers/Rating.php",
             "app/Helpers/ResponseFormatter.php"
         ]
     },

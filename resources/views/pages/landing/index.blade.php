@@ -37,7 +37,8 @@
                     <div class="ps-lg-12 py-lg-16 col-xxl-5 col-lg-7  col-md-8 py-14 px-8 text-xs-center">
 
                         <h1 class="text-dark display-5 fw-bold mt-4">Kombo Paket Istimewa </h1>
-                        <p class="lead ">Buku adalah jendela dunia. Dapatkan pandangan eksklusif dengan diskon hebat di toko buku kami. Jelajahi dan belajar tanpa batas!
+                        <p class="lead ">Buku adalah jendela dunia. Dapatkan pandangan eksklusif dengan diskon hebat di
+                            toko buku kami. Jelajahi dan belajar tanpa batas!
                         </p>
                         <a href="#!" class="btn btn-dark mt-3">Belanja Sekarang </a>
                     </div>
@@ -77,7 +78,8 @@
                                             <ul class="nav nav-category" id="categoryCollapseMenu">
                                                 @foreach ($kategori as $k)
                                                     <li class="nav-item border-bottom w-100 collapsed px-4 py-1">
-                                                        <a href="{{ route('landing.kategori', $k->slug) }}" class="nav-link">
+                                                        <a href="{{ route('landing.kategori', $k->slug) }}"
+                                                            class="nav-link">
                                                             <span class="d-flex align-items-center">
                                                                 <span class="ms-2">{{ $k->nama_kategori }}</span>
                                                             </span><i class="feather-icon icon-chevron-right"></i></a>
@@ -177,7 +179,8 @@
                                     </div>
                                     <div>
                                         @if ($p->harga->diskon > 0)
-                                            <span class="badge bg-danger rounded-pill">{{ $p->harga->diskon . '%' }}</span>
+                                            <span
+                                                class="badge bg-danger rounded-pill">{{ $p->harga->diskon . '%' }}</span>
                                         @endif
                                         <h2 class="mt-3 fs-6"> <a href="{{ route('landing.detail', $p->id) }}"
                                                 class="text-inherit">{{ $p->nama_produk }}</a></h2>
@@ -191,12 +194,14 @@
                                         </div>
                                         <div class="text-warning">
                                             <!-- rating -->
-                                            <small> <i class="bi bi-star-fill"></i>
-                                                <i class="bi bi-star-fill"></i>
-                                                <i class="bi bi-star-fill"></i>
-                                                <i class="bi bi-star-fill"></i>
-                                                <i class="bi bi-star-half"></i></small> <span
-                                                class="text-muted small">4.5</span>
+                                            <small>
+                                                @if (round($p->averageRating()) > 0)
+                                                    {{ tampilkanRating($p->averageRating()) }}
+                                                @endif
+                                            </small>
+                                            @if (round($p->averageRating()) > 0)
+                                                <span class="text-muted small">{{ round($p->averageRating(), 2) }}</span>
+                                            @endif
                                         </div>
 
                                     </div>
@@ -204,6 +209,7 @@
                             @endforeach
                         </div>
                     </div>
+
                     {{-- <div class="mb-6">
 
                         <div class="mb-6">
@@ -332,12 +338,15 @@
                                                 </div>
                                                 <div class="text-warning">
                                                     <!-- rating -->
-                                                    <small> <i class="bi bi-star-fill"></i>
-                                                        <i class="bi bi-star-fill"></i>
-                                                        <i class="bi bi-star-fill"></i>
-                                                        <i class="bi bi-star-fill"></i>
-                                                        <i class="bi bi-star-fill"></i></small> <span
-                                                        class="text-muted small">5.0</span>
+                                                    <small>
+                                                        @if (round($p->averageRating()) > 0)
+                                                            {{ tampilkanRating($p->averageRating()) }}
+                                                        @endif
+                                                    </small>
+                                                    @if (round($p->averageRating()) > 0)
+                                                        <span
+                                                            class="text-muted small">{{ round($p->averageRating(), 2) }}</span>
+                                                    @endif
                                                 </div>
 
                                             </div>

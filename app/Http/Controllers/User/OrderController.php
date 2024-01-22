@@ -160,7 +160,7 @@ class OrderController extends Controller
 
             $payload = [
                 'transaction_details' => [
-                    'order_id'     => env('APP_NAME') . ' - ' . $order->id,
+                    'order_id'     => $order->id,
                     'gross_amount' => $order->harga_total + $order->biaya_pengiriman,
                 ],
                 'customer_details' => [
@@ -315,7 +315,7 @@ class OrderController extends Controller
 
             $payload = [
                 'transaction_details' => [
-                    'order_id'     => env('APP_NAME') . ' - ' . $cekOrder->id,
+                    'order_id'     => $cekOrder->id,
                     'gross_amount' => $cekOrder->harga_total + $cekOrder->biaya_pengiriman,
                 ],
                 'customer_details' => [

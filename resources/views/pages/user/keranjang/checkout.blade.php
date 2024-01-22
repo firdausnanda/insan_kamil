@@ -38,6 +38,7 @@
                                             <button class="btn btn-info mt-2 btn-sm btn-ubah" href="#">Ubah
                                                 Data</button>
                                         </div>
+                                        <input type="hidden" id="subdistrict" value="{{ $data[0]->user->district ? $data[0]->user->district->id : 0 }}">
                                     </div>
                                     <!-- address -->
                                     <div class="col-lg-4 col-md-4 col-12">
@@ -473,7 +474,7 @@
                         courier: $('#jasa_pengiriman').val(),
                         biaya_pengiriman: $('#pilih_paket').val(),
                         origin: "{{ config('rajaongkir.origin') }}",
-                        destination: "{{ $data[0]->user->district->id }}",
+                        destination: $('#subdistrict').val(),
                         data: js,
                     },
                     dataType: "JSON",
