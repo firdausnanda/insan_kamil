@@ -34,6 +34,15 @@
                                 </div>
                                 <div class="mt-8">
                                     <div class="row">
+
+                                        @if ($dropship)
+                                            <div class="col-12">
+                                                <div class="alert alert-primary" role="alert">
+                                                    Dikirim Melalui Dropship
+                                                </div>
+                                            </div>
+                                        @endif
+
                                         <!-- address -->
                                         <div class="col-lg-4 col-md-4 col-12">
                                             <div class="mb-6">
@@ -79,6 +88,38 @@
                                                 </p>
                                             </div>
                                         </div>
+                                        @if ($dropship)
+                                            <div class="col-lg-4 col-md-4 col-12">
+                                                <div class="mb-6">
+                                                    <h6>Alamat Penerima</h6>
+                                                    <p class="mb-1 lh-lg">
+                                                        {{ $dropship->alamat_penerima }}
+                                                        <br>
+                                                        {{ $dropship->district->name }}
+                                                        {{ $dropship->city->name }}
+                                                        <br>
+                                                        {{ $dropship->province->name }}
+                                                        Kode Pos.
+                                                        {{ $dropship->city->postal_code }}
+                                                        <br />
+                                                    </p>
+                                                </div>
+                                                <input type="hidden" id="subdistrict" value="${response.data.desa}">
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-12">
+                                                <div class="mb-6">
+                                                    <h6>Data Pengirim Dropshipper</h6>
+                                                    <p class="mb-1 lh-lg">
+                                                        {{ $dropship->nama_pengirim }}
+                                                        <br />
+                                                        {{ $dropship->email_pengirim }}
+                                                        <br />
+                                                        {{ $dropship->no_telp_pengirim }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        @endif
+
                                     </div>
                                 </div>
                             </div>
@@ -248,7 +289,10 @@
         $(document).ready(function() {
 
             // Button
-            if ("{{ $order->status }}" == 2) {
+            if ("{{ $order->status }}" == 1) {
+                $('#btn-status').addClass('bg-warning')
+                $('#btn-status').text('Menunggu Pembayaran')
+            } else if ("{{ $order->status }}" == 2) {
                 $('#btn-status').addClass('bg-primary')
                 $('#btn-status').text('Sudah Dibayar')
             } else if ("{{ $order->status }}" == 3) {
@@ -383,7 +427,7 @@
                     }
 
                     if ('{{ $order->status == 5 }}') {
-                        $('#pengiriman').append(`<li>Paket telah selesai dikirimkan.</li>`);    
+                        $('#pengiriman').append(`<li>Paket telah selesai dikirimkan.</li>`);
                     }
                 }
             });

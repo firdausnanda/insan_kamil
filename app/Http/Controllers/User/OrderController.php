@@ -4,16 +4,20 @@ namespace App\Http\Controllers\User;
 
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
+use App\Models\Dropship;
+use App\Models\DropshipMaster;
 use App\Models\Keranjang;
 use App\Models\Order;
 use App\Models\Pembayaran;
 use App\Models\Produk;
 use App\Models\ProdukDikirim;
 use App\Models\TempOrder;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Kavist\RajaOngkir\Facades\RajaOngkir;
 use Midtrans\Snap;
 
@@ -34,6 +38,8 @@ class OrderController extends Controller
         $data = TempOrder::with('user.province', 'user.city', 'produk.gambar_produk')->whereHas('user', function($query){
             $query->where('id', Auth::user()->id);
         })->get();
+
+        $dropship = DropshipMaster::where('id_user', Auth::user()->id)->first();
 
         $subTotal = $data->sum(function($q) {
            return $q->jumlah_produk * $q->harga_jual; 
@@ -59,7 +65,7 @@ class OrderController extends Controller
         }
 
         if ($data->first() != '') {
-            return view('pages.user.keranjang.checkout', compact('data', 'subTotal', 'beratProduk', 'courier'));
+            return view('pages.user.keranjang.checkout', compact('data', 'subTotal', 'beratProduk', 'courier', 'dropship'));
         }else{
             return redirect()->route('user.keranjang.index');
         }
@@ -101,7 +107,7 @@ class OrderController extends Controller
 
                 $pembayaran = Pembayaran::where('id_order', $request->id)->first();    
                 Log::error("Pending! : . $pembayaran");
-                return ResponseFormatter::error($pembayaran, 'data gagal disimpan');
+                return ResponseFormatter::success($pembayaran, 'data gagal disimpan');
 
             }elseif ($request->status == 3) {
 
@@ -188,6 +194,23 @@ class OrderController extends Controller
                 'harga_jual' => $order->harga_total + $order->biaya_pengiriman,
                 'jumlah_produk' => $beratProduk,
             ]);
+
+            if ($request->status_dropship == 1) {
+                $cekDropship = DropshipMaster::where('id_user', $request->user)->first();
+    
+                Dropship::create([
+                    'id_user' => $request->user,
+                    'id_order' => $order->id,
+                    'nama_pengirim' => $cekDropship->nama_pengirim,
+                    'no_telp_pengirim' => $cekDropship->no_telp_pengirim,
+                    'email_pengirim' => $cekDropship->email_pengirim,
+                    'alamat_penerima' => $cekDropship->alamat_penerima,
+                    'kota_penerima' => $cekDropship->kota_penerima,
+                    'provinsi_penerima' => $cekDropship->provinsi_penerima,
+                    'desa_penerima' => $cekDropship->desa_penerima,
+                    'no_telp_penerima' => $cekDropship->no_telp_penerima,
+                ]);
+            }
 
             return ResponseFormatter::success($snapToken, 'data berhasil disimpan');
 
@@ -297,13 +320,14 @@ class OrderController extends Controller
     public function detail_konfirmasi(Request $request, $id)
     {
         $order = Order::with('user.province', 'user.city', 'user.district', 'produk_dikirim.produk.gambar_produk')->where('id', $id)->first();
+        $dropship = Dropship::where('id_order', $id)->first();
 
         // harga produk total
         $subTotal = $order->produk_dikirim->sum(function($q) {
             return $q['jumlah_produk'] * $q['harga_jual']; 
         });
 
-        return view('pages.user.keranjang.detail_konfirmasi', compact('order', 'subTotal'));
+        return view('pages.user.keranjang.detail_konfirmasi', compact('order', 'subTotal', 'dropship'));
     }
 
     public function detail_store(Request $request)
@@ -403,5 +427,74 @@ class OrderController extends Controller
             Log::error($e->getMessage());
             return ResponseFormatter::error('Error!', $e->getMessage(), 500);
         }
+    }
+
+    public function dropship(Request $request)
+    {
+        try {
+
+            if ($request->ajax()) {
+                $cek = DropshipMaster::where('id_user', Auth::user()->id)->first();
+                if ($cek == null || $cek == '') {
+                    $user = User::where('id', Auth::user()->id)->first();
+                    DropshipMaster::create([
+                        'id_user' => Auth::user()->id,
+                        'nama_pengirim' => $user->name,
+                        'no_telp_pengirim' => $user->no_telp,
+                        'email_pengirim' => $user->email,
+                        'alamat_penerima' => $user->alamat,
+                        'kota_penerima' => $user->kota,
+                        'provinsi_penerima' => $user->provinsi,
+                        'desa_penerima' => $user->desa,
+                        'no_telp_penerima' => $user->no_telp,
+                    ]);    
+                }
+                $data = DropshipMaster::with('province', 'city', 'district')->where('id_user', Auth::user()->id)->first();
+                return ResponseFormatter::success($data, 'data berhasil diambil!');
+            }
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error('Error!', $e->getMessage(), 500);
+        }
+    }
+
+    public function edit_dropship(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+			'id_dropship' => 'required|string|max:255',
+			'nama_pengirim' => 'required|string|max:255',
+			'no_telp_pengirim' => 'required|string|max:255',
+			'no_telp_penerima' => 'required|string|max:255',
+			'email_pengirim' => 'required|string|max:255',
+			'alamat' => 'required|string|max:255',
+			'provinsi' => 'required|string|max:255',
+			'kota' => 'required|string|max:255',
+			'desa' => 'required|string|max:255',
+		]);
+
+		if ($validator->fails()) {
+			return ResponseFormatter::error($validator->errors(), 'Data tidak valid', 422);
+		}
+
+        try {
+            
+            $user = DropshipMaster::where('id', $request->id_dropship)->update([
+                'nama_pengirim' => $request->nama_pengirim,
+                'no_telp_pengirim' => $request->no_telp_pengirim,
+                'email_pengirim' => $request->email_pengirim,
+                'alamat_penerima' => $request->alamat,
+                'provinsi_penerima' => $request->provinsi,
+                'kota_penerima' => $request->kota,
+                'desa_penerima' => $request->desa,
+                'no_telp_penerima' => $request->no_telp_penerima,
+            ]);
+
+            return ResponseFormatter::success($user, 'Data berhasil diubah!');
+            
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }   
     }
 }
