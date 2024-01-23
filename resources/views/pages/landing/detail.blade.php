@@ -60,19 +60,19 @@
                         <h1 class="mb-1">{{ $produk->nama_produk }}</h1>
                         <input type="hidden" id="id_produk" value="{{ $produk->id }}">
                         @auth
-                        <input type="hidden" id="id_user" value="{{ Auth::user()->id }}">
+                            <input type="hidden" id="id_user" value="{{ Auth::user()->id }}">
                         @endauth
                         <div class="mb-4">
                             <!-- rating -->
                             <!-- rating -->
                             <small class="text-warning">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
+                                @if (round($produk->averageRating()) > 0)
+                                    {{ tampilkanRating($produk->averageRating()) }}
+                                @endif
                             </small>
-                            <a href="#" class="ms-2">(30 reviews)</a>
+                            @if (round($produk->averageRating()) > 0)
+                                <span class="text-primary small">({{ $produk->ratings()->count() }} reviews)</span>
+                            @endif
                         </div>
                         <div class="fs-4">
                             <!-- price -->
@@ -359,7 +359,7 @@
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
-                        $.LoadingOverlay('hide');   
+                        $.LoadingOverlay('hide');
                         Swal.fire('Data Gagal Disimpan!',
                             'Kesalahan Server',
                             'error');
