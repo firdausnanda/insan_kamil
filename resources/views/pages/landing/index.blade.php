@@ -164,8 +164,7 @@
                                     </div>
                                     <div>
                                         @if ($p->harga->diskon > 0)
-                                            <span
-                                                class="badge bg-danger rounded-pill">{{ $p->harga->diskon . '%' }}</span>
+                                            <span class="badge bg-danger rounded-pill">{{ $p->harga->diskon . '%' }}</span>
                                         @endif
                                         <h2 class="mt-3 fs-6"> <a href="{{ route('landing.detail', $p->id) }}"
                                                 class="text-inherit">{{ $p->nama_produk }}</a></h2>
@@ -181,7 +180,7 @@
                                             <!-- rating -->
                                             <small>
                                                 @if (round($p->averageRating()) > 0)
-                                                    {{ tampilkanRating($p->averageRating()) }}
+                                                    {{ tampilkanRating(round($p->averageRating(), 2)) }}
                                                 @endif
                                             </small>
                                             @if (round($p->averageRating()) > 0)
@@ -325,7 +324,7 @@
                                                     <!-- rating -->
                                                     <small>
                                                         @if (round($p->averageRating()) > 0)
-                                                            {{ tampilkanRating($p->averageRating()) }}
+                                                            {{ tampilkanRating(round($p->averageRating(), 2)) }}
                                                         @endif
                                                     </small>
                                                     @if (round($p->averageRating()) > 0)

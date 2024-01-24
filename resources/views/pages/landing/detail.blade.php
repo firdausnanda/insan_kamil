@@ -263,13 +263,15 @@
                                 <div>
                                     <!-- rating -->
                                     <small class="text-warning">
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-half"></i>
+                                        @if (round($p->averageRating()) > 0)
+                                            {{ tampilkanRating(round($p->averageRating(), 2)) }}
+                                        @endif
                                     </small>
-                                    <span class="text-muted small">4.5(149)</span>
+                                    <span class="text-muted small">
+                                        @if (round($p->averageRating()) > 0)
+                                            {{ round($p->averageRating(), 2) }}({{ $p->ratings()->count() }})
+                                        @endif
+                                    </span>
                                 </div>
                                 <!-- price -->
                                 <div class="d-flex justify-content-between align-items-center mt-3">
