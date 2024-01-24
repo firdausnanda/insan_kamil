@@ -241,9 +241,9 @@
                             </div>
                             <div class="col-md-12 mb-3">
                                 <!-- input -->
-                                <label class="form-label" for="desa">Kelurahan/Desa</label>
+                                <label class="form-label" for="desa">Kecamatan</label>
                                 <select name="desa" id="desa" class="form-select">
-                                    <option value="">Pilih Kelurahan/Desa</option>
+                                    <option value="">Pilih Kecamatan</option>
                                     <option value="{{ $data[0]->user->district }}" selected>
                                         {{ $data[0]->user->district ? $data[0]->user->district->name : '' }}
                                     </option>
@@ -344,9 +344,9 @@
                             </div>
                             <div class="col-md-12 mb-3">
                                 <!-- input -->
-                                <label class="form-label" for="desa">Kelurahan/Desa</label>
+                                <label class="form-label" for="desa">Kecamatan</label>
                                 <select name="desa" id="desa_penerima" class="form-select">
-                                    <option value="">Pilih Kelurahan/Desa</option>
+                                    <option value="">Pilih Kecamatan</option>
                                     <option value="{{ $dropship ? $dropship->desa_penerima : '' }}" selected>
                                         {{ $dropship ? $dropship->district->name : '' }}
                                     </option>
@@ -402,7 +402,7 @@
             // Init Select 2    
             $('#desa').select2({
                 theme: 'bootstrap-5',
-                placeholder: '-- Pilih Kelurahan/Desa --',
+                placeholder: '-- Pilih Kecamatan --',
                 dropdownParent: $("#modal-edit")
             });
 
@@ -503,7 +503,7 @@
             // Init Select 2 Dropship
             $('#desa_penerima').select2({
                 theme: 'bootstrap-5',
-                placeholder: '-- Pilih Kelurahan/Desa --',
+                placeholder: '-- Pilih Kecamatan --',
                 dropdownParent: $("#modal-dropship")
             });
 

@@ -117,10 +117,10 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="colFormLabel" class="col-sm-4 col-form-label">Desa/Kelurahan</label>
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Kecamatan</label>
                             <div class="col-sm-8">
                                 <select name="desa" id="desa">
-                                    <option value="">-- Pilih Desa/Kelurahan --</option>
+                                    <option value="">-- Pilih Kecamatan --</option>
                                 </select>
                             </div>
                         </div>
@@ -478,7 +478,7 @@
 
                         $('#desa').attr('disabled', 'disabled');
                         $('#desa').empty().append(
-                            '<option value="" selected disabled>-- Pilih Desa/Kelurahan --</option>'
+                            '<option value="" selected disabled>-- Pilih Kecamatan --</option>'
                         );
                     },
                     success: function(data) {
@@ -514,7 +514,7 @@
 
                         $('#desa_e').attr('disabled', 'disabled');
                         $('#desa_e').empty().append(
-                            '<option value="" selected disabled>-- Pilih Desa/Kelurahan --</option>'
+                            '<option value="" selected disabled>-- Pilih Kecamatan --</option>'
                         );
                     },
                     success: function(data) {
@@ -545,7 +545,7 @@
                     beforeSend: function() {
                         $('#desa').attr('disabled', 'disabled');
                         $('#desa').empty().append(
-                            '<option value="" selected disabled>-- Pilih Desa/Kelurahan --</option>'
+                            '<option value="" selected disabled>-- Pilih Kecamatan --</option>'
                         );
                     },
                     success: function(data) {

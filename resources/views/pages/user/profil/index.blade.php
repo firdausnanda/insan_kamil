@@ -68,9 +68,9 @@
                         </div>
                         <div class="col-md-12 mb-3">
                             <!-- input -->
-                            <label class="form-label" for="desa">Kelurahan/Desa</label>
+                            <label class="form-label" for="desa">Kecamatan</label>
                             <select name="desa" id="desa" class="form-select">
-                                <option value="">Pilih Kelurahan/Desa</option>
+                                <option value="">Pilih Kecamatan</option>
                                 <option value="{{ $user->district }}" selected>
                                     {{ $user->district ? $user->district->name : '' }}
                                 </option>
@@ -250,7 +250,7 @@
             // Init Select 2    
             $('#desa').select2({
                 theme: 'bootstrap-5',
-                placeholder: '-- Pilih Kelurahan/Desa --'
+                placeholder: '-- Pilih Kecamatan --'
             });
 
             // Select Desa
