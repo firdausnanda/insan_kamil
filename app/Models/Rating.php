@@ -9,5 +9,14 @@ class Rating extends Model
 {
     use HasFactory;
 
-    protected $table = "Rating";
+    protected $table = "ratings";
+
+    public function produk() {
+        return $this->belongsTo(Produk::class, 'rateable_id', 'id');
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
 }

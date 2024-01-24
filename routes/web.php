@@ -98,6 +98,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 	// Ulasan
   Route::group(['prefix' => 'ulasan', 'as' => 'ulasan.'], function () {
 		Route::get('', [UlasanController::class, 'index'])->name('index');		
+		Route::put('', [UlasanController::class, 'update'])->name('update');		
+		Route::delete('', [UlasanController::class, 'destroy'])->name('destroy');		
 	});
 	
 	// Blog

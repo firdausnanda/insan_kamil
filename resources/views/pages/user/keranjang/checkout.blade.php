@@ -843,7 +843,7 @@
                                 break;
                             default:
                                 Swal.fire('Data Gagal Disimpan!',
-                                    'xhr.responseJSON.meta.message',
+                                    'Kesalahan Server',
                                     'error');
                                 break;
                         }

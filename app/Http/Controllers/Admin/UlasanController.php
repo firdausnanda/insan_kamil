@@ -2,64 +2,70 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
+use App\Models\Rating;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class UlasanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $ulasan = Rating::with('produk', 'user')->get();
+            return ResponseFormatter::success($ulasan, 'data berhasil diambil!');
+        }
+
         return view('pages.admin.ulasan.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function update(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+			'rating' => 'required|string|max:255',
+			'comment' => 'required|string',
+			'id' => 'required|string',
+		]);
+
+		if ($validator->fails()) {
+			return ResponseFormatter::error($validator->errors(), 'Data tidak valid', 422);
+		}
+
+        try {
+            $ulasan = Rating::where('id', $request->id)->update([
+                'rating' => $request->rating,
+                'comment' => $request->comment
+            ]);
+
+            return ResponseFormatter::success($ulasan, 'Data berhasil diupdate!');
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }        
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function destroy(Request $request)
     {
-        //
-    }
+        $validator = Validator::make($request->all(), [
+			'id' => 'required|string',
+		]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+		if ($validator->fails()) {
+			return ResponseFormatter::error($validator->errors(), 'Data tidak valid', 422);
+		}
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        try {
+            
+            $ulasan = Rating::where('id', $request->id)->delete();
+            return ResponseFormatter::success($ulasan, 'Data dihapus!');
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }
     }
 }
