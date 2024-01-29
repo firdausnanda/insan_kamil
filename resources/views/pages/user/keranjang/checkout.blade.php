@@ -244,7 +244,7 @@
                                 <label class="form-label" for="desa">Kecamatan</label>
                                 <select name="desa" id="desa" class="form-select">
                                     <option value="">Pilih Kecamatan</option>
-                                    <option value="{{ $data[0]->user->district->id }}" selected>
+                                    <option value="{{ $data[0]->user || $data[0]->user->district ? $data[0]->user->district->id : 0 }}" selected>
                                         {{ $data[0]->user->district ? $data[0]->user->district->name : '' }}
                                     </option>
                                 </select>
