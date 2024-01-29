@@ -203,9 +203,9 @@
                 var cell_harga = table.row($(this).parents('tr')).data();
                 var cell_harga_total = table.cell( $(this).parents('td') , 5 );
 
-                var a = cell.data( cell.data() + 1 ).draw();
+                var nilai = parseInt(cell.data());
+                var a = cell.data( nilai + 1 ).draw();
                 cell_harga_total.data( cell.data() * cell_harga.produk.harga.harga_akhir ).draw();
-
                 $.ajax({
                     type: "GET",
                     url: "{{ route('user.order.jumlah') }}",
