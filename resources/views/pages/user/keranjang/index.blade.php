@@ -41,6 +41,7 @@
                                         <th scope="col">Harga</th>
                                         <th scope="col">Jumlah</th>
                                         <th scope="col">Total</th>
+                                        <th scope="col">Aksi</th>
                                     </thead>
                                     <tbody>
                                     </tbody>
@@ -48,7 +49,8 @@
                             </div>
                             <div class="row px-5 pb-5">
                                 <div class="col">
-                                    <button class="btn btn-secondary btn-back"><i class="fa-solid fa-arrow-left me-2"></i> Lanjutkan
+                                    <button class="btn btn-secondary btn-back"><i class="fa-solid fa-arrow-left me-2"></i>
+                                        Lanjutkan
                                         Belanja</button>
                                 </div>
                                 <div class="col d-flex justify-content-end">
@@ -147,6 +149,13 @@
                                 `${row.produk.harga.harga_akhir * row.jumlah_produk}`)
                         }
                     },
+                    {
+                        targets: 6,
+                        className: 'align-middle text-center',
+                        render: function(data, type, row, meta) {
+                            return `<button class="btn btn-sm btn-danger btn-hapus"><i class="fa-solid fa-trash-can"></i></button>`
+                        }
+                    },
                 ],
                 select: {
                     style: 'multi',
@@ -163,17 +172,17 @@
             // Edit Kurangi Jumlah
             $('#produks tbody').on('click', 'button.button-minus', function(event) {
                 event.preventDefault();
-                var cell = table.cell( $(this).parents('td') );
+                var cell = table.cell($(this).parents('td'));
                 var cell_harga = table.row($(this).parents('tr')).data();
-                var cell_harga_total = table.cell( $(this).parents('td') , 5 );
+                var cell_harga_total = table.cell($(this).parents('td'), 5);
 
-                var a = cell.data( cell.data() - 1 ).draw();
+                var a = cell.data(cell.data() - 1).draw();
 
                 if (a.data() < 1) {
-                    a = cell.data( cell.data() + 1 ).draw();
+                    a = cell.data(cell.data() + 1).draw();
                 }
 
-                cell_harga_total.data( cell.data() * cell_harga.produk.harga.harga_akhir ).draw();
+                cell_harga_total.data(cell.data() * cell_harga.produk.harga.harga_akhir).draw();
 
                 $.ajax({
                     type: "GET",
@@ -186,7 +195,7 @@
                     beforeSend: function() {
                         $.LoadingOverlay('show');
                     },
-                    success: function (response) {
+                    success: function(response) {
                         $.LoadingOverlay('hide');
                     },
                     error: function(response) {
@@ -199,13 +208,13 @@
             // Edit Tambah Jumlah
             $('#produks tbody').on('click', 'button.button-plus', function(event) {
                 event.preventDefault();
-                var cell = table.cell( $(this).parents('td') );
+                var cell = table.cell($(this).parents('td'));
                 var cell_harga = table.row($(this).parents('tr')).data();
-                var cell_harga_total = table.cell( $(this).parents('td') , 5 );
+                var cell_harga_total = table.cell($(this).parents('td'), 5);
 
                 var nilai = parseInt(cell.data());
-                var a = cell.data( nilai + 1 ).draw();
-                cell_harga_total.data( cell.data() * cell_harga.produk.harga.harga_akhir ).draw();
+                var a = cell.data(nilai + 1).draw();
+                cell_harga_total.data(cell.data() * cell_harga.produk.harga.harga_akhir).draw();
                 $.ajax({
                     type: "GET",
                     url: "{{ route('user.order.jumlah') }}",
@@ -217,7 +226,7 @@
                     beforeSend: function() {
                         $.LoadingOverlay('show');
                     },
-                    success: function (response) {
+                    success: function(response) {
                         $.LoadingOverlay('hide');
                     },
                     error: function(response) {
@@ -232,6 +241,48 @@
             $('.btn-checkout').click(function(e) {
                 e.preventDefault();
                 storeCheckout()
+            });
+
+            // Hapus Keranjang
+            $('#produks tbody').on('click', '.btn-hapus', function(event) {
+                event.preventDefault();
+
+                var data = table.row($(this).parents('tr')).data();
+
+                Swal.fire({
+                    title: "Hapus barang dari keranjang?",
+                    text: "Pastikan data yang akan dihapus sudah sesuai",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#889397",
+                    confirmButtonText: "Hapus",
+                    cancelButtonText: "Batalkan",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        $.ajax({
+                            type: "DELETE",
+                            url: "{{ route('user.keranjang.destroy') }}",
+                            data: {
+                                id_keranjang: data.id,
+                            },
+                            dataType: "json",
+                            beforeSend: function() {
+                                $.LoadingOverlay('show');
+                            },
+                            success: function(response) {
+                                $.LoadingOverlay('hide');
+                                table.ajax.reload()
+                            },
+                            error: function(response) {
+                                $.LoadingOverlay('hide');
+                                Swal.fire('Gagal!', 'Periksa kembali data anda.',
+                                    'error');
+                            },
+                        });
+                    }
+                });
             });
 
             // Store Checkout
@@ -295,7 +346,7 @@
             };
 
             // Kembali
-            $('.btn-back').click(function (e) { 
+            $('.btn-back').click(function(e) {
                 e.preventDefault();
                 location.href = "{{ route('landing.home') }}"
             });

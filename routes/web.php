@@ -137,6 +137,7 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['role:user']
 	Route::group(['prefix' => 'keranjang', 'as' => 'keranjang.'], function () {
 		Route::get('', [KeranjangController::class, 'index'])->name('index');
 		Route::post('', [KeranjangController::class, 'store'])->name('store');
+		Route::delete('', [KeranjangController::class, 'destroy'])->name('destroy');
 	});
 	
 	// Order

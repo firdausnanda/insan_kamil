@@ -56,4 +56,15 @@ class KeranjangController extends Controller
         }
         
     }
+
+    public function destroy(Request $request)
+    {
+        try {
+            $k = Keranjang::where('id', $request->id_keranjang)->delete();
+            return ResponseFormatter::success($k, 'Data Berhasil dihapus');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }
+    }
 }
