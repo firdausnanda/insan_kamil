@@ -35,7 +35,7 @@ class OrderController extends Controller
     public function index() 
     {
 
-        $data = TempOrder::with('user.province', 'user.city', 'produk.gambar_produk')->whereHas('user', function($query){
+        $data = TempOrder::with('user.province', 'user.city', 'user.district', 'produk.gambar_produk')->whereHas('user', function($query){
             $query->where('id', Auth::user()->id);
         })->get();
 

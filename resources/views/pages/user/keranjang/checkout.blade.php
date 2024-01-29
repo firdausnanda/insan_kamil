@@ -244,7 +244,7 @@
                                 <label class="form-label" for="desa">Kecamatan</label>
                                 <select name="desa" id="desa" class="form-select">
                                     <option value="">Pilih Kecamatan</option>
-                                    <option value="{{ $data[0]->user || $data[0]->user->district ? $data[0]->user->district->id : 0 }}" selected>
+                                    <option value="{{ $data[0]->user->district }}" selected>
                                         {{ $data[0]->user->district ? $data[0]->user->district->name : '' }}
                                     </option>
                                 </select>
@@ -613,7 +613,7 @@
                 var destination
 
                 if ($('#dropship:checkbox:checked').length > 0) {
-                    destination = "{{ $dropship->desa_penerima }}"
+                    destination = "{{ $dropship ? $dropship->desa_penerima : 0 }}"
                 } else {
                     destination = "{{ $data[0]->user->desa }}"
                 }
