@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\UlasanController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Landing\HomeController;
 use App\Http\Controllers\PaymentCallbackController;
+use App\Http\Controllers\PopupController;
 use App\Http\Controllers\User\KeranjangController;
 use App\Http\Controllers\User\OrderController as UserOrderController;
 use App\Http\Controllers\User\ProfileController;
@@ -114,6 +115,15 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 		Route::get('/aktif', [SlideshowController::class, 'aktif'])->name('aktif');		
 		Route::post('/update', [SlideshowController::class, 'update'])->name('update');		
 		Route::post('/image', [SlideshowController::class, 'image'])->name('image');		
+	});
+
+	// Popup
+  Route::group(['prefix' => 'popup', 'as' => 'popup.'], function () {
+		Route::get('', [PopupController::class, 'index'])->name('index');		
+		Route::post('', [PopupController::class, 'store'])->name('store');		
+		Route::get('/aktif', [PopupController::class, 'aktif'])->name('aktif');		
+		Route::post('/update', [PopupController::class, 'update'])->name('update');		
+		Route::post('/image', [PopupController::class, 'image'])->name('image');		
 	});
 	
 	// Activity

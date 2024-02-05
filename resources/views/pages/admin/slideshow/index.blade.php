@@ -70,7 +70,7 @@
                                 <label for="colFormLabel" class="col-sm-4 col-form-label">Gambar</label>
                                 <!-- input -->
                                 <input type="file" class="upload-berkas-dropify" name="gambar" data-max-file-size="2M"
-                                    data-allowed-file-extensions="jpg png jpeg pdf" id="berkas"
+                                    data-allowed-file-extensions="jpg png jpeg" id="berkas"
                                     data-errors-position="outside" />
 
                             </div>
@@ -255,7 +255,7 @@
             if ($('.upload-berkas-dropify')) {
                 $('.upload-berkas-dropify').dropify({
                     messages: {
-                        'default': '<i class="fa-regular fa-image icon-file"></i> <br> Unggah gambar anda disini <br> <span>  Type: PDF | JPG | JPEG | PNG (Max. 2MB) </span> <br> <button class="btn btn-yellow mt-3">Pilih File</button>',
+                        'default': '<i class="fa-regular fa-image icon-file"></i> <br> Unggah gambar anda disini <br> <span>  Type: JPG | JPEG | PNG (Max. 2MB) </span> <br> <button class="btn btn-yellow mt-3">Pilih File</button>',
                         'replace': 'Klik untuk mengganti gambar anda',
                         'remove': 'Hapus',
                         'error': 'Ooops, something wrong happended.'

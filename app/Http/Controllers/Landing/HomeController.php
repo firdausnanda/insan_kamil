@@ -30,6 +30,42 @@ class HomeController extends Controller
 
         if ($request->ajax()) {
 
+            if ($request->rating1) {
+                
+                switch ($request->sort) {
+                    case 1:
+                        $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori')->whereHas('kategori', function($query) use($kategori){
+                            $query->where('slug', $kategori);
+                        })
+                        ->orderBy('created_at', 'desc')
+                        ->paginate(10);
+                        break;
+                    case 2:
+                        $produk = Produk::with('stok', 'gambar_produk', 'kategori')->whereHas('kategori', function($query) use($kategori){
+                            $query->where('slug', $kategori);
+                        })->with(['harga' => function($q){
+                            $q->orderBy('harga_akhir', 'asc');
+                        }])
+                        ->paginate(10);
+                        break;
+                    case 3:
+                        $produk = Produk::with('stok', 'gambar_produk', 'kategori')->whereHas('kategori', function($query) use($kategori){
+                            $query->where('slug', $kategori);
+                        })->with(['harga' => function($q){
+                            $q->orderBy('harga_akhir', 'desc');
+                        }])
+                        ->paginate(10);
+                        break;                
+                }
+
+                dd($produk);
+    
+                $render = View::make('pages.landing.produk-card', compact('produk'))->render();
+    
+                return ResponseFormatter::success($render, 'data berhasil diambil');
+
+            }
+
             switch ($request->sort) {
                 case 1:
                     $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori')->whereHas('kategori', function($query) use($kategori){

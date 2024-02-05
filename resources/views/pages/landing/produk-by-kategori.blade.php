@@ -69,7 +69,7 @@
                                     <!-- form check -->
                                     <div class="form-check mb-2">
                                         <!-- input -->
-                                        <input class="form-check-input" type="checkbox" value="" id="ratingFive" />
+                                        <input class="form-check-input" type="checkbox" value="5" id="ratingFive" />
                                         <label class="form-check-label" for="ratingFive">
                                             <i class="bi bi-star-fill text-warning"></i>
                                             <i class="bi bi-star-fill text-warning"></i>
@@ -81,8 +81,7 @@
                                     <!-- form check -->
                                     <div class="form-check mb-2">
                                         <!-- input -->
-                                        <input class="form-check-input" type="checkbox" value="" id="ratingFour"
-                                            checked />
+                                        <input class="form-check-input" type="checkbox" value="4" id="ratingFour" />
                                         <label class="form-check-label" for="ratingFour">
                                             <i class="bi bi-star-fill text-warning"></i>
                                             <i class="bi bi-star-fill text-warning"></i>
@@ -94,7 +93,7 @@
                                     <!-- form check -->
                                     <div class="form-check mb-2">
                                         <!-- input -->
-                                        <input class="form-check-input" type="checkbox" value="" id="ratingThree" />
+                                        <input class="form-check-input" type="checkbox" value="3" id="ratingThree" />
                                         <label class="form-check-label" for="ratingThree">
                                             <i class="bi bi-star-fill text-warning"></i>
                                             <i class="bi bi-star-fill text-warning"></i>
@@ -106,7 +105,7 @@
                                     <!-- form check -->
                                     <div class="form-check mb-2">
                                         <!-- input -->
-                                        <input class="form-check-input" type="checkbox" value="" id="ratingTwo" />
+                                        <input class="form-check-input" type="checkbox" value="2" id="ratingTwo" />
                                         <label class="form-check-label" for="ratingTwo">
                                             <i class="bi bi-star-fill text-warning"></i>
                                             <i class="bi bi-star-fill text-warning"></i>
@@ -118,7 +117,7 @@
                                     <!-- form check -->
                                     <div class="form-check mb-2">
                                         <!-- input -->
-                                        <input class="form-check-input" type="checkbox" value="" id="ratingOne" />
+                                        <input class="form-check-input" type="checkbox" value="1" id="ratingOne" />
                                         <label class="form-check-label" for="ratingOne">
                                             <i class="bi bi-star-fill text-warning"></i>
                                             <i class="bi bi-star text-warning"></i>
@@ -131,7 +130,7 @@
                             </div>
 
                             <div class="mb-8">
-                                <button class="btn btn-primary"><i class="fa-solid fa-filter me-2"></i> Filter</button>
+                                <button class="btn btn-primary btn-filter"><i class="fa-solid fa-filter me-2"></i> Filter</button>
                             </div>
                         </div>
                     </div>
@@ -205,7 +204,7 @@
 
             produk()
 
-            // Filter
+            // Sort
             $('#sort').change(function (e) { 
                 e.preventDefault();
                
@@ -226,6 +225,43 @@
                         $.LoadingOverlay('hide');
                         window.scrollTo(0, 0)
                         $('#produk').append(response.data);
+                    }
+                });
+            });
+
+            // Filter
+            $('.btn-filter').click(function (e) { 
+                e.preventDefault();
+
+                var rate1 = $('#ratingOne').is(":checked") ? $('#ratingOne').val() : null
+                var rate2 = $('#ratingTwo').is(":checked") ? $('#ratingTwo').val() : null
+                var rate3 = $('#ratingThree').is(":checked") ? $('#ratingThree').val() : null
+                var rate4 = $('#ratingFour').is(":checked") ? $('#ratingFour').val() : null
+                var rate5 = $('#ratingFive').is(":checked") ? $('#ratingFive').val() : null
+                var slider = document.getElementById('priceRange');
+
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('landing.kategori', $slug->slug) }}",
+                    data: {
+                        sort: $('#sort').val(),
+                        rating1: rate1,
+                        rating2: rate2,
+                        rating3: rate3,
+                        rating4: rate4,
+                        rating5: rate5,
+                        slide: slider.noUiSlider.get()
+                    },
+                    dataType: "JSON",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                        $("#produk").empty();
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+
+                        // Append to Berita
+                        $("#produk").append(response.data);
                     }
                 });
             });

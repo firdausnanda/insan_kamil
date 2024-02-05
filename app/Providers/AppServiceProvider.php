@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Keranjang;
+use App\Models\Popup;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -26,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer(['layouts.landing.header'], function($view) {
             $view->with('cart', Keranjang::with('produk')->where('id_user', Auth::user()->id ?? 1)->count());
+        });
+
+        view()->composer(['layouts.landing.main'], function($view) {
+            $view->with('popup', Popup::first());
         });
     }
 }

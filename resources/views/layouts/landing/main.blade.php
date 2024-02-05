@@ -26,8 +26,10 @@
     <link rel="stylesheet" href="{{ asset('vendor/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/select2/select2-bootstrap-5-theme.min.css') }}">
     <link href="{{ asset('vendor/nouislider/dist/nouislider.min.css') }}" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/css/star-rating.min.css" media="all" rel="stylesheet" type="text/css" />
-    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/css/star-rating.min.css" media="all"
+        rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.css"
+        media="all" rel="stylesheet" type="text/css" />
 
 
     <!-- Theme CSS -->
@@ -90,40 +92,46 @@
 
     <!-- Modal Pop Awal -->
     @if (Route::is('landing.home'))
-        <div class="modal fade" id="modal-subscribe" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
+        @if ($popup && $popup->status == 1)
+            <div class="modal fade" id="modal-subscribe" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
 
-                    <div class="modal-body p-0">
-                        <div class="d-flex align-items-center">
-                            <div class="d-none d-lg-block">
-                                <img src="{{ asset('images/banner/modal_img.jpg') }}" alt=""
-                                    class="img-fluid rounded-start">
-                            </div>
-                            <div class="px-8 py-8 py-lg-0">
-                                <div class="position-absolute end-0 top-0 m-6">
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
+                        <div class="modal-body p-0">
+                            <div class="d-flex align-items-center">
+                                <div class="d-none d-lg-block">
+                                    @if ($popup->gambar)
+                                        <img src="{{ asset('storage/popup/' . $popup->gambar) }}"
+                                            style="min-height: 419px; min-width: 364px" alt=""
+                                            class="img-fluid rounded-start">
+                                    @else
+                                        <img src="{{ asset('images/banner/modal_img.jpg') }}" alt=""
+                                            class="img-fluid rounded-start">
+                                    @endif
                                 </div>
-                                <span class="bg-light-danger text-danger badge rounded-pill mb-4 px-4 py-2">7 Day Super
-                                    Sale
-                                </span>
-                                <h2 class="display-6 fw-bold">Discount up to <br><span class="text-primary">50%</span>
-                                </h2>
-                                <p class="lead mb-5">Seven day of grate deals - what could be better?</p>
+                                <div class="px-8 py-8 py-lg-0">
+                                    <div class="position-absolute end-0 top-0 m-6">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <h2 class="display-6 fw-bold">{{ $popup->judul }} <br><span
+                                            class="text-primary">{{ $popup->diskon }}%</span>
+                                    </h2>
+                                    <p class="lead mb-5">{{ $popup->keterangan }}</p>
 
-                                <div class="d-grid">
-                                    <a href="#" class="btn btn-primary" data-bs-dismiss="modal">Start Show
-                                        Now</a>
+                                    <div class="d-grid">
+                                        <a href="#" class="btn btn-primary" data-bs-dismiss="modal">Start Show
+                                            Now</a>
+                                    </div>
+
                                 </div>
-
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
     @endif
 
     <!-- Footer -->
@@ -156,8 +164,10 @@
     <script src="{{ asset('vendor/nouislider/dist/nouislider.min.js') }}"></script>
     <script src="{{ asset('vendor/wnumb/wNumb.min.js') }}"></script>
     <script src="{{ asset('vendor/momentjs/moment.min.js') }}"></script>
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
-    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js" type="text/javascript"></script>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
+    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js"
+        type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/locales/LANG.js"></script>
     <script src="{{ asset('js/theme.min.js') }}"></script>
@@ -170,7 +180,7 @@
             });
         });
     </script>
-    
+
     @yield('script')
 
 </body>
