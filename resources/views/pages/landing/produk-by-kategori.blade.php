@@ -250,6 +250,7 @@
                         rating3: rate3,
                         rating4: rate4,
                         rating5: rate5,
+                        filter: 1,
                         slide: slider.noUiSlider.get()
                     },
                     dataType: "JSON",

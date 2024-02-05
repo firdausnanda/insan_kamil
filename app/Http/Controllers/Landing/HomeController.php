@@ -20,7 +20,8 @@ class HomeController extends Controller
         return view('pages.landing.index', compact('produk_laris', 'produk_baru', 'kategori', 'slide'));
     }
     
-    public function kategori($kategori, Request $request) {
+    public function kategori($kategori, Request $request) 
+    {
         $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori')->whereHas('kategori', function($query) use($kategori){
             $query->where('slug', $kategori);
         })->orderBy('created_at', 'desc')->paginate(10);
@@ -30,7 +31,7 @@ class HomeController extends Controller
 
         if ($request->ajax()) {
 
-            if ($request->rating1) {
+            if ($request->filter) {
                 
                 switch ($request->sort) {
                     case 1:
@@ -57,8 +58,6 @@ class HomeController extends Controller
                         ->paginate(10);
                         break;                
                 }
-
-                dd($produk);
     
                 $render = View::make('pages.landing.produk-card', compact('produk'))->render();
     
@@ -100,7 +99,8 @@ class HomeController extends Controller
         return view('pages.landing.produk-by-kategori', compact('produk', 'kategori_all', 'slug'));
     }
     
-    public function detail($id) {
+    public function detail($id) 
+    {
         $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori')->where('id', $id)->first();
         $produk_related = Produk::with('harga', 'stok', 'gambar_produk')->where('id_kategori', $produk->id_kategori)->orderBy('created_at', 'desc')->limit(5)->get();
         return view('pages.landing.detail', compact('produk', 'produk_related'));
