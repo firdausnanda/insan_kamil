@@ -322,13 +322,7 @@
                         success: function(response) {
                             $.LoadingOverlay('hide');
                             if (response.meta.status == "success") {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: "Sukses!",
-                                    text: response.meta.message,
-                                }).then((result) => {
-                                    location.href = "{{ route('user.order.index') }}"
-                                });
+                                location.href = "{{ route('user.order.index') }}"
                             }
                         },
                         error: function(response) {
