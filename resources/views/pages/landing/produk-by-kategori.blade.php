@@ -147,7 +147,7 @@
                     <div class="d-lg-flex justify-content-between align-items-center">
                         <div class="mb-3 mb-lg-0">
                             <p class="mb-0">
-                                <span class="text-dark">{{ $produk->count() }}</span>
+                                <span class="text-dark" id="count_produk">{{ $produk->count() }}</span>
                                 Products found
                             </p>
                         </div>
