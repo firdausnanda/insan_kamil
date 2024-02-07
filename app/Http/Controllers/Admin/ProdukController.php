@@ -69,15 +69,17 @@ class ProdukController extends Controller
             // Hitung Diskon
             if ($request->harga_promo_clean == 0) {
                 $diskon = 0;
+                $promo = $request->harga_normal_clean;
             }else{
-                $diskon = $request->harga_normal_clean / $request->harga_promo_clean * 100;
+                $promo = $request->harga_promo_clean;
+                $diskon = $request->harga_normal_clean - $request->harga_promo_clean;
             }
 
             // Create on Harga
             $harga = Harga::create([
                 'harga_awal' => $request->harga_normal_clean,
                 'diskon' => $diskon,
-                'harga_akhir' => $request->harga_normal_clean,
+                'harga_akhir' => $promo,
             ]);
 
             // Create on Stok
