@@ -7,5 +7,5 @@ function diskon($v)
   $diskon = $v->diskon;
   $persentase_diskon = $diskon / $harga_awal * 100/100 ;
 
-  return $persentase_diskon;
+  return round($persentase_diskon, 2);
 }
