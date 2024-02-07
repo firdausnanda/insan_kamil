@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Landing;
 
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
+use App\Models\Blog;
 use App\Models\Kategori;
 use App\Models\Produk;
 use App\Models\Slideshow;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\View;
 
 class HomeController extends Controller
@@ -17,7 +19,8 @@ class HomeController extends Controller
         $produk_baru = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->limit(12)->get();
         $kategori = Kategori::all();
         $slide = Slideshow::where('status', 1)->orderBy('urutan', 'asc')->get();
-        return view('pages.landing.index', compact('produk_laris', 'produk_baru', 'kategori', 'slide'));
+        $blog = Blog::where('status', 1)->latest()->limit(4)->get();
+        return view('pages.landing.index', compact('produk_laris', 'produk_baru', 'kategori', 'slide', 'blog'));
     }
     
     public function kategori($kategori, Request $request) 
@@ -127,8 +130,24 @@ class HomeController extends Controller
     
     public function detail($id) 
     {
-        $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori')->where('id', $id)->first();
-        $produk_related = Produk::with('harga', 'stok', 'gambar_produk')->where('id_kategori', $produk->id_kategori)->orderBy('created_at', 'desc')->limit(5)->get();
-        return view('pages.landing.detail', compact('produk', 'produk_related'));
+        try {
+            $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori')->where('id', $id)->first();
+            $produk_related = Produk::with('harga', 'stok', 'gambar_produk')->where('id_kategori', $produk->id_kategori)->orderBy('created_at', 'desc')->limit(5)->get();
+            return view('pages.landing.detail', compact('produk', 'produk_related'));
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            abort(404);
+        }
+    }
+
+    public function detail_blog($id)
+    {
+        try {
+            $b = Blog::where('id', $id)->first();
+            return view('pages.landing.blog', compact('b'));
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            abort(404);
+        }
     }
 }

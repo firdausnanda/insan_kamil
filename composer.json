@@ -41,6 +41,7 @@
             "app/Helpers/CurrencyFormatter.php",
             "app/Helpers/Rating.php",
             "app/Helpers/Diskon.php",
+            "app/Helpers/TimeFormat.php",
             "app/Helpers/ResponseFormatter.php"
         ]
     },

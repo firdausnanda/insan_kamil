@@ -319,15 +319,20 @@ class OrderController extends Controller
 
     public function detail_konfirmasi(Request $request, $id)
     {
-        $order = Order::with('user.province', 'user.city', 'user.district', 'produk_dikirim.produk.gambar_produk')->where('id', $id)->first();
-        $dropship = Dropship::where('id_order', $id)->first();
-
-        // harga produk total
-        $subTotal = $order->produk_dikirim->sum(function($q) {
-            return $q['jumlah_produk'] * $q['harga_jual']; 
-        });
-
-        return view('pages.user.keranjang.detail_konfirmasi', compact('order', 'subTotal', 'dropship'));
+        try {
+            $order = Order::with('user.province', 'user.city', 'user.district', 'produk_dikirim.produk.gambar_produk')->where('id', $id)->first();
+            $dropship = Dropship::where('id_order', $id)->first();
+    
+            // harga produk total
+            $subTotal = $order->produk_dikirim->sum(function($q) {
+                return $q['jumlah_produk'] * $q['harga_jual']; 
+            });
+    
+            return view('pages.user.keranjang.detail_konfirmasi', compact('order', 'subTotal', 'dropship'));
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }
     }
 
     public function detail_store(Request $request)

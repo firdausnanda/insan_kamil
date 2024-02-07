@@ -19,7 +19,7 @@
                         </div>
                         <!-- button -->
                         <div>
-                            <a href="add-product.html" class="btn btn-primary">Tambah Blog</a>
+                            <a href="{{ route('admin.blog.create') }}" class="btn btn-primary">Tambah Blog</a>
                         </div>
                     </div>
                 </div>
@@ -42,80 +42,11 @@
                                         <th scope="col">Aksi</th>
                                     </thead>
                                     <tbody>
-                                        <tr class="">
-                                            <td>1</td>
-                                            <td>Buku Anak</td>
-                                            <td>
-                                                <span class="badge bg-light-primary text-dark-primary">Publish</span>
-                                            </td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
-                                                       <i class="feather-icon icon-more-vertical fs-5"></i>
-                                                    </a>
-                                                    <ul class="dropdown-menu">
-                                                       <li>
-                                                          <a class="dropdown-item" href="#">
-                                                             <i class="bi bi-trash me-3"></i>
-                                                             Delete
-                                                          </a>
-                                                       </li>
-                                                       <li>
-                                                          <a class="dropdown-item" href="#">
-                                                             <i class="bi bi-pencil-square me-3"></i>
-                                                             Edit
-                                                          </a>
-                                                       </li>
-                                                    </ul>
-                                                 </div>
-                                            </td>
-                                        </tr>
-                                        <tr class="">
-                                            <td>2</td>
-                                            <td>Buku Belajar</td>
-                                            <td>
-                                                <span class="badge bg-light-primary text-dark-primary">Publish</span>
-                                            </td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <a href="#" class="text-reset" data-bs-toggle="dropdown"
-                                                        aria-expanded="false">
-                                                        <i class="feather-icon icon-more-vertical fs-5"></i>
-                                                    </a>
-                                                    <ul class="dropdown-menu">
-                                                        <li>
-                                                            <a class="dropdown-item" href="#">
-                                                                <i class="bi bi-trash me-3"></i>
-                                                                Delete
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="#">
-                                                                <i class="bi bi-pencil-square me-3"></i>
-                                                                Edit
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
 
                         </div>
-                        {{-- <div class=" border-top d-md-flex justify-content-between align-items-center px-6 py-6">
-                            <span>Showing 1 to 8 of 12 entries</span>
-                            <nav class="mt-2 mt-md-0">
-                                <ul class="pagination mb-0 ">
-                                    <li class="page-item disabled"><a class="page-link " href="#!">Previous</a></li>
-                                    <li class="page-item"><a class="page-link active" href="#!">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#!">Next</a></li>
-                                </ul>
-                            </nav>
-                        </div> --}}
                     </div>
 
                 </div>
@@ -128,8 +59,126 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            var table = $('#produks').DataTable();
+            // Init Datatable 
+            var table = $('#produks').DataTable({
+                ajax: {
+                    url: "{{ route('admin.blog.index') }}",
+                    type: "GET"
+                },
+                lengthChange: false,
+                ordering: false,
+                processing: true,
+                columnDefs: [{
+                        targets: 0,
+                        width: '10%',
+                        className: 'align-middle text-center',
+                        render: function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        targets: 1,
+                        className: 'align-middle',
+                        data: 'judul',
+                    },
+                    {
+                        targets: 2,
+                        className: 'align-middle',
+                        data: 'status',
+                        render: function(data, type, row, meta) {
+                            if (data == 1) return '<span class="badge bg-primary">Aktif</span>'
+                            return '<span class="badge bg-danger">Tidak Aktif</span>'
+                        }
+                    },
+                    {
+                        targets: 3,
+                        className: 'align-middle text-center',
+                        data: 'status',
+                        render: function(data, type, row, meta) {
+                            if (data == 1) {
+                                return `<div class="dropdown">
+                                            <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="feather-icon icon-more-vertical fs-5"></i>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <button class="dropdown-item btn-edit" type="button">
+                                                        <i class="bi bi-pencil-square me-3"></i>
+                                                        Edit
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="dropdown-item btn-aktif" type="button">
+                                                        <i class="bi bi-lock me-3"></i>
+                                                        Non - Aktifkan
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>`;
+                            }
+                            return `<div class="dropdown">
+                                                <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="feather-icon icon-more-vertical fs-5"></i>
+                                                </a>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        <button class="dropdown-item btn-edit" type="button">
+                                                            <i class="bi bi-pencil-square me-3"></i>
+                                                            Edit
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button class="dropdown-item btn-aktif" type="button">
+                                                            <i class="bi bi-lock me-3"></i>
+                                                            Aktifkan
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>`;
+                        }
+                    },
+                ]
+            });
+
+            // Modal Edit
+            $('#produks tbody').on('click', '.btn-edit', function(event) {
+                event.preventDefault();
+
+                var data = table.row($(this).parents('tr')).data();
+                var id = data.id;
+
+                link = "{{ route('admin.blog.edit', ':id') }}"
+                url = link.replace(':id', id)
+
+                location.href = url
+            });
+            
+            // Modal Edit
+            $('#produks tbody').on('click', '.btn-aktif', function(event) {
+                event.preventDefault();
+
+                var data = table.row($(this).parents('tr')).data();
+                var id = data.id;
+                var status = data.status;
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('admin.blog.aktif') }}",
+                    data: {
+                        id: data.id,
+                        status: data.status
+                    },
+                    dataType: "JSON",
+                    beforeSend: function (){
+                        $.LoadingOverlay('show');
+                    },
+                    success: function (response) {
+                        $.LoadingOverlay('hide');
+                        table.ajax.reload()
+                        Swal.fire('Sukses', 'Data berhasil diubah', 'success')
+                    }
+                });
+            });
         });
     </script>
 @endsection
-

@@ -16,7 +16,7 @@
                                             class="text-inherit">Dashboard</a></li>
                                     <li class="breadcrumb-item"><a href="{{ route('admin.blog.index') }}"
                                             class="text-inherit">Blog</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Tambah Blog</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Ubah Blog</li>
                                 </ol>
                             </nav>
                         </div>
@@ -40,7 +40,8 @@
                                     <div class="mb-3 col-lg-12">
                                         <label class="form-label">Judul</label>
                                         <input type="text" name="judul" id="judul" class="form-control"
-                                            placeholder="Judul Blog" required />
+                                            placeholder="Judul Blog" value="{{ $b->judul }}" required />
+                                        <input type="hidden" name="id" value="{{ $b->id }}">
                                     </div>
                                     <div>
                                         <div class="mb-3 col-lg-12 mt-5">
@@ -50,13 +51,14 @@
                                             <!-- input -->
                                             <input type="file" class="upload-berkas-dropify" name="gambar"
                                                 data-max-file-size="2M" data-allowed-file-extensions="jpg png jpeg"
-                                                id="berkas" data-errors-position="outside" />
+                                                id="berkas" data-errors-position="outside"
+                                                @if ($b->gambar) data-default-file="{{ asset('storage/blog/' . $b->gambar) }}" @endif />
                                         </div>
                                     </div>
                                     <!-- input -->
                                     <div class="mb-3 col-lg-12 mt-5">
                                         <h4 class="mb-3 h5">Deskripsi</h4>
-                                        <div class="py-8" id="editor"></div>
+                                        <div class="py-8" id="editor">{!! $b->isi !!}</div>
                                     </div>
 
                                     <div class="mb-3 col-lg-12">
@@ -101,7 +103,7 @@
                 formData.append('deskripsi', editor_content);
 
                 $.ajax({
-                    url: "{{ route('admin.blog.store') }}",
+                    url: "{{ route('admin.blog.update') }}",
                     type: "POST",
                     data: formData,
                     dataType: "JSON",
@@ -119,7 +121,7 @@
                                 title: "Sukses!",
                                 text: response.meta.message,
                             }).then((result) => {
-                                location.reload();
+                                location.href = "{{ route('admin.blog.index') }}";
                             });
                         }
                     },

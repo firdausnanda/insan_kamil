@@ -18,6 +18,7 @@ use App\Http\Controllers\PopupController;
 use App\Http\Controllers\User\KeranjangController;
 use App\Http\Controllers\User\OrderController as UserOrderController;
 use App\Http\Controllers\User\ProfileController;
+use App\Models\Blog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +38,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', [HomeController::class, 'index'])->name('landing.home');
+Route::get('/blog/{id}', [HomeController::class, 'detail_blog'])->name('landing.detail_blog');
 Route::get('/kategori/{kategori}', [HomeController::class, 'kategori'])->name('landing.kategori');
 Route::get('/detail/{id}', [HomeController::class, 'detail'])->name('landing.detail');
 
@@ -106,6 +108,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 	// Blog
   Route::group(['prefix' => 'blog', 'as' => 'blog.'], function () {
 		Route::get('', [BlogController::class, 'index'])->name('index');		
+		Route::post('', [BlogController::class, 'store'])->name('store');		
+		Route::get('/create', [BlogController::class, 'create'])->name('create');
+		Route::post('/edit', [BlogController::class, 'update'])->name('update');
+		Route::post('/aktif', [BlogController::class, 'aktif'])->name('aktif');
+		Route::get('/edit/{id}', [BlogController::class, 'edit'])->name('edit');
 	});
 
 	// Slideshow
