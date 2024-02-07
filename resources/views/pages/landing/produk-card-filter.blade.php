@@ -27,6 +27,11 @@
                     </div>
                     <h2 class="fs-6"><a href="{{ route('landing.detail', $p->id) }}"
                             class="text-inherit text-decoration-none">{{ $p->nama_produk }}</a></h2>
+
+                    @if ($p->harga->diskon > 0)
+                        <span class="badge bg-danger rounded-pill mb-1">{{ '-' . diskon($p->harga) . '%' }}</span>
+                    @endif
+
                     <div>
                         <!-- rating -->
                         <small class="text-warning">

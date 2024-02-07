@@ -79,7 +79,11 @@ class HomeController extends Controller
                 
                 // Get Rentang Rating
                 $rentang = array_values(array_filter([$request->rating1, $request->rating2, $request->rating3, $request->rating4, $request->rating5]));
-                $produks = $produk_collect->whereIn('rating', $rentang);
+                if ($rentang) {
+                    $produks = $produk_collect->whereIn('rating', $rentang);
+                }else{
+                    $produks = $produk_collect;
+                }
                     
                 $render = View::make('pages.landing.produk-card-filter', compact('produks'))->render();
     

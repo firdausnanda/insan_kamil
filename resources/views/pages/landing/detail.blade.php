@@ -74,7 +74,12 @@
                                 <span class="text-primary small">({{ $produk->ratings()->count() }} reviews)</span>
                             @endif
                         </div>
+                        @if ($produk->harga->diskon > 0)
+                            <span class="badge bg-danger rounded-pill mb-3"
+                                style="font-size: 12px">{{ '-' . diskon($produk->harga) . '%' }}</span>
+                        @endif
                         <div class="fs-4">
+
                             <!-- price -->
                             <span class="fw-bold text-dark">{{ rupiah($produk->harga->harga_akhir) }}</span>
                             @if ($produk->harga->diskon > 0)
@@ -258,6 +263,11 @@
                                     <a href="{{ route('landing.detail', $p->id) }}"
                                         class="text-decoration-none text-muted"><small>{{ $p->kategori->nama_kategori }}</small></a>
                                 </div>
+                                @if ($p->harga->diskon > 0)
+                                    <span
+                                        class="badge bg-danger rounded-pill mb-1">{{ '-' . diskon($p->harga) . '%' }}</span>
+                                @endif
+
                                 <h2 class="fs-6"><a href="{{ route('landing.detail', $p->id) }}"
                                         class="text-inherit text-decoration-none">{{ $p->nama_produk }}</a></h2>
                                 <div>

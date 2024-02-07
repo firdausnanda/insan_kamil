@@ -164,9 +164,10 @@
                                     </div>
                                     <div>
                                         @if ($p->harga->diskon > 0)
-                                            <span class="badge bg-danger rounded-pill">{{ diskon($p->harga) . '%' }}</span>
+                                            <span
+                                                class="badge bg-danger rounded-pill">{{ '-' . diskon($p->harga) . '%' }}</span>
                                         @endif
-                                        <h2 class="mt-3 fs-6"> <a href="{{ route('landing.detail', $p->id) }}"
+                                        <h2 class="mt-1 fs-6"> <a href="{{ route('landing.detail', $p->id) }}"
                                                 class="text-inherit">{{ $p->nama_produk }}</a></h2>
                                         <div>
                                             <span
@@ -308,9 +309,9 @@
                                             <div>
                                                 @if ($p->harga->diskon > 0)
                                                     <span
-                                                        class="badge bg-danger rounded-pill">{{ diskon($p->harga) . '%' }}</span>
+                                                        class="badge bg-danger rounded-pill">{{ '-' . diskon($p->harga) . '%' }}</span>
                                                 @endif
-                                                <h2 class="mt-3 fs-6"> <a href="{{ route('landing.detail', $p->id) }}"
+                                                <h2 class="mt-1 fs-6"> <a href="{{ route('landing.detail', $p->id) }}"
                                                         class="text-inherit">{{ $p->nama_produk }}</a></h2>
                                                 <div>
                                                     <span
