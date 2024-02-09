@@ -146,6 +146,18 @@
                                         <td>{{ $produk->berat_produk }} <span class="text-muted">gr</span></td>
                                     </tr>
                                     <tr>
+                                        <td>Jenis Cover:</td>
+                                        <td>{{ $produk->jenis_cover }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ISBN:</td>
+                                        <td>{{ $produk->isbn }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pengarang:</td>
+                                        <td>{{ $produk->pengarang }}</td>
+                                    </tr>
+                                    <tr>
                                         <td>Halaman:</td>
                                         <td>
                                             <small>
