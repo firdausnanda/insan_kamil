@@ -11,7 +11,9 @@ class Produk extends Model
     use HasFactory, Rateable;
 
     protected $table = 'produk';
-    
+
+    protected $attributes = 'persen'; 
+
     protected $fillable = [
         'id_kategori',
         'id_penerbit',

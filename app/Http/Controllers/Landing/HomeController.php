@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Landing;
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
+use App\Models\Harga;
 use App\Models\Kategori;
+use App\Models\Popup;
 use App\Models\Produk;
 use App\Models\Slideshow;
 use Illuminate\Http\Request;
@@ -14,7 +16,8 @@ use Illuminate\Support\Facades\View;
 
 class HomeController extends Controller
 {
-    public function index() {
+    public function index() 
+    {
         $produk_laris = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->limit(5)->get();
         $produk_baru = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->limit(12)->get();
         $kategori = Kategori::all();
@@ -145,6 +148,39 @@ class HomeController extends Controller
         try {
             $b = Blog::where('id', $id)->first();
             return view('pages.landing.blog', compact('b'));
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            abort(404);
+        }
+    }
+
+    public function detail_popup(Request $request)
+    {
+        
+        try {
+
+            $kategori_all = Kategori::get();
+            
+            $popup = Popup::first();
+            
+            $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori', 'ratings')->get(); 
+            
+            foreach ($produk as $key => $value) {
+                // Add Persen to Produk
+                $hitung = $value->harga->diskon / $value->harga->harga_awal * 100;
+                $produk[$key]->persen = floor($hitung);
+            }
+    
+            $produk = $produk->where('persen', '>=', $popup->diskon);
+                
+            if ($request->ajax()) {
+                // Render View
+                $render = View::make('pages.landing.produk-card', compact('produk'))->render();    
+                return ResponseFormatter::success($render, 'data berhasil diambil'); 
+            }
+
+            return view('pages.landing.produk-by-popup', compact('kategori_all'));
+
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             abort(404);

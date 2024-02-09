@@ -120,7 +120,7 @@
                                     <p class="lead mb-5">{{ $popup->keterangan }}</p>
 
                                     <div class="d-grid">
-                                        <a href="#" class="btn btn-primary" data-bs-dismiss="modal">Start Show
+                                        <a href="{{ route('landing.detail_popup') }}" class="btn btn-primary">Start Show
                                             Now</a>
                                     </div>
 
