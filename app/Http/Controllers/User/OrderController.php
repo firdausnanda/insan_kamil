@@ -149,6 +149,7 @@ class OrderController extends Controller
                 'biaya_pengiriman' => $request->biaya_pengiriman,
                 'origin' => $request->origin,
                 'destination' => $request->destination,
+                'catatan_pembelian' => $request->catatan,
             ]);
 
             // Create Produk Dikirim
@@ -501,5 +502,20 @@ class OrderController extends Controller
             Log::error($e->getMessage());
             return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
         }   
+    }
+    
+    public function catatan(Request $request)
+    {
+        try {
+            $order = TempOrder::where('id', $request->id)->update([
+                'catatan_pembelian' => $request->catatan
+            ]);
+            
+            return ResponseFormatter::success($order, 'Data berhasil diubah!');
+            
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }
     }
 }

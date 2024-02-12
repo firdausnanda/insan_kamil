@@ -16,5 +16,6 @@ class Harga extends Model
         'harga_awal',
         'diskon',
         'harga_akhir',
+        'selesai_diskon',
     ];
 }

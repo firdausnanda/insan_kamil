@@ -12,8 +12,6 @@ class Produk extends Model
 
     protected $table = 'produk';
 
-    protected $attributes = 'persen'; 
-
     protected $fillable = [
         'id_kategori',
         'id_penerbit',
@@ -29,7 +27,9 @@ class Produk extends Model
         'halaman_produk',
         'keterangan',
         'status',
-        'pengarang'
+        'pengarang',
+        'catatan',
+        'jenis_isi'
     ];
 
     public function kategori()

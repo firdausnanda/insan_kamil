@@ -17,6 +17,7 @@ class TempOrder extends Model
         'harga_jual',
         'jumlah_produk',
         'berat_produk',
+        'catatan_pembelian',
     ];
 
     public function user()

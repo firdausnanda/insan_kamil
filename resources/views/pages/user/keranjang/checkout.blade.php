@@ -43,6 +43,8 @@
                                             </p>
                                             <button class="btn btn-info mt-2 btn-sm btn-ubah" href="#">Ubah
                                                 Data</button>
+                                            <button class="btn btn-warning mt-2 btn-sm btn-catatan" href="#">Tambah
+                                                Catatan Pembelian</button>
                                         </div>
                                         <input type="hidden" id="subdistrict"
                                             value="{{ $data[0]->user->district ? $data[0]->user->district->id : 0 }}">
@@ -176,6 +178,11 @@
                                         </tbody>
                                     </table>
                                 </div>
+
+                                @if ($data[0]->catatan_pembelian)
+                                <h6 class="px-3"><span class="text-danger">*</span> Catatan Pembelian</h6>
+                                <p class="px-3">{{ $data[0]->catatan_pembelian }}</p>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -356,6 +363,33 @@
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Catatan -->
+    <div class="modal fade" id="modal-catatan" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId">
+                        Tambah Catatan Pembelian
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-catatan">
+                    <div class="modal-body">
+                        <input type="hidden" name="id" value="{{ $data[0]->id }}">
+                        <textarea name="catatan" id="catatan" cols="30" rows="10" class="form-control" autofocus>{{ $data[0]->catatan_pembelian }}</textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </form>
             </div>
@@ -695,7 +729,7 @@
 
                 if ($('#dropship:checkbox:checked').length > 0) {
                     dropship = 1
-                }else{
+                } else {
                     dropship = 0
                 }
 
@@ -708,6 +742,7 @@
                         biaya_pengiriman: $('#pilih_paket').val(),
                         origin: "{{ config('rajaongkir.origin') }}",
                         destination: $('#subdistrict').val(),
+                        catatan: $('#catatan').val(),
                         status_dropship: dropship,
                         data: js,
                     },
@@ -798,6 +833,34 @@
             $('.btn-ubah').click(function(e) {
                 e.preventDefault();
                 $('#modal-edit').modal('show')
+            });
+
+            // Ubah Catatan
+            $('.btn-catatan').click(function(e) {
+                e.preventDefault();
+                $('#modal-catatan').modal('show')
+            });
+
+            // Update Data
+            $('#form-catatan').submit(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "PUT",
+                    url: "{{ route('user.order.catatan') }}",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        location.reload()
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        $.LoadingOverlay('hide');
+                    },
+                });
             });
 
             // Update Data

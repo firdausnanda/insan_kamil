@@ -22,6 +22,7 @@ class Order extends Model
         'destination',
         'no_resi',
         'status',
+        'catatan_pembelian',
     ];
 
     public function user() {

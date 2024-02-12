@@ -15,8 +15,10 @@
                             <!-- breacrumb -->
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb mb-0">
-                                    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}" class="text-inherit">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="{{ route('admin.produk.index') }}" class="text-inherit">Produk</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}"
+                                            class="text-inherit">Dashboard</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('admin.produk.index') }}"
+                                            class="text-inherit">Produk</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Tambah Produk Baru</li>
                                 </ol>
                             </nav>
@@ -136,6 +138,12 @@
                                         <input type="text" name="pengarang" class="form-control"
                                             placeholder="Pengarang" required />
                                     </div>
+                                    <!-- input -->
+                                    <div class="mb-3 col-lg-6">
+                                        <label class="form-label">Jenis Isi</label>
+                                        <input type="text" name="jenis_isi" class="form-control"
+                                            placeholder="Jenis Isi" required />
+                                    </div>
                                     <div>
                                         <div class="mb-3 col-lg-12 mt-5">
                                             <!-- heading -->
@@ -150,6 +158,11 @@
                                     <div class="mb-3 col-lg-12 mt-5">
                                         <h4 class="mb-3 h5">Deskripsi Produk</h4>
                                         <div class="py-8" id="editor"></div>
+                                    </div>
+                                    <!-- input -->
+                                    <div class="mb-3 col-lg-12 mt-5">
+                                        <h4 class="mb-3 h5">Catatan Penjualan</h4>
+                                        <textarea name="catatan" cols="30" rows="3" class="form-control"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -218,9 +231,16 @@
                                 <!-- input -->
                                 <div class="mb-3">
                                     <label class="form-label">Harga Promo <span class="text-danger">*</span><span
-                                            class="text-secondary" style="font-size: 12px">jika tidak promo isi dengan nilai 0</span></label>
-                                    <input type="text" class="form-control" name="harga_promo" id="harga_promo" value="0"
-                                        placeholder="Rp. 0.00" />
+                                            class="text-secondary" style="font-size: 12px">jika tidak promo isi dengan
+                                            nilai 0</span></label>
+                                    <input type="text" class="form-control" name="harga_promo" id="harga_promo"
+                                        value="0" placeholder="Rp. 0.00" />
+                                </div>
+                                <!-- input -->
+                                <div class="mb-3">
+                                    <label class="form-label">Tanggal Selesai Diskon</label>
+                                    <input type="date" class="form-control" name="tanggal_selesai_diskon"
+                                        id="tanggal_selesai_diskon" />
                                 </div>
                             </div>
                         </div>
@@ -379,6 +399,15 @@
                         }
                     },
                 });
+            });
+
+            //Flatpickr
+            flatpickr("#tanggal_selesai_diskon", {
+                locale: "id",
+                altInput: true,
+                altFormat: "j F Y, H:i",
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
             });
         });
     </script>

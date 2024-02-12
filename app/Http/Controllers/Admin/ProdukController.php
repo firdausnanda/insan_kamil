@@ -57,6 +57,8 @@ class ProdukController extends Controller
             'harga_normal_clean' => 'required|string|max:255',
             'harga_promo_clean' => 'nullable|max:255',
             'pengarang' => 'string',
+            'catatan' => 'string',
+            'jenis_isi' => 'string',
             'deskripsi' => 'required|string',
 		]);
 
@@ -105,6 +107,8 @@ class ProdukController extends Controller
                 'keterangan' => $request->deskripsi,
                 'status' => $request->status,
                 'pengarang' => $request->pengarang,
+                'catatan' => $request->catatan,
+                'jenis_isi' => $request->jenis_isi,
             ]);
 
             // Create on Gambar

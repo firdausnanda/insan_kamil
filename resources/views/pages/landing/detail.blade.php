@@ -118,6 +118,12 @@
                                         Sekarang</button>
                                 </div>
                             </div>
+                            @if ($produk->catatan)
+                                <div class="mt-3">
+                                    <h6><span class="text-danger">*</span> Catatan Pembelian</h6>
+                                    <p>{{ $produk->catatan }}</p>
+                                </div>
+                            @endif
                         @endauth
 
                         @guest
@@ -145,31 +151,36 @@
                                     </tr>
                                     <tr>
                                         <td>Penerbit:</td>
-                                        <td>{{ $produk->id_penerbit != null ? $produk->penerbit->nama_penerbit : '-' }}</td>
+                                        <td>{{ $produk->id_penerbit != null ? $produk->penerbit->nama_penerbit : '-' }}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Kategori:</td>
-                                        <td>{{ $produk->kategori->nama_kategori }}</td>
+                                        <td>{{ $produk->kategori->nama_kategori ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <td>Penulis:</td>
-                                        <td>{{ $produk->pengarang }}</td>
+                                        <td>{{ $produk->pengarang ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <td>Jenis Cover:</td>
-                                        <td>{{ $produk->jenis_cover }}</td>
+                                        <td>{{ $produk->jenis_cover ?? '-' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jenis Isi:</td>
+                                        <td>{{ $produk->jenis_isi ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <td>Bahasa:</td>
-                                        <td>{{ $produk->bahasa }}</td>
+                                        <td>{{ $produk->bahasa ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <td>Ukuran:</td>
-                                        <td>{{ $produk->ukuran_produk }} <span class="text-muted">cm</span></td>
+                                        <td>{{ $produk->ukuran_produk ?? '-' }} <span class="text-muted">cm</span></td>
                                     </tr>
                                     <tr>
                                         <td>Berat:</td>
-                                        <td>{{ $produk->berat_produk }} <span class="text-muted">gr</span></td>
+                                        <td>{{ $produk->berat_produk ?? '-' }} <span class="text-muted">gr</span></td>
                                     </tr>
                                     <tr>
                                         <td>Halaman:</td>
@@ -182,7 +193,8 @@
                                     </tr>
                                     <tr>
                                         <td>Stok:</td>
-                                        <td>{{ $produk->stok->sisa_produk }} <span class="text-muted">Pcs</span></td>
+                                        <td>{{ $produk->stok->sisa_produk ?? '-' }} <span class="text-muted">Pcs</span>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

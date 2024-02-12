@@ -148,6 +148,12 @@
                                         <input type="text" name="pengarang" class="form-control"
                                             value="{{ $produk->pengarang }}" placeholder="Pengarang" required />
                                     </div>
+                                    <!-- input -->
+                                    <div class="mb-3 col-lg-6">
+                                        <label class="form-label">Jenis Isi</label>
+                                        <input type="text" value="{{ $produk->jenis_isi }}" name="jenis_isi"
+                                            class="form-control" placeholder="Jenis Isi" required />
+                                    </div>
                                     <div>
                                         <div class="mb-3 col-lg-12 mt-5">
                                             <!-- heading -->
@@ -162,6 +168,11 @@
                                     <div class="mb-3 col-lg-12 mt-5">
                                         <h4 class="mb-3 h5">Deskripsi Produk</h4>
                                         <div class="py-8" id="editor">{!! $produk->keterangan !!}</div>
+                                    </div>
+                                    <!-- input -->
+                                    <div class="mb-3 col-lg-12 mt-5">
+                                        <h4 class="mb-3 h5">Catatan Penjualan</h4>
+                                        <textarea name="catatan" cols="30" rows="3" class="form-control">{{ $produk->catatan }}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -233,6 +244,12 @@
                                             nilai 0</span></label>
                                     <input type="text" class="form-control" name="harga_promo" id="harga_promo"
                                         value="{{ $produk->harga->diskon }}" placeholder="Rp. 0.00" />
+                                </div>
+                                <!-- input -->
+                                <div class="mb-3">
+                                    <label class="form-label">Tanggal Selesai Diskon</label>
+                                    <input type="date" class="form-control" name="tanggal_selesai_diskon"
+                                        id="tanggal_selesai_diskon" value="{{ $produk->harga->selesai_diskon }}" />
                                 </div>
                             </div>
                         </div>
@@ -392,6 +409,16 @@
                     },
                 });
             });
+
+            //Flatpickr
+            flatpickr("#tanggal_selesai_diskon", {
+                locale: "id",
+                altInput: true,
+                altFormat: "j F Y, H:i",
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+            });
+
         });
     </script>
 @endsection

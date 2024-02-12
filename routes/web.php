@@ -162,6 +162,7 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['role:user']
 	Route::group(['prefix' => 'order', 'as' => 'order.'], function () {
 		Route::get('', [UserOrderController::class, 'index'])->name('index');
 		Route::post('', [UserOrderController::class, 'store'])->name('store');
+		Route::put('/catatan', [UserOrderController::class, 'catatan'])->name('catatan');
 		Route::post('/detail-store', [UserOrderController::class, 'detail_store'])->name('detail_store');
 		Route::post('/beli', [UserOrderController::class, 'beli'])->name('beli');
 		Route::post('/pembayaran', [UserOrderController::class, 'pembayaran'])->name('pembayaran');
