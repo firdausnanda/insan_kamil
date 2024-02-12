@@ -46,6 +46,11 @@ class Produk extends Model
     {
         return $this->belongsTo(Stok::class, 'id_stok', 'id');
     }
+
+    public function penerbit()
+    {
+        return $this->belongsTo(Penerbit::class, 'id_penerbit', 'id');
+    }
     
     public function gambar_produk()
     {
