@@ -225,7 +225,7 @@
                                             <span class="text-muted small">{{ round($p->averageRating(), 2) }}</span>
                                         @endif
                                     </div>
-                                    <h2 class="fs-4"><a href="./pages/shop-single.html"
+                                    <h2 class="fs-4"><a href="#"
                                             class="text-inherit text-decoration-none">{{ $promo->nama_produk }}</a></h2>
 
                                     <div
@@ -240,20 +240,34 @@
 
                                     </div>
                                     <div class="mt-2">
-                                        <a href="javascript:void(0)" class="btn btn-primary ">
-                                            <i class="fa-solid fa-plus me-2"></i> Masukkan Keranjang
-                                        </a>
+                                        @auth
+                                        <input type="hidden" id="id_user" value="{{ Auth::user()->id }}">
+                                        <input type="hidden" id="id_produk" value="{{ $promo->id }}">
+                                            <button type="button" class="btn btn-primary " id="btn-keranjang">
+                                                <i class="fa-solid fa-plus me-2"></i> Masukkan Keranjang
+                                            </button>
+                                        @endauth
+
+                                        @guest
+                                            <a href="{{ route('login') }}" class="btn btn-primary">
+                                                <i class="fa-solid fa-lock me-2"></i> Login 
+                                            </a>
+                                        @endguest
                                     </div>
                                     <div class="mt-6 mb-6">
                                         <div class="d-flex justify-content-between mb-2">
-                                            <span>Terjual: <span class="text-dark fs-6 fw-bold">{{ $promo->stok->jumlah_produk - $promo->stok->sisa_produk }}</span></span>
-                                            <span>Tersedia: <span class="text-dark fs-6 fw-bold">{{ $promo->stok->jumlah_produk }}</span></span>
+                                            <span>Terjual: <span
+                                                    class="text-dark fs-6 fw-bold">{{ $promo->stok->jumlah_produk - $promo->stok->sisa_produk }}</span></span>
+                                            <span>Tersedia: <span
+                                                    class="text-dark fs-6 fw-bold">{{ $promo->stok->jumlah_produk }}</span></span>
                                         </div>
 
                                         <div class="progress bg-light-danger" role="progressbar"
                                             aria-label="Example 1px high" aria-valuenow="85" aria-valuemin="0"
                                             aria-valuemax="100" style="height: 5px">
-                                            <div class="progress-bar bg-danger" style="width: {{ ($promo->stok->jumlah_produk - $promo->stok->sisa_produk) / $promo->stok->jumlah_produk * 100 }}%"></div>
+                                            <div class="progress-bar bg-danger"
+                                                style="width: {{ (($promo->stok->jumlah_produk - $promo->stok->sisa_produk) / $promo->stok->jumlah_produk) * 100 }}%">
+                                            </div>
                                         </div>
 
 
@@ -263,7 +277,8 @@
                                     </p>
                                     <div class="d-flex justify-content-center justify-content-lg-start text-center mt-1">
 
-                                        <div class="deals-countdown" data-countdown="{{ $promo->harga->selesai_diskon }}"></div>
+                                        <div class="deals-countdown"
+                                            data-countdown="{{ $promo->harga->selesai_diskon }}"></div>
                                     </div>
                                 </div>
                             </div>
@@ -430,4 +445,42 @@
             </div>
         </section>
     </div>
+@endsection
+
+@section('script')
+    <script>
+        $(document).ready(function() {
+
+            $('#btn-keranjang').click(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('user.keranjang.store') }}",
+                    data: {
+                        id_user: $('#id_user').val(),
+                        id_produk: $('#id_produk').val(),
+                        jumlah: 1,
+                    },
+                    dataType: "JSON",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        if (response.meta.status == "success") {
+                            location.href = "{{ route('user.keranjang.index') }}";
+                        }
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Data Gagal Disimpan!',
+                            'Kesalahan Server',
+                            'error');
+                    }
+                });
+
+            });
+        });
+    </script>
 @endsection
