@@ -12,7 +12,9 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="{{ route('landing.home') }}">Home</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('landing.detail', $produk->id) }}">{{ $produk->kategori->nama_kategori }}</a></li>
+                            <li class="breadcrumb-item"><a
+                                    href="{{ route('landing.detail', $produk->id) }}">{{ $produk->kategori->nama_kategori }}</a>
+                            </li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $produk->nama_produk }}</li>
                         </ol>
                     </nav>
@@ -130,8 +132,32 @@
                             <table class="table table-borderless mb-0">
                                 <tbody>
                                     <tr>
+                                        <td>ISBN:</td>
+                                        <td>{{ $produk->isbn }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Status Buku:</td>
+                                        @if ($produk->stok->sisa_produk >= 1)
+                                            <td>Buku Tersedia</td>
+                                        @else
+                                            <td>Buku Tidak Tersedia</td>
+                                        @endif
+                                    </tr>
+                                    <tr>
+                                        <td>Penerbit:</td>
+                                        <td>{{ $produk->penerbit->nama_penerbit }}</td>
+                                    </tr>
+                                    <tr>
                                         <td>Kategori:</td>
                                         <td>{{ $produk->kategori->nama_kategori }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Penulis:</td>
+                                        <td>{{ $produk->pengarang }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jenis Cover:</td>
+                                        <td>{{ $produk->jenis_cover }}</td>
                                     </tr>
                                     <tr>
                                         <td>Bahasa:</td>
@@ -146,18 +172,6 @@
                                         <td>{{ $produk->berat_produk }} <span class="text-muted">gr</span></td>
                                     </tr>
                                     <tr>
-                                        <td>Jenis Cover:</td>
-                                        <td>{{ $produk->jenis_cover }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>ISBN:</td>
-                                        <td>{{ $produk->isbn }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Pengarang:</td>
-                                        <td>{{ $produk->pengarang }}</td>
-                                    </tr>
-                                    <tr>
                                         <td>Halaman:</td>
                                         <td>
                                             <small>
@@ -165,6 +179,10 @@
                                                 <span class="text-muted">Halaman</span>
                                             </small>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Stok:</td>
+                                        <td>{{ $produk->stok->sisa_produk }} <span class="text-muted">Pcs</span></td>
                                     </tr>
                                 </tbody>
                             </table>
