@@ -23,7 +23,23 @@ class HomeController extends Controller
         $kategori = Kategori::all();
         $slide = Slideshow::where('status', 1)->orderBy('urutan', 'asc')->get();
         $blog = Blog::where('status', 1)->latest()->limit(4)->get();
-        return view('pages.landing.index', compact('produk_laris', 'produk_baru', 'kategori', 'slide', 'blog'));
+
+        // Promo
+        $promo_raw = Produk::with('harga', 'stok', 'gambar_produk')->whereHas('harga', function ($q){
+            $q->where('selesai_diskon', '>=', now());
+        })->get();
+
+        foreach ($promo_raw as $k => $v) {
+            $hitung = $v->harga->diskon / $v->harga->harga_awal * 100;
+            $promo_raw[$k]->persen = (int) floor($hitung);
+        }
+        
+        $data_promo = $promo_raw->sortByDesc('persen');
+        $promo = $data_promo->values()->all()[0];
+
+        // dd($promo);
+
+        return view('pages.landing.index', compact('produk_laris', 'produk_baru', 'kategori', 'slide', 'blog', 'promo'));
     }
     
     public function kategori($kategori, Request $request) 

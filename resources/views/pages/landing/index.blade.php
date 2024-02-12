@@ -195,62 +195,65 @@
                         </div>
                     </div>
 
-                    {{-- <div class="mb-6">
+                    {{-- Promo --}}
+                    <div class="mb-6">
 
                         <div class="mb-6">
-                            <h3 class="mb-1">Promo Hari ini</h3>
+                            <h3 class="mb-1">Promo</h3>
                         </div>
                         <div class="card border border-danger p-6">
                             <div class="row">
                                 <div class="col-lg-5 text-center">
-                                    <a href="./pages/shop-single.html"><img
-                                            src="{{ asset('images/products/deal-img.jpg') }}"
-                                            alt="{{ $p->nama_produk }}" class="img-fluid"></a>
-
+                                    @if ($promo->gambar_produk)
+                                        <img src="{{ asset('storage/produk/' . $promo->gambar_produk[0]->gambar) }}"
+                                            alt="{{ $promo->nama_produk }}" class="img-fluid w-100 h-100">
+                                    @else
+                                        <img src="{{ asset('images/avatar/no-image.png') }}"
+                                            alt="{{ $promo->nama_produk }}" class="img-fluid w-100 h-100">
+                                    @endif
                                 </div>
                                 <div class="col-lg-7 text-center text-lg-start">
 
                                     <div class="mb-3">
-                                        <small class="text-warning"> <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-half"></i>
+                                        <!-- rating -->
+                                        <small>
+                                            @if (round($p->averageRating()) > 0)
+                                                {{ tampilkanRating(round($p->averageRating(), 2)) }}
+                                            @endif
                                         </small>
-                                        <span><small>4.5</small></span>
+                                        @if (round($p->averageRating()) > 0)
+                                            <span class="text-muted small">{{ round($p->averageRating(), 2) }}</span>
+                                        @endif
                                     </div>
                                     <h2 class="fs-4"><a href="./pages/shop-single.html"
-                                            class="text-inherit text-decoration-none">Parle
-                                            Platina Nutricrunch Digestive Cookies</a></h2>
+                                            class="text-inherit text-decoration-none">{{ $promo->nama_produk }}</a></h2>
 
                                     <div
                                         class="d-flex justify-content-center align-items-center justify-content-lg-between mt-3">
-                                        <div><span class="text-dark fs-5 fw-bold">Rp. 15.000</span>
-                                            <span class="text-decoration-line-through text-muted fs-5">Rp 20.000</span>
+                                        <div><span
+                                                class="text-dark fs-5 fw-bold">{{ rupiah($p->harga->harga_akhir) }}</span>
+                                            @if ($p->harga->diskon > 0)
+                                                <span
+                                                    class="text-decoration-line-through text-muted fs-5">{{ rupiah($p->harga->harga_awal) }}</span>
+                                            @endif
                                         </div>
 
                                     </div>
-                                    <div class="mt-2"><a href="javascript:void(0)" class="btn btn-primary ">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-plus">
-                                                <line x1="12" y1="5" x2="12" y2="19">
-                                                </line>
-                                                <line x1="5" y1="12" x2="19" y2="12">
-                                                </line>
-                                            </svg> Masukkan Keranjang </a></div>
+                                    <div class="mt-2">
+                                        <a href="javascript:void(0)" class="btn btn-primary ">
+                                            <i class="fa-solid fa-plus me-2"></i> Masukkan Keranjang
+                                        </a>
+                                    </div>
                                     <div class="mt-6 mb-6">
                                         <div class="d-flex justify-content-between mb-2">
-                                            <span>Terjual: <span class="text-dark fs-6 fw-bold">45</span></span>
-                                            <span>Tersedia: <span class="text-dark fs-6 fw-bold">25</span></span>
-
+                                            <span>Terjual: <span class="text-dark fs-6 fw-bold">{{ $promo->stok->jumlah_produk - $promo->stok->sisa_produk }}</span></span>
+                                            <span>Tersedia: <span class="text-dark fs-6 fw-bold">{{ $promo->stok->jumlah_produk }}</span></span>
                                         </div>
 
                                         <div class="progress bg-light-danger" role="progressbar"
                                             aria-label="Example 1px high" aria-valuenow="85" aria-valuemin="0"
                                             aria-valuemax="100" style="height: 5px">
-                                            <div class="progress-bar bg-danger" style="width: 85%"></div>
+                                            <div class="progress-bar bg-danger" style="width: {{ ($promo->stok->jumlah_produk - $promo->stok->sisa_produk) / $promo->stok->jumlah_produk * 100 }}%"></div>
                                         </div>
 
 
@@ -260,14 +263,14 @@
                                     </p>
                                     <div class="d-flex justify-content-center justify-content-lg-start text-center mt-1">
 
-                                        <div class="deals-countdown" data-countdown="2024/10/10 00:00:00"></div>
+                                        <div class="deals-countdown" data-countdown="{{ $promo->harga->selesai_diskon }}"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
 
-                    </div> --}}
+                    </div>
 
                     <div class="row">
                         <div class="col-12">
