@@ -145,7 +145,7 @@
                                     </tr>
                                     <tr>
                                         <td>Penerbit:</td>
-                                        <td>{{ $produk->penerbit->nama_penerbit }}</td>
+                                        <td>{{ $produk->id_penerbit != null ? $produk->penerbit->nama_penerbit : '-' }}</td>
                                     </tr>
                                     <tr>
                                         <td>Kategori:</td>
