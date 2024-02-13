@@ -33,9 +33,13 @@ class HomeController extends Controller
             $hitung = $v->harga->diskon / $v->harga->harga_awal * 100;
             $promo_raw[$k]->persen = (int) floor($hitung);
         }
-        
-        $data_promo = $promo_raw->sortByDesc('persen');
-        $promo = $data_promo->values()->all()[0];
+
+        if (count($promo_raw) > 0) {
+            $data_promo = $promo_raw->sortByDesc('persen');
+            $promo = $data_promo->values()->all()[0];
+        }else{
+            $promo = '';
+        }
 
         // dd($promo);
 

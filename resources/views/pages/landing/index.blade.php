@@ -196,96 +196,100 @@
                     </div>
 
                     {{-- Promo --}}
-                    <div class="mb-6">
-
+                    @if ($promo)
                         <div class="mb-6">
-                            <h3 class="mb-1">Promo</h3>
-                        </div>
-                        <div class="card border border-danger p-6">
-                            <div class="row">
-                                <div class="col-lg-5 text-center">
-                                    @if ($promo->gambar_produk)
-                                        <img src="{{ asset('storage/produk/' . $promo->gambar_produk[0]->gambar) }}"
-                                            alt="{{ $promo->nama_produk }}" class="img-fluid w-100 h-100">
-                                    @else
-                                        <img src="{{ asset('images/avatar/no-image.png') }}"
-                                            alt="{{ $promo->nama_produk }}" class="img-fluid w-100 h-100">
-                                    @endif
-                                </div>
-                                <div class="col-lg-7 text-center text-lg-start">
 
-                                    <div class="mb-3">
-                                        <!-- rating -->
-                                        <small>
-                                            @if (round($p->averageRating()) > 0)
-                                                {{ tampilkanRating(round($p->averageRating(), 2)) }}
-                                            @endif
-                                        </small>
-                                        @if (round($p->averageRating()) > 0)
-                                            <span class="text-muted small">{{ round($p->averageRating(), 2) }}</span>
+                            <div class="mb-6">
+                                <h3 class="mb-1">Promo</h3>
+                            </div>
+                            <div class="card border border-danger p-6">
+                                <div class="row">
+                                    <div class="col-lg-5 text-center">
+                                        @if ($promo->gambar_produk)
+                                            <img src="{{ asset('storage/produk/' . $promo->gambar_produk[0]->gambar) }}"
+                                                alt="{{ $promo->nama_produk }}" class="img-fluid w-100 h-100">
+                                        @else
+                                            <img src="{{ asset('images/avatar/no-image.png') }}"
+                                                alt="{{ $promo->nama_produk }}" class="img-fluid w-100 h-100">
                                         @endif
                                     </div>
-                                    <h2 class="fs-4"><a href="#"
-                                            class="text-inherit text-decoration-none">{{ $promo->nama_produk }}</a></h2>
+                                    <div class="col-lg-7 text-center text-lg-start">
 
-                                    <div
-                                        class="d-flex justify-content-center align-items-center justify-content-lg-between mt-3">
-                                        <div><span
-                                                class="text-dark fs-5 fw-bold">{{ rupiah($p->harga->harga_akhir) }}</span>
-                                            @if ($p->harga->diskon > 0)
-                                                <span
-                                                    class="text-decoration-line-through text-muted fs-5">{{ rupiah($p->harga->harga_awal) }}</span>
+                                        <div class="mb-3">
+                                            <!-- rating -->
+                                            <small>
+                                                @if (round($p->averageRating()) > 0)
+                                                    {{ tampilkanRating(round($p->averageRating(), 2)) }}
+                                                @endif
+                                            </small>
+                                            @if (round($p->averageRating()) > 0)
+                                                <span class="text-muted small">{{ round($p->averageRating(), 2) }}</span>
                                             @endif
                                         </div>
+                                        <h2 class="fs-4"><a href="#"
+                                                class="text-inherit text-decoration-none">{{ $promo->nama_produk }}</a>
+                                        </h2>
 
-                                    </div>
-                                    <div class="mt-2">
-                                        @auth
-                                        <input type="hidden" id="id_user" value="{{ Auth::user()->id }}">
-                                        <input type="hidden" id="id_produk" value="{{ $promo->id }}">
-                                            <button type="button" class="btn btn-primary " id="btn-keranjang">
-                                                <i class="fa-solid fa-plus me-2"></i> Masukkan Keranjang
-                                            </button>
-                                        @endauth
-
-                                        @guest
-                                            <a href="{{ route('login') }}" class="btn btn-primary">
-                                                <i class="fa-solid fa-lock me-2"></i> Login 
-                                            </a>
-                                        @endguest
-                                    </div>
-                                    <div class="mt-6 mb-6">
-                                        <div class="d-flex justify-content-between mb-2">
-                                            <span>Terjual: <span
-                                                    class="text-dark fs-6 fw-bold">{{ $promo->stok->jumlah_produk - $promo->stok->sisa_produk }}</span></span>
-                                            <span>Tersedia: <span
-                                                    class="text-dark fs-6 fw-bold">{{ $promo->stok->jumlah_produk }}</span></span>
-                                        </div>
-
-                                        <div class="progress bg-light-danger" role="progressbar"
-                                            aria-label="Example 1px high" aria-valuenow="85" aria-valuemin="0"
-                                            aria-valuemax="100" style="height: 5px">
-                                            <div class="progress-bar bg-danger"
-                                                style="width: {{ (($promo->stok->jumlah_produk - $promo->stok->sisa_produk) / $promo->stok->jumlah_produk) * 100 }}%">
+                                        <div
+                                            class="d-flex justify-content-center align-items-center justify-content-lg-between mt-3">
+                                            <div><span
+                                                    class="text-dark fs-5 fw-bold">{{ rupiah($p->harga->harga_akhir) }}</span>
+                                                @if ($p->harga->diskon > 0)
+                                                    <span
+                                                        class="text-decoration-line-through text-muted fs-5">{{ rupiah($p->harga->harga_awal) }}</span>
+                                                @endif
                                             </div>
+
                                         </div>
+                                        <div class="mt-2">
+                                            @auth
+                                                <input type="hidden" id="id_user" value="{{ Auth::user()->id }}">
+                                                <input type="hidden" id="id_produk" value="{{ $promo->id }}">
+                                                <button type="button" class="btn btn-primary " id="btn-keranjang">
+                                                    <i class="fa-solid fa-plus me-2"></i> Masukkan Keranjang
+                                                </button>
+                                            @endauth
+
+                                            @guest
+                                                <a href="{{ route('login') }}" class="btn btn-primary">
+                                                    <i class="fa-solid fa-lock me-2"></i> Login
+                                                </a>
+                                            @endguest
+                                        </div>
+                                        <div class="mt-6 mb-6">
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>Terjual: <span
+                                                        class="text-dark fs-6 fw-bold">{{ $promo->stok->jumlah_produk - $promo->stok->sisa_produk }}</span></span>
+                                                <span>Tersedia: <span
+                                                        class="text-dark fs-6 fw-bold">{{ $promo->stok->jumlah_produk }}</span></span>
+                                            </div>
+
+                                            <div class="progress bg-light-danger" role="progressbar"
+                                                aria-label="Example 1px high" aria-valuenow="85" aria-valuemin="0"
+                                                aria-valuemax="100" style="height: 5px">
+                                                <div class="progress-bar bg-danger"
+                                                    style="width: {{ (($promo->stok->jumlah_produk - $promo->stok->sisa_produk) / $promo->stok->jumlah_produk) * 100 }}%">
+                                                </div>
+                                            </div>
 
 
-                                    </div>
-                                    <p class="fw-bold text-dark mb-0">
-                                        Buruan penawaran segera berakhir
-                                    </p>
-                                    <div class="d-flex justify-content-center justify-content-lg-start text-center mt-1">
+                                        </div>
+                                        <p class="fw-bold text-dark mb-0">
+                                            Buruan penawaran segera berakhir
+                                        </p>
+                                        <div
+                                            class="d-flex justify-content-center justify-content-lg-start text-center mt-1">
 
-                                        <div class="deals-countdown"
-                                            data-countdown="{{ $promo->harga->selesai_diskon }}"></div>
+                                            <div class="deals-countdown"
+                                                data-countdown="{{ $promo->harga->selesai_diskon }}"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
+
                         </div>
-
-
-                    </div>
+                    @endif
 
                     <div class="row">
                         <div class="col-12">
