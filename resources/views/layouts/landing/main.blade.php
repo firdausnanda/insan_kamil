@@ -153,7 +153,6 @@
     <script src="{{ asset('js/vendors/zoom.js') }}"></script>
     <script src="{{ asset('js/vendors/increment-value.js') }}"></script>
     <script src="{{ asset('vendor/jquery-countdown/dist/jquery.countdown.min.js') }}"></script>
-    <script src="{{ asset('js/vendors/countdown.js') }}"></script>
     <script src="{{ asset('vendor/sticky-sidebar/dist/sticky-sidebar.min.js') }}"></script>
     <script src="{{ asset('js/vendors/sticky.js') }}"></script>
     <script src="{{ asset('js/vendors/modal.js') }}"></script>
