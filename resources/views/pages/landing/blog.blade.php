@@ -23,15 +23,17 @@
     {{-- Konten --}}
     <section class="mt-8">
         <div class="container">
-            <div class="row">
+            <div class="row text-center justify-content-center">
                 <h2>{{ $b->judul }}</h2>
+                <p class="text-secondary">{{ \Carbon\Carbon::parse($b->created_at)->isoFormat('D MMMM Y') }}</p>
 
                 @if ($b->gambar)
                     <img src="{{ asset('storage/blog/' . $b->gambar) }}" class="img-fluid"
                         style="max-width: 450px; max-height: auto">
                 @endif
-
-                {!! $b->isi !!}
+                <div class="mt-3" style="text-align: justify; text-justify: inter-word;">
+                    {!! $b->isi !!}
+                </div>
             </div>
         </div>
     </section>

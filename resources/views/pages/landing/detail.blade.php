@@ -13,7 +13,7 @@
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="{{ route('landing.home') }}">Home</a></li>
                             <li class="breadcrumb-item"><a
-                                    href="{{ route('landing.detail', $produk->id) }}">{{ $produk->kategori->nama_kategori }}</a>
+                                    href="{{ route('landing.kategori', $produk->kategori->slug) }}">{{ $produk->kategori->nama_kategori }}</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $produk->nama_produk }}</li>
                         </ol>
