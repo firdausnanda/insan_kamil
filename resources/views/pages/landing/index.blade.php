@@ -404,15 +404,15 @@
 
                     @forelse ($blog as $b)
                         <!-- col -->
-                        <div class="col-12 col-md-6 col-lg-3 mb-8">
-                            <div class="mb-4">
+                        <div class="col-12 col-md-6 col-lg-3 mb-8 p-4">
+                            <div class="mb-4 p-3">
                                 <a href="{{ route('landing.detail_blog', $b->id) }}">
                                     <!-- img -->
                                     <div class="img-zoom">
                                         @if ($b->gambar)
                                             <img src="{{ asset('storage/blog/' . $b->gambar) }}" alt=""
                                                 class="img-fluid rounded w-100"
-                                                style="max-width: 298px; max-height: 143px">
+                                                style="max-height: 175px">
                                         @else
                                             <img src="{{ asset('images/blog/blog-img-1.jpg') }}" alt=""
                                                 class="img-fluid rounded w-100">
