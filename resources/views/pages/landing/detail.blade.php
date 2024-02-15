@@ -282,7 +282,7 @@
                 <!-- col -->
                 @foreach ($produk_related as $p)
                     <div class="col">
-                        <div class="card card-product">
+                        <div class="card card-product" style="min-height: 405px">
                             <div class="card-body">
                                 <!-- badge -->
 
