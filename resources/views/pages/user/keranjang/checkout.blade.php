@@ -1025,6 +1025,7 @@
                                             <div class="mb-6">
                                                 <h6>Alamat Penerima</h6>
                                                 <p class="mb-1 lh-lg">
+                                                    ${response.data.nama_penerima} <br>
                                                     ${response.data.alamat_penerima}
                                                     <br>
                                                     ${response.data.district.name}
