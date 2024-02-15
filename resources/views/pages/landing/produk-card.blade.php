@@ -5,7 +5,7 @@
         <div class="col">
             <!-- card -->
             <div class="card card-product">
-                <div class="card-body">
+                <div class="card-body" style="min-height: 405px">
                     <!-- badge -->
                     <a href="{{ route('landing.detail', $p->id) }}">
                         <div class="text-center position-relative">
