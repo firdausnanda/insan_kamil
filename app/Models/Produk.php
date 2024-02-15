@@ -17,11 +17,11 @@ class Produk extends Model
         'id_penerbit',
         'id_harga',
         'id_stok',
+        'id_bahasa',
         'kode_produk',
         'nama_produk',
         'berat_produk',
         'ukuran_produk',
-        'bahasa',
         'isbn',
         'jenis_cover',
         'halaman_produk',
@@ -40,6 +40,11 @@ class Produk extends Model
     public function harga()
     {
         return $this->belongsTo(Harga::class, 'id_harga', 'id');
+    }
+
+    public function bahasa()
+    {
+        return $this->belongsTo(Bahasa::class, 'id_bahasa', 'id');
     }
     
     public function stok()

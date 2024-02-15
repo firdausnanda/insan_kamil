@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
+use App\Models\Bahasa;
 use App\Models\GambarProduk;
 use App\Models\Harga;
 use App\Models\Kategori;
@@ -34,7 +35,8 @@ class ProdukController extends Controller
     {
         $kategori = Kategori::all();
         $penerbit = Penerbit::all();
-        return view('pages.admin.produk.create', compact('kategori', 'penerbit'));
+        $bahasa = Bahasa::all();
+        return view('pages.admin.produk.create', compact('kategori', 'penerbit', 'bahasa'));
     }
 
     public function store(Request $request) 
@@ -96,11 +98,11 @@ class ProdukController extends Controller
                 'id_penerbit' => $request->penerbit,
                 'id_harga' => $harga->id,
                 'id_stok' => $stok->id,
+                'id_bahasa' => $request->bahasa,
                 'kode_produk' => $request->kode_produk,
                 'nama_produk' => $request->judul,
                 'berat_produk' => $request->berat,
                 'ukuran_produk' => $request->panjang . 'x' . $request->lebar,
-                'bahasa' => $request->bahasa,
                 'isbn' => $request->isbn,
                 'jenis_cover' => $request->jenis_cover,
                 'halaman_produk' => $request->jumlah_halaman,
@@ -151,13 +153,14 @@ class ProdukController extends Controller
         try {
             $kategori = Kategori::all();
             $penerbit = Penerbit::all();
+            $bahasa = Bahasa::all();
             $produk = Produk::with('stok')->where('id', $id)->first();
             // dd($produk);
             // string
             $string = Str::replace('x', ',', $produk->ukuran_produk);
             $ukuran = Str::of($string)->split('/[\s,]+/');
 
-            return view('pages.admin.produk.edit', compact('kategori', 'penerbit', 'produk', 'ukuran'));
+            return view('pages.admin.produk.edit', compact('kategori', 'penerbit', 'produk', 'ukuran', 'bahasa'));
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error('Error!', $e->getMessage(), 500);        

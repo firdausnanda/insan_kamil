@@ -49,6 +49,15 @@
                     </a>
                 </li>
                 <li class="nav-item ">
+                    <a class="nav-link {{ request()->routeIs('admin.bahasa.*') ? 'active' : '' }}"
+                        href="{{ route('admin.bahasa.index') }}">
+                        <div class="d-flex align-items-center">
+                            <span class="nav-link-icon"> <i class="bi bi-translate"></i></span>
+                            <span class="nav-link-text">Bahasa</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="nav-item ">
                     <a class="nav-link {{ request()->routeIs('admin.order.*') ? 'active' : '' }}"
                         href="{{ route('admin.order.index') }}">
                         <div class="d-flex align-items-center">
@@ -200,6 +209,15 @@
                         <div class="d-flex align-items-center">
                             <span class="nav-link-icon"> <i class="bi bi-book"></i></span>
                             <span class="nav-link-text">Penerbit</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link {{ request()->routeIs('admin.bahasa.*') ? 'active' : '' }}"
+                        href="{{ route('admin.bahasa.index') }}">
+                        <div class="d-flex align-items-center">
+                            <span class="nav-link-icon"> <i class="bi bi-translate"></i></span>
+                            <span class="nav-link-text">Bahasa</span>
                         </div>
                     </a>
                 </li>

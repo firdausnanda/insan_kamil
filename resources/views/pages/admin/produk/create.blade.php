@@ -105,14 +105,20 @@
                                     <!-- input -->
                                     <div class="mb-3 col-lg-6">
                                         <label class="form-label">Bahasa</label>
-                                        <select class="form-select" name="bahasa">
-                                            <option selected>Pilih Bahasa</option>
-                                            <option value="Indonesia">Indonesia</option>
-                                            <option value="Inggris">Inggris</option>
-                                            <option value="Bilingual (Inggris - Indonesia)">Bilingual (Inggris - Indonesia)
-                                            </option>
-                                            <option value="Arab">Arab</option>
-                                        </select>
+                                        <div class="row align-items-center">
+                                            <div class="col-10">
+                                                <select class="form-select" name="bahasa" id="bahasa">
+                                                    <option selected>Pilih Bahasa</option>
+                                                    @foreach ($bahasa as $b)
+                                                        <option value="{{ $b->id }}">{{ $b->bahasa }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-2 ps-0">
+                                                <a href="{{ route('admin.bahasa.index') }}" class="btn btn-sm btn-info"><i
+                                                        class="fa-solid fa-plus"></i></a>
+                                            </div>
+                                        </div>
                                     </div>
                                     <!-- input -->
                                     <div class="mb-3 col-lg-6">
@@ -285,6 +291,11 @@
             $('#penerbit').select2({
                 theme: 'bootstrap-5',
                 placeholder: '-- Pilih Kategori --',
+            });
+            
+            $('#bahasa').select2({
+                theme: 'bootstrap-5',
+                placeholder: '-- Pilih Bahasa --',
             });
 
             // Upload Image

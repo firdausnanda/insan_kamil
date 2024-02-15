@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\PenggunaController;
 use App\Http\Controllers\Admin\SlideshowController;
 use App\Http\Controllers\Admin\UlasanController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\BahasaController;
 use App\Http\Controllers\Landing\HomeController;
 use App\Http\Controllers\PaymentCallbackController;
 use App\Http\Controllers\PopupController;
@@ -78,6 +79,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 		Route::get('', [PenerbitController::class, 'index'])->name('index');
 		Route::post('', [PenerbitController::class, 'store'])->name('store');
 		Route::put('', [PenerbitController::class, 'update'])->name('update');
+	});
+
+	// Bahasa
+  Route::group(['prefix' => 'bahasa', 'as' => 'bahasa.'], function () {
+		Route::get('', [BahasaController::class, 'index'])->name('index');
+		Route::post('', [BahasaController::class, 'store'])->name('store');
+		Route::put('', [BahasaController::class, 'update'])->name('update');
 	});
 
 	// Order

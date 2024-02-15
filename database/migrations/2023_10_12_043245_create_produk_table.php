@@ -17,12 +17,12 @@ return new class extends Migration
             $table->string('id_penerbit')->nullable();
             $table->string('id_stok');
             $table->string('id_harga');
+            $table->string('id_bahasa')->nullable();
             $table->string('kode_produk');
             $table->string('nama_produk');
             $table->integer('berat_produk');
             $table->string('ukuran_produk')->nullable();
             $table->string('pengarang')->nullable();
-            $table->string('bahasa')->nullable();
             $table->string('isbn')->nullable();
             $table->string('jenis_cover')->nullable();
             $table->string('halaman_produk')->nullable();

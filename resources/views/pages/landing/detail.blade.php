@@ -172,7 +172,7 @@
                                     </tr>
                                     <tr>
                                         <td>Bahasa:</td>
-                                        <td>{{ $produk->bahasa ?? '-' }}</td>
+                                        <td>{{ $produk->bahasa->bahasa ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <td>Ukuran:</td>
