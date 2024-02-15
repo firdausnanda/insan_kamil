@@ -16,6 +16,7 @@ class DropshipMaster extends Model
         'nama_pengirim',
         'no_telp_pengirim',
         'email_pengirim',
+        'nama_penerima',
         'alamat_penerima',
         'kota_penerima',
         'provinsi_penerima',

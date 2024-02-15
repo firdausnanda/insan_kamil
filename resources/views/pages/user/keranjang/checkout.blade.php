@@ -318,6 +318,15 @@
 
                             <div class="col-md-12 mb-3">
                                 <label class="form-label" for="no_telepon">
+                                    Nama Penerima
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" name="nama_penerima" class="form-control"
+                                    placeholder="Nama Penerima"
+                                    value="{{ $dropship ? $dropship->nama_penerima : '' }}" />
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="no_telepon">
                                     Nomor Telepon Penerima
                                     <span class="text-danger">*</span>
                                 </label>
@@ -938,6 +947,7 @@
                                             <div class="mb-6">
                                                 <h6>Alamat Penerima</h6>
                                                 <p class="mb-1 lh-lg">
+                                                    ${response.data.nama_penerima} <br>
                                                     ${response.data.alamat_penerima}
                                                     <br>
                                                     ${response.data.district.name}
