@@ -192,14 +192,8 @@ class HomeController extends Controller
             }
     
             $produk = $produk->where('persen', '>=', $popup->diskon);
-                
-            if ($request->ajax()) {
-                // Render View
-                $render = View::make('pages.landing.produk-card', compact('produk'))->render();    
-                return ResponseFormatter::success($render, 'data berhasil diambil'); 
-            }
 
-            return view('pages.landing.produk-by-popup', compact('kategori_all'));
+            return view('pages.landing.produk-by-popup', compact('kategori_all', 'produk'));
 
         } catch (\Exception $e) {
             Log::error($e->getMessage());
