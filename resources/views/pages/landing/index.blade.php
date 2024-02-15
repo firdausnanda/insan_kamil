@@ -151,11 +151,11 @@
                                                 @if ($p->gambar_produk)
                                                     <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
                                                         alt="{{ $p->nama_produk }}" class="mb-3"
-                                                        style="max-height: 120px; max-width: 120px;">
+                                                        style="height: 120px; width: 120px;">
                                                 @else
                                                     <img src="{{ asset('images/avatar/no-image.png') }}"
                                                         alt="{{ $p->nama_produk }}" class="mb-3"
-                                                        style="max-height: 120px; max-width: 120px;">
+                                                        style="height: 120px; width: 120px;">
                                                 @endif
                                                 <!-- text -->
 
