@@ -25,7 +25,7 @@
                                             @if ($order->status == 1)
                                                 <button id="btn-bayar" class="btn btn-primary">Lakukan Pembayaran</button>
                                             @else
-                                                <a href="#" class="btn btn-info">Download Bukti Pembayaran</a>
+                                                <button type="button" class="btn btn-info btn-download">Download Bukti Pembayaran</button>
                                             @endif
                                             <a href="{{ route('user.order.konfirmasi') }}"
                                                 class="btn btn-secondary">Kembali</a>
@@ -64,7 +64,7 @@
                                                     {{ $order->user->alamat }}
                                                     <br>
                                                     {{ $order->user->city->name }}, {{ $order->user->province->name }},
-                                                    <br /> Kode Pos. 235153
+                                                    <br />
                                                 </p>
                                             </div>
                                         </div>
@@ -498,6 +498,41 @@
                         Swal.fire('Kesalahan!', 'Data gagal disimpan', 'error')
                     }
                 });
+            });
+
+            // Download
+            $('.btn-download').click(function (e) { 
+                e.preventDefault();
+
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('user.order.cetak') }}",
+                    data: {
+                        id: "{{ $order->id }}"
+                    },
+                    cache: false,
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    beforeSend: function() {
+                        Swal.showLoading()
+                    },
+                    success: function(response) {
+                        Swal.hideLoading()
+                        var blob = new Blob([response], {
+                            type: 'application/pdf'
+                        });
+                        var url = URL.createObjectURL(blob);
+                        window.open(url, '_blank');
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.hideLoading()
+
+                        Swal.fire( 'Periksa kembali data anda!', 'Data Tidak Ditemukan',
+                            'error');
+                    },
+                });
+
             });
 
         });

@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "codedge/laravel-fpdf": "^1.12",
         "guzzlehttp/guzzle": "^7.2",
         "kavist/rajaongkir": "1.1",
         "laravel/framework": "^10.10",
@@ -42,6 +43,7 @@
             "app/Helpers/Rating.php",
             "app/Helpers/Diskon.php",
             "app/Helpers/TimeFormat.php",
+            "app/Helpers/Pdf.php",
             "app/Helpers/ResponseFormatter.php"
         ]
     },

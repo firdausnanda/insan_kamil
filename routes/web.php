@@ -185,6 +185,7 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['role:user']
 		Route::post('/rating', [UserOrderController::class, 'rating'])->name('rating');
 		Route::get('/dropship', [UserOrderController::class, 'dropship'])->name('dropship');
 		Route::put('/dropship', [UserOrderController::class, 'edit_dropship'])->name('edit_dropship');
+		Route::get('/cetak', [UserOrderController::class, 'cetak'])->name('cetak');
 		Route::get('/detail-konfirmasi/{id}', [UserOrderController::class, 'detail_konfirmasi'])->name('detail_konfirmasi');
 	});
 
