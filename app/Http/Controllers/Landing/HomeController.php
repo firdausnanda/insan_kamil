@@ -200,4 +200,17 @@ class HomeController extends Controller
             abort(404);
         }
     }
+
+    public function search(Request $request)
+    {
+
+        $query = $request->get('query');
+        $kategori_all = Kategori::get();
+        $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori', 'ratings')->where('nama_produk', 'like', '%'.$query.'%')->get();
+        if ($request->ajax()) {
+            return response()->json($produk);
+        }
+
+        return view('pages.landing.produk-by-search', compact('kategori_all', 'produk', 'query'));
+    }
 }

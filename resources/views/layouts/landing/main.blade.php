@@ -120,7 +120,8 @@
                                     <p class="lead mb-5">{{ $popup->keterangan }}</p>
 
                                     <div class="d-grid">
-                                        <a href="{{ route('landing.detail_popup') }}" class="btn btn-primary">Start Show
+                                        <a href="{{ route('landing.detail_popup') }}" class="btn btn-primary">Start
+                                            Show
                                             Now</a>
                                     </div>
 
@@ -163,6 +164,8 @@
     <script src="{{ asset('vendor/nouislider/dist/nouislider.min.js') }}"></script>
     <script src="{{ asset('vendor/wnumb/wNumb.min.js') }}"></script>
     <script src="{{ asset('vendor/momentjs/moment.min.js') }}"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script> --}}
+    <script src="{{ asset('vendor/typehead.js/typeahead.bundle.js') }}"></script>
     <script src="https://app.sandbox.midtrans.com/snap/snap.js"
         data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
     <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js"
@@ -176,6 +179,52 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+
+            var products = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('nama_produk'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: '{{ route('search') }}?query=%QUERY',
+                    wildcard: '%QUERY'
+                }
+            });
+
+            $('#search').typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            }, {
+                name: 'products',
+                display: 'nama_produk',
+                source: products,
+                templates: {
+                    suggestion: function(data) {
+
+                        if (data.gambar_produk) {
+                            var gambar = `<img src="{{ asset('storage/produk/${data.gambar_produk[0].gambar}') }}" class="mb-3" style="height: 120px; width: 120px;">`
+                        }else{
+                            var gambar = `<img src="{{ asset('images/avatar/no-image.png') }}" class="mb-3" style="height: 120px; width: 120px;">`
+                        }
+                                                
+                        var link = "{{ route('landing.detail', ':slug') }}"
+                        link = link.replace(':slug', data.id)
+
+                        return `<a href="${link}" class="mt-2 d-block text-black"> ${data.nama_produk} </a>`;
+                    }
+                }
+            });
+
+            // Cari
+            $('.btn-cari').click(function (e) { 
+                e.preventDefault();
+                
+                
+
             });
         });
     </script>
