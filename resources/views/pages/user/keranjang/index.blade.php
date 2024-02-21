@@ -35,7 +35,7 @@
                             <div class="table-responsive p-5">
                                 <table class="table table-striped" id="produks">
                                     <thead>
-                                        <th scope="col">#</th>
+                                        <th class="select-checkbox" scope="col"><input type="checkbox"> </th>
                                         <th scope="col">Nama Produk</th>
                                         <th scope="col">Berat</th>
                                         <th scope="col">Harga</th>
@@ -135,7 +135,7 @@
                                 <button type="button" value="-" class="button-minus btn btn-sm"
                                     data-field="quantity">-</button>
                                 <input type="number" step="1" max="10" value="${data}" id="jumlah"
-                                    name="quantity" class="quantity-field form-control-sm form-input" readonly />
+                                    name="quantity" style="background-color: white;" class="quantity-field form-control form-input nilai" />
                                 <button type="button" value="+" class="button-plus btn btn-sm" data-field="quantity" />+</button>
                                 </div>`
                         }
@@ -228,6 +228,35 @@
                     },
                     success: function(response) {
                         $.LoadingOverlay('hide');
+                    },
+                    error: function(response) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
+                    },
+                });
+
+            });
+
+            // Edit Jumlah
+            $('#produks tbody').on('change', 'input.nilai', function(event) {
+                event.preventDefault();
+
+                var cell_harga = table.row($(this).parents('tr')).data();
+
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('user.order.jumlah') }}",
+                    data: {
+                        id_keranjang: cell_harga.id,
+                        jumlah: $('#jumlah').val()
+                    },
+                    dataType: "json",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        table.ajax.reload()
                     },
                     error: function(response) {
                         $.LoadingOverlay('hide');
@@ -343,6 +372,26 @@
             $('.btn-back').click(function(e) {
                 e.preventDefault();
                 location.href = "{{ route('landing.home') }}"
+            });
+
+            // checkbox all
+            table.on("click", "th.select-checkbox", function() {
+                if ($("th.select-checkbox").hasClass("selected")) {
+                    table.rows().deselect();
+                    $("th.select-checkbox").removeClass("selected");
+                } else {
+                    table.rows().select();
+                    $("th.select-checkbox").addClass("selected");
+                }
+            }).on("select deselect", function() {
+                ("Some selection or deselection going on")
+                if (table.rows({
+                        selected: true
+                    }).count() !== table.rows().count()) {
+                    $("th.select-checkbox").removeClass("selected");
+                } else {
+                    $("th.select-checkbox").addClass("selected");
+                }
             });
         });
     </script>

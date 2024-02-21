@@ -164,8 +164,8 @@
     <script src="{{ asset('vendor/nouislider/dist/nouislider.min.js') }}"></script>
     <script src="{{ asset('vendor/wnumb/wNumb.min.js') }}"></script>
     <script src="{{ asset('vendor/momentjs/moment.min.js') }}"></script>
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script> --}}
     <script src="{{ asset('vendor/typehead.js/typeahead.bundle.js') }}"></script>
+    <script src="{{ asset('vendor/jquery/jquery.mask.min.js') }}"></script>
     <script src="https://app.sandbox.midtrans.com/snap/snap.js"
         data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
     <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js"
@@ -217,14 +217,6 @@
                         return `<a href="${link}" class="mt-2 d-block text-black"> ${data.nama_produk} </a>`;
                     }
                 }
-            });
-
-            // Cari
-            $('.btn-cari').click(function (e) { 
-                e.preventDefault();
-                
-                
-
             });
         });
     </script>

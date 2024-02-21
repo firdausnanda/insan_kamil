@@ -197,6 +197,16 @@ class OrderController extends Controller
                 'jumlah_produk' => $beratProduk,
             ]);
 
+            // Remove Keranjang
+            $temp = TempOrder::where('id_user', $request->user)->get();
+            
+            foreach ($temp as $v) {
+                Keranjang::where('id_produk', $v->id_produk)->where('id_user', $request->user)->delete();
+            } 
+
+            TempOrder::where('id_user', $request->user)->delete();
+            
+            // Dropship
             if ($request->status_dropship == 1) {
                 $cekDropship = DropshipMaster::where('id_user', $request->user)->first();
     
