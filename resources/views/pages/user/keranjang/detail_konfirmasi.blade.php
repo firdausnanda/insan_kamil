@@ -515,10 +515,10 @@
                         responseType: 'blob'
                     },
                     beforeSend: function() {
-                        Swal.showLoading()
+                        $.LoadingOverlay('show')
                     },
                     success: function(response) {
-                        Swal.hideLoading()
+                        $.LoadingOverlay('hide')
                         var blob = new Blob([response], {
                             type: 'application/pdf'
                         });
@@ -526,7 +526,7 @@
                         window.open(url, '_blank');
                     },
                     error: function(xhr, status, error) {
-                        Swal.hideLoading()
+                        $.LoadingOverlay('hide')
 
                         Swal.fire( 'Periksa kembali data anda!', 'Data Tidak Ditemukan',
                             'error');
