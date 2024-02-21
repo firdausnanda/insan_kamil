@@ -35,6 +35,7 @@ class User extends Authenticatable
         'kota',
         'desa',
         'status',
+        'id_member',
     ];
 
     /**
@@ -73,19 +74,24 @@ class User extends Authenticatable
         ->logOnlyDirty(true)
         ->logUnguarded();
     }
+    
+    public function province()
+    {
+      return $this->belongsTo(Province::class, 'provinsi', 'id');
+    }
 
-      public function province()
-      {
-          return $this->belongsTo(Province::class, 'provinsi', 'id');
-      }
+    public function city()
+    {
+      return $this->belongsTo(City::class, 'kota', 'id');
+    }
 
-      public function city()
-      {
-          return $this->belongsTo(City::class, 'kota', 'id');
-      }
-
-      public function district()
-      {
-          return $this->belongsTo(Subdistrict::class, 'desa', 'id');
-      }
+    public function district()
+    {
+      return $this->belongsTo(Subdistrict::class, 'desa', 'id');
+    }
+    
+    public function member()
+    {
+      return $this->belongsTo(Member::class, 'id_member', 'id');
+    }
 }

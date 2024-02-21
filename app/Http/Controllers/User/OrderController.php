@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Dropship;
 use App\Models\DropshipMaster;
 use App\Models\Keranjang;
+use App\Models\Member;
 use App\Models\Order;
 use App\Models\Pembayaran;
 use App\Models\Produk;
@@ -37,7 +38,7 @@ class OrderController extends Controller
     public function index() 
     {
 
-        $data = TempOrder::with('user.province', 'user.city', 'user.district', 'produk.gambar_produk')->whereHas('user', function($query){
+        $data = TempOrder::with('user.member', 'user.province', 'user.city', 'user.district', 'produk.gambar_produk')->whereHas('user', function($query){
             $query->where('id', Auth::user()->id);
         })->get();
 
@@ -66,8 +67,14 @@ class OrderController extends Controller
                 break;
         }
 
+        if($data[0]->user->id_member){
+            $member_diskon = $subTotal * $data[0]->user->member->diskon / 100;
+        }else{
+            $member_diskon = 0;
+        }
+
         if ($data->first() != '') {
-            return view('pages.user.keranjang.checkout', compact('data', 'subTotal', 'beratProduk', 'courier', 'dropship'));
+            return view('pages.user.keranjang.checkout', compact('data', 'subTotal', 'beratProduk', 'courier', 'dropship', 'member_diskon'));
         }else{
             return redirect()->route('user.keranjang.index');
         }
@@ -94,13 +101,31 @@ class OrderController extends Controller
 
             if ($request->status == 1) {
 
-                $pembayaran = Pembayaran::where('id_order', $request->id)->update([
+                // Update Pembayaran
+                $pembayaran = Pembayaran::where('id_order', $request->id)->first();
+                
+                $pembayaran->update([
                     'status_pembayaran' => 2,
                 ]);
                 
-                Order::where('id', $request->id)->update([
+                // Update Order
+                $order = Order::where('id', $request->id)->first();
+                $order->update([
                     'status' => 2,
                 ]);
+
+                // Update Member
+                $cekmember = Member::orderBy('pembelian_minimum', 'desc')->get();
+                
+                if($cekmember->count() > 0){
+                    foreach ($cekmember as $v) {
+                        if ($pembayaran->harga_jual >= $v->pembelian_minimum) {
+                            User::where('id', $order->id_user)->update([
+                                'id_member' => $v->id
+                            ]);
+                        }
+                    }
+                }
     
                 Log::info("success! : . $pembayaran");                
                 return ResponseFormatter::success($pembayaran, 'data berhasil disimpan');

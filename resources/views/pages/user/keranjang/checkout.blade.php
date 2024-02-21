@@ -161,6 +161,23 @@
                                                 </td>
                                             </tr>
 
+                                            @if ($data[0]->user->id_member)
+                                                <tr>
+                                                    <td class="border-bottom-0 pb-0"></td>
+                                                    <td class="border-bottom-0 pb-0"></td>
+                                                    <td colspan="1" class="fw-medium text-success">
+                                                        <!-- text -->
+                                                        Member Diskon
+                                                    </td>
+                                                    <td class="fw-medium text-success">
+                                                        <!-- text -->
+                                                        <span id="member_diskon">
+                                                            {{ rupiah($member_diskon) }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            @endif
+
                                             <tr>
                                                 <td></td>
                                                 <td></td>
@@ -171,7 +188,11 @@
                                                 <td class="fw-semibold text-dark">
                                                     <!-- text -->
                                                     <span id="grand_total">
-                                                        {{ rupiah($subTotal) }}
+                                                        @if ($data[0]->user->id_member)
+                                                            {{ rupiah($subTotal - $member_diskon) }}
+                                                        @else
+                                                            {{ rupiah($subTotal) }}
+                                                        @endif
                                                     </span>
                                                 </td>
                                             </tr>
@@ -180,8 +201,8 @@
                                 </div>
 
                                 @if ($data[0]->catatan_pembelian)
-                                <h6 class="px-3"><span class="text-danger">*</span> Catatan Pembelian</h6>
-                                <p class="px-3">{{ $data[0]->catatan_pembelian }}</p>
+                                    <h6 class="px-3"><span class="text-danger">*</span> Catatan Pembelian</h6>
+                                    <p class="px-3">{{ $data[0]->catatan_pembelian }}</p>
                                 @endif
                             </div>
                         </div>
@@ -715,12 +736,18 @@
                 $('#pesan').addClass("btn-primary").removeClass("btn-secondary")
 
                 var subTotal = parseInt({{ $subTotal }})
+                var member = parseInt({{ $member_diskon }})
                 var shipping = parseInt($('#pilih_paket').val())
-                var TotalBiaya = Intl.NumberFormat('en-DE').format(shipping + subTotal)
+
+                if ({{ $data[0]->user->id_member }}) {
+                    var TotalBiaya = Intl.NumberFormat('en-DE').format(shipping + subTotal - member)
+                }else{
+                    var TotalBiaya = Intl.NumberFormat('en-DE').format(shipping + subTotal)
+                }
 
                 var buttonText = 'Lakukan Pemesanan - Rp. ' + TotalBiaya
-                var kirim = 'Rp. ' + Intl.NumberFormat('en-DE').format(shipping)
-                var total = 'Rp. ' + TotalBiaya
+                var kirim = 'Rp ' + Intl.NumberFormat('en-DE').format(shipping)
+                var total = 'Rp ' + TotalBiaya
 
 
                 $('#pesan').text(buttonText)
@@ -835,7 +862,7 @@
                         $.LoadingOverlay('hide');
                         if (response.responseJSON) {
                             Swal.fire('Gagal!', response.responseJSON.data, 'error');
-                        }else{
+                        } else {
                             Swal.fire('Gagal!', 'Periksa kembali data anda', 'error');
                         }
                     },

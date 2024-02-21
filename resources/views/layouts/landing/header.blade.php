@@ -222,11 +222,15 @@
                                         <a href="#" role="button" data-bs-toggle="dropdown"
                                             aria-expanded="false">
                                             @if (Auth::user()->avatar == null)
-                                                <img src="{{ asset('images/avatar/user.png') }}" alt=""
-                                                    class="avatar avatar-md rounded-circle">
+                                                <div class="border-1 border-danger">
+                                                    <img src="{{ asset('images/avatar/user.png') }}" alt=""
+                                                        class="avatar avatar-md rounded-circle">
+                                                </div>
                                             @else
-                                                <img src="{{ Auth::user()->avatar }}" alt=""
-                                                    class="avatar avatar-md rounded-circle">
+                                                <div class="border border-4 rounded-circle border-bronze">
+                                                    <img src="{{ Auth::user()->avatar }}" alt=""
+                                                        class="avatar avatar-md rounded-circle">
+                                                </div>
                                             @endif
                                         </a>
 
@@ -234,7 +238,7 @@
 
                                             <div class="lh-1 px-5 py-4 border-bottom">
                                                 <h5 class="mb-1 h6">{{ Auth::user()->name }}</h5>
-                                                <span class="badge bg-warning mb-2">Member Platinum</span>
+                                                <span class="badge bg-warning mb-2 bg-bronze">Member Bronze</span>
                                                 <small class="d-block">{{ Auth::user()->email }}</small>
                                             </div>
 

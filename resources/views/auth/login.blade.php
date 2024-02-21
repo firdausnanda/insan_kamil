@@ -67,7 +67,8 @@
                                 </div>
                                 <div>
                                     Lupa Password?
-                                    <a href="{{ route('password.request') }}">Reset</a>
+                                    {{-- <a href="{{ route('password.request') }}">Reset</a> --}}
+                                    <a href="#">Reset</a>
                                 </div>
                             </div>
                             <!-- btn -->
