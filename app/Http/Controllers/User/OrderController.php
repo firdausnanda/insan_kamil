@@ -12,6 +12,7 @@ use App\Models\Order;
 use App\Models\Pembayaran;
 use App\Models\Produk;
 use App\Models\ProdukDikirim;
+use App\Models\Stok;
 use App\Models\TempOrder;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -129,6 +130,16 @@ class OrderController extends Controller
     {
         try {
 
+            // Cek Stok
+            foreach ($request->data as $v) {
+
+                $cekStok = Produk::with('stok')->where('id', $v['id_produk'])->first();
+                
+                if ($cekStok->stok->sisa_produk < $v['jumlah_produk']) {
+                    return ResponseFormatter::error('Stok tidak tersedia/mencukupi', 'Data gagal disimpan');
+                }
+            }
+
             $collect = collect($request->data);
 
             // harga produk total
@@ -153,13 +164,22 @@ class OrderController extends Controller
                 'catatan_pembelian' => $request->catatan,
             ]);
 
-            // Create Produk Dikirim
             foreach ($request->data as $v) {
+
+                // Cek Stok
+                $cekStok = Produk::with('stok')->where('id', $v['id_produk'])->first();
+
+                // Create Produk Dikirim
                 ProdukDikirim::create([
                     'id_order' => $order->id,
                     'id_produk' => $v['id_produk'],
                     'harga_jual' => $v['harga_jual'],
                     'jumlah_produk' => $v['jumlah_produk'],
+                ]);
+
+                // Stok Dikurangi
+                Stok::where('id', $cekStok->id_stok)->update([
+                    'sisa_produk' => $cekStok->stok->sisa_produk - $v['jumlah_produk']
                 ]);
             }
 
@@ -533,12 +553,13 @@ class OrderController extends Controller
         }
     }
 
-    public function cetak(Request $request) {
+    public function cetak(Request $request) 
+    {
 
         try {
 
             $order = Order::with('user', 'produk_dikirim.produk')->where('id', $request->id)->first();
-// dd($order);
+
             $pdf = new Pdf('P', 'mm', 'A5'); //L For Landscape / P For Portrait
             $pdf->AddPage();
 

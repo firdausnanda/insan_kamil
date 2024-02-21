@@ -833,7 +833,11 @@
                     },
                     error: function(response) {
                         $.LoadingOverlay('hide');
-                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
+                        if (response.responseJSON) {
+                            Swal.fire('Gagal!', response.responseJSON.data, 'error');
+                        }else{
+                            Swal.fire('Gagal!', 'Periksa kembali data anda', 'error');
+                        }
                     },
                 });
             });
