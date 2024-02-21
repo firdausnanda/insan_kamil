@@ -12,7 +12,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="{{ route('landing.home') }}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Search</li>
+                            <li class="breadcrumb-item active" aria-current="page">Produk Baru</li>
                         </ol>
                     </nav>
                 </div>
@@ -59,7 +59,7 @@
                     <div class="card mb-4 bg-light border-0">
                         <!-- card body -->
                         <div class="card-body p-9">
-                            <h2 class="mb-0 fs-1"></h2>
+                            <h2 class="mb-0 fs-1">Produk Baru</h2>
                         </div>
                     </div>
 
@@ -161,7 +161,7 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            $('#search').val() == "{{ $query }}"
+
         });
     </script>
 @endsection

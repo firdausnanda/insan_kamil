@@ -301,7 +301,7 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-2 col-lg-3 col-4 text-end">
-                                    <a href="#" class="btn btn-light">Selengkapnya</a>
+                                    <a href="{{ route('landing.new_produk') }}" class="btn btn-light">Selengkapnya</a>
                                 </div>
                             </div>
                             <div class="row row-cols-xl-4 row-cols-lg-3 g-4">

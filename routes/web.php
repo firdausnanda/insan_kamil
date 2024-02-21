@@ -43,6 +43,7 @@ Route::get('/promo', [HomeController::class, 'detail_popup'])->name('landing.det
 Route::get('/blog/{id}', [HomeController::class, 'detail_blog'])->name('landing.detail_blog');
 Route::get('/kategori/{kategori}', [HomeController::class, 'kategori'])->name('landing.kategori');
 Route::get('/detail/{id}', [HomeController::class, 'detail'])->name('landing.detail');
+Route::get('/new-produk', [HomeController::class, 'new_produk'])->name('landing.new_produk');
 Route::get('/search', [HomeController::class, 'search'])->name('search');
 Route::get('/cari', [HomeController::class, 'search'])->name('cari');
 

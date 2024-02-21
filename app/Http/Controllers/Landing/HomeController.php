@@ -183,7 +183,7 @@ class HomeController extends Controller
             
             $popup = Popup::first();
             
-            $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori', 'ratings')->get(); 
+            $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori', 'ratings')->paginate(12); 
             
             foreach ($produk as $key => $value) {
                 // Add Persen to Produk
@@ -212,5 +212,12 @@ class HomeController extends Controller
         }
 
         return view('pages.landing.produk-by-search', compact('kategori_all', 'produk', 'query'));
+    }
+
+    public function new_produk(Request $request)
+    {
+        $produk = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->limit(30)->paginate(12);
+        $kategori_all = Kategori::get();
+        return view('pages.landing.new_produk', compact('kategori_all', 'produk'));
     }
 }
