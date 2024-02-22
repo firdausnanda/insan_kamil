@@ -55,6 +55,10 @@ class HomeController extends Controller
     
             $kategori_all = Kategori::get();
             $slug = $kategori_all->where('slug', $kategori)->first();
+
+            if (!$slug) {
+                abort(404);
+            }
     
             if ($request->ajax()) {
     
@@ -172,7 +176,11 @@ class HomeController extends Controller
     {
         try {
             $b = Blog::where('id', $id)->first();
-            return view('pages.landing.blog', compact('b'));
+            if ($b) {
+                return view('pages.landing.blog', compact('b'));
+            }else{
+                abort(404);
+            }
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             abort(404);
