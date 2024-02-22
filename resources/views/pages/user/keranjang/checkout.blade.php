@@ -58,6 +58,7 @@
                                                 {{ $data[0]->user->email }}
                                                 <br />
                                                 {{ $data[0]->user->no_telp }}
+                                                <input type="hidden" id="id_member" name="{{ $data[0]->user->id_member }}">
                                             </p>
                                         </div>
                                     </div>
@@ -739,7 +740,7 @@
                 var member = parseInt({{ $member_diskon }})
                 var shipping = parseInt($('#pilih_paket').val())
 
-                if ({{ $data[0]->user->id_member }}) {
+                if ($("#id_member").val()) {
                     var TotalBiaya = Intl.NumberFormat('en-DE').format(shipping + subTotal - member)
                 }else{
                     var TotalBiaya = Intl.NumberFormat('en-DE').format(shipping + subTotal)
