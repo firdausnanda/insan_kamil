@@ -45,6 +45,7 @@
                                         <label class="form-label">Judul</label>
                                         <input type="text" name="judul" id="judul" class="form-control"
                                             placeholder="Judul Produk" value="{{ $produk->nama_produk ?? '' }}" required />
+                                        <input type="hidden" name="id" value="{{ $produk->id }}">
                                     </div>
                                     <!-- input -->
                                     <div class="mb-3 col-lg-6">
@@ -116,7 +117,9 @@
                                                 <select class="form-select" name="bahasa" id="bahasa">
                                                     <option selected>Pilih Bahasa</option>
                                                     @foreach ($bahasa as $b)
-                                                        <option value="{{ $b->id }}" {{ $b->id == $produk->id_bahasa }}>{{ $b->bahasa }}</option>
+                                                        <option value="{{ $b->id }}"
+                                                            {{ $b->id == $produk->id_bahasa }} selected>{{ $b->bahasa }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>

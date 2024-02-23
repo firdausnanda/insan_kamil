@@ -84,6 +84,7 @@ class ProdukController extends Controller
                 'harga_awal' => $request->harga_normal_clean,
                 'diskon' => $diskon,
                 'harga_akhir' => $promo,
+                'selesai_diskon' => $request->tanggal_selesai_diskon
             ]);
 
             // Create on Stok
@@ -167,8 +168,54 @@ class ProdukController extends Controller
         }
     }
 
-    public function update() 
+    public function update(Request $request) 
     {
-     return ResponseFormatter::success('Sukses', 'Data berhasil diubah');   
+
+        try {
+            // Create on Produk
+            $produk = Produk::where('id', $request->id)->first();
+            $produk->update([
+                'id_kategori' => $request->kategori,
+                'id_penerbit' => $request->penerbit,
+                'id_bahasa' => $request->bahasa,
+                'nama_produk' => $request->judul,
+                'berat_produk' => $request->berat,
+                'ukuran_produk' => $request->panjang . 'x' . $request->lebar,
+                'isbn' => $request->isbn,
+                'jenis_cover' => $request->jenis_cover,
+                'halaman_produk' => $request->jumlah_halaman,
+                'keterangan' => $request->deskripsi,
+                'status' => $request->status,
+                'pengarang' => $request->pengarang,
+                'catatan' => $request->catatan,
+                'jenis_isi' => $request->jenis_isi,
+            ]);
+
+            // Hitung Diskon
+            if ($request->harga_promo_clean == 0) {
+                $diskon = 0;
+                $promo = $request->harga_normal_clean;
+            }else{
+                $promo = $request->harga_promo_clean;
+                $diskon = $request->harga_normal_clean - $request->harga_promo_clean;
+            }
+
+            Harga::where('id_produk', $request->id)->update([
+                'harga_awal' => $request->harga_normal_clean,
+                'diskon' => $diskon,
+                'harga_akhir' => $promo,
+                'selesai_diskon' => $request->tanggal_selesai_diskon
+            ]);
+
+            // Create on Stok
+            $stok = Stok::create([
+                'jumlah_produk' => $request->stok,
+            ]);
+
+            return ResponseFormatter::success('Sukses', 'Data berhasil diubah');   
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error('Error!', $e->getMessage(), 500);
+        }
     }
 }
