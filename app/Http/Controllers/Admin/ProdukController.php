@@ -200,7 +200,7 @@ class ProdukController extends Controller
                 $diskon = $request->harga_normal_clean - $request->harga_promo_clean;
             }
 
-            Harga::where('id_produk', $request->id)->update([
+            Harga::where('id', $produk->id_harga)->update([
                 'harga_awal' => $request->harga_normal_clean,
                 'diskon' => $diskon,
                 'harga_akhir' => $promo,
@@ -208,7 +208,7 @@ class ProdukController extends Controller
             ]);
 
             // Create on Stok
-            $stok = Stok::create([
+            Stok::where('id', $produk->id_stok)->update([
                 'jumlah_produk' => $request->stok,
             ]);
 

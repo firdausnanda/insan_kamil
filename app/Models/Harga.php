@@ -12,7 +12,6 @@ class Harga extends Model
     protected $table = 'harga';
     
     protected $fillable = [
-        'id_produk',
         'harga_awal',
         'diskon',
         'harga_akhir',
