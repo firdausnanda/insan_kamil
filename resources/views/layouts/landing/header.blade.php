@@ -222,15 +222,27 @@
                                         <a href="#" role="button" data-bs-toggle="dropdown"
                                             aria-expanded="false">
                                             @if (Auth::user()->avatar == null)
-                                                <div class="border-1 border-danger">
+                                                @if (Auth::user()->id_member && Auth::user()->member)
+                                                    <div
+                                                        class="border border-4 rounded-circle border-{{ Str::lower(Auth::user()->member->nama) }}">
+                                                        <img src="{{ asset('images/avatar/user.png') }}" alt=""
+                                                            class="avatar avatar-md rounded-circle">
+                                                    </div>
+                                                @else
                                                     <img src="{{ asset('images/avatar/user.png') }}" alt=""
                                                         class="avatar avatar-md rounded-circle">
-                                                </div>
+                                                @endif
                                             @else
-                                                <div class="border border-4 rounded-circle border-bronze">
+                                                @if (Auth::user()->id_member && Auth::user()->member)
+                                                    <div
+                                                        class="border border-4 rounded-circle border-{{ Str::lower(Auth::user()->member->nama) }}">
+                                                        <img src="{{ Auth::user()->avatar }}" alt=""
+                                                            class="avatar avatar-md rounded-circle">
+                                                    </div>
+                                                @else
                                                     <img src="{{ Auth::user()->avatar }}" alt=""
                                                         class="avatar avatar-md rounded-circle">
-                                                </div>
+                                                @endif
                                             @endif
                                         </a>
 
@@ -238,7 +250,15 @@
 
                                             <div class="lh-1 px-5 py-4 border-bottom">
                                                 <h5 class="mb-1 h6">{{ Auth::user()->name }}</h5>
-                                                <span class="badge bg-warning mb-2 bg-bronze">Member Bronze</span>
+                                                <a href="{{ route('landing.member') }}">
+                                                    @if (Auth::user()->id_member && Auth::user()->member)
+                                                        <span
+                                                            class="badge mb-2 bg-{{ Str::lower(Auth::user()->member->nama) }}">Member
+                                                            {{ Auth::user()->member->nama }}</span>
+                                                    @else
+                                                        <span class="badge bg-secondary mb-2">Non-Member</span>
+                                                    @endif
+                                                </a>
                                                 <small class="d-block">{{ Auth::user()->email }}</small>
                                             </div>
 

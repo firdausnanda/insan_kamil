@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use App\Models\Harga;
 use App\Models\Kategori;
+use App\Models\Member;
 use App\Models\Popup;
 use App\Models\Produk;
 use App\Models\Slideshow;
@@ -232,5 +233,11 @@ class HomeController extends Controller
         $produk = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->limit(30)->paginate(12);
         $kategori_all = Kategori::get();
         return view('pages.landing.new_produk', compact('kategori_all', 'produk'));
+    }
+
+    public function member()
+    {
+        $member = Member::get();
+        return view('pages.landing.member', compact('member'));
     }
 }

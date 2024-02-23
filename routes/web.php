@@ -40,6 +40,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('landing.home');
 Route::get('/promo', [HomeController::class, 'detail_popup'])->name('landing.detail_popup');
+Route::get('/member', [HomeController::class, 'member'])->name('landing.member');
 Route::get('/blog/{id}', [HomeController::class, 'detail_blog'])->name('landing.detail_blog');
 Route::get('/kategori/{kategori}', [HomeController::class, 'kategori'])->name('landing.kategori');
 Route::get('/detail/{id}', [HomeController::class, 'detail'])->name('landing.detail');

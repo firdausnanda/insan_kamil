@@ -280,14 +280,14 @@
                     <span class="nav-label">System Monitoring</span>
                 </li>
 
-                <li class="nav-item ">
+                {{-- <li class="nav-item ">
                     <a class="nav-link " href="{{ route('queue-monitor::index') }}">
                         <div class="d-flex align-items-center">
                             <span class="nav-link-icon"> <i class="bi bi-display"></i></span>
                             <span class="nav-link-text">Queue Monitor</span>
                         </div>
                     </a>
-                </li>
+                </li> --}}
 
                 <li class="nav-item ">
                     <a class="nav-link {{ request()->routeIs('admin.activity.*') ? 'active' : '' }}"
