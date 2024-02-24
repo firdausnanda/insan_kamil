@@ -58,7 +58,7 @@
                                                 {{ $data[0]->user->email }}
                                                 <br />
                                                 {{ $data[0]->user->no_telp }}
-                                                <input type="hidden" id="id_member" name="{{ $data[0]->user->id_member }}">
+                                                <input type="hidden" id="id_member" value="{{ $data[0]->user->id_member }}">
                                             </p>
                                         </div>
                                     </div>

@@ -119,11 +119,11 @@ class OrderController extends Controller
 
                 // Cek apakah sudah menjadi member apa belum
                 if ($user->id_member) {
-                    $cekmember = Member::where('pembelian_minimum', '>=', $user->member->pembelian_minimum)->orderBy('pembelian_minimum', 'desc')->get();
+                    $cekmember = Member::where('pembelian_minimum', '>', $user->member->pembelian_minimum)->orderBy('pembelian_minimum', 'desc')->get();
                 }else{
                     $cekmember = Member::orderBy('pembelian_minimum', 'desc')->get();   
                 }
-                
+
                 if($cekmember->count() > 0){
                     foreach ($cekmember as $v) {
 
@@ -220,12 +220,20 @@ class OrderController extends Controller
             }
 
             // cek order User
-            $cekOrder = Order::with('user')->where('id', $order->id)->first();
+            $cekOrder = Order::with('user.member')->where('id', $order->id)->first();
+
+            // Hitung Total Biaya
+            if ($cekOrder->user->id_member) {
+                $member_diskon = $order->harga_total * $cekOrder->user->member->diskon / 100;
+                $total_biaya = $order->harga_total + $order->biaya_pengiriman - $member_diskon;
+            }else{
+                $total_biaya = $order->harga_total + $order->biaya_pengiriman;
+            }
 
             $payload = [
                 'transaction_details' => [
                     'order_id'     => $order->id,
-                    'gross_amount' => $order->harga_total + $order->biaya_pengiriman,
+                    'gross_amount' => $total_biaya,
                 ],
                 'customer_details' => [
                     'first_name' => $cekOrder->user->name,
@@ -235,7 +243,7 @@ class OrderController extends Controller
                     [
                         'id'            => $order->id,
                         'name'          => 'Transaksi Order - ' . $order->id,
-                        'price'         => $order->harga_total + $order->biaya_pengiriman,
+                        'price'         => $total_biaya,
                         'quantity'      => 1,
                     ],
                 ],
@@ -364,7 +372,7 @@ class OrderController extends Controller
     {
         if ($request->ajax()) {
             if ($request->status == 1) {
-                $penjualan = Order::where('id_user', $request->id_user)->get();
+                $penjualan = Order::where('id_user', $request->id_user)->orderBy('created_at', 'desc')->get();
                 return ResponseFormatter::success($penjualan, "Data berhasil diambil!");
             }else{
                 switch ($request->status) {
@@ -378,7 +386,7 @@ class OrderController extends Controller
                         $status = 4;
                         break;                    
                 }
-                $penjualan = Order::where('id_user', $request->id_user)->where('status', $status)->get();
+                $penjualan = Order::where('id_user', $request->id_user)->where('status', $status)->orderBy('created_at', 'desc')->get();
                 return ResponseFormatter::success($penjualan, "Data berhasil diambil!");
             }
         }
