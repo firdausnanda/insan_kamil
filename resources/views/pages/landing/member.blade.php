@@ -44,8 +44,8 @@
 
             <div class="card text-start">
                 <div class="card-body">
-                    <h4 class="card-title">SYARAT UPGRADE</h4>
-                    <p class="card-text mb-0">Total belanja dalam pembelian dan berlaku selamanya</p>
+                    <h4 class="card-title">Syarat Upgrade Member</h4>
+                    <p class="card-text mb-0">Total belanja (diluar ongkos kirim) dalam pembelian dan berlaku selamanya</p>
                     <table class="table table-striped">
                         <thead>
                             <tr>

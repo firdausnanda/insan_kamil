@@ -117,6 +117,7 @@ class OrderController extends Controller
                 // Update Member
                 $user = User::with('member')->where('id', $order->id_user)->first();
 
+                // Cek apakah sudah menjadi member apa belum
                 if ($user->id_member) {
                     $cekmember = Member::where('pembelian_minimum', '>=', $user->member->pembelian_minimum)->orderBy('pembelian_minimum', 'desc')->get();
                 }else{
