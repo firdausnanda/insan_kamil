@@ -115,14 +115,24 @@ class OrderController extends Controller
                 ]);
 
                 // Update Member
-                $cekmember = Member::orderBy('pembelian_minimum', 'desc')->get();
+                $user = User::with('member')->where('id', $order->id_user)->first();
+
+                if ($user->id_member) {
+                    $cekmember = Member::where('pembelian_minimum', '>=', $user->member->pembelian_minimum)->orderBy('pembelian_minimum', 'desc')->get();
+                }else{
+                    $cekmember = Member::orderBy('pembelian_minimum', 'desc')->get();   
+                }
                 
                 if($cekmember->count() > 0){
                     foreach ($cekmember as $v) {
-                        if ($pembayaran->harga_jual >= $v->pembelian_minimum) {
-                            User::where('id', $order->id_user)->update([
+
+                        // Check if pembelian lebih besar dari pembelian mininum member 
+                        if ($order->harga_total >= $v->pembelian_minimum) {
+
+                            $user->update([
                                 'id_member' => $v->id
                             ]);
+
                         }
                     }
                 }
