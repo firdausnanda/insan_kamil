@@ -98,7 +98,7 @@
                                     <input type="button" value="-" class="button-minus btn btn-sm"
                                         data-field="quantity" />
                                     <input type="number" step="1" max="10" value="1" id="jumlah"
-                                        name="quantity" class="quantity-field form-control-sm form-input" />
+                                        name="quantity" class="quantity-field form-control-sm form-input" style="width: 5rem!important; min-height: 2.25rem!important" />
                                     <input type="button" value="+" class="button-plus btn btn-sm" data-field="quantity" />
                                 </div>
                             </div>
