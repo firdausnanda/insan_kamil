@@ -359,14 +359,33 @@ class OrderController extends Controller
     {
         try {
 
-            $cost = RajaOngkir::ongkosKirim([
-                'origin'            => config('rajaongkir.origin'), // ID kota/kabupaten asal
-                'originType'        => 'subdistrict', // ID kota/kabupaten asal
-                'destination'       => $request->city_destination, // ID kota/kabupaten tujuan
-                'destinationType'   => 'subdistrict', // ID kota/kabupaten tujuan
-                'weight'            => $request->weight, // berat barang dalam gram
-                'courier'           => $request->courier 
-            ])->get();
+            if($request->courier == 'ambil_gudang'){
+
+                $cost = [[
+                    'code' => 'ambil_gudang',
+                    'name' => 'AMBIL DI GUDANG',
+                    'costs' => [[
+                        "service" => "ADG",
+                        "description" => "Ambil di gudang",
+                        "cost" => [[
+                            "value" => 0,
+                            "etd" => "-",
+                            "note" => "",
+                        ]],
+                    ]],
+                ]];
+
+            }else{
+
+                $cost = RajaOngkir::ongkosKirim([
+                    'origin'            => config('rajaongkir.origin'), // ID kota/kabupaten asal
+                    'originType'        => 'subdistrict', // ID kota/kabupaten asal
+                    'destination'       => $request->city_destination, // ID kota/kabupaten tujuan
+                    'destinationType'   => 'subdistrict', // ID kota/kabupaten tujuan
+                    'weight'            => $request->weight, // berat barang dalam gram
+                    'courier'           => $request->courier 
+                ])->get();
+            }
 
             return ResponseFormatter::success($cost, 'Data berhasil diambil!');
         } catch (\Exception $e) {

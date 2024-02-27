@@ -58,7 +58,8 @@
                                                 {{ $data[0]->user->email }}
                                                 <br />
                                                 {{ $data[0]->user->no_telp }}
-                                                <input type="hidden" id="id_member" value="{{ $data[0]->user->id_member }}">
+                                                <input type="hidden" id="id_member"
+                                                    value="{{ $data[0]->user->id_member }}">
                                             </p>
                                         </div>
                                     </div>
@@ -214,8 +215,8 @@
     </section>
 
     {{-- Modal Edit --}}
-    <div class="modal fade" id="modal-edit" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
-        aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal fade" id="modal-edit" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -742,7 +743,7 @@
 
                 if ($("#id_member").val()) {
                     var TotalBiaya = Intl.NumberFormat('en-DE').format(shipping + subTotal - member)
-                }else{
+                } else {
                     var TotalBiaya = Intl.NumberFormat('en-DE').format(shipping + subTotal)
                 }
 

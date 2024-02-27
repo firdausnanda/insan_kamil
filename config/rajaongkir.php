@@ -101,7 +101,10 @@ return [
             ],[
                 'kode' => 'jet',
                 'nama' => 'JET',
-            ]
+            ],[
+                'kode' => 'ambil_gudang',
+                'nama' => 'AMBIL DI GUDANG',
+            ]                                               
         ],
     ]
 ];
