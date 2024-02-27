@@ -223,7 +223,8 @@
                                                 @endif
                                             </small>
                                             @if (round($promo->averageRating()) > 0)
-                                                <span class="text-muted small">{{ round($promo->averageRating(), 2) }}</span>
+                                                <span
+                                                    class="text-muted small">{{ round($promo->averageRating(), 2) }}</span>
                                             @endif
                                         </div>
                                         <h2 class="fs-4"><a href="{{ route('landing.detail', $promo->id) }}"
@@ -258,9 +259,9 @@
                                         </div>
                                         <div class="mt-6 mb-6">
                                             <div class="d-flex justify-content-between mb-2">
-                                                <span>Terjual: 
-                                                    {{-- <span class="text-dark fs-6 fw-bold">{{ $promo->stok->jumlah_produk - $promo->stok->sisa_produk }}</span></span> --}}
-                                                    <span class="text-dark fs-6 fw-bold">{{ $promo->produk_dikirim->whereNotNull('order_dibayar')->count() }}</span></span>
+                                                <span>Terjual:
+                                                    <span
+                                                        class="text-dark fs-6 fw-bold">{{ $promo->produk_dikirim->whereNotNull('order_dibayar')->count() }}</span></span>
                                                 <span>Tersedia: <span
                                                         class="text-dark fs-6 fw-bold">{{ $promo->stok->sisa_produk }}</span></span>
                                             </div>
@@ -269,7 +270,7 @@
                                                 aria-label="Example 1px high" aria-valuenow="85" aria-valuemin="0"
                                                 aria-valuemax="100" style="height: 5px">
                                                 <div class="progress-bar bg-danger"
-                                                    style="width: {{ (($promo->stok->jumlah_produk - $promo->stok->sisa_produk) / $promo->stok->jumlah_produk) * 100 }}%">
+                                                    style="width: {{ ($promo->produk_dikirim->whereNotNull('order_dibayar')->count() / $promo->stok->jumlah_produk) * 100 }}%">
                                                 </div>
                                             </div>
 
@@ -412,8 +413,7 @@
                                     <div class="img-zoom">
                                         @if ($b->gambar)
                                             <img src="{{ asset('storage/blog/' . $b->gambar) }}" alt=""
-                                                class="img-fluid rounded w-100"
-                                                style="max-height: 225px">
+                                                class="img-fluid rounded w-100" style="max-height: 225px">
                                         @else
                                             <img src="{{ asset('images/blog/blog-img-1.jpg') }}" alt=""
                                                 class="img-fluid rounded w-100">
