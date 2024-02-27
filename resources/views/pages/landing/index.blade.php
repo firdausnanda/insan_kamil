@@ -231,6 +231,11 @@
                                                 class="text-inherit text-decoration-none">{{ $promo->nama_produk }}</a>
                                         </h2>
 
+                                        @if ($p->harga->diskon > 0)
+                                            <span
+                                                class="badge bg-danger rounded-pill">{{ '-' . diskon($p->harga) . '%' }}</span>
+                                        @endif
+                                        
                                         <div
                                             class="d-flex justify-content-center align-items-center justify-content-lg-between mt-3">
                                             <div><span
