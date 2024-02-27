@@ -38,7 +38,6 @@ class HomeController extends Controller
         if (count($promo_raw) > 0) {
             $data_promo = $promo_raw->sortByDesc('persen');
             $promo = $data_promo->values()->all()[0];
-            dd($promo);
         }else{
             $promo = '';
         }

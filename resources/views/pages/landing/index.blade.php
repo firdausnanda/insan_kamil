@@ -218,12 +218,12 @@
                                         <div class="mb-3">
                                             <!-- rating -->
                                             <small>
-                                                @if (round($p->averageRating()) > 0)
-                                                    {{ tampilkanRating(round($p->averageRating(), 2)) }}
+                                                @if (round($promo->averageRating()) > 0)
+                                                    {{ tampilkanRating(round($promo->averageRating(), 2)) }}
                                                 @endif
                                             </small>
-                                            @if (round($p->averageRating()) > 0)
-                                                <span class="text-muted small">{{ round($p->averageRating(), 2) }}</span>
+                                            @if (round($promo->averageRating()) > 0)
+                                                <span class="text-muted small">{{ round($promo->averageRating(), 2) }}</span>
                                             @endif
                                         </div>
                                         <h2 class="fs-4"><a href="{{ route('landing.detail', $promo->id) }}"
@@ -233,10 +233,10 @@
                                         <div
                                             class="d-flex justify-content-center align-items-center justify-content-lg-between mt-3">
                                             <div><span
-                                                    class="text-dark fs-5 fw-bold">{{ rupiah($p->harga->harga_akhir) }}</span>
-                                                @if ($p->harga->diskon > 0)
+                                                    class="text-dark fs-5 fw-bold">{{ rupiah($promo->harga->harga_akhir) }}</span>
+                                                @if ($promo->harga->diskon > 0)
                                                     <span
-                                                        class="text-decoration-line-through text-muted fs-5">{{ rupiah($p->harga->harga_awal) }}</span>
+                                                        class="text-decoration-line-through text-muted fs-5">{{ rupiah($promo->harga->harga_awal) }}</span>
                                                 @endif
                                             </div>
 
