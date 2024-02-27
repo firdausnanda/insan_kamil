@@ -215,8 +215,8 @@
     </section>
 
     {{-- Modal Edit --}}
-    <div class="modal fade" id="modal-edit" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
-        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal fade" id="modal-edit" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
+        aria-labelledby="modalTitleId" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -274,7 +274,7 @@
                                 <label class="form-label" for="desa">Kecamatan</label>
                                 <select name="desa" id="desa" class="form-select">
                                     <option value="">Pilih Kecamatan</option>
-                                    <option value="{{ $data[0]->user->district->id }}" selected>
+                                    <option value="{{ $data[0]->user->district ? $data[0]->user->district->id : '' }}" selected>
                                         {{ $data[0]->user->district ? $data[0]->user->district->name : '' }}
                                     </option>
                                 </select>
