@@ -231,9 +231,9 @@
                                                 class="text-inherit text-decoration-none">{{ $promo->nama_produk }}</a>
                                         </h2>
 
-                                        @if ($p->harga->diskon > 0)
+                                        @if ($promo->harga->diskon > 0)
                                             <span
-                                                class="badge bg-danger rounded-pill">{{ '-' . diskon($p->harga) . '%' }}</span>
+                                                class="badge bg-danger rounded-pill">{{ '-' . diskon($promo->harga) . '%' }}</span>
                                         @endif
                                         
                                         <div
