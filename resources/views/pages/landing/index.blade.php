@@ -233,7 +233,7 @@
                                         <div
                                             class="d-flex justify-content-center align-items-center justify-content-lg-between mt-3">
                                             <div><span
-                                                    class="text-dark fs-5 fw-bold">{{ rupiah($p->harga->diskon) }}</span>
+                                                    class="text-dark fs-5 fw-bold">{{ rupiah($p->harga->harga_akhir) }}</span>
                                                 @if ($p->harga->diskon > 0)
                                                     <span
                                                         class="text-decoration-line-through text-muted fs-5">{{ rupiah($p->harga->harga_awal) }}</span>
