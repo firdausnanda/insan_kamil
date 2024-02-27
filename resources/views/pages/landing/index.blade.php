@@ -217,7 +217,7 @@
 
                                         <div class="mb-3">
                                             <!-- rating -->
-                                            <small>
+                                            <small class="text-warning">
                                                 @if (round($promo->averageRating()) > 0)
                                                     {{ tampilkanRating(round($promo->averageRating(), 2)) }}
                                                 @endif
