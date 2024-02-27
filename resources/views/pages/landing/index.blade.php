@@ -226,7 +226,7 @@
                                                 <span class="text-muted small">{{ round($p->averageRating(), 2) }}</span>
                                             @endif
                                         </div>
-                                        <h2 class="fs-4"><a href="#"
+                                        <h2 class="fs-4"><a href="{{ route('landing.detail', $promo->id) }}"
                                                 class="text-inherit text-decoration-none">{{ $promo->nama_produk }}</a>
                                         </h2>
 
