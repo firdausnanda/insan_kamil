@@ -259,7 +259,7 @@
                                         <div class="mt-6 mb-6">
                                             <div class="d-flex justify-content-between mb-2">
                                                 <span>Terjual: <span
-                                                        class="text-dark fs-6 fw-bold">{{ $promo->stok->jumlah_produk - $promo->stok->sisa_produk }}</span></span>
+                                                        class="text-dark fs-6 fw-bold">{{ $promo->stok->sisa_produk }}</span></span>
                                                 <span>Tersedia: <span
                                                         class="text-dark fs-6 fw-bold">{{ $promo->stok->jumlah_produk }}</span></span>
                                             </div>
