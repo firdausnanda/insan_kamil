@@ -37,3 +37,13 @@
 .bg-diamond {
   background-color: #B9F2FF!important;
 }
+
+table.dataTable tbody td.select-checkbox:before, table.dataTable tbody th.select-checkbox:before {
+  margin-top: 8px!important;
+  padding: 7px;
+}
+
+table.dataTable tr.selected td.select-checkbox:after, table.dataTable tr.selected th.select-checkbox:after {
+  font-size: 25px;
+  margin-top: -19px;
+}
