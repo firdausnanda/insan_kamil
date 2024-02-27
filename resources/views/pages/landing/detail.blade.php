@@ -278,7 +278,7 @@
                 </div>
             </div>
             <!-- row -->
-            <div class="row g-4 row-cols-lg-5 row-cols-2 row-cols-md-2 mt-2">
+            <div class="row g-4 row-cols-lg-5 row-cols-sm-12 row-cols-md-2 mt-2">
                 <!-- col -->
                 @foreach ($produk_related as $p)
                     <div class="col">
