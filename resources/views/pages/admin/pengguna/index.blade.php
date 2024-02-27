@@ -227,6 +227,17 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Member</label>
+                            <div class="col-sm-8">
+                                <select name="member" class="form-select" id="member_e">
+                                    <option value="">-- Pilih Member --</option>
+                                    @foreach ($member as $m)
+                                        <option value="{{ $m->id }}">{{ 'Member ' . $m->nama . ' (Diskon ' . $m->diskon . '%)' }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
@@ -643,6 +654,7 @@
                 $('#no_telp_e').val(data.no_telp);
                 $('#alamat_e').val(data.alamat);
                 $('#role_e').val(data.roles[0].name).change();
+                $('#member_e').val(data.id_member).change();
 
                 if (data.provinsi != null) {
                     $('#provinsi_e').val(data.provinsi).change();

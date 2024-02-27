@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\City;
+use App\Models\Member;
 use App\Models\Province;
 use App\Models\Subdistrict;
 use App\Models\User;
@@ -23,6 +24,7 @@ class PenggunaController extends Controller
 
         $role = Role::all();
         $kota = City::all();
+        $member = Member::all();
         $district = Subdistrict::all();
 
         if ($request->ajax()) {
@@ -31,7 +33,7 @@ class PenggunaController extends Controller
             })->get();
             return ResponseFormatter::success($pengguna, 'Data berhasil diambil!');
         }
-        return view('pages.admin.pengguna.index', compact('role', 'kota', 'district'));
+        return view('pages.admin.pengguna.index', compact('role', 'kota', 'district', 'member'));
     }
 
     public function provinsi() 
@@ -44,11 +46,6 @@ class PenggunaController extends Controller
     {
         $kota = City::where('province_id', $id)->get();
         return ResponseFormatter::success($kota, 'Data berhasil diambil!');
-    }
-
-    public function create()
-    {
-        //
     }
 
     public function store(Request $request)
@@ -107,6 +104,7 @@ class PenggunaController extends Controller
                 'provinsi' => $request->provinsi,
                 'kota' => $request->kota,
                 'desa' => $request->desa,
+                'id_member' => $request->member,
             ]);
 
             $user = User::where('id', $request->id_e)->first();
