@@ -61,4 +61,9 @@ class Produk extends Model
     {
         return $this->hasMany(GambarProduk::class, 'id_produk', 'id');
     }
+
+    public function produk_dikirim()
+    {
+        return $this->hasMany(ProdukDikirim::class, 'id_produk', 'id');
+    }
 }

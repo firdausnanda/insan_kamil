@@ -20,4 +20,8 @@ class ProdukDikirim extends Model
     public function produk() {
         return $this->belongsTo(Produk::class, 'id_produk', 'id');
     }
+
+    public function order_dibayar() {
+        return $this->belongsTo(Order::class, 'id_order', 'id')->where('status', '>=', 2)->where('status', '<', 6);
+    }
 }

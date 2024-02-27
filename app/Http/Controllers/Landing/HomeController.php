@@ -26,7 +26,7 @@ class HomeController extends Controller
         $blog = Blog::where('status', 1)->latest()->limit(4)->get();
 
         // Promo
-        $promo_raw = Produk::with('harga', 'stok', 'gambar_produk')->whereHas('harga', function ($q){
+        $promo_raw = Produk::with('harga', 'stok', 'gambar_produk', 'produk_dikirim.order_dibayar')->whereHas('harga', function ($q){
             $q->where('selesai_diskon', '>=', now());
         })->get();
 
