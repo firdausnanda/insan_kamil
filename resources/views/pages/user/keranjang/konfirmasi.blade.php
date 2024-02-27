@@ -107,8 +107,18 @@
                         targets: 2,
                         className: 'align-middle',
                         render: function(data, type, row, meta) {
+
                             if (row.harga_total != null && row.biaya_pengiriman != null) {
-                                var harga = parseInt(row.harga_total) + parseInt(row.biaya_pengiriman)
+
+                                if (row.user.id_member) {
+                                    var harga = parseInt(row.harga_total) - (parseInt(row
+                                            .harga_total) * parseInt(row.user.member.diskon) /
+                                        100) + parseInt(row.biaya_pengiriman)
+                                } else {
+                                    var harga = parseInt(row.harga_total) + parseInt(row
+                                        .biaya_pengiriman)
+                                }
+
                                 return $.fn.dataTable.render.number('.', ',', 0, 'Rp ', ',-')
                                     .display(harga)
                             }
@@ -134,6 +144,9 @@
                                     break;
                                 case '5':
                                     return '<span class="badge bg-success">Selesai</span>'
+                                    break;
+                                case '6':
+                                    return '<span class="badge bg-danger">Gagal / Kadaluarsa</span>'
                                     break;
 
                                 default:

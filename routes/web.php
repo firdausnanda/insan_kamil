@@ -47,6 +47,7 @@ Route::get('/detail/{id}', [HomeController::class, 'detail'])->name('landing.det
 Route::get('/new-produk', [HomeController::class, 'new_produk'])->name('landing.new_produk');
 Route::get('/search', [HomeController::class, 'search'])->name('search');
 Route::get('/cari', [HomeController::class, 'search'])->name('cari');
+Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
 
 // Auth
 Auth::routes();
@@ -205,3 +206,4 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['role:user']
 
 // Midtrans
 Route::post('payments/midtrans-notification', [PaymentCallbackController::class, 'receive']);
+Route::get('payments/error', [PaymentCallbackController::class, 'error']);

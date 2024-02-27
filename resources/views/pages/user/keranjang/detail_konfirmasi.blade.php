@@ -24,8 +24,10 @@
                                         <div class="ms-md-3">
                                             @if ($order->status == 1)
                                                 <button id="btn-bayar" class="btn btn-primary">Lakukan Pembayaran</button>
+                                            @elseif ($order->status == 6)
                                             @else
-                                                <button type="button" class="btn btn-info btn-download">Download Bukti Pembayaran</button>
+                                                <button type="button" class="btn btn-info btn-download">Download Bukti
+                                                    Pembayaran</button>
                                             @endif
                                             <a href="{{ route('user.order.konfirmasi') }}"
                                                 class="btn btn-secondary">Kembali</a>
@@ -78,8 +80,13 @@
                                                         class="text-dark">{{ \Carbon\Carbon::parse($order->created_at)->isoFormat('D MMMM Y') }}</span>
                                                     <br />
                                                     Total Order:
-                                                    <span
-                                                        class="text-dark">{{ rupiah($order->harga_total + $order->biaya_pengiriman) }}</span>
+                                                    @if ($order->user->id_member)
+                                                        <span
+                                                            class="text-dark">{{ rupiah($order->harga_total + $order->biaya_pengiriman - $member_diskon) }}</span>
+                                                    @else
+                                                        <span
+                                                            class="text-dark">{{ rupiah($order->harga_total + $order->biaya_pengiriman) }}</span>
+                                                    @endif
                                                     <br />
                                                     Status:
                                                 <h5>
@@ -93,6 +100,8 @@
                                                 <div class="mb-6">
                                                     <h6>Alamat Penerima</h6>
                                                     <p class="mb-1 lh-lg">
+                                                        {{ $dropship->nama_penerima }}
+                                                        <br>
                                                         {{ $dropship->alamat_penerima }}
                                                         <br>
                                                         {{ $dropship->district->name }}
@@ -195,6 +204,23 @@
                                                     </td>
                                                 </tr>
 
+                                                @if ($order->user->id_member)
+                                                    <tr>
+                                                        <td class="border-bottom-0 pb-0"></td>
+                                                        <td class="border-bottom-0 pb-0"></td>
+                                                        <td colspan="1" class="fw-medium text-success">
+                                                            <!-- text -->
+                                                            Member Diskon
+                                                        </td>
+                                                        <td class="fw-medium text-success">
+                                                            <!-- text -->
+                                                            <span id="member_diskon">
+                                                                {{ rupiah($member_diskon) }}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                @endif
+
                                                 <tr>
                                                     <td></td>
                                                     <td></td>
@@ -204,7 +230,11 @@
                                                     </td>
                                                     <td class="fw-semibold text-dark">
                                                         <!-- text -->
-                                                        {{ rupiah($order->biaya_pengiriman + $subTotal) }}
+                                                        @if ($order->user->id_member)
+                                                            {{ rupiah($order->biaya_pengiriman + $subTotal - $member_diskon) }}
+                                                        @else
+                                                            {{ rupiah($order->biaya_pengiriman + $subTotal) }}
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -214,13 +244,13 @@
                             </div>
                             <div class="card-body p-6">
                                 <div class="row">
-                                    @if ($order->status >= 4)
+                                    @if ($order->status == 4 || $order->status == 5)
                                         <div class="col-md-6 mb-4 mb-lg-0">
                                             <h6>Detail Pengiriman</h6>
                                             <ul>
                                                 <div id="pengiriman"></div>
                                             </ul>
-                                            @if ($order->status != 5)
+                                            @if ($order->status < 5)
                                                 <span class="text-secondary d-block mb-2">Paket Telah diterima?</span>
                                                 <button class="btn btn-info btn-sm btn-diterima"><i
                                                         class="fa-solid fa-check me-2"></i>Paket Diterima</button>
@@ -301,6 +331,9 @@
             } else if ("{{ $order->status }}" == 4) {
                 $('#btn-status').addClass('bg-info')
                 $('#btn-status').text('Proses Pengiriman')
+            } else if ("{{ $order->status }}" == 6) {
+                $('#btn-status').addClass('bg-danger')
+                $('#btn-status').text('Gagal / Kadaluarsa')
             } else {
                 $('#btn-status').text('Selesai')
                 $('#btn-status').addClass('bg-success')
@@ -501,7 +534,7 @@
             });
 
             // Download
-            $('.btn-download').click(function (e) { 
+            $('.btn-download').click(function(e) {
                 e.preventDefault();
 
                 $.ajax({
@@ -528,7 +561,7 @@
                     error: function(xhr, status, error) {
                         $.LoadingOverlay('hide')
 
-                        Swal.fire( 'Periksa kembali data anda!', 'Data Tidak Ditemukan',
+                        Swal.fire('Periksa kembali data anda!', 'Data Tidak Ditemukan',
                             'error');
                     },
                 });

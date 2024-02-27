@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('origin');
             $table->integer('destination');
             $table->string('no_resi')->nullable();
-            $table->enum('status', [1,2,3,4,5])->default(1);
+            $table->enum('status', [1,2,3,4,5,6])->default(1);
             $table->timestamps();
         });
     }

@@ -51,4 +51,27 @@ class PaymentCallbackController extends Controller
             return ResponseFormatter::error('Error', 'Signature key tidak terverifikasi', 403);
         }
     }
+
+    public function error(Request $request)
+    {
+        try {
+            if ($request->transaction_status == 'expire') {
+                $pembayaran = Pembayaran::where('id_order', $request->order_id)->update([
+                    'status_pembayaran' => 3,
+                ]);
+    
+                // Update Order
+                $order = Order::where('id', $request->order_id)->first();
+                $order->update([
+                    'status' => 6,
+                ]);
+    
+                Log::warning("Expired! : ID Order = . $request->order_id . Status = . $pembayaran");
+                return redirect()->route('user.order.konfirmasi');
+            }
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }
+    }
 }
