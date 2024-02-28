@@ -185,10 +185,8 @@
                                     <tr>
                                         <td>Halaman:</td>
                                         <td>
-                                            <small>
-                                                {{ $produk->halaman_produk }}
-                                                <span class="text-muted">Halaman</span>
-                                            </small>
+                                            {{ $produk->halaman_produk }}
+                                            <span class="text-muted">Halaman</span>
                                         </td>
                                     </tr>
                                     <tr>
