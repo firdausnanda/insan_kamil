@@ -5,8 +5,8 @@
         <div class="container">
             <div class="hero-slider ">
                 @forelse ($slide as $i)
-                    <div class=" "
-                        style="background: url({{ asset('storage/slideshow/' . $i->gambar) }}) no-repeat; background-size: cover; border-radius: .5rem; background-position: center; min-height: 520px;">
+                    <div class="slideshow-img"
+                        style="background: url({{ asset('storage/slideshow/' . $i->gambar) }}) no-repeat; background-size: cover; border-radius: .5rem; background-position: center;">
                         <div class="ps-lg-12 py-lg-16 col-xxl-5 col-lg-7 col-md-8 py-14 px-8 text-xs-center">
                             <h1 class="text-white display-5 fw-bold mt-4"> </h1>
                             <p class="lead text-white"></p>

@@ -47,3 +47,9 @@ table.dataTable tr.selected td.select-checkbox:after, table.dataTable tr.selecte
   font-size: 25px;
   margin-top: -19px;
 }
+
+@media (min-width:990px) {
+  .slideshow-img {
+    min-height: 520px;
+  }
+}
