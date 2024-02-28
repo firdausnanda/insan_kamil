@@ -3,7 +3,7 @@
 @section('content')
     <section class="mt-8">
         <div class="container">
-            <div class="hero-slider ">
+            <div class="hero-slider " style="min-height: 520px;">
                 @forelse ($slide as $i)
                     <div class=" "
                         style="background: url({{ asset('storage/slideshow/' . $i->gambar) }}) no-repeat; background-size: cover; border-radius: .5rem; background-position: center;">
