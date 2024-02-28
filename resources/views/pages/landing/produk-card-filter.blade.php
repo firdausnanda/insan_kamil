@@ -1,5 +1,5 @@
 <!-- row -->
-<div class="row g-4 row-cols-xl-4 row-cols-lg-3 row-cols-2 row-cols-md-2 mt-2">
+<div class="row g-4 row-cols-xl-4 row-cols-lg-3 row-cols-md-2 mt-2">
     @foreach ($produks as $p)
         <!-- col -->
         <div class="col">

@@ -19,8 +19,15 @@ class HomeController extends Controller
 {
     public function index() 
     {
-        $produk_laris = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->limit(5)->get();
+        // Buku Best Seler
+        $produk_laris = Produk::with('harga', 'stok', 'gambar_produk')->has('produk_dikirim')->orderBy('created_at', 'desc')->limit(5)->get();
+        if ($produk_laris->count() < 5) {
+            $produk_laris = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->limit(5)->get();
+        }
+        
+        // New Produk
         $produk_baru = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->limit(8)->get();
+        
         $kategori = Kategori::all();
         $slide = Slideshow::where('status', 1)->orderBy('urutan', 'asc')->get();
         $blog = Blog::where('status', 1)->latest()->limit(4)->get();
