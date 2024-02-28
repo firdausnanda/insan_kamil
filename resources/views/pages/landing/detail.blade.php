@@ -76,7 +76,7 @@
                                 <span class="text-primary small">({{ $produk->ratings()->count() }} reviews)</span>
                             @endif
                         </div>
-                        @if ($produk->harga->diskon > 0)
+                        @if ($produk->harga->mulai_diskon <= now() && $produk->harga->diskon > 0)
                             <span class="badge bg-danger rounded-pill mb-3"
                                 style="font-size: 12px">{{ '-' . diskon($produk->harga) . '%' }}</span>
                         @endif
@@ -84,7 +84,7 @@
 
                             <!-- price -->
                             <span class="fw-bold text-dark">{{ rupiah($produk->harga->harga_akhir) }}</span>
-                            @if ($produk->harga->diskon > 0)
+                            @if ($produk->harga->mulai_diskon <= now() && $produk->harga->diskon > 0)
                                 <span
                                     class="text-decoration-line-through text-muted">{{ rupiah($produk->harga->harga_awal) }}</span>
                             @endif
@@ -305,7 +305,7 @@
                                     <a href="{{ route('landing.detail', $p->id) }}"
                                         class="text-decoration-none text-muted"><small>{{ $p->kategori->nama_kategori }}</small></a>
                                 </div>
-                                @if ($p->harga->diskon > 0)
+                                @if ($p->harga->mulai_diskon <= now() && $p->harga->diskon > 0)
                                     <span
                                         class="badge bg-danger rounded-pill mb-1">{{ '-' . diskon($p->harga) . '%' }}</span>
                                 @endif
@@ -329,7 +329,7 @@
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <div>
                                         <span class="text-dark">{{ rupiah($p->harga->harga_akhir) }}</span>
-                                        @if ($p->harga->diskon > 0)
+                                        @if ($p->harga->mulai_diskon <= now() && $p->harga->diskon > 0)
                                             <span
                                                 class="text-decoration-line-through text-muted">{{ rupiah($p->harga->harga_awal) }}</span>
                                         @endif

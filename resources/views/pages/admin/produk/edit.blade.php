@@ -253,6 +253,12 @@
                                 </div>
                                 <!-- input -->
                                 <div class="mb-3">
+                                    <label class="form-label">Tanggal Mulai Diskon</label>
+                                    <input type="date" class="form-control" value="{{ $produk->harga->mulai_diskon }}" name="tanggal_mulai_diskon"
+                                        id="tanggal_mulai_diskon" />
+                                </div>
+                                <!-- input -->
+                                <div class="mb-3">
                                     <label class="form-label">Tanggal Selesai Diskon</label>
                                     <input type="date" class="form-control" name="tanggal_selesai_diskon"
                                         id="tanggal_selesai_diskon" value="{{ $produk->harga->selesai_diskon }}" />
@@ -418,6 +424,15 @@
 
             //Flatpickr
             flatpickr("#tanggal_selesai_diskon", {
+                locale: "id",
+                altInput: true,
+                altFormat: "j F Y, H:i",
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+            });
+
+            //Flatpickr
+            flatpickr("#tanggal_mulai_diskon", {
                 locale: "id",
                 altInput: true,
                 altFormat: "j F Y, H:i",

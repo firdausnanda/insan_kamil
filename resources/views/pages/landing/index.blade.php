@@ -161,7 +161,7 @@
                                         </a>
                                     </div>
                                     <div>
-                                        @if ($p->harga->diskon > 0)
+                                        @if ($p->harga->mulai_diskon <= now() && $p->harga->diskon > 0)
                                             <span
                                                 class="badge bg-danger rounded-pill">{{ '-' . diskon($p->harga) . '%' }}</span>
                                         @endif
@@ -170,7 +170,7 @@
                                         <div>
                                             <span
                                                 class="text-dark fs-5 fw-bold">{{ rupiah($p->harga->harga_akhir) }}</span>
-                                            @if ($p->harga->diskon > 0)
+                                            @if ($p->harga->mulai_diskon <= now() && $p->harga->diskon > 0)
                                                 <span
                                                     class="text-decoration-line-through text-muted">{{ rupiah($p->harga->harga_awal) }}</span>
                                             @endif
@@ -229,7 +229,7 @@
                                                 class="text-inherit text-decoration-none">{{ $promo->nama_produk }}</a>
                                         </h2>
 
-                                        @if ($promo->harga->diskon > 0)
+                                        @if ($promo->harga->mulai_diskon <= now() && $promo->harga->diskon > 0)
                                             <span
                                                 class="badge bg-danger rounded-pill">{{ '-' . diskon($promo->harga) . '%' }}</span>
                                         @endif
@@ -238,7 +238,7 @@
                                             class="d-flex justify-content-center align-items-center justify-content-lg-between mt-3">
                                             <div><span
                                                     class="text-dark fs-5 fw-bold">{{ rupiah($promo->harga->harga_akhir) }}</span>
-                                                @if ($promo->harga->diskon > 0)
+                                                @if ($promo->harga->mulai_diskon <= now() && $promo->harga->diskon > 0)
                                                     <span
                                                         class="text-decoration-line-through text-muted fs-5">{{ rupiah($promo->harga->harga_awal) }}</span>
                                                 @endif
@@ -310,7 +310,7 @@
                                 </div>
                             </div>
                             <div class="row row-cols-xl-4 row-cols-lg-3 g-4">
-                                @foreach ($produk_laris as $p)
+                                @foreach ($produk_baru as $p)
                                     <!-- item -->
                                     <div class="col">
                                         <div class="mb-6">
@@ -334,7 +334,7 @@
                                                 </a>
                                             </div>
                                             <div>
-                                                @if ($p->harga->diskon > 0)
+                                                @if ($p->harga->mulai_diskon <= now() && $p->harga->diskon > 0)
                                                     <span
                                                         class="badge bg-danger rounded-pill">{{ '-' . diskon($p->harga) . '%' }}</span>
                                                 @endif
@@ -343,7 +343,7 @@
                                                 <div>
                                                     <span
                                                         class="text-dark fs-5 fw-bold">{{ rupiah($p->harga->harga_akhir) }}</span>
-                                                    @if ($p->harga->diskon > 0)
+                                                    @if ($p->harga->mulai_diskon <= now() && $p->harga->diskon > 0)
                                                         <span
                                                             class="text-decoration-line-through text-muted">{{ rupiah($p->harga->harga_awal) }}</span>
                                                     @endif
@@ -375,6 +375,7 @@
 
         </div>
 
+        {{-- Blog --}}
         <section class="my-lg-14 my-8">
             <div class="container ">
                 <div class="row align-items-center mb-8">

@@ -23,7 +23,7 @@ class ProdukController extends Controller
     {
         $kategori = Kategori::all();
         if ($request->ajax()) {
-            $produk = Produk::with('kategori', 'harga')->whereHas('kategori', function($query) use($request) {
+            $produk = Produk::with('kategori', 'harga', 'stok')->whereHas('kategori', function($query) use($request) {
                 $query->where('id', $request->kategori);
             })->get();
             return ResponseFormatter::success($produk, 'Data berhasil diambil');
@@ -47,20 +47,20 @@ class ProdukController extends Controller
             'berat' => 'required|numeric',
 			'panjang' => 'numeric|max:255',
 			'lebar' => 'numeric|max:255',
-            'penerbit' => 'string|max:255',
-            'bahasa' => 'string|max:255',
-            'isbn' => 'string|max:255',
-            'jenis_cover' => 'string|max:255',
-            'jumlah_halaman' => 'string|max:255',
+            'penerbit' => 'nullable|string|max:255',
+            'bahasa' => 'nullable|string|max:255',
+            'isbn' => 'nullable|string|max:255',
+            'jenis_cover' => 'nullable|string|max:255',
+            'jumlah_halaman' => 'nullable|string|max:255',
             'instok' => 'required|string|max:255',
             'kode_produk' => 'required|string|max:255',
             'stok' => 'required|string|max:255',
             'status' => 'required|string|max:255',
             'harga_normal_clean' => 'required|string|max:255',
             'harga_promo_clean' => 'nullable|max:255',
-            'pengarang' => 'string',
-            'catatan' => 'string',
-            'jenis_isi' => 'string',
+            'pengarang' => 'nullable|string',
+            'catatan' => 'nullable|string',
+            'jenis_isi' => 'nullable|string',
             'deskripsi' => 'required|string',
 		]);
 
@@ -70,10 +70,10 @@ class ProdukController extends Controller
 
         try {
 
-            // Hitung Diskon
-            if ($request->harga_promo_clean == 0) {
-                $diskon = 0;
+            // Hitung Diskon dan tanggal mulai diskon
+            if ($request->harga_promo_clean == 0 || $request->tanggal_mulai_diskon > now()) {
                 $promo = $request->harga_normal_clean;
+                $diskon = $request->harga_promo_clean ? $request->harga_normal_clean - $request->harga_promo_clean : 0;
             }else{
                 $promo = $request->harga_promo_clean;
                 $diskon = $request->harga_normal_clean - $request->harga_promo_clean;
@@ -84,6 +84,7 @@ class ProdukController extends Controller
                 'harga_awal' => $request->harga_normal_clean,
                 'diskon' => $diskon,
                 'harga_akhir' => $promo,
+                'mulai_diskon' => $request->tanggal_mulai_diskon,
                 'selesai_diskon' => $request->tanggal_selesai_diskon
             ]);
 
@@ -191,8 +192,8 @@ class ProdukController extends Controller
                 'jenis_isi' => $request->jenis_isi,
             ]);
 
-            // Hitung Diskon
-            if ($request->harga_promo_clean == 0) {
+            // Hitung Diskon dan tanggal mulai diskon
+            if ($request->harga_promo_clean == 0 || $request->tanggal_mulai_diskon > now()) {
                 $diskon = 0;
                 $promo = $request->harga_normal_clean;
             }else{
@@ -204,6 +205,7 @@ class ProdukController extends Controller
                 'harga_awal' => $request->harga_normal_clean,
                 'diskon' => $diskon,
                 'harga_akhir' => $promo,
+                'mulai_diskon' => $request->tanggal_mulai_diskon,
                 'selesai_diskon' => $request->tanggal_selesai_diskon
             ]);
 

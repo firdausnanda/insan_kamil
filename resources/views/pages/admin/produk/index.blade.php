@@ -12,7 +12,8 @@
                             <!-- breacrumb -->
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb mb-0">
-                                    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}" class="text-inherit">Dashboard</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}"
+                                            class="text-inherit">Dashboard</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Produk</li>
                                 </ol>
                             </nav>
@@ -50,7 +51,7 @@
                                     <thead>
                                         <th scope="col">No.</th>
                                         <th scope="col">Nama Produk</th>
-                                        <th scope="col">Kategori Produk</th>
+                                        <th scope="col">Stok</th>
                                         <th scope="col">Harga</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Aksi</th>
@@ -101,19 +102,38 @@
                         targets: 1,
                         className: 'align-middle',
                         data: 'nama_produk',
+                        render: function(data, type, row, meta) {
+                            return `${data} <br> <span class="fw-light">${row.kategori.nama_kategori}`;
+                        }
                     },
                     {
                         targets: 2,
                         className: 'align-middle text-center',
-                        data: 'kategori.nama_kategori',
+                        data: 'stok.sisa_produk',
                     },
                     {
                         targets: 3,
                         className: 'align-middle text-center',
                         data: 'harga.harga_akhir',
                         render: function(data, type, row, meta) {
-                            return $.fn.dataTable.render.number('.', ',', 0, 'Rp ', ',-').display(
-                                data)
+
+                            if (row.harga.mulai_diskon <= "{{ now() }}" && row
+                                .harga.diskon > 0) {
+
+                                return '<span class="fw-normal">' + $.fn.dataTable.render.number('.', ',', 0, 'Rp ',
+                                        ',-')
+                                    .display(
+                                        data) +
+                                    '</span><br><span class="text-decoration-line-through fw-light text-danger">' +
+                                    $.fn.dataTable.render.number('.', ',', 0, 'Rp ', ',-').display(
+                                        row.harga.harga_awal) + "</span>"
+                            } else {
+
+                                return $.fn.dataTable.render.number('.', ',', 0, 'Rp ', ',-')
+                                    .display(
+                                        data)
+
+                            }
                         }
                     },
                     {

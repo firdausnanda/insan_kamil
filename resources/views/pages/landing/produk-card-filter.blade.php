@@ -28,7 +28,7 @@
                     <h2 class="fs-6"><a href="{{ route('landing.detail', $p->id) }}"
                             class="text-inherit text-decoration-none">{{ $p->nama_produk }}</a></h2>
 
-                    @if ($p->harga->diskon > 0)
+                    @if ($p->harga->mulai_diskon <= now() && $p->harga->diskon > 0)
                         <span class="badge bg-danger rounded-pill mb-1">{{ '-' . diskon($p->harga) . '%' }}</span>
                     @endif
 
@@ -49,7 +49,7 @@
                     <div class="d-flex justify-content-between align-items-center mt-3">
                         <div>
                             <span class="text-dark">{{ rupiah($p->harga->harga_akhir) }}</span>
-                            @if ($p->harga->diskon > 0)
+                            @if ($p->harga->mulai_diskon <= now() && $p->harga->diskon > 0)
                                 <span
                                     class="text-decoration-line-through text-muted">{{ rupiah($p->harga->harga_awal) }}</span>
                             @endif

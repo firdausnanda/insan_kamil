@@ -20,14 +20,14 @@ class HomeController extends Controller
     public function index() 
     {
         $produk_laris = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->limit(5)->get();
-        $produk_baru = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->limit(12)->get();
+        $produk_baru = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->limit(8)->get();
         $kategori = Kategori::all();
         $slide = Slideshow::where('status', 1)->orderBy('urutan', 'asc')->get();
         $blog = Blog::where('status', 1)->latest()->limit(4)->get();
 
         // Promo
         $promo_raw = Produk::with('harga', 'stok', 'gambar_produk', 'produk_dikirim.order_dibayar')->whereHas('harga', function ($q){
-            $q->where('selesai_diskon', '>=', now());
+            $q->where('mulai_diskon', '<=', now())->where('selesai_diskon', '>=', now());
         })->get();
 
         foreach ($promo_raw as $k => $v) {
