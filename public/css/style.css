@@ -7,35 +7,61 @@
 }
 
 .border-gold {
-  border-color: #FFD700!important;
+  border-color: #caae10!important;
 }
 
 .border-platinum {
-  border-color: #E5E4E2!important;
+  border-color: #586669!important;
 }
 
 .border-diamond {
-  border-color: #B9F2FF!important;
+  border-color: #7dcbdd!important;
 }
 
 .bg-bronze {
-  background-color: #945d41!important;
+  background-image: url('../images/member/Bronze.jpg');
 }
 
 .bg-silver {
-  background-color: #C0C0C0!important;
+  background-image: url('../images/member/Silver.jpg');
 }
 
 .bg-gold {
-  background-color: #FFD700!important;
+  background-image: url('../images/member/Gold.jpg');
 }
 
 .bg-platinum {
-  background-color: #E5E4E2!important;
+  background-image: url('../images/member/Platinum.jpg');
 }
 
 .bg-diamond {
-  background-color: #B9F2FF!important;
+  background-image: url('../images/member/Diamond.jpg');
+}
+
+.bg-bottom-bronze {
+  background-color: #945d41!important;
+}
+
+.bg-bottom-silver {
+  background-color: rgb(122, 132, 152)!important;
+}
+
+.bg-bottom-gold {
+  background-color: #caae10!important;
+}
+
+.bg-bottom-platinum {
+  background-color: #293335!important;
+}
+
+.bg-bottom-diamond {
+  background-color: #7dcbdd!important;
+}
+
+.logo-member {
+  width: 42px;
+  height: 42px;
+  margin-right: 16px;
 }
 
 table.dataTable tbody td.select-checkbox:before, table.dataTable tbody th.select-checkbox:before {

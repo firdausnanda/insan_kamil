@@ -264,7 +264,7 @@
 
                                             <ul class="list-unstyled px-2 py-3">
                                                 <li>
-                                                    <a class="dropdown-item" href="{{ route('user.profile.index') }}">
+                                                    <a class="dropdown-item" href="{{ route('user.profile.edit') }}">
                                                         Profile
                                                     </a>
                                                 </li>

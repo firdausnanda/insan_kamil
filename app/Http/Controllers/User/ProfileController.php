@@ -107,4 +107,10 @@ class ProfileController extends Controller
         }  
 
     }
+
+    public function edit(Request $request)
+    {
+        $user = User::with('province', 'city', 'district', 'member')->where('id', Auth::user()->id)->first();
+        return view('pages.user.profil.edit', compact('user'));
+    }
 }

@@ -74,7 +74,7 @@
                             <label class="form-label" for="desa">Kecamatan</label>
                             <select name="desa" id="desa" class="form-select">
                                 <option value="">Pilih Kecamatan</option>
-                                <option value="{{ $user->district }}" selected>
+                                <option value="{{ $user->district ? $user->district->id : '' }}" selected>
                                     {{ $user->district ? $user->district->name : '' }}
                                 </option>
                             </select>
@@ -213,7 +213,7 @@
                                 title: "Sukses!",
                                 text: response.meta.message,
                             }).then((result) => {
-                                location.reload()
+                                location.href = "{{ route('user.profile.edit') }}"
                             });
                         }
                     },
