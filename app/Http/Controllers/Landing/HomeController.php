@@ -20,13 +20,13 @@ class HomeController extends Controller
     public function index() 
     {
         // Buku Best Seler
-        $produk_laris = Produk::with('harga', 'stok', 'gambar_produk')->has('produk_dikirim')->orderBy('created_at', 'desc')->limit(5)->get();
+        $produk_laris = Produk::with('harga', 'stok', 'gambar_produk')->has('produk_dikirim')->orderBy('created_at', 'desc')->where('status', 1)->limit(5)->get();
         if ($produk_laris->count() < 5) {
-            $produk_laris = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->limit(5)->get();
+            $produk_laris = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->where('status', 1)->limit(5)->get();
         }
         
         // New Produk
-        $produk_baru = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->limit(8)->get();
+        $produk_baru = Produk::with('harga', 'stok', 'gambar_produk')->where('status', 1)->orderBy('created_at', 'desc')->limit(8)->get();
         
         $kategori = Kategori::all();
         $slide = Slideshow::where('status', 1)->orderBy('urutan', 'asc')->get();
@@ -35,7 +35,7 @@ class HomeController extends Controller
         // Promo
         $promo_raw = Produk::with('harga', 'stok', 'gambar_produk', 'produk_dikirim.order_dibayar')->whereHas('harga', function ($q){
             $q->where('mulai_diskon', '<=', now())->where('selesai_diskon', '>=', now());
-        })->get();
+        })->where('status', 1)->get();
 
         foreach ($promo_raw as $k => $v) {
             $hitung = $v->harga->diskon / $v->harga->harga_awal * 100;
@@ -59,7 +59,7 @@ class HomeController extends Controller
         try {
             $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori')->whereHas('kategori', function($query) use($kategori){
                 $query->where('slug', $kategori);
-            })->orderBy('created_at', 'desc')->paginate(10);
+            })->orderBy('created_at', 'desc')->where('status', 1)->paginate(10);
     
             $kategori_all = Kategori::get();
             $slug = $kategori_all->where('slug', $kategori)->first();
@@ -77,7 +77,8 @@ class HomeController extends Controller
                             $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori', 'ratings')->whereHas('kategori', function($query) use($kategori){
                                 $query->where('slug', $kategori);
                             })
-                            ->orderBy('created_at', 'desc');
+                            ->orderBy('created_at', 'desc')
+                            ->where('status', 1);
                             // ->paginate(10);
                             break;
                         case 2:
@@ -85,7 +86,7 @@ class HomeController extends Controller
                                 $query->where('slug', $kategori);
                             })->with(['harga' => function($q){
                                 $q->orderBy('harga_akhir', 'asc');
-                            }]);
+                            }])->where('status', 1);
                             // ->paginate(10);
                             break;
                         case 3:
@@ -93,7 +94,7 @@ class HomeController extends Controller
                                 $query->where('slug', $kategori);
                             })->with(['harga' => function($q){
                                 $q->orderBy('harga_akhir', 'desc');
-                            }]);
+                            }])->where('status', 1);
                             // ->paginate(10);
                             break;                
                     }
@@ -136,6 +137,7 @@ class HomeController extends Controller
                             $query->where('slug', $kategori);
                         })
                         ->orderBy('created_at', 'desc')
+                        ->where('status', 1)
                         ->paginate(10);
                         break;
                     case 2:
@@ -144,6 +146,7 @@ class HomeController extends Controller
                         })->with(['harga' => function($q){
                             $q->orderBy('harga_akhir', 'asc');
                         }])
+                        ->where('status', 1)
                         ->paginate(10);
                         break;
                     case 3:
@@ -152,6 +155,7 @@ class HomeController extends Controller
                         })->with(['harga' => function($q){
                             $q->orderBy('harga_akhir', 'desc');
                         }])
+                        ->where('status', 1)
                         ->paginate(10);
                         break;                
                 }
@@ -171,8 +175,8 @@ class HomeController extends Controller
     public function detail($id) 
     {
         try {
-            $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori', 'penerbit')->where('id', $id)->first();
-            $produk_related = Produk::with('harga', 'stok', 'gambar_produk')->where('id_kategori', $produk->id_kategori)->orderBy('created_at', 'desc')->limit(5)->get();
+            $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori', 'penerbit')->where('id', $id)->where('status', 1)->first();
+            $produk_related = Produk::with('harga', 'stok', 'gambar_produk')->where('id_kategori', $produk->id_kategori)->where('status', 1)->orderBy('created_at', 'desc')->limit(5)->get();
             return view('pages.landing.detail', compact('produk', 'produk_related'));
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -204,7 +208,7 @@ class HomeController extends Controller
             
             $popup = Popup::first();
             
-            $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori', 'ratings')->paginate(12); 
+            $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori', 'ratings')->where('status', 1)->paginate(12); 
             
             foreach ($produk as $key => $value) {
                 // Add Persen to Produk
@@ -227,7 +231,7 @@ class HomeController extends Controller
 
         $query = $request->get('query');
         $kategori_all = Kategori::get();
-        $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori', 'ratings')->where('nama_produk', 'like', '%'.$query.'%')->get();
+        $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori', 'ratings')->where('nama_produk', 'like', '%'.$query.'%')->where('status', 1)->get();
         if ($request->ajax()) {
             return response()->json($produk);
         }
@@ -237,7 +241,7 @@ class HomeController extends Controller
 
     public function new_produk(Request $request)
     {
-        $produk = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->limit(30)->paginate(12);
+        $produk = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->where('status', 1)->limit(30)->paginate(12);
         $kategori_all = Kategori::get();
         return view('pages.landing.new_produk', compact('kategori_all', 'produk'));
     }
