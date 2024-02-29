@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Landing;
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
+use App\Models\GroupMenu;
 use App\Models\Harga;
 use App\Models\Kategori;
 use App\Models\Member;
@@ -49,9 +50,10 @@ class HomeController extends Controller
             $promo = '';
         }
 
-        // dd($promo);
+        // Menu Grup
+        $menu = GroupMenu::with('produk.harga', 'produk.stok', 'produk.gambar_produk')->where('status', 1)->get();
 
-        return view('pages.landing.index', compact('produk_laris', 'produk_baru', 'kategori', 'slide', 'blog', 'promo'));
+        return view('pages.landing.index', compact('produk_laris', 'produk_baru', 'kategori', 'slide', 'blog', 'promo', 'menu'));
     }
     
     public function kategori($kategori, Request $request) 

@@ -66,4 +66,9 @@ class Produk extends Model
     {
         return $this->hasMany(ProdukDikirim::class, 'id_produk', 'id');
     }
+    
+    public function menu()
+    {
+        return $this->belongsToMany(GroupMenu::class, 'group_menu_produk', 'id_produk', 'id_group_menu')->withTimestamps();
+    }
 }

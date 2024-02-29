@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\UlasanController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BahasaController;
 use App\Http\Controllers\Landing\HomeController;
+use App\Http\Controllers\MenuGroupController;
 use App\Http\Controllers\PaymentCallbackController;
 use App\Http\Controllers\PopupController;
 use App\Http\Controllers\User\KeranjangController;
@@ -145,6 +146,17 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 		Route::get('/aktif', [PopupController::class, 'aktif'])->name('aktif');		
 		Route::post('/update', [PopupController::class, 'update'])->name('update');		
 		Route::post('/image', [PopupController::class, 'image'])->name('image');		
+	});
+
+	// Menu Group
+  Route::group(['prefix' => 'menu', 'as' => 'menu.'], function () {
+		Route::get('', [MenuGroupController::class, 'index'])->name('index');		
+		Route::post('', [MenuGroupController::class, 'store'])->name('store');		
+		Route::put('', [MenuGroupController::class, 'update'])->name('update');		
+		Route::get('/produk', [MenuGroupController::class, 'getProduk'])->name('getProduk');		
+		Route::post('/produk-store', [MenuGroupController::class, 'produk_store'])->name('produk_store');		
+		Route::delete('/produk-destroy', [MenuGroupController::class, 'produk_destroy'])->name('produk_destroy');		
+		Route::put('/aktif', [MenuGroupController::class, 'aktif'])->name('aktif');		
 	});
 	
 	// Activity
