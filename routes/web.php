@@ -206,9 +206,9 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['role:user']
 
 	// Profile
 	Route::group(['prefix' => 'profile', 'as' => 'profile.'], function () {
-		Route::get('', [ProfileController::class, 'index'])->name('index');
+		Route::get('', [ProfileController::class, 'edit'])->name('edit');
 		Route::post('', [ProfileController::class, 'store'])->name('store');
-		Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
+		Route::get('/edit', [ProfileController::class, 'index'])->name('index');
 		Route::post('/password', [ProfileController::class, 'password'])->name('password');
 		Route::get('/provinsi', [ProfileController::class, 'provinsi'])->name('provinsi');
 		Route::get('/kota/{id}', [ProfileController::class, 'kota'])->name('kota');
