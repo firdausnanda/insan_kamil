@@ -114,11 +114,11 @@
                                                     <td>
                                                         <div class="d-flex align-items-center">
                                                             <div>
-                                                                @if ($d->produk->gambar_produk)
+                                                                @if ($d->produk->gambar_produk->count() > 0)
                                                                     <img src="{{ asset('storage/produk/' . $d->produk->gambar_produk[0]->gambar) }}"
                                                                         alt="" class="icon-shape icon-lg" />
                                                                 @else
-                                                                    <img src="{{ asset('images/products/product-img-1.jpg') }}"
+                                                                    <img src="{{ asset('images/avatar/no-image.png') }}"
                                                                         alt="" class="icon-shape icon-lg" />
                                                                 @endif
                                                             </div>

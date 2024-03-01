@@ -286,7 +286,7 @@
 
                                 <div class="text-center position-relative">
                                     <a href="{{ route('landing.detail', $p->id) }}">
-                                        @if ($p->gambar_produk)
+                                        @if ($p->gambar_produk->count() > 0)
                                             <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
                                                 alt="{{ $p->nama_produk }}" style="max-height: 210px; max-width: 210px;"
                                                 class="mb-3 img-fluid" />

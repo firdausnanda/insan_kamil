@@ -134,6 +134,7 @@ class OrderController extends Controller
                                 'id_member' => $v->id
                             ]);
 
+                            break;
                         }
                     }
                 }

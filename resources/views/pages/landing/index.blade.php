@@ -146,7 +146,7 @@
                                         <a href="{{ route('landing.detail', $p->id) }}">
                                             <div class="card-body text-center py-8">
                                                 <!-- img -->
-                                                @if ($p->gambar_produk)
+                                                @if ($p->gambar_produk->count() > 0)
                                                     <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
                                                         alt="{{ $p->nama_produk }}" class="mb-3"
                                                         style="height: 120px; width: 120px;">
@@ -319,7 +319,7 @@
                                                 <a href="{{ route('landing.detail', $p->id) }}">
                                                     <div class="card-body text-center py-8">
                                                         <!-- img -->
-                                                        @if ($p->gambar_produk)
+                                                        @if ($p->gambar_produk->count() > 0)
                                                             <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
                                                                 alt="{{ $p->nama_produk }}" class="mb-3"
                                                                 style="height: 120px;  width: 120px;">
@@ -390,7 +390,7 @@
                                                     <a href="{{ route('landing.detail', $p->id) }}">
                                                         <div class="card-body text-center py-8">
                                                             <!-- img -->
-                                                            @if ($p->gambar_produk)
+                                                            @if ($p->gambar_produk->count() > 0)
                                                                 <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
                                                                     alt="{{ $p->nama_produk }}" class="mb-3"
                                                                     style="height: 120px;  width: 120px;">
