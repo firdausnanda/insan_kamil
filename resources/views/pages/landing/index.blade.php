@@ -475,7 +475,7 @@
                     </div>
                     <!-- button -->
                     <div class="col-md-4 text-end d-none d-md-block">
-                        <a href="#" class="btn btn-primary">Lihat Selengkapnya
+                        <a href="{{ route('blog') }}" class="btn btn-primary">Lihat Selengkapnya
                         </a>
                     </div>
                 </div>
@@ -492,8 +492,8 @@
                                             <img src="{{ asset('storage/blog/' . $b->gambar) }}" alt=""
                                                 class="img-fluid rounded w-100" style="max-height: 225px">
                                         @else
-                                            <img src="{{ asset('images/blog/blog-img-1.jpg') }}" alt=""
-                                                class="img-fluid rounded w-100">
+                                            <img src="{{ asset('images/avatar/no-image.png') }}" alt=""
+                                                style="max-height: 225px" class="img-fluid rounded w-100">
                                         @endif
                                     </div>
                                 </a>

@@ -253,4 +253,10 @@ class HomeController extends Controller
         $member = Member::get();
         return view('pages.landing.member', compact('member'));
     }
+
+    public function blog()
+    {
+        $blog = Blog::where('status', 1)->paginate(10);
+        return view('pages.landing.blog-all', compact('blog'));
+    }
 }
