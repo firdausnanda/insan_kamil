@@ -94,6 +94,30 @@
     <!-- Modal Pop Awal -->
     @if (Route::is('landing.home'))
         @if ($popup && $popup->status == 1)
+
+            <!-- Modal Body -->
+            <div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+                role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTitleId">
+                                Modal title
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">Body</div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="button" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="modal fade" id="modal-subscribe" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered">
                     <div class="modal-content">
@@ -157,7 +181,7 @@
     <script src="{{ asset('vendor/jquery-countdown/dist/jquery.countdown.min.js') }}"></script>
     <script src="{{ asset('vendor/sticky-sidebar/dist/sticky-sidebar.min.js') }}"></script>
     <script src="{{ asset('js/vendors/sticky.js') }}"></script>
-    <script src="{{ asset('js/vendors/modal.js') }}"></script>
+    {{-- <script src="{{ asset('js/vendors/modal.js') }}"></script> --}}
     <script src="{{ asset('vendor/datatables/datatables.min.js') }}"></script>
     <script src="{{ asset('vendor/loading-overlay/loadingoverlay.min.js') }}"></script>
     <script src="{{ asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
@@ -207,11 +231,13 @@
                     suggestion: function(data) {
 
                         if (data.gambar_produk) {
-                            var gambar = `<img src="{{ asset('storage/produk/${data.gambar_produk[0].gambar}') }}" class="mb-3" style="height: 120px; width: 120px;">`
-                        }else{
-                            var gambar = `<img src="{{ asset('images/avatar/no-image.png') }}" class="mb-3" style="height: 120px; width: 120px;">`
+                            var gambar =
+                                `<img src="{{ asset('storage/produk/${data.gambar_produk[0].gambar}') }}" class="mb-3" style="height: 120px; width: 120px;">`
+                        } else {
+                            var gambar =
+                                `<img src="{{ asset('images/avatar/no-image.png') }}" class="mb-3" style="height: 120px; width: 120px;">`
                         }
-                                                
+
                         var link = "{{ route('landing.detail', ':slug') }}"
                         link = link.replace(':slug', data.id)
 
@@ -219,6 +245,21 @@
                     }
                 }
             });
+
+            var popupShown = localStorage.getItem('popupShown');
+
+            if (!popupShown || JSON.parse(popupShown).expiry < Date.now()) {
+                // Jika belum pernah ditampilkan atau sudah kedaluwarsa, tampilkan pop-up
+                $('#modal-subscribe').modal('show');
+                // Set waktu kedaluwarsa 1 hari dari sekarang
+                var expiry = Date.now() + 24 * 60 * 60 * 1000; // 1 hari dalam milidetik
+                localStorage.setItem('popupShown', JSON.stringify({
+                    shown: true,
+                    expiry: expiry
+                }));
+            } else {
+                $('#modal-subscribe').modal('hide');
+            }
         });
     </script>
 
