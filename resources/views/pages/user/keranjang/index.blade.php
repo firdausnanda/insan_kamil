@@ -101,7 +101,7 @@
                         data: 'produk.gambar_produk',
                         render: function(data, type, row, meta) {
                             if (data == '' || data == null) {
-                                return `<img src="{{ asset('images/avatar/no-image.png') }}}" alt="" class="avatar rounded-circle me-2" /> ${row.produk.nama_produk}`
+                                return `<img src="{{ asset('images/avatar/no-image.png') }}" alt="" class="avatar rounded-circle me-2" /> ${row.produk.nama_produk}`
                             } else {
                                 return `<img src="{{ asset('storage/produk/${row.produk.gambar_produk[0].gambar}') }}" alt="" class="avatar rounded-circle me-2" /> ${row.produk.nama_produk}`
                             }
