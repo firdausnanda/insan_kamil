@@ -38,7 +38,7 @@
                                                 <br>
                                                 {{ $data[0]->user->province ? $data[0]->user->province->name : '' }}
                                                 Kode Pos.
-                                                {{ $data[0]->user->city ? $data[0]->user->city->postal_code : '' }}
+                                                {{ $data[0]->user->kode_pos ?? '' }}
                                                 <br />
                                             </p>
                                             <button class="btn btn-info mt-2 btn-sm btn-ubah" href="#">Ubah
@@ -278,6 +278,12 @@
                                         {{ $data[0]->user->district ? $data[0]->user->district->name : '' }}
                                     </option>
                                 </select>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <!-- input -->
+                                <label class="form-label" for="kode_pos">Kode Pos</label>
+                                <input type="text" id="kode_pos" name="kode_pos" value="{{ $data[0]->user->kode_pos ?? '' }}"
+                                    class="form-control" placeholder="Kode Pos" required />
                             </div>
                         </div>
                     </div>

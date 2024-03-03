@@ -37,4 +37,10 @@ class Order extends Model
     public function produk_dikirim() {
         return $this->hasMany(ProdukDikirim::class, 'id_order', 'id');
     }
+    
+    public function member() {
+        return $this->belongsTo(Member::class, 'id_member', 'id');
+    }
+
+
 }

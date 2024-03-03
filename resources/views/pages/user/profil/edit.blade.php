@@ -108,6 +108,12 @@
                                 value="{{ $user->district ? $user->district->name : '' }}" class="form-control-plaintext"
                                 readonly />
                         </div>
+                        <div class="col-md-12 mb-3">
+                            <!-- input -->
+                            <label class="form-label" for="kode_pos">Kode Pos</label>
+                            <input type="text" id="kode_pos" name="kode_pos" value="{{ $user->kode_pos ?? '' }}"
+                                class="form-control-plaintext" placeholder="Kode Pos" readonly required />
+                        </div>
                     </form>
                 </div>
             </div>

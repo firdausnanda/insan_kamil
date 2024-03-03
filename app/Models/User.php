@@ -36,6 +36,7 @@ class User extends Authenticatable
         'desa',
         'status',
         'id_member',
+        'kode_pos',
     ];
 
     /**

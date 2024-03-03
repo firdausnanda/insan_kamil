@@ -65,8 +65,12 @@
                                                 <p class="mb-1 lh-lg">
                                                     {{ $order->user->alamat }}
                                                     <br>
-                                                    {{ $order->user->city->name }}, {{ $order->user->province->name }},
-                                                    <br />
+                                                    {{ $order->user->district ? $order->user->district->name : '' }},
+                                                    {{ $order->user->city ? $order->user->city->name : '' }}
+                                                    <br>
+                                                    {{ $order->user->province ? $order->user->province->name : '' }}
+                                                    Kode Pos.
+                                                    {{ $order->user->kode_pos ?? '' }}
                                                 </p>
                                             </div>
                                         </div>
@@ -204,7 +208,7 @@
                                                     </td>
                                                 </tr>
 
-                                                @if ($order->user->id_member)
+                                                @if ($order->id_member)
                                                     <tr>
                                                         <td class="border-bottom-0 pb-0"></td>
                                                         <td class="border-bottom-0 pb-0"></td>

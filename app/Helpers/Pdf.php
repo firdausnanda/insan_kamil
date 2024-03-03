@@ -11,8 +11,8 @@ class Pdf extends FPDF
 	function Header()
 	{
 		//Header
-		$this->Image(asset('images/logo/logo3.jpeg'), 7, 5, 45);
-		$this->Ln(23);
+		$this->Image(asset('images/logo/logo3.jpeg'), 10, 5, 30);
+		$this->Ln(14);
 	}
 
 }

@@ -51,6 +51,7 @@ class ProfileController extends Controller
 			'provinsi' => 'required|string|max:255',
 			'kota' => 'required|string|max:255',
 			'desa' => 'required|string|max:255',
+			'kode_pos' => 'required|string|max:255',
 		]);
 
 		if ($validator->fails()) {
@@ -67,6 +68,7 @@ class ProfileController extends Controller
                 'provinsi' => $request->provinsi,
                 'kota' => $request->kota,
                 'desa' => $request->desa,
+                'kode_pos' => $request->kode_pos,
             ]);
 
             return ResponseFormatter::success($user, 'Data berhasil diubah!');

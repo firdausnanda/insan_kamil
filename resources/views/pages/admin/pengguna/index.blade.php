@@ -141,6 +141,12 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Kode Pos</label>
+                            <div class="col-sm-8">
+                                <input type="kode_pos" class="form-control" name="kode_pos" required>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
@@ -236,6 +242,12 @@
                                         <option value="{{ $m->id }}">{{ 'Member ' . $m->nama . ' (Diskon ' . $m->diskon . '%)' }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Kode Pos</label>
+                            <div class="col-sm-8">
+                                <input type="kode_pos" class="form-control" name="kode_pos" id="kode_pos_e" required>
                             </div>
                         </div>
                     </div>
@@ -653,6 +665,7 @@
                 $('#email_e').val(data.email);
                 $('#no_telp_e').val(data.no_telp);
                 $('#alamat_e').val(data.alamat);
+                $('#kode_pos_e').val(data.alamat);
                 $('#role_e').val(data.roles[0].name).change();
                 $('#member_e').val(data.id_member).change();
 

@@ -435,8 +435,8 @@ class OrderController extends Controller
                 return $q['jumlah_produk'] * $q['harga_jual']; 
             });
 
-            if($order->user->id_member){
-                $member_diskon = $subTotal * $order->user->member->diskon / 100;
+            if($order->id_member){
+                $member_diskon = $subTotal * $order->member->diskon / 100;
             }else{
                 $member_diskon = 0;
             }
@@ -611,7 +611,7 @@ class OrderController extends Controller
 
         try {
 
-            $order = Order::with('user', 'produk_dikirim.produk')->where('id', $request->id)->first();
+            $order = Order::with('user', 'produk_dikirim.produk', 'member')->where('id', $request->id)->first();
 
             $pdf = new Pdf('P', 'mm', 'A5'); //L For Landscape / P For Portrait
             $pdf->AddPage();
@@ -641,9 +641,9 @@ class OrderController extends Controller
             $pdf->Cell(27, 7,  "Alamat Pembeli" , 0, 0, "L", true);
             $pdf->Cell(5, 7, ':', 0, 0, 'L', true);
             $pdf->SetFont( "Arial", "", 10 );
-            $pdf->Cell(101, 7,  $order->user->alamat . ', ' . $order->user->district->name , 0, 1, "", true );
+            $pdf->MultiCell(101, 7,  $order->user->alamat . ', Kec. ' . $order->user->district->name , 0, "", true );
             $pdf->Cell(32, 7,  "", 0, 0, "", true );
-            $pdf->Cell(101, 7,  $order->user->city->name . ', ' . $order->user->province->name, 0, 1, "", true );
+            $pdf->Cell(101, 7,  $order->user->city->name . ', ' . $order->user->province->name . ', ' . $order->user->kode_pos, 0, 1, "", true );
             
             $pdf->SetFont( "Arial", "B", 10 );
             $pdf->Cell(27, 7,  "No. Hp Pembeli" , 0, 0, "L", true);
@@ -655,7 +655,7 @@ class OrderController extends Controller
             $pdf->Cell(5, 7, ':', 0, 0, 'L', true);
             $pdf->SetFont( "Arial", "", 10 );
             $pdf->Cell(101, 7,  $order->id, 0, 1, "", true );
-            $pdf->Ln(6);
+            $pdf->Ln(3);
             
             $pdf->SetFont( "Arial", "B", 10 );
             $pdf->Cell(35, 7,  "Waktu Pembayaran" , 0, 0, "C");
@@ -673,7 +673,7 @@ class OrderController extends Controller
             $pdf->Cell(10, 7,  "" , 0, 0, "C");
             $pdf->Cell(35, 7,  $order->courier , 0, 0, "C");
             $pdf->Cell(10, 7,  "" , 0, 1, "C");
-            $pdf->Ln(5);
+            $pdf->Ln(2);
 
             $pdf->SetFont( "Arial", "B", 10 );
             $pdf->Cell(35, 7,  "Rincian Pesanan" , 0, 1, "L");
@@ -732,7 +732,14 @@ class OrderController extends Controller
             $pdf->Cell(75, 4, '', 0, 0);
             $pdf->Cell(27, 4,  "Diskon Member" , 0, 0, "L", true);
             $pdf->Cell(5, 4, ':', 0, 0, 'L', true);
-            $pdf->Cell(28, 4,  0, 0, 1, "R", true ); 
+
+            if ($order->id_member) {
+                $diskon_member = $order->member->diskon * $subTotal / 100;        
+            }else{
+                $diskon_member = 0;        
+            }
+
+            $pdf->Cell(28, 4,  "Rp " . number_format($diskon_member, 0,',','.'), 0, 1, "R", true ); 
             
             $pdf->Cell(75, 2, '', 0, 0);
             $pdf->Cell(60, 2, '', "B", 1, '', true);
@@ -744,7 +751,7 @@ class OrderController extends Controller
             $pdf->Cell(75, 4, '', 0, 0);
             $pdf->Cell(27, 4, 'Total Bayar', 0, 0, '',true);
             $pdf->Cell(5, 4, ':', 0, 0, 'L', true);
-            $pdf->Cell(28, 4, "Rp " . number_format($order->pembayaran[0]->harga_jual, 0,',','.'), 0, 1, 'R', true);
+            $pdf->Cell(28, 4, "Rp " . number_format($order->pembayaran[0]->harga_jual - $diskon_member, 0,',','.'), 0, 1, 'R', true);
             
             $pdf->Cell(75, 4, '', 0, 0);
             $pdf->Cell(60, 4, '', 0, 1, '', true);

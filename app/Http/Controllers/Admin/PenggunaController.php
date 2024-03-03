@@ -60,6 +60,7 @@ class PenggunaController extends Controller
 			'desa' => 'required|string|max:255',
 			'password' => 'required|string|max:255',
 			'role' => 'required|string|max:255',
+			'kode_pos' => 'required|string|max:255',
 		]);
 
 		if ($validator->fails()) {
@@ -78,6 +79,7 @@ class PenggunaController extends Controller
                 'provinsi' => $request->provinsi,
                 'kota' => $request->kota,
                 'desa' => $request->desa,
+                'kode_pos' => $request->kode_pos,
                 'password' => Hash::make($request->password),
             ]);
 
@@ -105,6 +107,7 @@ class PenggunaController extends Controller
                 'kota' => $request->kota,
                 'desa' => $request->desa,
                 'id_member' => $request->member,
+                'kode_pos' => $request->kode_pos,
             ]);
 
             $user = User::where('id', $request->id_e)->first();
