@@ -242,13 +242,16 @@
                 event.preventDefault();
 
                 var cell_harga = table.row($(this).parents('tr')).data();
+                var cell = $($(this).parents('tr')).find('input[name=quantity]').val();
+
+                var nilai = parseInt(cell);
 
                 $.ajax({
                     type: "GET",
                     url: "{{ route('user.order.jumlah') }}",
                     data: {
                         id_keranjang: cell_harga.id,
-                        jumlah: $('#jumlah').val()
+                        jumlah: nilai
                     },
                     dataType: "json",
                     beforeSend: function() {
