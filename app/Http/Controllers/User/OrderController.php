@@ -403,7 +403,7 @@ class OrderController extends Controller
     {
         if ($request->ajax()) {
             if ($request->status == 1) {
-                $penjualan = Order::with('user.member')->where('id_user', $request->id_user)->orderBy('created_at', 'desc')->get();
+                $penjualan = Order::with('user', 'member')->where('id_user', $request->id_user)->orderBy('created_at', 'desc')->get();
                 return ResponseFormatter::success($penjualan, "Data berhasil diambil!");
             }else{
                 switch ($request->status) {
