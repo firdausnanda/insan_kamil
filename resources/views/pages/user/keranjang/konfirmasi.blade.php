@@ -109,8 +109,8 @@
                         render: function(data, type, row, meta) {
 
                             if (row.harga_total != null && row.biaya_pengiriman != null) {
-
-                                if (row.user.id_member) {
+console.log(row.user);
+                                if (row.user) {
                                     var harga = parseInt(row.harga_total) - (parseInt(row
                                             .harga_total) * parseInt(row.user.member.diskon) /
                                         100) + parseInt(row.biaya_pengiriman)
