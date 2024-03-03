@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Order extends Model
 {
@@ -24,6 +25,8 @@ class Order extends Model
         'status',
         'catatan_pembelian',
         'id_member',
+        'no_invoice',
+        'courier_detail'
     ];
 
     public function user() {

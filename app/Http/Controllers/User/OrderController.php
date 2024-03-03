@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Kavist\RajaOngkir\Facades\RajaOngkir;
 use Midtrans\Snap;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
@@ -203,9 +204,11 @@ class OrderController extends Controller
             // Create Order
             $order = Order::create([
                 'id_user' => $request->user,
+                'no_invoice' => 'INV-' . Str::upper(Str::random(9)),
                 'harga_total' => $subTotal,
                 'jumlah_produk_total' => $beratProduk,
                 'courier' => $request->courier,
+                'courier_detail' => $request->courier_detail,
                 'biaya_pengiriman' => $request->biaya_pengiriman,
                 'origin' => $request->origin,
                 'destination' => $request->destination,
@@ -613,6 +616,27 @@ class OrderController extends Controller
 
             $order = Order::with('user', 'produk_dikirim.produk', 'member')->where('id', $request->id)->first();
 
+            switch (env('RAJAONGKIR_PACKAGE')) {
+                case 'starter':
+                    $courier = config('rajaongkir.courier.starter');
+                    break;
+                case 'basic':
+                    $courier = config('rajaongkir.courier.basic');
+                    break;
+                case 'pro':
+                    $courier = config('rajaongkir.courier.pro');
+                    break;            
+                default:
+                    $courier = null;
+                    break;
+            }
+    
+            foreach ($courier as $c) {
+                if ($c['kode'] == $order->courier) {
+                    $courier_search = $c['nama'];
+                }
+            }
+
             $pdf = new Pdf('P', 'mm', 'A5'); //L For Landscape / P For Portrait
             $pdf->AddPage();
 
@@ -642,8 +666,6 @@ class OrderController extends Controller
             $pdf->Cell(106, 7, ':', 0, 1, 'L', true);
             $pdf->SetFont( "Arial", "", 10 );
             $pdf->MultiCell(133, 7,  $order->user->alamat . ', Kec. ' . $order->user->district->name . " " . $order->user->city->name . ', ' . $order->user->province->name . ', ' . $order->user->kode_pos, 0, "", true );
-            // $pdf->Cell(32, 7,  "", 0, 0, "", true );
-            // $pdf->Cell(133, 7,  $order->user->city->name . ', ' . $order->user->province->name . ', ' . $order->user->kode_pos, 0, 1, "", true );
             
             $pdf->SetFont( "Arial", "B", 10 );
             $pdf->Cell(27, 7,  "No. Hp Pembeli" , 0, 0, "L", true);
@@ -654,7 +676,7 @@ class OrderController extends Controller
             $pdf->Cell(27, 7,  "No. Pesanan" , 0, 0, "L", true);
             $pdf->Cell(5, 7, ':', 0, 0, 'L', true);
             $pdf->SetFont( "Arial", "", 10 );
-            $pdf->Cell(101, 7,  $order->id, 0, 1, "", true );
+            $pdf->Cell(101, 7,  $order->no_invoice == null ? $order->id : $order->no_invoice, 0, 1, "", true );
             $pdf->Ln(3);
             
             $pdf->SetFont( "Arial", "B", 10 );
@@ -671,7 +693,7 @@ class OrderController extends Controller
             $pdf->Cell(10, 7,  "" , 0, 0, "C");
             $pdf->Cell(35, 7,  "QRIS" , 0, 0, "C");
             $pdf->Cell(10, 7,  "" , 0, 0, "C");
-            $pdf->Cell(35, 7,  $order->courier , 0, 0, "C");
+            $pdf->Cell(35, 7,  $courier_search , 0, 0, "C");
             $pdf->Cell(10, 7,  "" , 0, 1, "C");
             $pdf->Ln(2);
 

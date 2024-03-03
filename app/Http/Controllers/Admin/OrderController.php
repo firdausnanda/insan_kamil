@@ -14,7 +14,7 @@ class OrderController extends Controller
 {
     public function index(Request $request) {
         if ($request->ajax()) {
-            $order = Order::with('user')->where('status', $request->status)->get();
+            $order = Order::with('user', 'member')->where('status', $request->status)->orderBy('created_at', 'desc')->get();
             return ResponseFormatter::success($order, 'Data berhasil diambil!');
         }
         return view('pages.admin.order.index');

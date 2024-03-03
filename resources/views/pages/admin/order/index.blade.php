@@ -12,7 +12,8 @@
                             <!-- breacrumb -->
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb mb-0">
-                                    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}" class="text-inherit">Dashboard</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}"
+                                            class="text-inherit">Dashboard</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Order</li>
                                 </ol>
                             </nav>
@@ -65,7 +66,6 @@
                                     <thead>
                                         <th scope="col">No.</th>
                                         <th scope="col">ID Transaksi</th>
-                                        <th scope="col">Nama User</th>
                                         <th scope="col">Tanggal Order</th>
                                         <th scope="col">Total Transaksi</th>
                                         <th scope="col">Status</th>
@@ -114,32 +114,47 @@
                         targets: 1,
                         className: 'align-middle',
                         data: 'id',
+                        render: function(data, type, row, meta) {
+
+                            var link = "{{ route('admin.order.detail', ':id') }}";
+                            link = link.replace(':id', data);
+
+                            return `<a class="btn btn-link p-0 text-decoration-none text-info" href="${link}">${row.user.name}</a> <br> <span style="font-size: 12px">${data}</span>`
+                        }
                     },
                     {
                         targets: 2,
                         className: 'align-middle text-center',
-                        data: 'user.name',
-                    },
-                    {
-                        targets: 3,
-                        className: 'align-middle text-center',
                         data: 'created_at',
                         render: function(data, type, row, meta) {
-                            if (data) return `${moment(data).format('DD-MM-YYYY', 'de')} <br> <i>${moment(data).format('hh:mm:ss', 'de')}`
+                            if (data)
+                            return `${moment(data).format('DD-MM-YYYY', 'de')} <br> <i>${moment(data).format('hh:mm:ss', 'de')}`
                             return `-`
                         }
                     },
                     {
-                        targets: 4,
+                        targets: 3,
                         className: 'align-middle text-center',
                         data: 'harga_total',
                         render: function(data, type, row, meta) {
-                            return $.fn.dataTable.render.number('.', ',', 0, 'Rp ', ',-').display(
-                                data)
+                            if (row.harga_total != null && row.biaya_pengiriman != null) {
+
+                                if (row.id_member) {
+                                    var harga = parseInt(row.harga_total) - (parseInt(row
+                                            .harga_total) * parseInt(row.member.diskon) /
+                                        100) + parseInt(row.biaya_pengiriman)
+                                } else {
+                                    var harga = parseInt(row.harga_total) + parseInt(row
+                                        .biaya_pengiriman)
+                                }
+
+                                return $.fn.dataTable.render.number('.', ',', 0, 'Rp ', ',-')
+                                    .display(harga)
+                            }
                         }
                     },
                     {
-                        targets: 5,
+                        targets: 4,
                         className: 'align-middle text-center',
                         data: 'status',
                         render: function(data, type, row, meta) {
@@ -155,7 +170,7 @@
                         }
                     },
                     {
-                        targets: 6,
+                        targets: 5,
                         className: 'align-middle text-center',
                         data: 'id',
                         render: function(data, type, row, meta) {

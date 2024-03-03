@@ -81,6 +81,7 @@
                                         <select class="form-select" name="pilih_paket" id="pilih_paket">
                                             <option value="">Pilih Paket Pengiriman</option>
                                         </select>
+                                        <input type="hidden" id="detail_kurir">
                                         <button class="btn btn-secondary mt-2" id="pesan" disabled>Lakukan
                                             Pemesanan</button>
                                     </div>
@@ -215,8 +216,8 @@
     </section>
 
     {{-- Modal Edit --}}
-    <div class="modal fade" id="modal-edit" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
-        aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal fade" id="modal-edit" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -274,7 +275,8 @@
                                 <label class="form-label" for="desa">Kecamatan</label>
                                 <select name="desa" id="desa" class="form-select">
                                     <option value="">Pilih Kecamatan</option>
-                                    <option value="{{ $data[0]->user->district ? $data[0]->user->district->id : '' }}" selected>
+                                    <option value="{{ $data[0]->user->district ? $data[0]->user->district->id : '' }}"
+                                        selected>
                                         {{ $data[0]->user->district ? $data[0]->user->district->name : '' }}
                                     </option>
                                 </select>
@@ -282,8 +284,9 @@
                             <div class="col-md-12 mb-3">
                                 <!-- input -->
                                 <label class="form-label" for="kode_pos">Kode Pos</label>
-                                <input type="text" id="kode_pos" name="kode_pos" value="{{ $data[0]->user->kode_pos ?? '' }}"
-                                    class="form-control" placeholder="Kode Pos" required />
+                                <input type="text" id="kode_pos" name="kode_pos"
+                                    value="{{ $data[0]->user->kode_pos ?? '' }}" class="form-control"
+                                    placeholder="Kode Pos" required />
                             </div>
                         </div>
                     </div>
@@ -783,6 +786,7 @@
                     data: {
                         user: "{{ Auth::user()->id }}",
                         courier: $('#jasa_pengiriman').val(),
+                        courier_detail: $('#pilih_paket').select2('data')[0].text,
                         biaya_pengiriman: $('#pilih_paket').val(),
                         origin: "{{ config('rajaongkir.origin') }}",
                         destination: $('#subdistrict').val(),

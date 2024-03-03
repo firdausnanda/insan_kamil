@@ -87,7 +87,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 
 	});
 
-  
 	// Kategori
   Route::group(['prefix' => 'kategori', 'as' => 'kategori.'], function () {
 		Route::get('', [KategoriController::class, 'index'])->name('index');
@@ -114,6 +113,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 		Route::get('', [OrderController::class, 'index'])->name('index');
 		Route::post('', [OrderController::class, 'store'])->name('store');
 		Route::get('/waybill', [OrderController::class, 'waybill'])->name('waybill');
+		Route::get('/cetak', [UserOrderController::class, 'cetak'])->name('cetak');
 		Route::get('/detail/{id}', [OrderController::class, 'detail'])->name('detail');
 	});
 

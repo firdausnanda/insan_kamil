@@ -14,8 +14,10 @@
                             <!-- breacrumb -->
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb mb-0">
-                                    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}" class="text-inherit">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="{{ route('admin.order.index') }}" class="text-inherit">Order</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}"
+                                            class="text-inherit">Dashboard</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('admin.order.index') }}"
+                                            class="text-inherit">Order</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Detail Order</li>
                                 </ol>
                             </nav>
@@ -58,7 +60,8 @@
                                     <!-- button -->
                                     <div class="ms-md-3">
                                         <button id="btn-simpan" class="btn btn-primary">Simpan</button>
-                                        <a href="#" class="btn btn-secondary">Download Bukti Transaksi</a>
+                                        <button type="button" class="btn btn-secondary btn-download">Download Bukti
+                                            Transaksi</button>
                                     </div>
                                 </div>
                             </div>
@@ -69,7 +72,8 @@
                                         <div class="mb-6">
                                             <div class="alert alert-warning" role="alert">
                                                 <strong>Courier:</strong>
-                                                {{ $courier_search }}<br>
+                                                {{ $courier_search }}
+                                                {{ $order->courier_detail ? ' - ' . $order->courier_detail : '' }}<br>
 
                                                 <strong>Nomor Resi:</strong>
                                                 {{ $order->no_resi ?? '-' }}
@@ -384,12 +388,47 @@
                         $.each(response.data, function(i, v) {
                             $('#pengiriman').append(
                                 `<li>${v.manifest_date} ${v.manifest_time} - ${v.manifest_description} ${v.city_name}</li>`
-                                );
+                            );
                         });
                     } else {
                         $('#pengiriman').append(`<li>Paket telah diserahkan ke kurir.</li>`);
                     }
                 }
+            });
+
+            // Download
+            $('.btn-download').click(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('admin.order.cetak') }}",
+                    data: {
+                        id: "{{ $order->id }}"
+                    },
+                    cache: false,
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    beforeSend: function() {
+                        $.LoadingOverlay('show')
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide')
+                        var blob = new Blob([response], {
+                            type: 'application/pdf'
+                        });
+                        var url = URL.createObjectURL(blob);
+                        window.open(url, '_blank');
+                    },
+                    error: function(xhr, status, error) {
+                        $.LoadingOverlay('hide')
+
+                        Swal.fire('Periksa kembali data anda!', 'Data Tidak Ditemukan',
+                            'error');
+                    },
+                });
+
             });
 
         });
