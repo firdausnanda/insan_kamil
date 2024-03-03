@@ -71,4 +71,9 @@ class Produk extends Model
     {
         return $this->belongsToMany(GroupMenu::class, 'group_menu_produk', 'id_produk', 'id_group_menu')->withTimestamps();
     }
+
+    public function diskon()
+    {
+        return $this->belongsToMany(Diskon::class, 'diskon_produk', 'id_produk', 'id_diskon')->withTimestamps();
+    }
 }

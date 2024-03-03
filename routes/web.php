@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\SlideshowController;
 use App\Http\Controllers\Admin\UlasanController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BahasaController;
+use App\Http\Controllers\DiskonController;
 use App\Http\Controllers\Landing\HomeController;
 use App\Http\Controllers\MenuGroupController;
 use App\Http\Controllers\PaymentCallbackController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\User\KeranjangController;
 use App\Http\Controllers\User\OrderController as UserOrderController;
 use App\Http\Controllers\User\ProfileController;
 use App\Models\Blog;
+use App\Models\Diskon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -71,7 +73,20 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 		Route::get('/create', [ProdukController::class, 'create'])->name('create');
 		Route::post('/update', [ProdukController::class, 'update'])->name('update');
 		Route::get('/edit/{id}', [ProdukController::class, 'edit'])->name('edit');
+
+		// Diskon
+		Route::group(['prefix' => 'diskon', 'as' => 'diskon.'], function () {
+			Route::get('', [DiskonController::class, 'index'])->name('index');
+			Route::post('', [DiskonController::class, 'store'])->name('store');
+			Route::put('', [DiskonController::class, 'update'])->name('update');		
+			Route::get('/produk', [DiskonController::class, 'getProduk'])->name('getProduk');		
+			Route::post('/produk-store', [DiskonController::class, 'produk_store'])->name('produk_store');		
+			Route::delete('/produk-destroy', [DiskonController::class, 'produk_destroy'])->name('produk_destroy');		
+			Route::put('/aktif', [DiskonController::class, 'aktif'])->name('aktif');		
+		});
+
 	});
+
   
 	// Kategori
   Route::group(['prefix' => 'kategori', 'as' => 'kategori.'], function () {

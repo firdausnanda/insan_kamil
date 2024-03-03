@@ -108,14 +108,18 @@ class OrderController extends Controller
                     'status_pembayaran' => 2,
                 ]);
                 
-                // Update Order
+                // Cek Order
                 $order = Order::where('id', $request->id)->first();
-                $order->update([
-                    'status' => 2,
-                ]);
-
+                
                 // Update Member
                 $user = User::with('member')->where('id', $order->id_user)->first();
+                
+                // Update Order status & Member yang lama
+                $order->update([
+                    'status' => 2,
+                    'id_member' => $user->id_member,
+                ]);
+
 
                 // Cek apakah sudah menjadi member apa belum
                 if ($user->id_member) {

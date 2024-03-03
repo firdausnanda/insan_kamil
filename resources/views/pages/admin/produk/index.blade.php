@@ -21,6 +21,7 @@
                         <!-- button -->
                         <div>
                             <a href="{{ route('admin.produk.create') }}" class="btn btn-primary">Tambah Produk</a>
+                            <a href="{{ route('admin.produk.diskon.index') }}" class="btn btn-outline-primary">Diskon Event</a>
                         </div>
                     </div>
                 </div>
