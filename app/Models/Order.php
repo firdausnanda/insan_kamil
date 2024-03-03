@@ -23,6 +23,7 @@ class Order extends Model
         'no_resi',
         'status',
         'catatan_pembelian',
+        'id_member',
     ];
 
     public function user() {
