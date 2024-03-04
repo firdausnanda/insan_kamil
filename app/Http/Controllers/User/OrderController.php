@@ -665,9 +665,9 @@ class OrderController extends Controller
             $pdf->Cell(27, 5,  "Nama Pembeli" , 0, 0, "L", true);
             $pdf->Cell(5, 5, ':', 0, 0, 'L', true);
             $pdf->SetFont( "Arial", "", 8 );
-            $pdf->Cell(25, 5,  $order->user->name, 0, 0, "", true );
+            $pdf->Cell(45, 5,  $order->user->name, 0, 0, "", true );
             
-            $pdf->Cell(25, 5,  "", 0, 0, "L", true);
+            $pdf->Cell(5, 5,  "", 0, 0, "L", true);
             
             $pdf->SetFont( "Arial", "B", 8 );
             $pdf->Cell(25, 5,  "Nama Penjual" , 0, 0, "L", true);
