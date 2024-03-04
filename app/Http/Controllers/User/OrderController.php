@@ -676,10 +676,14 @@ class OrderController extends Controller
             $pdf->Cell(21, 5,  "Insan Kamil", 0, 1, "", true );
 
             $pdf->SetFont( "Arial", "B", 8 );
-            $pdf->Cell(27, 5,  "Alamat Pembeli" , 0, 0, "L", true);
-            $pdf->Cell(106, 5, ':', 0, 1, 'L', true);
+
+            $alamat = $order->user->alamat . ', Kec. ' . $order->user->district->name . " " . $order->user->city->name . ', ' . $order->user->province->name . ', ' . $order->user->kode_pos;
+            $h = $pdf->GetMultiCellHeight(101, 5,  $alamat, 0, "", true );
+            
+            $pdf->Cell(27, $h,  "Alamat Pembeli" , 0, 0, "L", true);
+            $pdf->Cell(5, $h, ':', 0, 0, 'L', true);
             $pdf->SetFont( "Arial", "", 8 );
-            $pdf->MultiCell(133, 5,  $order->user->alamat . ', Kec. ' . $order->user->district->name . " " . $order->user->city->name . ', ' . $order->user->province->name . ', ' . $order->user->kode_pos, 0, "", true );
+            $pdf->MultiCell(101, 5,  $alamat, 0, "", true );
             
             $pdf->SetFont( "Arial", "B", 8 );
             $pdf->Cell(27, 5,  "No. Hp Pembeli" , 0, 0, "L", true);
