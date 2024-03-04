@@ -53,6 +53,7 @@ class OrderController extends Controller
             return $q->jumlah_produk * $q->berat_produk; 
         });
 
+        // Courier
         switch (env('RAJAONGKIR_PACKAGE')) {
             case 'starter':
                 $courier = config('rajaongkir.courier.starter');
@@ -68,10 +69,23 @@ class OrderController extends Controller
                 break;
         }
 
+        // Diskon Member
         if($data[0]->user->id_member){
             $member_diskon = $subTotal * $data[0]->user->member->diskon / 100;
         }else{
             $member_diskon = 0;
+        }
+
+        // Diskon Event
+        foreach ($data as $k => $v) {
+            $cek = Produk::with('harga', 'diskon')->where('id', $v->id_produk)->first();
+            $diskon_event = 0;
+
+            foreach ($cek->diskon as $key => $value) {
+                $diskon_event += $cek->harga->harga_akhir * $value->diskon / 100;
+            }
+
+            $data[$k]->diskon_event = $diskon_event;
         }
 
         if ($data->first() != '') {
@@ -647,76 +661,76 @@ class OrderController extends Controller
                         
             $pdf->SetFillColor('236', '236', '236');
 
-            $pdf->SetFont( "Arial", "B", 10 );
-            $pdf->Cell(27, 7,  "Nama Pembeli" , 0, 0, "L", true);
-            $pdf->Cell(5, 7, ':', 0, 0, 'L', true);
-            $pdf->SetFont( "Arial", "", 10 );
-            $pdf->Cell(25, 7,  $order->user->name, 0, 0, "", true );
+            $pdf->SetFont( "Arial", "B", 8 );
+            $pdf->Cell(27, 5,  "Nama Pembeli" , 0, 0, "L", true);
+            $pdf->Cell(5, 5, ':', 0, 0, 'L', true);
+            $pdf->SetFont( "Arial", "", 8 );
+            $pdf->Cell(25, 5,  $order->user->name, 0, 0, "", true );
             
-            $pdf->Cell(25, 7,  "", 0, 0, "L", true);
+            $pdf->Cell(25, 5,  "", 0, 0, "L", true);
             
-            $pdf->SetFont( "Arial", "B", 10 );
-            $pdf->Cell(25, 7,  "Nama Penjual" , 0, 0, "L", true);
-            $pdf->Cell(5, 7, ':', 0, 0, 'L', true);
-            $pdf->SetFont( "Arial", "", 10 );
-            $pdf->Cell(21, 7,  "Insan Kamil", 0, 1, "", true );
+            $pdf->SetFont( "Arial", "B", 8 );
+            $pdf->Cell(25, 5,  "Nama Penjual" , 0, 0, "L", true);
+            $pdf->Cell(5, 5, ':', 0, 0, 'L', true);
+            $pdf->SetFont( "Arial", "", 8 );
+            $pdf->Cell(21, 5,  "Insan Kamil", 0, 1, "", true );
 
-            $pdf->SetFont( "Arial", "B", 10 );
-            $pdf->Cell(27, 7,  "Alamat Pembeli" , 0, 0, "L", true);
-            $pdf->Cell(106, 7, ':', 0, 1, 'L', true);
-            $pdf->SetFont( "Arial", "", 10 );
-            $pdf->MultiCell(133, 7,  $order->user->alamat . ', Kec. ' . $order->user->district->name . " " . $order->user->city->name . ', ' . $order->user->province->name . ', ' . $order->user->kode_pos, 0, "", true );
+            $pdf->SetFont( "Arial", "B", 8 );
+            $pdf->Cell(27, 5,  "Alamat Pembeli" , 0, 0, "L", true);
+            $pdf->Cell(106, 5, ':', 0, 1, 'L', true);
+            $pdf->SetFont( "Arial", "", 8 );
+            $pdf->MultiCell(133, 5,  $order->user->alamat . ', Kec. ' . $order->user->district->name . " " . $order->user->city->name . ', ' . $order->user->province->name . ', ' . $order->user->kode_pos, 0, "", true );
             
-            $pdf->SetFont( "Arial", "B", 10 );
-            $pdf->Cell(27, 7,  "No. Hp Pembeli" , 0, 0, "L", true);
-            $pdf->Cell(5, 7, ':', 0, 0, 'L', true);
-            $pdf->SetFont( "Arial", "", 10 );
-            $pdf->Cell(101, 7,  $order->user->no_telp, 0, 1, "", true );            
-            $pdf->SetFont( "Arial", "B", 10 );
-            $pdf->Cell(27, 7,  "No. Pesanan" , 0, 0, "L", true);
-            $pdf->Cell(5, 7, ':', 0, 0, 'L', true);
-            $pdf->SetFont( "Arial", "", 10 );
-            $pdf->Cell(101, 7,  $order->no_invoice == null ? $order->id : $order->no_invoice, 0, 1, "", true );
-            $pdf->Ln(3);
+            $pdf->SetFont( "Arial", "B", 8 );
+            $pdf->Cell(27, 5,  "No. Hp Pembeli" , 0, 0, "L", true);
+            $pdf->Cell(5, 5, ':', 0, 0, 'L', true);
+            $pdf->SetFont( "Arial", "", 8 );
+            $pdf->Cell(101, 5,  $order->user->no_telp, 0, 1, "", true );            
+            $pdf->SetFont( "Arial", "B", 8 );
+            $pdf->Cell(27, 5,  "No. Pesanan" , 0, 0, "L", true);
+            $pdf->Cell(5, 5, ':', 0, 0, 'L', true);
+            $pdf->SetFont( "Arial", "", 8 );
+            $pdf->Cell(101, 5,  $order->no_invoice == null ? $order->id : $order->no_invoice, 0, 0, "", true );
+            $pdf->Ln(6);
             
-            $pdf->SetFont( "Arial", "B", 10 );
-            $pdf->Cell(35, 7,  "Waktu Pembayaran" , 0, 0, "C");
-            $pdf->Cell(10, 7,  "" , 0, 0, "C");
-            $pdf->Cell(35, 7,  "Pembayaran" , 0, 0, "C");
-            $pdf->Cell(10, 7,  "" , 0, 0, "C");
-            $pdf->Cell(35, 7,  "Kurir" , 0, 0, "C");
-            $pdf->Cell(10, 7,  "" , 0, 0, "C");
+            $pdf->SetFont( "Arial", "B", 8 );
+            $pdf->Cell(35, 5,  "Waktu Pembayaran" , 0, 0, "C");
+            $pdf->Cell(10, 5,  "" , 0, 0, "C");
+            $pdf->Cell(35, 5,  "Pembayaran" , 0, 0, "C");
+            $pdf->Cell(10, 5,  "" , 0, 0, "C");
+            $pdf->Cell(35, 5,  "Kurir" , 0, 0, "C");
+            $pdf->Cell(10, 5,  "" , 0, 0, "C");
             $pdf->Ln(5);
 
-            $pdf->SetFont( "Arial", "", 10 );
-            $pdf->Cell(35, 7,  $order->pembayaran[0]->created_at , 0, 0, "C");
-            $pdf->Cell(10, 7,  "" , 0, 0, "C");
-            $pdf->Cell(35, 7,  "QRIS" , 0, 0, "C");
-            $pdf->Cell(10, 7,  "" , 0, 0, "C");
-            $pdf->Cell(35, 7,  $courier_search , 0, 0, "C");
-            $pdf->Cell(10, 7,  "" , 0, 1, "C");
+            $pdf->SetFont( "Arial", "", 8 );
+            $pdf->Cell(35, 5,  $order->pembayaran[0]->created_at , 0, 0, "C");
+            $pdf->Cell(10, 5,  "" , 0, 0, "C");
+            $pdf->Cell(35, 5,  "QRIS" , 0, 0, "C");
+            $pdf->Cell(10, 5,  "" , 0, 0, "C");
+            $pdf->Cell(35, 5,  $courier_search , 0, 0, "C");
+            $pdf->Cell(10, 5,  "" , 0, 1, "C");
             $pdf->Ln(2);
 
-            $pdf->SetFont( "Arial", "B", 10 );
-            $pdf->Cell(35, 7,  "Rincian Pesanan" , 0, 1, "L");
+            $pdf->SetFont( "Arial", "B", 8 );
+            $pdf->Cell(35, 5,  "Rincian Pesanan" , 0, 1, "L");
 
-            $pdf->SetFont('Arial', 'B', 10);
+            $pdf->SetFont('Arial', 'B', 8);
             $pdf->SetFillColor('224', '224', '224');
-            $pdf->Cell(10, 7,'No', "T,B", 0, 'C');
-            $pdf->Cell(60, 7,'Produk', "T,B", 0, 'L');
-            $pdf->Cell(5, 7,'Jumlah', "T,B", 0, 'C');
-            $pdf->Cell(30, 7,'Harga', "T,B", 0, 'C');
-            $pdf->Cell(30, 7,'Sub Total', "T,B", 1, 'C');
+            $pdf->Cell(10, 5,'No', "T,B", 0, 'C');
+            $pdf->Cell(60, 5,'Produk', "T,B", 0, 'L');
+            $pdf->Cell(5, 5,'Jumlah', "T,B", 0, 'C');
+            $pdf->Cell(30, 5,'Harga', "T,B", 0, 'C');
+            $pdf->Cell(30, 5,'Sub Total', "T,B", 1, 'C');
             
             $subTotal = 0;
             
             foreach ($order->produk_dikirim as $k => $v) {
                 $pdf->SetFont('Arial', '', 8);
-                $pdf->Cell(10, 7, $k + 1, 0, 0, 'C');
-                $pdf->Cell(60, 7,$v->produk->nama_produk, 0, 0, 'L');
-                $pdf->Cell(5, 7,$v->jumlah_produk, 0, 0, 'C');
-                $pdf->Cell(30, 7, "Rp " . number_format($v->harga_jual, 0,',','.'), 0, 0, 'C');
-                $pdf->Cell(30, 7, "Rp " . number_format($v->harga_jual * $v->jumlah_produk, 0,',','.'), 0, 1, 'C');                
+                $pdf->Cell(10, 4, $k + 1, 0, 0, 'C');
+                $pdf->Cell(60, 4,$v->produk->nama_produk, 0, 0, 'L');
+                $pdf->Cell(5, 4,$v->jumlah_produk, 0, 0, 'C');
+                $pdf->Cell(30, 4, "Rp " . number_format($v->harga_jual, 0,',','.'), 0, 0, 'C');
+                $pdf->Cell(30, 4, "Rp " . number_format($v->harga_jual * $v->jumlah_produk, 0,',','.'), 0, 1, 'C');                
                 $subTotal += $v->harga_jual * $v->jumlah_produk;
             }
 
@@ -727,7 +741,7 @@ class OrderController extends Controller
 
             // Subtotal
             $pdf->Cell(75, 4, '', 0, 0);
-            $pdf->SetFont('Arial', 'B', 10);
+            $pdf->SetFont('Arial', 'B', 8);
             $pdf->Cell(30, 4, 'SubTotal', 0, 0, 'L');
             $pdf->Cell(30, 4, "Rp " . number_format($subTotal, 0,',','.'), 0, 1, 'C');
             $pdf->SetFont('Arial', 'B', 8);
@@ -769,7 +783,7 @@ class OrderController extends Controller
             $pdf->Cell(75, 2, '', 0, 0);
             $pdf->Cell(60, 2, '', 0, 1, '', true);
             
-            $pdf->SetFont( "Arial", "B", 10 );
+            $pdf->SetFont( "Arial", "B", 8 );
             $pdf->Cell(75, 4, '', 0, 0);
             $pdf->Cell(27, 4, 'Total Bayar', 0, 0, '',true);
             $pdf->Cell(5, 4, ':', 0, 0, 'L', true);
