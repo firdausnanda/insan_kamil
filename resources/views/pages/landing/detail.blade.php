@@ -98,7 +98,8 @@
                                     <input type="button" value="-" class="button-minus btn btn-sm"
                                         data-field="quantity" />
                                     <input type="number" step="1" max="10" value="1" id="jumlah"
-                                        name="quantity" class="quantity-field form-control-sm form-input" style="width: 5rem!important; min-height: 2.25rem!important" />
+                                        name="quantity" class="quantity-field form-control-sm form-input"
+                                        style="width: 5rem!important; min-height: 2.25rem!important" />
                                     <input type="button" value="+" class="button-plus btn btn-sm" data-field="quantity" />
                                 </div>
                             </div>
@@ -205,21 +206,27 @@
 
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item"
+                                            href="{{ 'https://www.facebook.com/sharer/sharer.php?u=' . Request::url() }}"
+                                            target="_blank" rel="noopener noreferrer">
                                             <i class="bi bi-facebook me-2"></i>
                                             Facebook
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item"
+                                            href="{{ 'https://twitter.com/intent/tweet?url=' . Request::url() }}"
+                                            target="_blank" rel="noopener noreferrer">
                                             <i class="bi bi-twitter me-2"></i>
                                             Twitter
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="bi bi-instagram me-2"></i>
-                                            Instagram
+                                        <a class="dropdown-item"
+                                            href="{{ 'https://api.whatsapp.com/send?text=Dapatkan Buku ' . $produk->nama_produk . ' Dapatkan sekarang juga ' . Request::url() }}"
+                                            target="_blank" rel="noopener noreferrer">
+                                            <i class="bi bi-whatsapp me-2"></i>
+                                            Whatsapp
                                         </a>
                                     </li>
                                 </ul>
