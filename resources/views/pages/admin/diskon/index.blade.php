@@ -85,6 +85,16 @@
                                 <input type="number" class="form-control" name="diskon" required>
                             </div>
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tanggal Mulai Diskon</label>
+                            <input type="date" class="form-control" value="{{ now() }}"
+                                name="tanggal_mulai_diskon" id="tanggal_mulai_diskon" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tanggal Selesai Diskon</label>
+                            <input type="date" class="form-control" name="tanggal_selesai_diskon"
+                                id="tanggal_selesai_diskon" />
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
@@ -119,11 +129,12 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                              <label for="colFormLabel" class="col-sm-4 col-form-label">Diskon</label>
-                              <div class="col-sm-8">
-                                  <input type="number" class="form-control" name="diskon" id="nilai_diskon" required>
-                              </div>
-                          </div>
+                                <label for="colFormLabel" class="col-sm-4 col-form-label">Diskon</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control" name="diskon" id="nilai_diskon"
+                                        required>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -284,6 +295,24 @@
                 ]
             });
 
+            //Flatpickr
+            flatpickr("#tanggal_selesai_diskon", {
+                locale: "id",
+                altInput: true,
+                altFormat: "j F Y, H:i",
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+            });
+
+            //Flatpickr
+            flatpickr("#tanggal_mulai_diskon", {
+                locale: "id",
+                altInput: true,
+                altFormat: "j F Y, H:i",
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+            });
+
             // Modal Tambah Show
             $(".btn-tambah").click(function(e) {
                 e.preventDefault();
@@ -327,7 +356,7 @@
                 var nama = data.nama;
                 var keterangan = data.keterangan;
                 var diskon = data.diskon;
-                            
+
                 $('#id').val(id);
                 $('#nama').val(nama);
                 $('#keterangan').val(keterangan);

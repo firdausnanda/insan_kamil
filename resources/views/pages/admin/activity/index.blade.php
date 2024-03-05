@@ -65,18 +65,6 @@
                             </div>
 
                         </div>
-                        {{-- <div class=" border-top d-md-flex justify-content-between align-items-center px-6 py-6">
-                            <span>Showing 1 to 8 of 12 entries</span>
-                            <nav class="mt-2 mt-md-0">
-                                <ul class="pagination mb-0 ">
-                                    <li class="page-item disabled"><a class="page-link " href="#!">Previous</a></li>
-                                    <li class="page-item"><a class="page-link active" href="#!">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#!">Next</a></li>
-                                </ul>
-                            </nav>
-                        </div> --}}
                     </div>
 
                 </div>
@@ -149,7 +137,7 @@
                         width: '15%',
                         className: 'align-middle text-center',
                         render: function(data, type, row, meta) {
-                            if (row.causer_id) {
+                            if (row.causer) {
                                 return row.causer.name;
                             } else {
                                 return "-"

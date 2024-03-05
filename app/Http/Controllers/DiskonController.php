@@ -56,6 +56,8 @@ class DiskonController extends Controller
                 'nama' => $request->nama,
                 'keterangan' => $request->deskripsi,
                 'diskon' => $request->diskon,
+                'mulai_diskon' => $request->tanggal_mulai_diskon,
+                'selesai_diskon' => $request->tanggal_selesai_diskon,
                 'status' => 1
             ]);
 
