@@ -233,7 +233,7 @@ class HomeController extends Controller
 
         $query = $request->get('query');
         $kategori_all = Kategori::get();
-        $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori', 'ratings')->where('nama_produk', 'like', '%'.$query.'%')->where('status', 1)->get();
+        $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori', 'ratings')->where('nama_produk', 'like', '%'.$query.'%')->where('status', 1)->limit(5)->get();
         if ($request->ajax()) {
             return response()->json($produk);
         }
