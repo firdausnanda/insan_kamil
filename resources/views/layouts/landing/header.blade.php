@@ -150,7 +150,7 @@
 
 
                         <div class="input-group ">
-                            <input class="form-control rounded w-100" name="query" type="search" id="search"
+                            <input class="form-control rounded w-100" name="query" type="search" id="search" value="{{ $query ?? '' }}"
                                 placeholder="Cari Judul Buku">
                             <span class="input-group-append">
                                 <button class="btn bg-white border border-start-0 ms-n10 rounded-0 rounded-end"

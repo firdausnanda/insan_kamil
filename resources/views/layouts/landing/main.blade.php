@@ -230,14 +230,6 @@
                 templates: {
                     suggestion: function(data) {
 
-                        if (data.gambar_produk) {
-                            var gambar =
-                                `<img src="{{ asset('storage/produk/${data.gambar_produk[0].gambar}') }}" class="mb-3" style="height: 120px; width: 120px;">`
-                        } else {
-                            var gambar =
-                                `<img src="{{ asset('images/avatar/no-image.png') }}" class="mb-3" style="height: 120px; width: 120px;">`
-                        }
-
                         var link = "{{ route('landing.detail', ':slug') }}"
                         link = link.replace(':slug', data.id)
 

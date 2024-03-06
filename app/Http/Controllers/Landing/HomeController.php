@@ -233,10 +233,16 @@ class HomeController extends Controller
 
         $query = $request->get('query');
         $kategori_all = Kategori::get();
-        $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori', 'ratings')->where('nama_produk', 'like', '%'.$query.'%')->where('status', 1)->limit(5)->get();
+
+        $produk_all = Produk::with('harga', 'stok', 'gambar_produk', 'kategori', 'ratings')
+                            ->where('nama_produk', 'like', '%'.$query.'%')
+                            ->where('status', 1);
+        
         if ($request->ajax()) {
-            return response()->json($produk);
+            return response()->json($produk_all->get());
         }
+
+        $produk = $produk_all->limit(50)->paginate(2);
 
         return view('pages.landing.produk-by-search', compact('kategori_all', 'produk', 'query'));
     }

@@ -56,12 +56,12 @@
                 </aside>
                 <section class="col-lg-9 col-md-12">
                     <!-- card -->
-                    <div class="card mb-4 bg-light border-0">
+                    {{-- <div class="card mb-4 bg-light border-0">
                         <!-- card body -->
                         <div class="card-body p-9">
                             <h2 class="mb-0 fs-1"></h2>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <!-- row -->
                     <div class="row g-4 row-cols-xl-4 row-cols-lg-3 row-cols-md-2 mt-2">
@@ -156,12 +156,4 @@
             </div>
         </div>
     </div>
-@endsection
-
-@section('script')
-    <script>
-        $(document).ready(function() {
-            $('#search').val() == "{{ $query }}"
-        });
-    </script>
 @endsection
