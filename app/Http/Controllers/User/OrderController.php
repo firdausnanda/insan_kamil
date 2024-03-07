@@ -401,7 +401,7 @@ class OrderController extends Controller
 
                 $cost = RajaOngkir::ongkosKirim([
                     'origin'            => config('rajaongkir.origin'), // ID kota/kabupaten asal
-                    'originType'        => 'subdistrict', // ID kota/kabupaten asal
+                    'originType'        => 'city', // ID kota/kabupaten asal
                     'destination'       => $request->city_destination, // ID kota/kabupaten tujuan
                     'destinationType'   => 'subdistrict', // ID kota/kabupaten tujuan
                     'weight'            => $request->weight, // berat barang dalam gram

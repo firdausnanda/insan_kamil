@@ -17,7 +17,7 @@ return [
      * Atur lokasi kota awal untuk pengiriman.
      * Hanya berisi kode dari id kota dimaksud.
      */ 
-    'origin' => 5982,
+    'origin' => 445,
 
     /*
      * Data jasa pengiriman berdasarkan tipe akun.
