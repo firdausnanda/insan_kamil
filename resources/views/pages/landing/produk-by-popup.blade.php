@@ -78,11 +78,11 @@
                                                 @if ($p->gambar_produk->count() > 0)
                                                     <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
                                                         alt="{{ $p->nama_produk }}" class="mb-3 img-fluid"
-                                                        style="max-height: 193px; max-width: 193px;">
+                                                        style="max-height: 193px; width: auto">
                                                 @else
                                                     <img src="{{ asset('images/avatar/no-image.png') }}"
                                                         alt="{{ $p->nama_produk }}" class="mb-3 img-fluid"
-                                                        style="max-height: 193px; max-width: 193px;">
+                                                        style="max-height: 193px; width: auto">
                                                 @endif
                                             </div>
                                         </a>
