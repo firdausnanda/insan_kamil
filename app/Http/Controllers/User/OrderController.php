@@ -72,6 +72,8 @@ class OrderController extends Controller
         // Diskon Member
         if($data[0]->user->id_member){
             $member_diskon = $subTotal * $data[0]->user->member->diskon / 100;
+        }elseif ($subTotal >= 50000) {
+            $member_diskon = $subTotal * 10 / 100;
         }else{
             $member_diskon = 0;
         }
@@ -129,7 +131,7 @@ class OrderController extends Controller
                 // Update Member
                 $user = User::with('member')->where('id', $order->id_user)->first();
                 
-                // Update Order status & Member yang lama
+                // Update table Order status & Member yang lama
                 $order->update([
                     'status' => 2,
                     'id_member' => $user->id_member,
@@ -143,11 +145,18 @@ class OrderController extends Controller
                     $cekmember = Member::orderBy('pembelian_minimum', 'desc')->get();   
                 }
 
+                // Cek total pembelian keseluruhan
+                $cek_pembayaran_total = Order::where('id_user', $order->id_user)->wherehas('pembayaran', function($query){
+                   $query->where('status_pembayaran', 2); 
+                })->withSum('pembayaran', 'harga_jual')->get();
+
+                $pembayaran_total = $cek_pembayaran_total->sum('pembayaran_sum_harga_jual');
+
                 if($cekmember->count() > 0){
                     foreach ($cekmember as $v) {
 
                         // Check if pembelian lebih besar dari pembelian mininum member 
-                        if ($order->harga_total >= $v->pembelian_minimum) {
+                        if ($pembayaran_total >= $v->pembelian_minimum) {
 
                             $user->update([
                                 'id_member' => $v->id
@@ -420,7 +429,7 @@ class OrderController extends Controller
     {
         if ($request->ajax()) {
             if ($request->status == 1) {
-                $penjualan = Order::with('user', 'member')->where('id_user', $request->id_user)->orderBy('created_at', 'desc')->get();
+                $penjualan = Order::with('user', 'member', 'pembayaran')->where('id_user', $request->id_user)->orderBy('created_at', 'desc')->get();
                 return ResponseFormatter::success($penjualan, "Data berhasil diambil!");
             }else{
                 switch ($request->status) {
@@ -434,7 +443,7 @@ class OrderController extends Controller
                         $status = 4;
                         break;                    
                 }
-                $penjualan = Order::where('id_user', $request->id_user)->where('status', $status)->orderBy('created_at', 'desc')->get();
+                $penjualan = Order::with('user', 'member', 'pembayaran')->where('id_user', $request->id_user)->where('status', $status)->orderBy('created_at', 'desc')->get();
                 return ResponseFormatter::success($penjualan, "Data berhasil diambil!");
             }
         }

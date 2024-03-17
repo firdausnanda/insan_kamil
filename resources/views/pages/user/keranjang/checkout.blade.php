@@ -59,7 +59,7 @@
                                                 <br />
                                                 {{ $data[0]->user->no_telp }}
                                                 <input type="hidden" id="id_member"
-                                                    value="{{ $data[0]->user->id_member }}">
+                                                    value="{{ $member_diskon }}">
                                             </p>
                                         </div>
                                     </div>
@@ -164,7 +164,7 @@
                                                 </td>
                                             </tr>
 
-                                            @if ($data[0]->user->id_member)
+                                            @if ($member_diskon)
                                                 <tr>
                                                     <td class="border-bottom-0 pb-0"></td>
                                                     <td class="border-bottom-0 pb-0"></td>
@@ -191,11 +191,7 @@
                                                 <td class="fw-semibold text-dark">
                                                     <!-- text -->
                                                     <span id="grand_total">
-                                                        @if ($data[0]->user->id_member)
-                                                            {{ rupiah($subTotal - $member_diskon) }}
-                                                        @else
-                                                            {{ rupiah($subTotal) }}
-                                                        @endif
+                                                        {{ rupiah($subTotal - $member_diskon) }}
                                                     </span>
                                                 </td>
                                             </tr>

@@ -107,21 +107,8 @@
                         targets: 2,
                         className: 'align-middle',
                         render: function(data, type, row, meta) {
-
-                            if (row.harga_total != null && row.biaya_pengiriman != null) {
-
-                                if (row.id_member) {
-                                    var harga = parseInt(row.harga_total) - (parseInt(row
-                                            .harga_total) * parseInt(row.member.diskon) /
-                                        100) + parseInt(row.biaya_pengiriman)
-                                } else {
-                                    var harga = parseInt(row.harga_total) + parseInt(row
-                                        .biaya_pengiriman)
-                                }
-
-                                return $.fn.dataTable.render.number('.', ',', 0, 'Rp ', ',-')
-                                    .display(harga)
-                            }
+                            return $.fn.dataTable.render.number('.', ',', 0, 'Rp ', ',-')
+                                .display(row.pembayaran[0].harga_jual)
                         }
                     },
                     {

@@ -234,11 +234,7 @@
                                                     </td>
                                                     <td class="fw-semibold text-dark">
                                                         <!-- text -->
-                                                        @if ($order->user->id_member)
-                                                            {{ rupiah($order->biaya_pengiriman + $subTotal - $member_diskon) }}
-                                                        @else
-                                                            {{ rupiah($order->biaya_pengiriman + $subTotal) }}
-                                                        @endif
+                                                        {{ rupiah($order->biaya_pengiriman + $subTotal - $member_diskon) }}
                                                     </td>
                                                 </tr>
                                             </tbody>
