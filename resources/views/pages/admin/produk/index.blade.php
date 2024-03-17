@@ -104,7 +104,11 @@
                         className: 'align-middle',
                         data: 'nama_produk',
                         render: function(data, type, row, meta) {
-                            return `${data} <br> <span class="fw-light">${row.kategori.nama_kategori}`;
+                            
+                            var link = "{{ route('admin.produk.edit', ':id') }}";
+                            link = link.replace(':id', row.id);
+
+                            return `<a href="${link}">${data}</a> <br> <span class="fw-light">${row.kategori.nama_kategori}`;
                         }
                     },
                     {
