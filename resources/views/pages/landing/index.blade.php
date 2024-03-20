@@ -203,7 +203,7 @@
                             <div class="card border border-danger p-6">
                                 <div class="row">
                                     <div class="col-lg-5 text-center">
-                                        @if ($promo->gambar_produk)
+                                        @if (count($promo->gambar_produk) > 0)
                                             <img src="{{ asset('storage/produk/' . $promo->gambar_produk[0]->gambar) }}"
                                                 alt="{{ $promo->nama_produk }}" class="img-fluid w-100 h-100">
                                         @else
