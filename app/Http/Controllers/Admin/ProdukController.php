@@ -74,9 +74,11 @@ class ProdukController extends Controller
             if ($request->harga_promo_clean == 0 || $request->tanggal_mulai_diskon > now()) {
                 $promo = $request->harga_normal_clean;
                 $diskon = $request->harga_promo_clean ? $request->harga_normal_clean - $request->harga_promo_clean : 0;
+                $persentase = $diskon > 0 ? $diskon / $request->harga_normal_clean * 100 : 0; 
             }else{
                 $promo = $request->harga_promo_clean;
                 $diskon = $request->harga_normal_clean - $request->harga_promo_clean;
+                $persentase = $diskon / $request->harga_normal_clean * 100; 
             }
 
             // Create on Harga
@@ -84,6 +86,7 @@ class ProdukController extends Controller
                 'harga_awal' => $request->harga_normal_clean,
                 'diskon' => $diskon,
                 'harga_akhir' => $promo,
+                'persentase_diskon' => $persentase,
                 'mulai_diskon' => $request->tanggal_mulai_diskon,
                 'selesai_diskon' => $request->tanggal_selesai_diskon
             ]);
@@ -156,7 +159,7 @@ class ProdukController extends Controller
             $kategori = Kategori::all();
             $penerbit = Penerbit::all();
             $bahasa = Bahasa::all();
-            $produk = Produk::with('stok')->where('id', $id)->first();
+            $produk = Produk::with('stok', 'harga')->where('id', $id)->first();
             // dd($produk);
             // string
             $string = Str::replace('x', ',', $produk->ukuran_produk);

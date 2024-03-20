@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ResponseFormatter;
 use App\Models\Diskon;
+use App\Models\Harga;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -81,12 +82,32 @@ class DiskonController extends Controller
 		}
 
         try {
-            
+
+            $diskon = Diskon::with('produk.harga')->where('id', $request->id)->first();
+
+            if ($diskon->diskon != $request->diskon) {
+
+                // Update Diskon Produk
+                foreach ($diskon->produk as $v) {
+
+                    $harga_diskon = $v->harga->harga_awal * $request->diskon / 100;
+                    $harga_setelah_diskon = $v->harga->harga_awal - $harga_diskon;
+
+                    $update = $v->harga->update([
+                        'diskon' =>  $harga_diskon,
+                        'harga_akhir' =>  $harga_setelah_diskon,
+                        'persentase_diskon' => $request->diskon
+                    ]);
+                }
+
+            }
+
             $diskon = Diskon::where('id', $request->id)->update([
                 'nama' => $request->nama,
                 'keterangan' => $request->keterangan,
                 'diskon' => $request->diskon
             ]);
+
 
             return ResponseFormatter::success($diskon, 'Data berhasil disimpan!');
             
@@ -124,6 +145,18 @@ class DiskonController extends Controller
     {
         try {
             $diskon = Diskon::where('id', $request->id_diskon)->first();
+
+            $produk = Produk::with('harga')->where('id', $request->id_produk)->first();
+
+            // Update harga sesuai diskon
+            Harga::where('id', $produk->id_harga)->update([
+                'mulai_diskon' =>  null,
+                'selesai_diskon' =>  null,
+                'diskon' =>  0,
+                'harga_akhir' =>  $produk->harga->harga_awal,
+                'persentase_diskon' => $diskon->diskon
+            ]);
+
             $diskon->produk()->detach($request->id_produk);
             return ResponseFormatter::success($diskon, 'Data berhasil dihapus');
         } catch (\Exception $e) {
@@ -135,8 +168,30 @@ class DiskonController extends Controller
     public function produk_store(Request $request)
     {
         try {
+            
             $diskon = Diskon::where('id', $request->diskon)->first();
+
+            foreach ($request->data_produk as $v) {
+
+                $produk = Produk::with('harga', 'diskon')->where('id', $v)->first();
+
+                $produk->diskon()->detach(Diskon::all());
+
+                $harga_diskon = $produk->harga->harga_awal * $diskon->diskon / 100;
+                $harga_setelah_diskon = $produk->harga->harga_awal - $harga_diskon;
+
+                // Update harga sesuai diskon
+                Harga::where('id', $produk->id_harga)->update([
+                    'mulai_diskon' =>  $diskon->mulai_diskon,
+                    'selesai_diskon' =>  $diskon->selesai_diskon,
+                    'diskon' =>  $harga_diskon,
+                    'harga_akhir' =>  $harga_setelah_diskon,
+                    'persentase_diskon' => $diskon->diskon
+                ]);
+            }
+
             $diskon->produk()->attach($request->data_produk);
+
             return ResponseFormatter::success($diskon, 'Data berhasil disimpan');
         } catch (\Exception $e) {
             Log::error($e->getMessage());

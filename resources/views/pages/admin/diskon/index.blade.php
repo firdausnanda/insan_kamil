@@ -240,6 +240,22 @@
                         targets: 1,
                         className: 'align-middle',
                         data: 'nama',
+                        render: function(data, type, row, meta) {
+                            if (row.status == 2) return `
+                                ${data} <span class="badge bg-warning">Flash Sale!</span> 
+                                <br> 
+                                <span class="fst-italic" style="font-size: 12px;"> 
+                                    ${moment(row.mulai_diskon).format('DD-MM-YYYY HH:mm')} s/d 
+                                    ${moment(row.selesai_diskon).format('DD-MM-YYYY HH:mm')} 
+                                </span>`
+
+                            return `${data} <br> 
+                                <span class="fst-italic" style="font-size: 12px;"> 
+                                    ${moment(row.mulai_diskon).format('DD-MM-YYYY HH:mm')} s/d 
+                                    ${moment(row.selesai_diskon).format('DD-MM-YYYY HH:mm')} 
+                                </span>`
+                        }
+
                     },
                     {
                         targets: 2,
@@ -263,8 +279,14 @@
                         className: 'align-middle',
                         data: 'status',
                         render: function(data, type, row, meta) {
-                            if (data == 1) return `<span class="badge bg-success">Aktif</span>`;
-                            return `<span class="badge bg-danger">Tidak Aktif</span>`;
+                            if ($.now() >= Date.parse(row.mulai_diskon) && $.now() <= Date.parse(row
+                                    .selesai_diskon)) {
+                                return `<span class="badge bg-success">Aktif</span>`;
+                            } else if (Date.parse(row.mulai_diskon) >= $.now()) {
+                                return `<span class="badge bg-info">Pending</span>`;
+                            } else {
+                                return `<span class="badge bg-danger">Tidak Aktif</span>`;
+                            }
                         }
                     },
                     {
@@ -280,12 +302,6 @@
                                                 <button class="dropdown-item btn-edit" type="button">
                                                     <i class="bi bi-pencil-square me-3"></i>
                                                     Edit
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button class="dropdown-item btn-aktif" type="button">
-                                                    <i class="bi bi-lock me-3"></i>
-                                                    Aktif/Non-aktif
                                                 </button>
                                             </li>
                                         </ul>
@@ -362,37 +378,6 @@
                 $('#keterangan').val(keterangan);
                 $('#nilai_diskon').val(diskon);
                 $('#modal-edit').modal('show');
-            });
-
-            // Modal Aktif
-            $('#diskon tbody').on('click', '.btn-aktif', function(event) {
-                event.preventDefault();
-                var data = table.row($(this).parents('tr')).data();
-
-                $.ajax({
-                    type: "PUT",
-                    url: "{{ route('admin.produk.diskon.aktif') }}",
-                    data: {
-                        id: data.id
-                    },
-                    dataType: "JSON",
-                    beforeSend: function() {
-                        $.LoadingOverlay('show');
-                    },
-                    success: function(response) {
-                        $.LoadingOverlay('hide');
-                        if (response.meta.status == "success") {
-                            table.ajax.reload();
-                            Swal.fire('Sukses!', response.meta.message, 'success');
-                        }
-                    },
-                    error: function(response) {
-                        $.LoadingOverlay('hide');
-                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
-                        console.log(response.responseJSON.message);
-                    },
-                });
-
             });
 
             // Submit Edit

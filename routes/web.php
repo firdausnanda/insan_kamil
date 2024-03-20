@@ -82,7 +82,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 			Route::get('/produk', [DiskonController::class, 'getProduk'])->name('getProduk');		
 			Route::post('/produk-store', [DiskonController::class, 'produk_store'])->name('produk_store');		
 			Route::delete('/produk-destroy', [DiskonController::class, 'produk_destroy'])->name('produk_destroy');		
-			Route::put('/aktif', [DiskonController::class, 'aktif'])->name('aktif');		
 		});
 
 	});

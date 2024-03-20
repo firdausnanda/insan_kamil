@@ -20,6 +20,7 @@ class Harga extends Model
         'harga_akhir',
         'mulai_diskon',
         'selesai_diskon',
+        'persentase_diskon',
     ];
 
     public function tapActivity(Activity $activity, string $eventName)

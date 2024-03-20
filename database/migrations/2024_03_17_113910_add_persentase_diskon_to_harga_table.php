@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('order_diskon', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('harga', function (Blueprint $table) {
+            $table->float('persentase_diskon')->nullable();
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('order_diskon');
+        Schema::table('harga', function (Blueprint $table) {
+            $table->dropColumn('persentase_diskon');
+        });
     }
 };
