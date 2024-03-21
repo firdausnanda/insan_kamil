@@ -132,64 +132,142 @@
                     </div>
                 </aside>
                 <div class="col-xl-9 col-lg-8 col-md-12 mb-6 mb-md-0">
-                    {{-- Buku Baru --}}
-                    <div class="mb-12 product-content">
-                        <div class="mb-6">
-                            <h3 class="mb-0">Buku Best Seller</h3>
-                        </div>
-                        <div class="product-slider-four-column">
-                            @foreach ($produk_laris as $p)
-                                <!-- item -->
-                                <div class="item">
-                                    <!-- card -->
-                                    <div class="card card-product mb-4">
-                                        <a href="{{ route('landing.detail', $p->id) }}">
-                                            <div class="card-body text-center py-8">
-                                                <!-- img -->
-                                                @if ($p->gambar_produk->count() > 0)
-                                                    <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
-                                                        alt="{{ $p->nama_produk }}" class="mb-3"
-                                                        style="height: 120px; width: 120px;">
-                                                @else
-                                                    <img src="{{ asset('images/avatar/no-image.png') }}"
-                                                        alt="{{ $p->nama_produk }}" class="mb-3"
-                                                        style="height: 120px; width: 120px;">
-                                                @endif
-                                                <!-- text -->
 
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div>
-                                        @if ($p->harga->mulai_diskon <= now() && $p->harga->diskon > 0)
-                                            <span
-                                                class="badge bg-danger rounded-pill">{{ '-' . diskon($p->harga) . '%' }}</span>
-                                        @endif
-                                        <h2 class="mt-1 fs-6"> <a href="{{ route('landing.detail', $p->id) }}"
-                                                class="text-inherit">{{ $p->nama_produk }}</a></h2>
+                    @if ($flash && count($flash) > 0)
+                        {{-- Flash Sale --}}
+                        <div class="mb-12">
+                            <div class="mb-6">
+                                <h3 class="mb-0">Flash Sale!!</h3>
+                                <p class="mb-0">Buruan Beli Sekarang</p>
+                            </div>
+                            <div class="product-slider-four-column">
+                                @foreach ($produk_laris as $p)
+                                    <!-- item -->
+                                    <div class="item">
+                                        <!-- card -->
+                                        <div class="card card-product mb-4">
+                                            <a href="{{ route('landing.detail', $p->id) }}">
+                                                <div class="card-body text-center py-8">
+                                                    <!-- img -->
+                                                    @if ($p->gambar_produk->count() > 0)
+                                                        <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
+                                                            alt="{{ $p->nama_produk }}" class="mb-3"
+                                                            style="height: 120px; width: 120px;">
+                                                    @else
+                                                        <img src="{{ asset('images/avatar/no-image.png') }}"
+                                                            alt="{{ $p->nama_produk }}" class="mb-3"
+                                                            style="height: 120px; width: 120px;">
+                                                    @endif
+                                                    <!-- text -->
+
+                                                </div>
+                                            </a>
+                                        </div>
                                         <div>
-                                            <span
-                                                class="text-dark fs-5 fw-bold">{{ rupiah($p->harga->harga_akhir) }}</span>
                                             @if ($p->harga->mulai_diskon <= now() && $p->harga->diskon > 0)
                                                 <span
-                                                    class="text-decoration-line-through text-muted">{{ rupiah($p->harga->harga_awal) }}</span>
+                                                    class="badge bg-danger rounded-pill">{{ '-' . diskon($p->harga) . '%' }}</span>
                                             @endif
-                                        </div>
-                                        <div class="text-warning">
-                                            <!-- rating -->
-                                            <small>
-                                                @if (round($p->averageRating()) > 0)
-                                                    {{ tampilkanRating(round($p->averageRating(), 2)) }}
+                                            <h2 class="mt-1 fs-6"> <a href="{{ route('landing.detail', $p->id) }}"
+                                                    class="text-inherit">{{ $p->nama_produk }}</a></h2>
+                                            <div>
+                                                <span
+                                                    class="text-dark fs-5 fw-bold">{{ rupiah($p->harga->harga_akhir) }}</span>
+                                                @if ($p->harga->mulai_diskon <= now() && $p->harga->diskon > 0)
+                                                    <span
+                                                        class="text-decoration-line-through text-muted">{{ rupiah($p->harga->harga_awal) }}</span>
                                                 @endif
-                                            </small>
-                                            @if (round($p->averageRating()) > 0)
-                                                <span class="text-muted small">{{ round($p->averageRating(), 2) }}</span>
-                                            @endif
-                                        </div>
+                                            </div>
+                                            <div class="text-warning">
+                                                <!-- rating -->
+                                                <small>
+                                                    @if (round($p->averageRating()) > 0)
+                                                        {{ tampilkanRating(round($p->averageRating(), 2)) }}
+                                                    @endif
+                                                </small>
+                                                @if (round($p->averageRating()) > 0)
+                                                    <span
+                                                        class="text-muted small">{{ round($p->averageRating(), 2) }}</span>
+                                                @endif
+                                            </div>
 
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- Buku Best Seller --}}
+                    <div class="row mb-5">
+                        <div class="col-12">
+                            <div class="row align-items-center mb-6">
+                                <div class="col-xl-10 col-lg-9 col-8">
+                                    <div class="mb-4 mb-lg-0">
+                                        <h3 class="mb-1">Buku Best Seller</h3>
                                     </div>
                                 </div>
-                            @endforeach
+                                {{-- <div class="col-xl-2 col-lg-3 col-4 text-end">
+                                    <a href="{{ route('landing.new_produk') }}" class="btn btn-light">Selengkapnya</a>
+                                </div> --}}
+                            </div>
+                            <div class="row row-cols-xl-4 row-cols-lg-3 g-4">
+                                @foreach ($produk_laris as $p)
+                                    <!-- item -->
+                                    <div class="col">
+                                        <div class="mb-6">
+                                            <!-- card -->
+                                            <div class="card card-product mb-4">
+                                                <a href="{{ route('landing.detail', $p->id) }}">
+                                                    <div class="card-body text-center py-8">
+                                                        <!-- img -->
+                                                        @if ($p->gambar_produk->count() > 0)
+                                                            <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
+                                                                alt="{{ $p->nama_produk }}" class="mb-3"
+                                                                style="height: 120px;  width: 120px;">
+                                                        @else
+                                                            <img src="{{ asset('images/avatar/no-image.png') }}"
+                                                                alt="{{ $p->nama_produk }}" class="mb-3"
+                                                                style="height: 120px;  width: 120px;">
+                                                        @endif
+                                                        <!-- text -->
+
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div>
+                                                @if ($p->harga->mulai_diskon <= now() && $p->harga->diskon > 0)
+                                                    <span
+                                                        class="badge bg-danger rounded-pill">{{ '-' . diskon($p->harga) . '%' }}</span>
+                                                @endif
+                                                <h2 class="mt-1 fs-6"> <a href="{{ route('landing.detail', $p->id) }}"
+                                                        class="text-inherit">{{ $p->nama_produk }}</a></h2>
+                                                <div>
+                                                    <span
+                                                        class="text-dark fs-5 fw-bold">{{ rupiah($p->harga->harga_akhir) }}</span>
+                                                    @if ($p->harga->mulai_diskon <= now() && $p->harga->diskon > 0)
+                                                        <span
+                                                            class="text-decoration-line-through text-muted">{{ rupiah($p->harga->harga_awal) }}</span>
+                                                    @endif
+                                                </div>
+                                                <div class="text-warning">
+                                                    <!-- rating -->
+                                                    <small>
+                                                        @if (round($p->averageRating()) > 0)
+                                                            {{ tampilkanRating(round($p->averageRating(), 2)) }}
+                                                        @endif
+                                                    </small>
+                                                    @if (round($p->averageRating()) > 0)
+                                                        <span
+                                                            class="text-muted small">{{ round($p->averageRating(), 2) }}</span>
+                                                    @endif
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
 
@@ -296,6 +374,7 @@
                         </div>
                     @endif
 
+                    {{-- Produk Baru --}}
                     <div class="row mb-5">
                         <div class="col-12">
                             <div class="row align-items-center mb-6">
@@ -369,6 +448,7 @@
                         </div>
                     </div>
 
+                    {{-- Dinamis --}}
                     @foreach ($menu as $m)
                         <div class="row mt-5 mb-5">
                             <div class="col-12">

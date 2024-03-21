@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\Bahasa;
+use App\Models\Diskon;
 use App\Models\GambarProduk;
 use App\Models\Harga;
 use App\Models\Kategori;
@@ -199,15 +200,25 @@ class ProdukController extends Controller
             if ($request->harga_promo_clean == 0 || $request->tanggal_mulai_diskon > now()) {
                 $diskon = 0;
                 $promo = $request->harga_normal_clean;
+                $persentase = $diskon > 0 ? $diskon / $request->harga_normal_clean * 100 : 0; 
             }else{
                 $promo = $request->harga_promo_clean;
                 $diskon = $request->harga_normal_clean - $request->harga_promo_clean;
+                $persentase = $diskon / $request->harga_normal_clean * 100;
             }
 
-            Harga::where('id', $produk->id_harga)->update([
+            // Update / Hapus produk di Event Produk
+            $harga = Harga::where('id', $produk->id_harga)->first();
+
+            if ($request->harga_normal_clean != $harga->harga_awal || $diskon != $harga->diskon || $promo != $harga->harga_akhir) {
+                $produk->diskon()->detach(Diskon::all());
+            }
+
+            $harga->update([
                 'harga_awal' => $request->harga_normal_clean,
                 'diskon' => $diskon,
                 'harga_akhir' => $promo,
+                'persentase_diskon' => $persentase,
                 'mulai_diskon' => $request->tanggal_mulai_diskon,
                 'selesai_diskon' => $request->tanggal_selesai_diskon
             ]);

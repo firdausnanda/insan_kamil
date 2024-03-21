@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Landing;
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
+use App\Models\Diskon;
 use App\Models\GroupMenu;
 use App\Models\Harga;
 use App\Models\Kategori;
@@ -21,7 +22,7 @@ class HomeController extends Controller
     public function index() 
     {
         // Buku Best Seler
-        $produk_laris = Produk::with('harga', 'stok', 'gambar_produk')->has('produk_dikirim')->orderBy('created_at', 'desc')->where('status', 1)->limit(5)->get();
+        $produk_laris = Produk::with('harga', 'stok', 'gambar_produk')->has('produk_dikirim')->orderBy('created_at', 'desc')->where('status', 1)->limit(8)->get();
         if ($produk_laris->count() < 5) {
             $produk_laris = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->where('status', 1)->limit(5)->get();
         }
@@ -53,7 +54,20 @@ class HomeController extends Controller
         // Menu Grup
         $menu = GroupMenu::with('produk.harga', 'produk.stok', 'produk.gambar_produk')->where('status', 1)->get();
 
-        return view('pages.landing.index', compact('produk_laris', 'produk_baru', 'kategori', 'slide', 'blog', 'promo', 'menu'));
+        // Flash Sale
+        $flash = Diskon::where('status', 2)->first();
+
+        if (now() >= $flash->mulai_diskon && now() <= $flash->selesai_diskon) {
+
+            $flash = Produk::with('harga', 'stok', 'gambar_produk')->whereHas('diskon', function($query) use ($flash){
+                $query->where('id_diskon', $flash->id);
+            })->get();
+
+        } else {
+            $flash = null;
+        }
+
+        return view('pages.landing.index', compact('produk_laris', 'produk_baru', 'kategori', 'slide', 'blog', 'promo', 'menu', 'flash'));
     }
     
     public function kategori($kategori, Request $request) 
