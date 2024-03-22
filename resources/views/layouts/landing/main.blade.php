@@ -191,7 +191,7 @@
     <script src="{{ asset('vendor/momentjs/moment.min.js') }}"></script>
     <script src="{{ asset('vendor/typehead.js/typeahead.bundle.js') }}"></script>
     <script src="{{ asset('vendor/jquery/jquery.mask.min.js') }}"></script>
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js"
+    <script src="https://app.midtrans.com/snap/snap.js"
         data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
     <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js"
         type="text/javascript"></script>
