@@ -139,12 +139,12 @@ class OrderController extends Controller
                 ]);
                 
                 // Cek Order
-                $order = Order::where('id', $request->id)->first();
+                $order = Order::with('produk_dikirim')->where('id', $request->id)->first();
                 
                 // Update Member
                 $user = User::with('member')->where('id', $order->id_user)->first();
                 
-                // Update table Order status & Member yang lama
+                // Update pada table Order status & Member yang lama
                 $order->update([
                     'status' => 2,
                     'id_member' => $user->id_member,
@@ -178,6 +178,25 @@ class OrderController extends Controller
                             break;
                         }
                     }
+                }
+
+                // Remove Keranjang dan TempOrder
+                $temp = TempOrder::where('id_user', $request->user)->get();
+                
+                foreach ($temp as $v) {
+                    Keranjang::where('id_produk', $v->id_produk)->where('id_user', $request->user)->delete();
+                } 
+
+                TempOrder::where('id_user', $request->user)->delete();
+
+                // Stok dikurangi
+                foreach ($order->produk_dikirim as $key => $value) {
+
+                    // Stok Dikurangi
+                    $cekProduk = Produk::where('id', $value->id_produk)->first();
+                    Stok::where('id', $cekProduk->id_stok)->update([
+                        'sisa_produk' => $cekProduk->stok->sisa_produk - $value->jumlah_produk
+                    ]);
                 }
     
                 Log::info("success! : . $pembayaran");                
@@ -269,11 +288,6 @@ class OrderController extends Controller
                     'jumlah_produk' => $v['jumlah_produk'],
                 ]);
 
-                // Stok Dikurangi
-                Stok::where('id', $cek->id_stok)->update([
-                    'sisa_produk' => $cek->stok->sisa_produk - $v['jumlah_produk']
-                ]);
-
                 // Diskon Alquran
                 if ($cek->id_kategori == '17') {
                     if ($cekOrder->user->id_member) {
@@ -326,15 +340,6 @@ class OrderController extends Controller
                 'harga_jual' => $order->harga_total + $order->biaya_pengiriman - $member_diskon - $diskon_alquran,
                 'jumlah_produk' => $beratProduk,
             ]);
-
-            // Remove Keranjang
-            $temp = TempOrder::where('id_user', $request->user)->get();
-            
-            foreach ($temp as $v) {
-                Keranjang::where('id_produk', $v->id_produk)->where('id_user', $request->user)->delete();
-            } 
-
-            TempOrder::where('id_user', $request->user)->delete();
             
             // Dropship
             if ($request->status_dropship == 1) {
