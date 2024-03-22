@@ -390,7 +390,7 @@
                     @endif
 
                     {{-- Produk Baru --}}
-                    @if ($produk_baru > 0)
+                    @if (count($produk_baru) > 0)
                         <div class="row mb-5">
                             <div class="col-12">
                                 <div class="row align-items-center mb-6">
