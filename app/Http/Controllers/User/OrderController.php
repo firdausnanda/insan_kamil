@@ -499,8 +499,22 @@ class OrderController extends Controller
             }else{
                 $member_diskon = 0;
             }
+
+            // Diskon Alquran
+            $diskon_alquran = 0;
+            foreach ($order->produk_dikirim as $key => $value) {
+                if ($value->produk->id_kategori == '17') {
+                    if ($order->id_member) {
+                        $diskon_alquran += $value->harga_jual * $value->jumlah_produk * 30 / 100;
+                    }else{
+                        $diskon_alquran += $value->harga_jual * $value->jumlah_produk * 20 / 100;
+                    }
+                }
+            }
     
-            return view('pages.user.keranjang.detail_konfirmasi', compact('order', 'subTotal', 'dropship', 'member_diskon'));
+            return view('pages.user.keranjang.detail_konfirmasi', compact('order', 'subTotal', 
+                                                                        'dropship', 'member_diskon',
+                                                                        'diskon_alquran'));
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
@@ -670,7 +684,19 @@ class OrderController extends Controller
 
         try {
 
-            $order = Order::with('user', 'produk_dikirim.produk', 'member')->where('id', $request->id)->first();
+            $order = Order::with('user', 'produk_dikirim.produk', 'member', 'pembayaran')->where('id', $request->id)->first();
+
+            // Diskon Alquran
+            $diskon_alquran = 0;
+            foreach ($order->produk_dikirim as $key => $value) {
+                if ($value->produk->id_kategori == '17') {
+                    if ($order->id_member) {
+                        $diskon_alquran += $value->harga_jual * $value->jumlah_produk * 30 / 100;
+                    }else{
+                        $diskon_alquran += $value->harga_jual * $value->jumlah_produk * 20 / 100;
+                    }
+                }
+            }
 
             switch (env('RAJAONGKIR_PACKAGE')) {
                 case 'starter':
@@ -821,7 +847,14 @@ class OrderController extends Controller
                 $diskon_member = 0;        
             }
 
-            $pdf->Cell(28, 4,  "Rp " . number_format($diskon_member, 0,',','.'), 0, 1, "R", true ); 
+            $pdf->Cell(28, 4,  "Rp " . number_format($diskon_member, 0,',','.'), 0, 1, "R", true );
+            
+            if ($diskon_alquran) {
+                $pdf->Cell(75, 4, '', 0, 0);
+                $pdf->Cell(27, 4,  "Diskon Alquran" , 0, 0, "L", true);
+                $pdf->Cell(5, 4, ':', 0, 0, 'L', true);
+                $pdf->Cell(28, 4,  "Rp " . number_format($diskon_alquran, 0,',','.'), 0, 1, "R", true );
+            }
             
             $pdf->Cell(75, 2, '', 0, 0);
             $pdf->Cell(60, 2, '', "B", 1, '', true);
@@ -833,7 +866,7 @@ class OrderController extends Controller
             $pdf->Cell(75, 4, '', 0, 0);
             $pdf->Cell(27, 4, 'Total Bayar', 0, 0, '',true);
             $pdf->Cell(5, 4, ':', 0, 0, 'L', true);
-            $pdf->Cell(28, 4, "Rp " . number_format($order->pembayaran[0]->harga_jual - $diskon_member, 0,',','.'), 0, 1, 'R', true);
+            $pdf->Cell(28, 4, "Rp " . number_format($order->pembayaran[0]->harga_jual, 0,',','.'), 0, 1, 'R', true);
             
             $pdf->Cell(75, 4, '', 0, 0);
             $pdf->Cell(60, 4, '', 0, 1, '', true);

@@ -225,6 +225,23 @@
                                                     </tr>
                                                 @endif
 
+                                                @if ($diskon_alquran)
+                                                    <tr>
+                                                        <td class="border-bottom-0 pb-0"></td>
+                                                        <td class="border-bottom-0 pb-0"></td>
+                                                        <td colspan="1" class="fw-medium text-success">
+                                                            <!-- text -->
+                                                            Diskon Alquran
+                                                        </td>
+                                                        <td class="fw-medium text-success">
+                                                            <!-- text -->
+                                                            <span id="member_diskon">
+                                                                {{ rupiah($diskon_alquran) }}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                @endif
+
                                                 <tr>
                                                     <td></td>
                                                     <td></td>
@@ -234,7 +251,7 @@
                                                     </td>
                                                     <td class="fw-semibold text-dark">
                                                         <!-- text -->
-                                                        {{ rupiah($order->biaya_pengiriman + $subTotal - $member_diskon) }}
+                                                        {{ rupiah($order->biaya_pengiriman + $subTotal - $member_diskon - $diskon_alquran) }}
                                                     </td>
                                                 </tr>
                                             </tbody>
