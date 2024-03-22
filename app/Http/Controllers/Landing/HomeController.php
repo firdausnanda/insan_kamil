@@ -57,7 +57,7 @@ class HomeController extends Controller
         // Flash Sale
         $flash_sale = Diskon::where('status', 2)->first();
 
-        if (now() >= $flash_sale->mulai_diskon && now() <= $flash_sale->selesai_diskon) {
+        if ($flash_sale && now() >= $flash_sale->mulai_diskon && now() <= $flash_sale->selesai_diskon) {
 
             $flash = Produk::with('harga', 'stok', 'gambar_produk')->whereHas('diskon', function($query) use ($flash_sale){
                 $query->where('id_diskon', $flash_sale->id);
