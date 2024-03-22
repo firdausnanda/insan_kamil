@@ -75,5 +75,10 @@ class KategoriSeeder extends Seeder
         Kategori::create([
             'nama_kategori' => 'Buku Filsafat',
         ]);
+
+        Kategori::create([
+            'id' => '17',
+            'nama_kategori' => 'Alquran',
+        ]);
     }
 }
