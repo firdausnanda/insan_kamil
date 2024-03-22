@@ -39,7 +39,7 @@
                             </div>
                             <!-- project number -->
                             <div class="lh-1">
-                                <h1 class=" mb-2 fw-bold fs-2">Rp. 10.000.000</h1>
+                                <h1 class=" mb-2 fw-bold fs-2">{{ rupiah($total_transaksi) }}</h1>
                                 <span>Total Transaksi Bulan ini</span>
                             </div>
                         </div>
@@ -61,8 +61,8 @@
                             </div>
                             <!-- project number -->
                             <div class="lh-1">
-                                <h1 class=" mb-2 fw-bold fs-2">100</h1>
-                                <span><span class="text-dark me-1">35+</span>Bulan ini</span>
+                                <h1 class=" mb-2 fw-bold fs-2">{{ $jumlah_order->count() }}</h1>
+                                <span><span class="text-dark me-1">{{ $jumlah_order_bulan_ini }}+</span>Bulan ini</span>
                             </div>
                         </div>
                     </div>
@@ -83,8 +83,9 @@
                             </div>
                             <!-- project number -->
                             <div class="lh-1">
-                                <h1 class=" mb-2 fw-bold fs-2">250</h1>
-                                <span><span class="text-dark me-1">30+</span>Customer baru bulan ini</span>
+                                <h1 class=" mb-2 fw-bold fs-2">{{ $customer->count() }}</h1>
+                                <span><span class="text-dark me-1">{{ $customer_bulan_ini }}+</span>Customer baru bulan
+                                    ini</span>
                             </div>
                         </div>
                     </div>
@@ -161,14 +162,14 @@
                         <div class="p-6">
                             <h3 class="mb-0 fs-5">Transaksi Terbaru</h3>
                         </div>
-                        <div class="card-body p-0">
+                        <div class="card-body">
                             <!-- table -->
                             <div class="table-responsive">
-                                <table class="table table-centered table-borderless text-nowrap table-hover">
+                                <table class="table table-centered table-borderless text-nowrap table-hover w-100" id="transaksi">
                                     <thead class="bg-light">
                                         <tr>
                                             <th scope="col">ID Transaksi</th>
-                                            <th scope="col">Nama Produk</th>
+                                            <th scope="col">Nama Pelanggan</th>
                                             <th scope="col">Tanggal Order</th>
                                             <th scope="col">Total Transaksi</th>
                                             <th scope="col">Status</th>
@@ -177,61 +178,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-
-                                            <td>#FC0005</td>
-                                            <td>Haldiram's Sev Bhujia</td>
-                                            <td>28 Maret 2023</td>
-                                            <td>Rp. 100.000</td>
-                                            <td>
-                                                <span class="badge bg-light-primary text-dark-primary">Selesai</span>
-                                            </td>
-                                            <td><button class="btn btn-sm btn-info">Detail</button></td>
-                                        </tr>
-                                        <tr>
-
-                                            <td>#FC0004</td>
-                                            <td>NutriChoice Digestive</td>
-                                            <td>24 Maret 2023</td>
-                                            <td>Rp. 50.000</td>
-                                            <td>
-                                                <span class="badge bg-light-warning text-dark-warning">Pengiriman</span>
-                                            </td>
-                                            <td><button class="btn btn-sm btn-info">Detail</button></td>
-                                        </tr>
-                                        <tr>
-
-                                            <td>#FC0003</td>
-                                            <td>Onion Flavour Potato</td>
-                                            <td>8 Februari 2023</td>
-                                            <td>Rp. 100.000</td>
-                                            <td>
-                                                <span class="badge bg-light-danger text-dark-danger">Belum Diproses</span>
-                                            </td>
-                                            <td><button class="btn btn-sm btn-info">Detail</button></td>
-                                        </tr>
-                                        <tr>
-
-                                            <td>#FC0002</td>
-                                            <td>Blueberry Greek Yogurt</td>
-                                            <td>20 Januari 2023</td>
-                                            <td>Rp. 50.000</td>
-                                            <td>
-                                                <span class="badge bg-light-warning text-dark-warning">Pengiriman</span>
-                                            </td>
-                                            <td><button class="btn btn-sm btn-info">Detail</button></td>
-                                        </tr>
-                                        <tr>
-
-                                            <td>#FC0001</td>
-                                            <td>Slurrp Millet Chocolate</td>
-                                            <td>14 Januari 2023</td>
-                                            <td>Rp. 150.000</td>
-                                            <td>
-                                                <span class="badge bg-light-danger text-dark-danger">Belum Diproses</span>
-                                            </td>
-                                            <td><button class="btn btn-sm btn-info">Detail</button></td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -241,4 +187,100 @@
             </div>
         </section>
     </main>
+@endsection
+
+@section('script')
+    <script>
+        $(document).ready(function() {
+
+            // Init Datatable
+            var table = $('#transaksi').DataTable({
+                ajax: {
+                    url: "{{ route('admin.index') }}",
+                    type: "GET"
+                },
+                lengthChange: false,
+                ordering: false,
+                processing: true,
+                iDisplayLength: 7,
+                columnDefs: [{
+                        targets: 0,
+                        className: 'align-middle',
+                        data: 'no_invoice',
+                    },
+                    {
+                        targets: 1,
+                        className: 'align-middle text-center',
+                        data: 'user.name'
+                    },
+                    {
+                        targets: 2,
+                        className: 'align-middle text-center',
+                        data: 'created_at',
+                        render: function(data, type, row, meta) {
+                            return `${moment(data).format('DD-MM-YYYY')}`;
+                        }
+                    },
+                    {
+                        targets: 3,
+                        className: 'align-middle text-center',
+                        data: 'pembayaran[0].harga_jual',
+                        render: function(data, type, row, meta) {
+                            return $.fn.dataTable.render.number('.', ',', 0, 'Rp ', ',-')
+                                    .display(data);
+                        }
+                    },
+                    {
+                        targets: 4,
+                        className: 'align-middle text-center',
+                        data: 'status',
+                        render: function(data, type, row, meta) {
+                            var nilai = '';
+                            switch (data) {
+                                case '2':
+                                    nilai = `<span class="badge bg-light-danger text-dark-danger">Belum Diproses</span>`
+                                    break;
+                                case '3':
+                                    nilai = `<span class="badge bg-light-info text-dark-info">Pengemasan</span>`
+                                    break;
+                                case '4':
+                                    nilai = `<span class="badge bg-light-warning text-dark-warning">Proses Pengiriman</span>`
+                                    break;
+                                case '5':
+                                    nilai = `<span class="badge bg-light-primary text-dark-primary">Selesai</span>`
+                                    break;
+                                    
+                                default:
+                                    nilai = `<span class="badge bg-light-danger text-dark-danger">-</span>`
+                                    break;
+                            }
+                            // console.log(nilai);
+
+                            return nilai;
+                        }
+                    },
+                    {
+                        targets: 5,
+                        className: 'align-middle text-center',
+                        render: function(data, type, row, meta) {
+                            return `<button class="btn btn-sm btn-primary btn-detail"><i class="fa-solid fa-magnifying-glass"></i></button>`;
+                        }
+                    },
+                ]
+            });
+
+            $('#transaksi tbody').on('click', '.btn-detail', function(e) { 
+                e.preventDefault();
+                
+                let data = table.row($(this).parents('tr')).data();
+
+                let url = `{{ route('admin.order.detail', ':id') }}`;
+                let link = url.replace(':id', data.id)
+
+                location.href = link
+            });
+
+
+        });
+    </script>
 @endsection
