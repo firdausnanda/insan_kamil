@@ -78,20 +78,33 @@ class OrderController extends Controller
             $member_diskon = 0;
         }
 
-        // Diskon Event
+        // Diskon Event & Alquran
+        $diskon_event = 0;
+        $diskon_alquran = 0;
+
         foreach ($data as $k => $v) {
             $cek = Produk::with('harga', 'diskon')->where('id', $v->id_produk)->first();
-            $diskon_event = 0;
 
             foreach ($cek->diskon as $key => $value) {
                 $diskon_event += $cek->harga->harga_akhir * $value->diskon / 100;
             }
 
             $data[$k]->diskon_event = $diskon_event;
+
+            // diskon alquran
+            if ($cek->id_kategori == '17') {
+                if ($data[0]->user->id_member) {
+                    $diskon_alquran += $cek->harga->harga_akhir * $v->jumlah_produk * 30 / 100;
+                }else{
+                    $diskon_alquran += $cek->harga->harga_akhir * $v->jumlah_produk * 20 / 100;
+                }
+            }
         }
 
         if ($data->first() != '') {
-            return view('pages.user.keranjang.checkout', compact('data', 'subTotal', 'beratProduk', 'courier', 'dropship', 'member_diskon'));
+            return view('pages.user.keranjang.checkout', compact('data', 'subTotal', 'beratProduk', 
+                                                            'courier', 'dropship', 'member_diskon',
+                                                            'diskon_alquran'));
         }else{
             return redirect()->route('user.keranjang.index');
         }
@@ -238,10 +251,15 @@ class OrderController extends Controller
                 'catatan_pembelian' => $request->catatan,
             ]);
 
+            // cek order User
+            $cekOrder = Order::with('user.member')->where('id', $order->id)->first();
+
+            $diskon_alquran = 0;
+            
             foreach ($request->data as $v) {
 
                 // Cek Stok
-                $cekStok = Produk::with('stok')->where('id', $v['id_produk'])->first();
+                $cek = Produk::with('stok')->where('id', $v['id_produk'])->first();
 
                 // Create Produk Dikirim
                 ProdukDikirim::create([
@@ -252,21 +270,31 @@ class OrderController extends Controller
                 ]);
 
                 // Stok Dikurangi
-                Stok::where('id', $cekStok->id_stok)->update([
-                    'sisa_produk' => $cekStok->stok->sisa_produk - $v['jumlah_produk']
+                Stok::where('id', $cek->id_stok)->update([
+                    'sisa_produk' => $cek->stok->sisa_produk - $v['jumlah_produk']
                 ]);
+
+                // Diskon Alquran
+                if ($cek->id_kategori == '17') {
+                    if ($cekOrder->user->id_member) {
+                        $diskon_alquran += $cek->harga->harga_akhir * $v['jumlah_produk'] * 30 / 100;
+                    }else{
+                        $diskon_alquran += $cek->harga->harga_akhir * $v['jumlah_produk'] * 20 / 100;
+                    }
+                }
             }
 
-            // cek order User
-            $cekOrder = Order::with('user.member')->where('id', $order->id)->first();
+            // Hitung Member diskon
+            if($cekOrder->user->id_member){
+                $member_diskon = $subTotal * $cekOrder->user->member->diskon / 100;
+            }elseif ($subTotal >= 50000) {
+                $member_diskon = $subTotal * 10 / 100;
+            }else{
+                $member_diskon = 0;
+            }
 
             // Hitung Total Biaya
-            if ($cekOrder->user->id_member) {
-                $member_diskon = $order->harga_total * $cekOrder->user->member->diskon / 100;
-                $total_biaya = $order->harga_total + $order->biaya_pengiriman - $member_diskon;
-            }else{
-                $total_biaya = $order->harga_total + $order->biaya_pengiriman;
-            }
+            $total_biaya = $order->harga_total + $order->biaya_pengiriman - $member_diskon - $diskon_alquran;
 
             $payload = [
                 'transaction_details' => [
@@ -295,7 +323,7 @@ class OrderController extends Controller
                 'id_order' => $order->id,
                 'status_pembayaran' => 1,
                 'snap_token' => $snapToken,
-                'harga_jual' => $order->harga_total + $order->biaya_pengiriman,
+                'harga_jual' => $order->harga_total + $order->biaya_pengiriman - $member_diskon - $diskon_alquran,
                 'jumlah_produk' => $beratProduk,
             ]);
 
@@ -429,7 +457,7 @@ class OrderController extends Controller
     {
         if ($request->ajax()) {
             if ($request->status == 1) {
-                $penjualan = Order::with('user', 'member', 'pembayaran')->where('id_user', $request->id_user)->orderBy('created_at', 'desc')->get();
+                $penjualan = Order::with('user', 'member', 'pembayaran')->withSum('pembayaran', 'harga_jual')->where('id_user', $request->id_user)->orderBy('created_at', 'desc')->get();
                 return ResponseFormatter::success($penjualan, "Data berhasil diambil!");
             }else{
                 switch ($request->status) {

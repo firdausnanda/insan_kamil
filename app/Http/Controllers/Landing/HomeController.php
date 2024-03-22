@@ -55,19 +55,21 @@ class HomeController extends Controller
         $menu = GroupMenu::with('produk.harga', 'produk.stok', 'produk.gambar_produk')->where('status', 1)->get();
 
         // Flash Sale
-        $flash = Diskon::where('status', 2)->first();
+        $flash_sale = Diskon::where('status', 2)->first();
 
-        if (now() >= $flash->mulai_diskon && now() <= $flash->selesai_diskon) {
+        if (now() >= $flash_sale->mulai_diskon && now() <= $flash_sale->selesai_diskon) {
 
-            $flash = Produk::with('harga', 'stok', 'gambar_produk')->whereHas('diskon', function($query) use ($flash){
-                $query->where('id_diskon', $flash->id);
+            $flash = Produk::with('harga', 'stok', 'gambar_produk')->whereHas('diskon', function($query) use ($flash_sale){
+                $query->where('id_diskon', $flash_sale->id);
             })->get();
 
         } else {
             $flash = null;
         }
 
-        return view('pages.landing.index', compact('produk_laris', 'produk_baru', 'kategori', 'slide', 'blog', 'promo', 'menu', 'flash'));
+        return view('pages.landing.index', compact('produk_laris', 'produk_baru', 
+                                                        'kategori', 'slide', 'blog', 
+                                                        'promo', 'menu', 'flash', 'flash_sale'));
     }
     
     public function kategori($kategori, Request $request) 

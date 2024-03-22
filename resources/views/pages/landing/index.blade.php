@@ -137,8 +137,19 @@
                         {{-- Flash Sale --}}
                         <div class="mb-12">
                             <div class="mb-6">
-                                <h3 class="mb-0">Flash Sale!!</h3>
-                                <p class="mb-0">Buruan Beli Sekarang</p>
+                                <div class="row">
+                                    <div class="col-auto p-0">
+                                        <img src="{{ asset('images/flash/Flash Sale Logo.png') }}" style="width: 100px">
+                                    </div>
+                                    <div class="col-4">
+                                        <h3 class="mb-0 text-primary">Khusus buat kamuu!</h3>
+                                        <p class="mb-0">Buruan Beli Sekarang</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="deals-countdown text-center" data-countdown="{{ $flash_sale->selesai_diskon }}">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="product-slider-four-column">
                                 @foreach ($produk_laris as $p)
@@ -147,16 +158,16 @@
                                         <!-- card -->
                                         <div class="card card-product mb-4">
                                             <a href="{{ route('landing.detail', $p->id) }}">
-                                                <div class="card-body text-center py-8">
+                                                <div class="card-body text-center">
                                                     <!-- img -->
                                                     @if ($p->gambar_produk->count() > 0)
                                                         <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
-                                                            alt="{{ $p->nama_produk }}" class="mb-3"
-                                                            style="height: 120px; width: 120px;">
+                                                            alt="{{ $p->nama_produk }}"
+                                                            style="height: 150px; width: 150px;">
                                                     @else
                                                         <img src="{{ asset('images/avatar/no-image.png') }}"
-                                                            alt="{{ $p->nama_produk }}" class="mb-3"
-                                                            style="height: 120px; width: 120px;">
+                                                            alt="{{ $p->nama_produk }}"
+                                                            style="height: 150px; width: 150px;">
                                                     @endif
                                                     <!-- text -->
 
@@ -219,16 +230,16 @@
                                             <!-- card -->
                                             <div class="card card-product mb-4">
                                                 <a href="{{ route('landing.detail', $p->id) }}">
-                                                    <div class="card-body text-center py-8">
+                                                    <div class="card-body text-center">
                                                         <!-- img -->
                                                         @if ($p->gambar_produk->count() > 0)
                                                             <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
-                                                                alt="{{ $p->nama_produk }}" class="mb-3"
-                                                                style="height: 120px;  width: 120px;">
+                                                                alt="{{ $p->nama_produk }}"
+                                                                style="height: 150px;  width: 150px;">
                                                         @else
                                                             <img src="{{ asset('images/avatar/no-image.png') }}"
-                                                                alt="{{ $p->nama_produk }}" class="mb-3"
-                                                                style="height: 120px;  width: 120px;">
+                                                                alt="{{ $p->nama_produk }}"
+                                                                style="height: 150px;  width: 150px;">
                                                         @endif
                                                         <!-- text -->
 
@@ -291,7 +302,7 @@
                                     </div>
                                     <div class="col-lg-7 text-center text-lg-start">
 
-                                        <div class="mb-3">
+                                        <div>
                                             <!-- rating -->
                                             <small class="text-warning">
                                                 @if (round($promo->averageRating()) > 0)
@@ -396,16 +407,16 @@
                                             <!-- card -->
                                             <div class="card card-product mb-4">
                                                 <a href="{{ route('landing.detail', $p->id) }}">
-                                                    <div class="card-body text-center py-8">
+                                                    <div class="card-body text-center">
                                                         <!-- img -->
                                                         @if ($p->gambar_produk->count() > 0)
                                                             <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
-                                                                alt="{{ $p->nama_produk }}" class="mb-3"
-                                                                style="height: 120px;  width: 120px;">
+                                                                alt="{{ $p->nama_produk }}"
+                                                                style="height: 150px;  width: 150px;">
                                                         @else
                                                             <img src="{{ asset('images/avatar/no-image.png') }}"
-                                                                alt="{{ $p->nama_produk }}" class="mb-3"
-                                                                style="height: 120px;  width: 120px;">
+                                                                alt="{{ $p->nama_produk }}"
+                                                                style="height: 150px;  width: 150px;">
                                                         @endif
                                                         <!-- text -->
 
@@ -468,16 +479,16 @@
                                                 <!-- card -->
                                                 <div class="card card-product mb-4">
                                                     <a href="{{ route('landing.detail', $p->id) }}">
-                                                        <div class="card-body text-center py-8">
+                                                        <div class="card-body text-center">
                                                             <!-- img -->
                                                             @if ($p->gambar_produk->count() > 0)
                                                                 <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
-                                                                    alt="{{ $p->nama_produk }}" class="mb-3"
-                                                                    style="height: 120px;  width: 120px;">
+                                                                    alt="{{ $p->nama_produk }}"
+                                                                    style="height: 150px;  width: 150px;">
                                                             @else
                                                                 <img src="{{ asset('images/avatar/no-image.png') }}"
-                                                                    alt="{{ $p->nama_produk }}" class="mb-3"
-                                                                    style="height: 120px;  width: 120px;">
+                                                                    alt="{{ $p->nama_produk }}"
+                                                                    style="height: 150px;  width: 150px;">
                                                             @endif
                                                             <!-- text -->
 

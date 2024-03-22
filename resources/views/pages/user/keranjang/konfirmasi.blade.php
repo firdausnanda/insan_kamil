@@ -107,8 +107,12 @@
                         targets: 2,
                         className: 'align-middle',
                         render: function(data, type, row, meta) {
-                            return $.fn.dataTable.render.number('.', ',', 0, 'Rp ', ',-')
-                                .display(row.pembayaran[0].harga_jual)
+                            if (row.pembayaran_sum_harga_jual) {
+                                return $.fn.dataTable.render.number('.', ',', 0, 'Rp ', ',-')
+                                    .display(row.pembayaran_sum_harga_jual)
+                            }else{
+                                return 0
+                            }
                         }
                     },
                     {

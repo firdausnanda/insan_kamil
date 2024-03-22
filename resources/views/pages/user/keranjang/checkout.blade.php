@@ -180,6 +180,23 @@
                                                     </td>
                                                 </tr>
                                             @endif
+                                            
+                                            @if ($diskon_alquran)
+                                                <tr>
+                                                    <td class="border-bottom-0 pb-0"></td>
+                                                    <td class="border-bottom-0 pb-0"></td>
+                                                    <td colspan="1" class="fw-medium text-success">
+                                                        <!-- text -->
+                                                        Diskon Alquran
+                                                    </td>
+                                                    <td class="fw-medium text-success">
+                                                        <!-- text -->
+                                                        <span id="diskon_alquran">
+                                                            {{ rupiah($diskon_alquran) }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            @endif
 
                                             <tr>
                                                 <td></td>
@@ -191,7 +208,7 @@
                                                 <td class="fw-semibold text-dark">
                                                     <!-- text -->
                                                     <span id="grand_total">
-                                                        {{ rupiah($subTotal - $member_diskon) }}
+                                                        {{ rupiah($subTotal - $member_diskon - $diskon_alquran) }}
                                                     </span>
                                                 </td>
                                             </tr>
@@ -744,12 +761,13 @@
 
                 var subTotal = parseInt({{ $subTotal }})
                 var member = parseInt({{ $member_diskon }})
+                var diskon_alquran = parseInt({{ $diskon_alquran }})
                 var shipping = parseInt($('#pilih_paket').val())
 
                 if ($("#id_member").val()) {
-                    var TotalBiaya = Intl.NumberFormat('en-DE').format(shipping + subTotal - member)
+                    var TotalBiaya = Intl.NumberFormat('en-DE').format(shipping + subTotal - member - diskon_alquran)
                 } else {
-                    var TotalBiaya = Intl.NumberFormat('en-DE').format(shipping + subTotal)
+                    var TotalBiaya = Intl.NumberFormat('en-DE').format(shipping + subTotal - diskon_alquran)
                 }
 
                 var buttonText = 'Lakukan Pemesanan - Rp. ' + TotalBiaya
