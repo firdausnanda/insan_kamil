@@ -71,6 +71,7 @@ class DashboardController extends Controller
                 // Bulan
                 $transaksi_bulan = Pembayaran::select(DB::raw('MONTH(created_at) as bulan'), DB::raw('SUM(harga_jual) as total'))
                                     ->whereBetween('created_at', [$awalTahun->subYear(), Carbon::now()])
+                                    ->where('status_pembayaran', 2)
                                     ->groupBy(DB::raw('MONTH(created_at)'))
                                     ->get();
 
