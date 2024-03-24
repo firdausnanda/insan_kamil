@@ -516,9 +516,6 @@
                     },
                     error: function(xhr, status, error) {
                         $.LoadingOverlay('hide')
-
-                        Swal.fire('Periksa kembali data anda!', 'Data Tidak Ditemukan',
-                            'error');
                     },
                 });
 
