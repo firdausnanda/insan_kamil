@@ -118,7 +118,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 	});
 
 	// Pengguna
-  Route::group(['prefix' => 'pengguna', 'as' => 'pengguna.'], function () {
+  Route::group(['prefix' => 'pengguna', 'as' => 'pengguna.', 'middleware' => ['role:admin|superadmin']], function () {
 		Route::get('', [PenggunaController::class, 'index'])->name('index');		
 		Route::post('', [PenggunaController::class, 'store'])->name('store');		
 		Route::put('', [PenggunaController::class, 'update'])->name('update');		
@@ -129,14 +129,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 	});
 
 	// Ulasan
-  Route::group(['prefix' => 'ulasan', 'as' => 'ulasan.'], function () {
+  Route::group(['prefix' => 'ulasan', 'as' => 'ulasan.', 'middleware' => ['role:admin|superadmin']], function () {
 		Route::get('', [UlasanController::class, 'index'])->name('index');		
 		Route::put('', [UlasanController::class, 'update'])->name('update');		
 		Route::delete('', [UlasanController::class, 'destroy'])->name('destroy');		
 	});
 	
 	// Blog
-  Route::group(['prefix' => 'blog', 'as' => 'blog.'], function () {
+  Route::group(['prefix' => 'blog', 'as' => 'blog.', 'middleware' => ['role:admin|superadmin']], function () {
 		Route::get('', [BlogController::class, 'index'])->name('index');		
 		Route::post('', [BlogController::class, 'store'])->name('store');		
 		Route::get('/create', [BlogController::class, 'create'])->name('create');
@@ -146,7 +146,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 	});
 
 	// Slideshow
-  Route::group(['prefix' => 'slideshow', 'as' => 'slideshow.'], function () {
+  Route::group(['prefix' => 'slideshow', 'as' => 'slideshow.', 'middleware' => ['role:admin|superadmin']], function () {
 		Route::get('', [SlideshowController::class, 'index'])->name('index');		
 		Route::post('', [SlideshowController::class, 'store'])->name('store');		
 		Route::get('/aktif', [SlideshowController::class, 'aktif'])->name('aktif');		
@@ -155,7 +155,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 	});
 
 	// Popup
-  Route::group(['prefix' => 'popup', 'as' => 'popup.'], function () {
+  Route::group(['prefix' => 'popup', 'as' => 'popup.', 'middleware' => ['role:admin|superadmin']], function () {
 		Route::get('', [PopupController::class, 'index'])->name('index');		
 		Route::post('', [PopupController::class, 'store'])->name('store');		
 		Route::get('/aktif', [PopupController::class, 'aktif'])->name('aktif');		
@@ -164,7 +164,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 	});
 
 	// Menu Group
-  Route::group(['prefix' => 'menu', 'as' => 'menu.'], function () {
+  Route::group(['prefix' => 'menu', 'as' => 'menu.', 'middleware' => ['role:admin|superadmin']], function () {
 		Route::get('', [MenuGroupController::class, 'index'])->name('index');		
 		Route::post('', [MenuGroupController::class, 'store'])->name('store');		
 		Route::put('', [MenuGroupController::class, 'update'])->name('update');		
@@ -175,12 +175,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 	});
 	
 	// Activity
-  Route::group(['prefix' => 'activity', 'as' => 'activity.'], function () {
+  Route::group(['prefix' => 'activity', 'as' => 'activity.', 'middleware' => ['role:admin|superadmin']], function () {
 		Route::get('', [ActivityController::class, 'index'])->name('index');		
 	});
 
 	// Backup Database
-  Route::group(['prefix' => 'backupdb', 'as' => 'backupdb.'], function () {
+  Route::group(['prefix' => 'backupdb', 'as' => 'backupdb.', 'middleware' => ['role:admin|superadmin']], function () {
 		Route::get('', [BackupdbController::class, 'index'])->name('index');	
 		Route::get('/backup', [BackupdbController::class, 'databaseBackup'])->name('backup');
 		Route::get('/download/{fileName}', [BackupdbController::class, 'databaseDownload'])->name('download');
