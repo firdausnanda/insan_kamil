@@ -29,6 +29,7 @@
     
     <!-- Theme CSS -->
     <link rel="stylesheet" href="{{ asset('css/theme.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <!-- Google tag (gtag.js) -->
 
 

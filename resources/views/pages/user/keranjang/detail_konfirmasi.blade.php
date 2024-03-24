@@ -259,9 +259,13 @@
                                     @if ($order->status == 4 || $order->status == 5)
                                         <div class="col-md-6 mb-4 mb-lg-0">
                                             <h6>Detail Pengiriman</h6>
-                                            <ul>
-                                                <div id="pengiriman"></div>
-                                            </ul>
+                                            <!-- Section: Timeline -->
+                                            <section class="p-5">
+                                                <ul class="timeline">
+                                                    <div id="pengiriman"></div>
+                                                </ul>
+                                            </section>
+                                            <!-- Section: Timeline -->
                                             @if ($order->status < 5)
                                                 <span class="text-secondary d-block mb-2">Paket Telah diterima?</span>
                                                 <button class="btn btn-info btn-sm btn-diterima"><i
@@ -461,19 +465,31 @@
                 success: function(response) {
                     $('#pengiriman').empty();
                     if (response.data != null) {
-                        $('#pengiriman').append(`<li>Paket telah diserahkan ke kurir.</li>`);
                         $.each(response.data, function(i, v) {
                             $('#pengiriman').append(
-                                `<li>${v.manifest_date} ${v.manifest_time} - ${v.manifest_description} ${v.city_name}</li>`
+                                `<li class="timeline-item mb-5">
+                                    <h6 class="fw-bold">${v.desc} ${v.location ?? '-' }</h6>
+                                    <p style="font-size: 12px" class="text-muted mb-2 fw-bold">${v.date}</p>
+                                </li>`
                             );
                         });
                     } else {
-                        $('#pengiriman').append(`<li>Paket telah diserahkan ke kurir.</li>`);
+                        $('#pengiriman').append(`<li class="timeline-item mb-5">
+                                                    <h6>Paket telah diserahkan ke kurir.</h6>
+                                                </li>`);
                     }
 
                     if ('{{ $order->status == 5 }}') {
-                        $('#pengiriman').append(`<li>Paket telah selesai dikirimkan.</li>`);
+                        $('#pengiriman').append(`<li class="timeline-item mb-5">
+                                                    <h6>Paket telah selesai dikirimkan.</h6>
+                                                </li>`);
                     }
+                },
+                error: () => {
+                    $('#pengiriman').empty();
+                    $('#pengiriman').append(`<li class="timeline-item mb-5">
+                                                <h6 class="fw-bold">Server Sibuk</h6>
+                                            </li>`);
                 }
             });
 

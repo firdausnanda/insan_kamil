@@ -575,15 +575,36 @@ class OrderController extends Controller
         try {
 
             if ($request->waybill != '') {
+                
+                // Raja Ongkir
+                // $waybill = Http::withHeaders([
+                //     'key' => env('RAJAONGKIR_API_KEY')
+                // ])->post('https://pro.rajaongkir.com/api/waybill',[
+                //     'waybill' => $request->waybill,
+                //     'courier' => $request->courier
+                // ])->json();
 
-                $waybill = Http::withHeaders([
-                    'key' => env('RAJAONGKIR_API_KEY')
-                ])->post('https://pro.rajaongkir.com/api/waybill',[
-                    'waybill' => $request->waybill,
+                // Binderbyte
+                $waybill = Http::get('http://api.binderbyte.com/v1/track',[
+                    'api_key' => '3bfb848a4ae0da02a5534152b07c10050610993801b1c177cd48db46d6e99174',
+                    'awb' => $request->waybill,
                     'courier' => $request->courier
                 ])->json();
 
-                $tracking = $waybill['rajaongkir']['result'];
+                // Raja Ongkir
+                // $tracking = $waybill['rajaongkir']['result'];
+                
+                // Binderbyte
+                if ($request->courier == 'ambil_gudang') {
+                    $tracking = [
+                        [
+                            "date" => '',
+                            "desc" => 'diambil di gudang.'
+                        ]
+                    ];
+                }else{
+                    $tracking = $waybill['data']['history'];
+                }
 
                 return ResponseFormatter::success($tracking, 'Data berhasil diambil!');
             }

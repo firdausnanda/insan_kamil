@@ -1,81 +1,108 @@
 .border-bronze {
-  border-color: #945d41!important;
+    border-color: #945d41 !important;
 }
 
 .border-silver {
-  border-color: #C0C0C0!important;
+    border-color: #c0c0c0 !important;
 }
 
 .border-gold {
-  border-color: #caae10!important;
+    border-color: #caae10 !important;
 }
 
 .border-platinum {
-  border-color: #586669!important;
+    border-color: #586669 !important;
 }
 
 .border-diamond {
-  border-color: #7dcbdd!important;
+    border-color: #7dcbdd !important;
 }
 
 .bg-bronze {
-  background-image: url('../images/member/Bronze.jpg');
+    background-image: url("../images/member/Bronze.jpg");
 }
 
 .bg-silver {
-  background-image: url('../images/member/Silver.jpg');
+    background-image: url("../images/member/Silver.jpg");
 }
 
 .bg-gold {
-  background-image: url('../images/member/Gold.jpg');
+    background-image: url("../images/member/Gold.jpg");
 }
 
 .bg-platinum {
-  background-image: url('../images/member/Platinum.jpg');
+    background-image: url("../images/member/Platinum.jpg");
 }
 
 .bg-diamond {
-  background-image: url('../images/member/Diamond.jpg');
+    background-image: url("../images/member/Diamond.jpg");
 }
 
 .bg-bottom-bronze {
-  background-color: #945d41!important;
+    background-color: #945d41 !important;
 }
 
 .bg-bottom-silver {
-  background-color: rgb(122, 132, 152)!important;
+    background-color: rgb(122, 132, 152) !important;
 }
 
 .bg-bottom-gold {
-  background-color: #caae10!important;
+    background-color: #caae10 !important;
 }
 
 .bg-bottom-platinum {
-  background-color: #293335!important;
+    background-color: #293335 !important;
 }
 
 .bg-bottom-diamond {
-  background-color: #7dcbdd!important;
+    background-color: #7dcbdd !important;
 }
 
 .logo-member {
-  width: 42px;
-  height: 42px;
-  margin-right: 16px;
+    width: 42px;
+    height: 42px;
+    margin-right: 16px;
 }
 
-table.dataTable tbody td.select-checkbox:before, table.dataTable tbody th.select-checkbox:before {
-  margin-top: 8px!important;
-  padding: 7px;
+table.dataTable tbody td.select-checkbox:before,
+table.dataTable tbody th.select-checkbox:before {
+    margin-top: 8px !important;
+    padding: 7px;
 }
 
-table.dataTable tr.selected td.select-checkbox:after, table.dataTable tr.selected th.select-checkbox:after {
-  font-size: 25px;
-  margin-top: -19px;
+table.dataTable tr.selected td.select-checkbox:after,
+table.dataTable tr.selected th.select-checkbox:after {
+    font-size: 25px;
+    margin-top: -19px;
 }
 
-@media (min-width:990px) {
-  .slideshow-img {
-    min-height: 520px;
-  }
+@media (min-width: 990px) {
+    .slideshow-img {
+        min-height: 520px;
+    }
+}
+
+.timeline {
+    border-left: 1px solid hsl(0, 0%, 90%);
+    position: relative;
+    list-style: none;
+}
+
+.timeline .timeline-item {
+    position: relative;
+}
+
+.timeline .timeline-item:after {
+    position: absolute;
+    display: block;
+    top: 0;
+}
+
+.timeline .timeline-item:after {
+    background-color: hsl(0, 0%, 90%);
+    left: -38px;
+    border-radius: 50%;
+    height: 11px;
+    width: 11px;
+    content: "";
 }
