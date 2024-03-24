@@ -505,7 +505,7 @@ class OrderController extends Controller
                         $status = 4;
                         break;                    
                 }
-                $penjualan = Order::with('user', 'member', 'pembayaran')->where('id_user', $request->id_user)->where('status', $status)->orderBy('created_at', 'desc')->get();
+                $penjualan = Order::with('user', 'member', 'pembayaran')->withSum('pembayaran', 'harga_jual')->where('id_user', $request->id_user)->where('status', $status)->orderBy('created_at', 'desc')->get();
                 return ResponseFormatter::success($penjualan, "Data berhasil diambil!");
             }
         }

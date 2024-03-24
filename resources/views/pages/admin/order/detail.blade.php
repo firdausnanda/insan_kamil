@@ -82,6 +82,14 @@
                                         </div>
                                     </div>
 
+                                    @if ($dropship)
+                                        <div class="col-12">
+                                            <div class="alert alert-primary" role="alert">
+                                                Dikirim Melalui Dropship
+                                            </div>
+                                        </div>
+                                    @endif
+
                                     <!-- address -->
                                     <div class="col-lg-4 col-md-4 col-12">
                                         <div class="mb-6">
@@ -124,10 +132,44 @@
                                                 <br />
                                                 Total Order:
                                                 <span
-                                                    class="text-dark">{{ rupiah($order->harga_total + $order->biaya_pengiriman) }}</span>
+                                                    class="text-dark">{{ rupiah($order->harga_total + $order->biaya_pengiriman - $member_diskon - $diskon_alquran) }}</span>
                                             </p>
                                         </div>
                                     </div>
+
+                                    @if ($dropship)
+                                        <div class="col-lg-4 col-md-4 col-12">
+                                            <div class="mb-6">
+                                                <h6>Alamat Penerima</h6>
+                                                <p class="mb-1 lh-lg">
+                                                    {{ $dropship->nama_penerima }}
+                                                    <br>
+                                                    {{ $dropship->alamat_penerima }}
+                                                    <br>
+                                                    {{ $dropship->district->name }}
+                                                    {{ $dropship->city->name }}
+                                                    <br>
+                                                    {{ $dropship->province->name }}
+                                                    Kode Pos.
+                                                    {{ $dropship->city->postal_code }}
+                                                    <br />
+                                                </p>
+                                            </div>
+                                            <input type="hidden" id="subdistrict" value="${response.data.desa}">
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-12">
+                                            <div class="mb-6">
+                                                <h6>Data Pengirim Dropshipper</h6>
+                                                <p class="mb-1 lh-lg">
+                                                    {{ $dropship->nama_pengirim }}
+                                                    <br />
+                                                    {{ $dropship->email_pengirim }}
+                                                    <br />
+                                                    {{ $dropship->no_telp_pengirim }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -203,6 +245,40 @@
                                                 </td>
                                             </tr>
 
+                                            @if ($order->id_member)
+                                                <tr>
+                                                    <td class="border-bottom-0 pb-0"></td>
+                                                    <td class="border-bottom-0 pb-0"></td>
+                                                    <td colspan="1" class="fw-medium text-success">
+                                                        <!-- text -->
+                                                        Member Diskon
+                                                    </td>
+                                                    <td class="fw-medium text-success">
+                                                        <!-- text -->
+                                                        <span id="member_diskon">
+                                                            {{ rupiah($member_diskon) }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            @endif
+
+                                            @if ($diskon_alquran)
+                                                <tr>
+                                                    <td class="border-bottom-0 pb-0"></td>
+                                                    <td class="border-bottom-0 pb-0"></td>
+                                                    <td colspan="1" class="fw-medium text-success">
+                                                        <!-- text -->
+                                                        Diskon Alquran
+                                                    </td>
+                                                    <td class="fw-medium text-success">
+                                                        <!-- text -->
+                                                        <span id="member_diskon">
+                                                            {{ rupiah($diskon_alquran) }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            @endif
+
                                             <tr>
                                                 <td></td>
                                                 <td></td>
@@ -212,7 +288,7 @@
                                                 </td>
                                                 <td class="fw-semibold text-dark">
                                                     <!-- text -->
-                                                    {{ rupiah($order->biaya_pengiriman + $subTotal) }}
+                                                    {{ rupiah($order->biaya_pengiriman + $subTotal - $member_diskon - $diskon_alquran) }}
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -240,7 +316,8 @@
     </main>
 
     {{-- Modal Show --}}
-    <div class="modal fade" id="modal-show" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal fade" id="modal-show" tabindex="-1" role="dialog" aria-labelledby="modalTitleId"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">

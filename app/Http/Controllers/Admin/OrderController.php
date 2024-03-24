@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
+use App\Models\Dropship;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -14,7 +15,7 @@ class OrderController extends Controller
 {
     public function index(Request $request) {
         if ($request->ajax()) {
-            $order = Order::with('user', 'member')->where('status', $request->status)->orderBy('created_at', 'desc')->get();
+            $order = Order::with('user', 'member', 'pembayaran')->withSum('pembayaran', 'harga_jual')->where('status', $request->status)->orderBy('created_at', 'desc')->get();
             return ResponseFormatter::success($order, 'Data berhasil diambil!');
         }
         return view('pages.admin.order.index');
@@ -23,7 +24,8 @@ class OrderController extends Controller
     public function detail($id) 
     {
         $order = Order::with('user.province', 'user.city', 'user.district', 'produk_dikirim.produk.gambar_produk')->where('id', $id)->first();
-
+        $dropship = Dropship::where('id_order', $id)->first();
+        
         switch (env('RAJAONGKIR_PACKAGE')) {
             case 'starter':
                 $courier = config('rajaongkir.courier.starter');
@@ -50,7 +52,32 @@ class OrderController extends Controller
             return $q['jumlah_produk'] * $q['harga_jual']; 
         });
 
-        return view('pages.admin.order.detail', compact('order', 'subTotal', 'courier_search'));
+        if ($order->is_flash == 1) {
+            $member_diskon = 0;
+        }elseif($order->id_member){
+            $member_diskon = $subTotal * $order->member->diskon / 100;
+        }elseif ($subTotal >= 50000) {
+            $member_diskon = $subTotal * 10 / 100;
+        }else{
+            $member_diskon = 0;
+        }
+
+        // Diskon Alquran
+        $diskon_alquran = 0;
+        foreach ($order->produk_dikirim as $key => $value) {
+            // Diskon Alquran
+            if ($value->produk->id_kategori == '17') {
+                if ($order->id_member) {
+                    $diskon_alquran += $value->harga_jual * $value->jumlah_produk * 30 / 100;
+                }else{
+                    $diskon_alquran += $value->harga_jual * $value->jumlah_produk * 20 / 100;
+                }
+            }
+        }
+
+        return view('pages.admin.order.detail', compact('order', 'subTotal', 'courier_search', 
+                                                        'dropship', 'member_diskon',
+                                                        'diskon_alquran'));
     }
 
     public function store(Request $request)

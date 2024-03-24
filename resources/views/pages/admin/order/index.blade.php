@@ -137,19 +137,11 @@
                         className: 'align-middle text-center',
                         data: 'harga_total',
                         render: function(data, type, row, meta) {
-                            if (row.harga_total != null && row.biaya_pengiriman != null) {
-
-                                if (row.id_member) {
-                                    var harga = parseInt(row.harga_total) - (parseInt(row
-                                            .harga_total) * parseInt(row.member.diskon) /
-                                        100) + parseInt(row.biaya_pengiriman)
-                                } else {
-                                    var harga = parseInt(row.harga_total) + parseInt(row
-                                        .biaya_pengiriman)
-                                }
-
+                            if (row.pembayaran_sum_harga_jual) {
                                 return $.fn.dataTable.render.number('.', ',', 0, 'Rp ', ',-')
-                                    .display(harga)
+                                    .display(row.pembayaran_sum_harga_jual)
+                            }else{
+                                return 0
                             }
                         }
                     },
