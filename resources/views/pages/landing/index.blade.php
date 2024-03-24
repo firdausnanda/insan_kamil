@@ -142,8 +142,8 @@
                                         <img src="{{ asset('images/flash/Flash Sale Logo.png') }}" style="width: 100px">
                                     </div>
                                     <div class="col-4">
-                                        <h3 class="mb-0 text-primary">Khusus buat kamuu!</h3>
-                                        <p class="mb-0">Buruan Beli Sekarang</p>
+                                        <h3 class="mb-0 text-primary">{{ $flash_sale->nama ?? '-' }}</h3>
+                                        <p class="mb-0">{{ $flash_sale->keterangan ?? '-' }}</p>
                                     </div>
                                     <div class="col-4">
                                         <div class="deals-countdown text-center"
