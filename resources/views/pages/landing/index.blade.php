@@ -153,7 +153,7 @@
                                 </div>
                             </div>
                             <div class="product-slider-four-column">
-                                @foreach ($produk_laris as $p)
+                                @foreach ($flash as $p)
                                     <!-- item -->
                                     <div class="item">
                                         <!-- card -->
