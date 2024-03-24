@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Helpers\Pdf;
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
+use App\Models\Diskon;
 use App\Models\Dropship;
 use App\Models\DropshipMaster;
 use App\Models\Keranjang;
@@ -16,6 +17,7 @@ use App\Models\ProdukDikirim;
 use App\Models\Stok;
 use App\Models\TempOrder;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -69,8 +71,20 @@ class OrderController extends Controller
                 break;
         }
 
+        // Cek Produk yang termasuk dalam diskon event
+        $cekDiskon = Diskon::with('produk')
+                        ->whereHas('produk', function($query) use ($data){
+                            $query->whereIn('id_produk', $data->pluck('id_produk'));
+                        })
+                        ->where('status', 2)
+                        ->where('mulai_diskon', '<=', Carbon::now())
+                        ->where('selesai_diskon', '>=', Carbon::now())
+                        ->first();
+
         // Diskon Member
-        if($data[0]->user->id_member){
+        if ($cekDiskon) {
+            $member_diskon = 0;
+        }elseif($data[0]->user->id_member){
             $member_diskon = $subTotal * $data[0]->user->member->diskon / 100;
         }elseif ($subTotal >= 50000) {
             $member_diskon = $subTotal * 10 / 100;
@@ -256,6 +270,18 @@ class OrderController extends Controller
                 return $q['jumlah_produk'] * $q['berat_produk']; 
             });
 
+            // Cek Produk yang termasuk dalam diskon event
+            $cekDiskon = Diskon::with('produk')
+                            ->whereHas('produk', function($query) use ($request){
+                                $query->whereIn('id_produk', collect($request->data)->pluck('id_produk'));
+                            })
+                            ->where('status', 2)
+                            ->where('mulai_diskon', '<=', Carbon::now())
+                            ->where('selesai_diskon', '>=', Carbon::now())
+                            ->first();
+
+            $isflash = $cekDiskon ? 1 : 0;
+
             // Create Order
             $order = Order::create([
                 'id_user' => $request->user,
@@ -268,13 +294,14 @@ class OrderController extends Controller
                 'origin' => $request->origin,
                 'destination' => $request->destination,
                 'catatan_pembelian' => $request->catatan,
+                'is_flash' => $isflash
             ]);
 
             // cek order User
             $cekOrder = Order::with('user.member')->where('id', $order->id)->first();
 
-            $diskon_alquran = 0;
-            
+            $diskon_alquran = 0; // Diskon Alquran
+
             foreach ($request->data as $v) {
 
                 // Cek Stok
@@ -298,8 +325,10 @@ class OrderController extends Controller
                 }
             }
 
-            // Hitung Member diskon
-            if($cekOrder->user->id_member){
+            // Diskon Member
+            if ($cekDiskon) {
+                $member_diskon = 0;
+            }elseif ($cekOrder->user->id_member){
                 $member_diskon = $subTotal * $cekOrder->user->member->diskon / 100;
             }elseif ($subTotal >= 50000) {
                 $member_diskon = $subTotal * 10 / 100;

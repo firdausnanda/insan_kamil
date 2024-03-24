@@ -137,8 +137,8 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Tanggal Mulai Diskon</label>
-                                <input type="date" class="form-control"
-                                    name="tanggal_mulai_diskon" id="tanggal_mulai_diskon_edit" />
+                                <input type="date" class="form-control" name="tanggal_mulai_diskon"
+                                    id="tanggal_mulai_diskon_edit" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Tanggal Selesai Diskon</label>
@@ -303,17 +303,27 @@
                         targets: 5,
                         className: 'align-middle text-center',
                         render: function(data, type, row, meta) {
+                            let menu = `<li>
+                                            <button class="dropdown-item btn-edit" type="button">
+                                                <i class="bi bi-pencil-square me-3"></i>
+                                                Edit
+                                            </button>
+                                        </li>`
+                            if (row.status != 2) {
+                                menu += `<li>
+                                            <button class="dropdown-item btn-flash" type="button">
+                                                <i class="fa-solid fa-bolt me-3"></i>
+                                                Buat Flash Sale
+                                            </button>
+                                        </li>`
+                            }
+
                             return `<div class="dropdown">
                                         <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="feather-icon icon-more-vertical fs-5"></i>
                                         </a>
                                         <ul class="dropdown-menu">
-                                            <li>
-                                                <button class="dropdown-item btn-edit" type="button">
-                                                    <i class="bi bi-pencil-square me-3"></i>
-                                                    Edit
-                                                </button>
-                                            </li>
+                                            ${menu}
                                         </ul>
                                     </div>`;
                         }
@@ -675,6 +685,53 @@
                 };
 
                 $('#modal-tambah-produk').modal('show')
+            })
+
+            // FlashSale
+            $('#diskon tbody').on('click', '.btn-flash', function(event) {
+                event.preventDefault()
+
+                let data = table.row($(this).parents('tr')).data();
+
+                Swal.fire({
+                    title: "Buat Flash Sale?",
+                    text: "Diskon yang lain akan menjadi diskon event!",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#889397",
+                    confirmButtonText: "Lanjutkan",
+                    cancelButtonText: "Batalkan",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "PUT",
+                            url: "{{ route('admin.produk.diskon.flash') }}",
+                            data: {
+                                id: data.id
+                            },
+                            dataType: "JSON",
+                            beforeSend: function() {
+                                $.LoadingOverlay('show');
+                            },
+                            success: function(response) {
+                                $.LoadingOverlay('hide');
+                                if (response.meta.status == "success") {
+                                    table.ajax.reload();
+                                    Swal.fire('Sukses!', response.meta.message,
+                                        'success');
+                                }
+                            },
+                            error: function(response) {
+                                $.LoadingOverlay('hide');
+                                Swal.fire('Gagal!', 'Periksa kembali data anda.',
+                                    'error');
+                                console.log(response.responseJSON.message);
+                            },
+                        });
+                    }
+                });
+
             })
         });
     </script>

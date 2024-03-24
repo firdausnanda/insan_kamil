@@ -29,7 +29,8 @@ class Order extends Model
         'catatan_pembelian',
         'id_member',
         'no_invoice',
-        'courier_detail'
+        'courier_detail',
+        'is_flash'
     ];
 
     public function tapActivity(Activity $activity, string $eventName)

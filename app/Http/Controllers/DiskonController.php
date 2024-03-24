@@ -215,4 +215,25 @@ class DiskonController extends Controller
             return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
         }
     }
+
+    public function flash(Request $request) {
+        try {
+
+            // make All Diskon event
+            Diskon::where('status', 2)->update([
+                'status' => 1
+            ]);
+
+            //make flash sale
+            $diskon = Diskon::where('id', $request->id)->update([
+                'status' => 2
+            ]);
+
+            return ResponseFormatter::success($diskon, 'Data berhasil disimpan');
+            
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }
+    }
 }

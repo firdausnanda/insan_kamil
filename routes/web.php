@@ -78,7 +78,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 		Route::group(['prefix' => 'diskon', 'as' => 'diskon.'], function () {
 			Route::get('', [DiskonController::class, 'index'])->name('index');
 			Route::post('', [DiskonController::class, 'store'])->name('store');
-			Route::put('', [DiskonController::class, 'update'])->name('update');		
+			Route::put('', [DiskonController::class, 'flash'])->name('flash');		
+			Route::put('/flash', [DiskonController::class, 'update'])->name('update');		
 			Route::get('/produk', [DiskonController::class, 'getProduk'])->name('getProduk');		
 			Route::post('/produk-store', [DiskonController::class, 'produk_store'])->name('produk_store');		
 			Route::delete('/produk-destroy', [DiskonController::class, 'produk_destroy'])->name('produk_destroy');		
