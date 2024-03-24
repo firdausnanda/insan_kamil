@@ -29,6 +29,18 @@ class UserSeeder extends Seeder
 
         $admin->assignRole('admin');
 
+        // Marketting
+        $admin = \App\Models\User::create([
+            'uuid' => Str::uuid(),
+            'name' => 'Marketing',
+            'username' => 'marketing',
+            'email' => 'marketing@gmail.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('password'),
+        ]);
+
+        $admin->assignRole('marketing');
+
         // Superadmin
         $superadmin = \App\Models\User::create([
             'uuid' => Str::uuid(),
