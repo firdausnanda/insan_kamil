@@ -66,66 +66,68 @@
                         </div>
                     </a>
                 </li>
-                <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('admin.pengguna.*') ? 'active' : '' }}"
-                        href="{{ route('admin.pengguna.index') }}">
-                        <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"> <i class="bi bi-people"></i></span>
-                            <span class="nav-link-text">Pengguna</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('admin.ulasan.*') ? 'active' : '' }}"
-                        href="{{ route('admin.ulasan.index') }}">
-                        <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"> <i class="bi bi-star"></i></span>
-                            <span class="nav-link-text">Ulasan</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('admin.blog.*') ? 'active' : '' }}"
-                        href="{{ route('admin.blog.index') }}">
-                        <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"> <i class="bi bi-brush"></i></span>
-                            <span class="nav-link-text">Blog</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('admin.slideshow.*') ? 'active' : '' }}"
-                        href="{{ route('admin.slideshow.index') }}">
-                        <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"> <i class="bi bi-file-earmark-slides"></i></span>
-                            <span class="nav-link-text">Slideshow</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('admin.popup.*') ? 'active' : '' }}"
-                        href="{{ route('admin.popup.index') }}">
-                        <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"> <i class="bi bi-images"></i></span>
-                            <span class="nav-link-text">Popup</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('admin.menu.*') ? 'active' : '' }}"
-                        href="{{ route('admin.menu.index') }}">
-                        <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"> <i class="bi bi-collection"></i></span>
-                            <span class="nav-link-text">Menu Group</span>
-                        </div>
-                    </a>
-                </li>
 
-                <li class="nav-item mt-6 mb-3">
-                    <span class="nav-label">System Monitoring</span>
-                </li>
+                @hasanyrole('superadmin|admin')
+                    <li class="nav-item ">
+                        <a class="nav-link {{ request()->routeIs('admin.pengguna.*') ? 'active' : '' }}"
+                            href="{{ route('admin.pengguna.index') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"> <i class="bi bi-people"></i></span>
+                                <span class="nav-link-text">Pengguna</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link {{ request()->routeIs('admin.ulasan.*') ? 'active' : '' }}"
+                            href="{{ route('admin.ulasan.index') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"> <i class="bi bi-star"></i></span>
+                                <span class="nav-link-text">Ulasan</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link {{ request()->routeIs('admin.blog.*') ? 'active' : '' }}"
+                            href="{{ route('admin.blog.index') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"> <i class="bi bi-brush"></i></span>
+                                <span class="nav-link-text">Blog</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link {{ request()->routeIs('admin.slideshow.*') ? 'active' : '' }}"
+                            href="{{ route('admin.slideshow.index') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"> <i class="bi bi-file-earmark-slides"></i></span>
+                                <span class="nav-link-text">Slideshow</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link {{ request()->routeIs('admin.popup.*') ? 'active' : '' }}"
+                            href="{{ route('admin.popup.index') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"> <i class="bi bi-images"></i></span>
+                                <span class="nav-link-text">Popup</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link {{ request()->routeIs('admin.menu.*') ? 'active' : '' }}"
+                            href="{{ route('admin.menu.index') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"> <i class="bi bi-collection"></i></span>
+                                <span class="nav-link-text">Menu Group</span>
+                            </div>
+                        </a>
+                    </li>
 
-                {{-- <li class="nav-item ">
+                    <li class="nav-item mt-6 mb-3">
+                        <span class="nav-label">System Monitoring</span>
+                    </li>
+
+                    {{-- <li class="nav-item ">
                     <a class="nav-link " href="{{ route('queue-monitor::index') }}">
                         <div class="d-flex align-items-center">
                             <span class="nav-link-icon"> <i class="bi bi-display"></i></span>
@@ -134,34 +136,35 @@
                     </a>
                 </li> --}}
 
-                <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('admin.activity.*') ? 'active' : '' }}"
-                        href="{{ route('admin.activity.index') }}">
-                        <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"> <i class="bi bi-activity"></i></span>
-                            <span class="nav-link-text">Activity Logs</span>
-                        </div>
-                    </a>
-                </li>
+                    <li class="nav-item ">
+                        <a class="nav-link {{ request()->routeIs('admin.activity.*') ? 'active' : '' }}"
+                            href="{{ route('admin.activity.index') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"> <i class="bi bi-activity"></i></span>
+                                <span class="nav-link-text">Activity Logs</span>
+                            </div>
+                        </a>
+                    </li>
 
-                <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('admin.backupdb.*') ? 'active' : '' }}"
-                        href="{{ route('admin.backupdb.index') }}">
-                        <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"> <i class="bi bi-database"></i></span>
-                            <span class="nav-link-text">Database Backup</span>
-                        </div>
-                    </a>
-                </li>
+                    <li class="nav-item ">
+                        <a class="nav-link {{ request()->routeIs('admin.backupdb.*') ? 'active' : '' }}"
+                            href="{{ route('admin.backupdb.index') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"> <i class="bi bi-database"></i></span>
+                                <span class="nav-link-text">Database Backup</span>
+                            </div>
+                        </a>
+                    </li>
 
-                <li class="nav-item ">
-                    <a class="nav-link " href="{{ url('/log-viewer') }}">
-                        <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"> <i class="bi bi-bug"></i></span>
-                            <span class="nav-link-text">Error Logs</span>
-                        </div>
-                    </a>
-                </li>
+                    <li class="nav-item ">
+                        <a class="nav-link " href="{{ url('/log-viewer') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"> <i class="bi bi-bug"></i></span>
+                                <span class="nav-link-text">Error Logs</span>
+                            </div>
+                        </a>
+                    </li>
+                @endhasanyrole
 
             </ul>
         </div>
@@ -239,66 +242,68 @@
                         </div>
                     </a>
                 </li>
-                <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('admin.pengguna.*') ? 'active' : '' }}"
-                        href="{{ route('admin.pengguna.index') }}">
-                        <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"> <i class="bi bi-people"></i></span>
-                            <span class="nav-link-text">Pengguna</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('admin.ulasan.*') ? 'active' : '' }}"
-                        href="{{ route('admin.ulasan.index') }}">
-                        <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"> <i class="bi bi-star"></i></span>
-                            <span class="nav-link-text">Ulasan</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('admin.blog.*') ? 'active' : '' }}"
-                        href="{{ route('admin.blog.index') }}">
-                        <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"> <i class="bi bi-brush"></i></span>
-                            <span class="nav-link-text">Blog</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('admin.slideshow.*') ? 'active' : '' }}"
-                        href="{{ route('admin.slideshow.index') }}">
-                        <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"> <i class="bi bi-file-earmark-slides"></i></span>
-                            <span class="nav-link-text">Slideshow</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('admin.popup.*') ? 'active' : '' }}"
-                        href="{{ route('admin.popup.index') }}">
-                        <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"> <i class="bi bi-images"></i></span>
-                            <span class="nav-link-text">Popup</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('admin.menu.*') ? 'active' : '' }}"
-                        href="{{ route('admin.menu.index') }}">
-                        <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"> <i class="bi bi-collection"></i></span>
-                            <span class="nav-link-text">Menu Group</span>
-                        </div>
-                    </a>
-                </li>
 
-                <li class="nav-item mt-6 mb-3">
-                    <span class="nav-label">System Monitoring</span>
-                </li>
+                @hasanyrole('superadmin|admin')
+                    <li class="nav-item ">
+                        <a class="nav-link {{ request()->routeIs('admin.pengguna.*') ? 'active' : '' }}"
+                            href="{{ route('admin.pengguna.index') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"> <i class="bi bi-people"></i></span>
+                                <span class="nav-link-text">Pengguna</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link {{ request()->routeIs('admin.ulasan.*') ? 'active' : '' }}"
+                            href="{{ route('admin.ulasan.index') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"> <i class="bi bi-star"></i></span>
+                                <span class="nav-link-text">Ulasan</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link {{ request()->routeIs('admin.blog.*') ? 'active' : '' }}"
+                            href="{{ route('admin.blog.index') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"> <i class="bi bi-brush"></i></span>
+                                <span class="nav-link-text">Blog</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link {{ request()->routeIs('admin.slideshow.*') ? 'active' : '' }}"
+                            href="{{ route('admin.slideshow.index') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"> <i class="bi bi-file-earmark-slides"></i></span>
+                                <span class="nav-link-text">Slideshow</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link {{ request()->routeIs('admin.popup.*') ? 'active' : '' }}"
+                            href="{{ route('admin.popup.index') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"> <i class="bi bi-images"></i></span>
+                                <span class="nav-link-text">Popup</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link {{ request()->routeIs('admin.menu.*') ? 'active' : '' }}"
+                            href="{{ route('admin.menu.index') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"> <i class="bi bi-collection"></i></span>
+                                <span class="nav-link-text">Menu Group</span>
+                            </div>
+                        </a>
+                    </li>
 
-                {{-- <li class="nav-item ">
+                    <li class="nav-item mt-6 mb-3">
+                        <span class="nav-label">System Monitoring</span>
+                    </li>
+
+                    {{-- <li class="nav-item ">
                     <a class="nav-link " href="{{ route('queue-monitor::index') }}">
                         <div class="d-flex align-items-center">
                             <span class="nav-link-icon"> <i class="bi bi-display"></i></span>
@@ -307,34 +312,35 @@
                     </a>
                 </li> --}}
 
-                <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('admin.activity.*') ? 'active' : '' }}"
-                        href="{{ route('admin.activity.index') }}">
-                        <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"> <i class="bi bi-activity"></i></span>
-                            <span class="nav-link-text">Activity Logs</span>
-                        </div>
-                    </a>
-                </li>
+                    <li class="nav-item ">
+                        <a class="nav-link {{ request()->routeIs('admin.activity.*') ? 'active' : '' }}"
+                            href="{{ route('admin.activity.index') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"> <i class="bi bi-activity"></i></span>
+                                <span class="nav-link-text">Activity Logs</span>
+                            </div>
+                        </a>
+                    </li>
 
-                <li class="nav-item ">
-                    <a class="nav-link {{ request()->routeIs('admin.backupdb.*') ? 'active' : '' }}"
-                        href="{{ route('admin.backupdb.index') }}">
-                        <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"> <i class="bi bi-database"></i></span>
-                            <span class="nav-link-text">Database Backup</span>
-                        </div>
-                    </a>
-                </li>
+                    <li class="nav-item ">
+                        <a class="nav-link {{ request()->routeIs('admin.backupdb.*') ? 'active' : '' }}"
+                            href="{{ route('admin.backupdb.index') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"> <i class="bi bi-database"></i></span>
+                                <span class="nav-link-text">Database Backup</span>
+                            </div>
+                        </a>
+                    </li>
 
-                <li class="nav-item ">
-                    <a class="nav-link " href="{{ url('/log-viewer') }}">
-                        <div class="d-flex align-items-center">
-                            <span class="nav-link-icon"> <i class="bi bi-bug"></i></span>
-                            <span class="nav-link-text">Error Logs</span>
-                        </div>
-                    </a>
-                </li>
+                    <li class="nav-item ">
+                        <a class="nav-link " href="{{ url('/log-viewer') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"> <i class="bi bi-bug"></i></span>
+                                <span class="nav-link-text">Error Logs</span>
+                            </div>
+                        </a>
+                    </li>
+                @endhasanyrole
 
             </ul>
         </div>

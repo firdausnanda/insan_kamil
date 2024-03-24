@@ -12,7 +12,8 @@
                             <!-- breacrumb -->
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb mb-0">
-                                    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}" class="text-inherit">Dashboard</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}"
+                                            class="text-inherit">Dashboard</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Pengguna</li>
                                 </ol>
                             </nav>
@@ -37,9 +38,9 @@
                                 <div class="col-lg-4">
                                     <label for="role">Role</label>
                                     <select name="role" id="role" class="form-select">
-                                        <option value="user">User</option>
-                                        <option value="admin">Admin</option>
-                                        <option value="superadmin">Superadmin</option>
+                                        @foreach ($role as $r)
+                                            <option value="{{ $r->name }}">{{ Str::title($r->name) }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -239,7 +240,8 @@
                                 <select name="member" class="form-select" id="member_e">
                                     <option value="">-- Pilih Member --</option>
                                     @foreach ($member as $m)
-                                        <option value="{{ $m->id }}">{{ 'Member ' . $m->nama . ' (Diskon ' . $m->diskon . '%)' }}</option>
+                                        <option value="{{ $m->id }}">
+                                            {{ 'Member ' . $m->nama . ' (Diskon ' . $m->diskon . '%)' }}</option>
                                     @endforeach
                                 </select>
                             </div>

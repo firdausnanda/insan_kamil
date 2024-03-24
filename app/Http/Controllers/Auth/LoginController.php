@@ -48,6 +48,10 @@ class LoginController extends Controller
             case 'admin':
                 return '/admin';
                 break;
+            
+            case 'marketing':
+                return '/admin';
+                break;
 
             case 'superadmin':
                 return '/admin';

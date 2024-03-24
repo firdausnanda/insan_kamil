@@ -60,7 +60,7 @@ Route::get('/auth/callback', [LoginController::class, 'handleProviderCallback'])
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Admin
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admin|superadmin']], function () {
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admin|superadmin|marketing']], function () {
   
 	// Dashboard
 	Route::get('', [DashboardController::class, 'index'])->name('index');
