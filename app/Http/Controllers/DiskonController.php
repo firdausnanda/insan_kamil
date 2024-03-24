@@ -100,12 +100,29 @@ class DiskonController extends Controller
                     ]);
                 }
 
+            }elseif ($diskon->selesai_diskon != $request->tanggal_selesai_diskon || $diskon->mulai_diskon != $request->tanggal_mulai_diskon) {
+                $diskon->produk()->detach($diskon->produk);
+
+                // restore harga produk from diskon
+                foreach ($diskon->produk as $key => $value) {
+
+                    // Update harga sesuai diskon
+                    Harga::where('id', $value->id_harga)->update([
+                        'mulai_diskon' =>  null,
+                        'selesai_diskon' =>  null,
+                        'diskon' =>  0,
+                        'harga_akhir' =>  $value->harga->harga_awal,
+                        'persentase_diskon' => 0
+                    ]);
+                }
             }
 
             $diskon = Diskon::where('id', $request->id)->update([
                 'nama' => $request->nama,
                 'keterangan' => $request->keterangan,
-                'diskon' => $request->diskon
+                'diskon' => $request->diskon,
+                'mulai_diskon' => $request->tanggal_mulai_diskon,
+                'selesai_diskon' => $request->tanggal_selesai_diskon
             ]);
 
 
@@ -154,7 +171,7 @@ class DiskonController extends Controller
                 'selesai_diskon' =>  null,
                 'diskon' =>  0,
                 'harga_akhir' =>  $produk->harga->harga_awal,
-                'persentase_diskon' => $diskon->diskon
+                'persentase_diskon' => 0
             ]);
 
             $diskon->produk()->detach($request->id_produk);

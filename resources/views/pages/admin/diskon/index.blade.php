@@ -135,6 +135,16 @@
                                         required>
                                 </div>
                             </div>
+                            <div class="mb-3">
+                                <label class="form-label">Tanggal Mulai Diskon</label>
+                                <input type="date" class="form-control"
+                                    name="tanggal_mulai_diskon" id="tanggal_mulai_diskon_edit" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Tanggal Selesai Diskon</label>
+                                <input type="date" class="form-control" name="tanggal_selesai_diskon"
+                                    id="tanggal_selesai_diskon_edit" />
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -329,6 +339,24 @@
                 dateFormat: "Y-m-d H:i",
             });
 
+            //Flatpickr
+            let tanggal_selesai_diskon_edit = flatpickr("#tanggal_selesai_diskon_edit", {
+                locale: "id",
+                altInput: true,
+                altFormat: "j F Y, H:i",
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+            });
+
+            //Flatpickr
+            let tanggal_mulai_diskon_edit = flatpickr("#tanggal_mulai_diskon_edit", {
+                locale: "id",
+                altInput: true,
+                altFormat: "j F Y, H:i",
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+            });
+
             // Modal Tambah Show
             $(".btn-tambah").click(function(e) {
                 e.preventDefault();
@@ -372,11 +400,15 @@
                 var nama = data.nama;
                 var keterangan = data.keterangan;
                 var diskon = data.diskon;
+                var tgl_selesai = data.selesai_diskon;
+                var tgl_mulai = data.mulai_diskon;
 
                 $('#id').val(id);
                 $('#nama').val(nama);
                 $('#keterangan').val(keterangan);
                 $('#nilai_diskon').val(diskon);
+                tanggal_mulai_diskon_edit.setDate(tgl_mulai, true);
+                tanggal_selesai_diskon_edit.setDate(tgl_selesai, true);
                 $('#modal-edit').modal('show');
             });
 
