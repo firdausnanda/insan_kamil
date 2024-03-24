@@ -84,13 +84,8 @@
                                                         class="text-dark">{{ \Carbon\Carbon::parse($order->created_at)->isoFormat('D MMMM Y') }}</span>
                                                     <br />
                                                     Total Order:
-                                                    @if ($order->user->id_member)
-                                                        <span
-                                                            class="text-dark">{{ rupiah($order->harga_total + $order->biaya_pengiriman - $member_diskon) }}</span>
-                                                    @else
-                                                        <span
-                                                            class="text-dark">{{ rupiah($order->harga_total + $order->biaya_pengiriman) }}</span>
-                                                    @endif
+                                                    <span
+                                                        class="text-dark">{{ rupiah($order->harga_total + $order->biaya_pengiriman - $member_diskon - $diskon_alquran) }}</span>
                                                     <br />
                                                     Status:
                                                 <h5>
