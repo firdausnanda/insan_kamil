@@ -523,8 +523,12 @@ class OrderController extends Controller
                 return $q['jumlah_produk'] * $q['harga_jual']; 
             });
 
-            if($order->id_member){
+            if ($order->is_flash == 1) {
+                $member_diskon = 0;
+            }elseif($order->id_member){
                 $member_diskon = $subTotal * $order->member->diskon / 100;
+            }elseif ($subTotal >= 50000) {
+                $member_diskon = $subTotal * 10 / 100;
             }else{
                 $member_diskon = 0;
             }
@@ -532,6 +536,7 @@ class OrderController extends Controller
             // Diskon Alquran
             $diskon_alquran = 0;
             foreach ($order->produk_dikirim as $key => $value) {
+                // Diskon Alquran
                 if ($value->produk->id_kategori == '17') {
                     if ($order->id_member) {
                         $diskon_alquran += $value->harga_jual * $value->jumlah_produk * 30 / 100;
