@@ -82,14 +82,6 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-			'no_resi' => 'string|max:255',
-		]);
-
-		if ($validator->fails()) {
-			return ResponseFormatter::error($validator->errors(), 'Data Kategori tidak valid', 422);
-		}
-
         try {
             
             $order = Order::where('id', $request->id_order)->update([
