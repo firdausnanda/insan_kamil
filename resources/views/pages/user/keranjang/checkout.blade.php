@@ -58,8 +58,7 @@
                                                 {{ $data[0]->user->email }}
                                                 <br />
                                                 {{ $data[0]->user->no_telp }}
-                                                <input type="hidden" id="id_member"
-                                                    value="{{ $member_diskon }}">
+                                                <input type="hidden" id="id_member" value="{{ $member_diskon }}">
                                             </p>
                                         </div>
                                     </div>
@@ -180,7 +179,7 @@
                                                     </td>
                                                 </tr>
                                             @endif
-                                            
+
                                             @if ($diskon_alquran)
                                                 <tr>
                                                     <td class="border-bottom-0 pb-0"></td>
@@ -220,6 +219,22 @@
                                     <h6 class="px-3"><span class="text-danger">*</span> Catatan Pembelian</h6>
                                     <p class="px-3">{{ $data[0]->catatan_pembelian }}</p>
                                 @endif
+                            </div>
+                            <div class="col-6">
+                                <div class="container">
+                                    <table class="table">
+                                        <thead class="bg-warning">
+                                            <th>HIMBAUAN</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Mohon untuk kerjasamanya untuk mempermudah administrasi kami, setiap
+                                                    melakukan transaksi pembelian dibawah 500rb pembayaran via qris, lebih
+                                                    dari 500rb bisa dengan transfer bank. terimakasih atas kerjasamanya</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -765,7 +780,8 @@
                 var shipping = parseInt($('#pilih_paket').val())
 
                 if ($("#id_member").val()) {
-                    var TotalBiaya = Intl.NumberFormat('en-DE').format(shipping + subTotal - member - diskon_alquran)
+                    var TotalBiaya = Intl.NumberFormat('en-DE').format(shipping + subTotal - member -
+                        diskon_alquran)
                 } else {
                     var TotalBiaya = Intl.NumberFormat('en-DE').format(shipping + subTotal - diskon_alquran)
                 }
