@@ -12,8 +12,11 @@ use App\Models\Kategori;
 use App\Models\Member;
 use App\Models\Popup;
 use App\Models\Produk;
+use App\Models\Rating;
 use App\Models\Slideshow;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\View;
 
@@ -193,9 +196,45 @@ class HomeController extends Controller
     public function detail($id) 
     {
         try {
-            $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori', 'penerbit')->where('id', $id)->where('status', 1)->first();
-            $produk_related = Produk::with('harga', 'stok', 'gambar_produk')->where('id_kategori', $produk->id_kategori)->where('status', 1)->orderBy('created_at', 'desc')->limit(5)->get();
-            return view('pages.landing.detail', compact('produk', 'produk_related'));
+            $produk = Produk::with('harga', 'stok', 'gambar_produk', 'kategori', 'penerbit')
+                        ->where('id', $id)
+                        ->where('status', 1)
+                        ->first();
+
+            $produk_related = Produk::with('harga', 'stok', 'gambar_produk')
+                        ->where('id_kategori', $produk->id_kategori)
+                        ->where('status', 1)
+                        ->orderBy('created_at', 'desc')
+                        ->limit(5)
+                        ->get();
+            
+            $rating = Rating::with('produk', 'user')
+                        ->whereHas('produk', function($q) use ($id){
+                            $q->where('id', $id);
+                        })
+                        ->orderBy('rating');
+            
+            $ulasan_perorang = $rating->limit(7)->get();
+
+            $ulasan = $rating->select('rating', DB::raw('count(*) as total'))
+                        ->groupBy('rating')
+                        ->get();
+            
+            $rate = [
+                1 => 0,
+                2 => 0,
+                3 => 0,
+                4 => 0,
+                5 => 0
+            ];
+
+            foreach ($ulasan as $key => $value) {              
+                $rate[$value->rating] = $value->total;
+            }
+
+            // dd($ulasan_perorang); 
+
+            return view('pages.landing.detail', compact('produk', 'produk_related', 'ulasan', 'ulasan_perorang', 'rate'));
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             abort(404);

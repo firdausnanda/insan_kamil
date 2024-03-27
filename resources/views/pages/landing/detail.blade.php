@@ -253,6 +253,14 @@
                                 Deskripsi Buku
                             </button>
                         </li>
+                        <!-- nav item -->
+                        <li class="nav-item" role="presentation">
+                            <!-- btn -->
+                            <button class="nav-link" id="ulasan" data-bs-toggle="tab" data-bs-target="#ulasan-pane"
+                                type="button" role="tab" aria-controls="ulasan-pane" aria-selected="true">
+                                Ulasan
+                            </button>
+                        </li>
                     </ul>
                     <!-- tab content -->
                     <div class="tab-content" id="myTabContent">
@@ -263,6 +271,200 @@
                                 <div class="mb-5">
                                     <!-- text -->
                                     {!! $produk->keterangan !!}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- tab pane -->
+                        <div class="tab-pane fade" id="ulasan-pane" role="tabpanel" aria-labelledby="ulasan"
+                            tabindex="0">
+                            <div class="my-8">
+                                <div class="mb-5">
+                                    <!-- text -->
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="me-lg-12 mb-6 mb-md-0">
+                                                <div class="mb-5">
+                                                    <!-- title -->
+                                                    <h4 class="mb-3">Ulasan Pelanggan</h4>
+                                                    <span>
+                                                        <!-- rating -->
+                                                        @if (round($produk->averageRating()) > 0)
+                                                            <small class="text-warning">
+                                                                {{ tampilkanRating($produk->averageRating()) }}
+                                                            </small>
+                                                        @else
+                                                            <small class="text-secondary">
+                                                                <i class="bi bi-star"></i>
+                                                                <i class="bi bi-star"></i>
+                                                                <i class="bi bi-star"></i>
+                                                                <i class="bi bi-star"></i>
+                                                                <i class="bi bi-star"></i>
+                                                            </small>
+                                                        @endif
+
+                                                        <span class="ms-3">{{ round($produk->averageRating(), 2) }} out
+                                                            of
+                                                            5</span>
+                                                    </span>
+                                                </div>
+                                                <div class="mb-8">
+                                                    <!-- progress -->
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <div class="text-nowrap me-3 text-muted">
+                                                            <span class="d-inline-block align-middle text-muted">5</span>
+                                                            <i class="bi bi-star-fill ms-1 small text-warning"></i>
+                                                        </div>
+                                                        <div class="w-100">
+                                                            <div class="progress" style="height: 6px">
+                                                                <div class="progress-bar bg-warning" role="progressbar"
+                                                                    style="width: {{ $rate[5] ? ($rate[5] / $produk->ratings()->count()) * 100 : 0 }}%"
+                                                                    aria-valuenow="60" aria-valuemin="0"
+                                                                    aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>
+                                                        <span class="text-muted ms-3">{{ $rate[5] }}</span>
+                                                    </div>
+                                                    <!-- progress -->
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <div class="text-nowrap me-3 text-muted">
+                                                            <span class="d-inline-block align-middle text-muted">4</span>
+                                                            <i class="bi bi-star-fill ms-1 small text-warning"></i>
+                                                        </div>
+                                                        <div class="w-100">
+                                                            <div class="progress" style="height: 6px">
+                                                                <div class="progress-bar bg-warning" role="progressbar"
+                                                                    style="width: {{ $rate[4] ? ($rate[4] / $produk->ratings()->count()) * 100 : 0 }}%"
+                                                                    aria-valuenow="50" aria-valuemin="0"
+                                                                    aria-valuemax="50"></div>
+                                                            </div>
+                                                        </div>
+                                                        <span class="text-muted ms-3">{{ $rate[4] }}</span>
+                                                    </div>
+                                                    <!-- progress -->
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <div class="text-nowrap me-3 text-muted">
+                                                            <span class="d-inline-block align-middle text-muted">3</span>
+                                                            <i class="bi bi-star-fill ms-1 small text-warning"></i>
+                                                        </div>
+                                                        <div class="w-100">
+                                                            <div class="progress" style="height: 6px">
+                                                                <div class="progress-bar bg-warning" role="progressbar"
+                                                                    style="width: {{ $rate[3] ? ($rate[3] / $produk->ratings()->count()) * 100 : 0 }}%"
+                                                                    aria-valuenow="35" aria-valuemin="0"
+                                                                    aria-valuemax="35"></div>
+                                                            </div>
+                                                        </div>
+                                                        <span class="text-muted ms-3">{{ $rate[3] }}</span>
+                                                    </div>
+                                                    <!-- progress -->
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <div class="text-nowrap me-3 text-muted">
+                                                            <span class="d-inline-block align-middle text-muted">2</span>
+                                                            <i class="bi bi-star-fill ms-1 small text-warning"></i>
+                                                        </div>
+                                                        <div class="w-100">
+                                                            <div class="progress" style="height: 6px">
+                                                                <div class="progress-bar bg-warning" role="progressbar"
+                                                                    style="width: {{ $rate[2] ? ($rate[2] / $produk->ratings()->count()) * 100 : 0 }}%"
+                                                                    aria-valuenow="22" aria-valuemin="0"
+                                                                    aria-valuemax="22"></div>
+                                                            </div>
+                                                        </div>
+                                                        <span class="text-muted ms-3">{{ $rate[2] }}</span>
+                                                    </div>
+                                                    <!-- progress -->
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <div class="text-nowrap me-3 text-muted">
+                                                            <span class="d-inline-block align-middle text-muted">1</span>
+                                                            <i class="bi bi-star-fill ms-1 small text-warning"></i>
+                                                        </div>
+                                                        <div class="w-100">
+                                                            <div class="progress" style="height: 6px">
+                                                                <div class="progress-bar bg-warning" role="progressbar"
+                                                                    style="width: {{ $rate[1] ? ($rate[1] / $produk->ratings()->count()) * 100 : 0 }}%"
+                                                                    aria-valuenow="14" aria-valuemin="0"
+                                                                    aria-valuemax="14"></div>
+                                                            </div>
+                                                        </div>
+                                                        <span class="text-muted ms-3">{{ $rate[1] }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- col -->
+                                        <div class="col-md-8">
+                                            <div class="mb-10">
+                                                <div class="d-flex justify-content-between align-items-center mb-8">
+                                                    <div>
+                                                        <!-- heading -->
+                                                        <h4>Reviews</h4>
+                                                    </div>
+                                                </div>
+                                                @forelse ($ulasan_perorang as $i)
+                                                    <div class="d-flex border-bottom pb-6 mb-6">
+                                                        <!-- img -->
+                                                        <!-- img -->
+                                                        @if ($i->user->avatar == null)
+                                                            @if ($i->user->id_member && $i->user->member)
+                                                                <img src="{{ asset('images/avatar/user.png') }}"
+                                                                    alt=""
+                                                                    class="avatar avatar-md rounded-circle border border-4 rounded-circle border-{{ Str::lower($i->user->member->nama) }}">
+                                                            @else
+                                                                <img src="{{ asset('images/avatar/user.png') }}"
+                                                                    alt=""
+                                                                    class="avatar avatar-md rounded-circle">
+                                                            @endif
+                                                        @else
+                                                            @if ($i->user->id_member && $i->user->member)
+                                                                <img src="{{ $i->user->avatar }}" alt=""
+                                                                    class="avatar avatar-md rounded-circle border border-4 
+                                                                        rounded-circle border-{{ Str::lower($i->user->member->nama) }}">
+                                                            @else
+                                                                <img src="{{ $i->user->avatar }}" alt=""
+                                                                    class="avatar avatar-md rounded-circle">
+                                                            @endif
+                                                        @endif
+
+                                                        <div class="ms-5 w-100">
+                                                            <h6 class="mb-1">{{ $i->user->name }}</h6>
+                                                            <!-- select option -->
+                                                            <!-- content -->
+                                                            <p class="small">
+                                                                <span
+                                                                    class="text-muted">{{ \Carbon\Carbon::parse($i->created_at)->isoFormat('D MMMM Y') }}</span>
+                                                            </p>
+                                                            <!-- rating -->
+                                                            <div class="mb-2 text-warning">
+                                                                {{ tampilkanRating($i->rating) }}
+                                                            </div>
+                                                            <!-- text-->
+                                                            <p>
+                                                                {{ $i->comment }}
+                                                            </p>
+                                                            <!-- icon -->
+                                                            <div class="d-flex justify-content-end mt-4">
+                                                                <a href="#" class="text-muted">
+                                                                    <i class="feather-icon icon-thumbs-up me-1"></i>
+                                                                    Helpful
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @empty
+                                                    <div>
+                                                        Ulasan Belum tersedia
+                                                    </div>
+                                                @endforelse
+                                                <div>
+                                                    {{-- @if (count($ulasan_perorang) > 0)
+                                                        <a href="#" class="btn btn-outline-gray-400 text-muted">Read
+                                                            More Reviews</a>
+                                                    @endif --}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -347,6 +549,38 @@
             </div>
         </div>
     </section>
+
+
+    <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+    <div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId">
+                        Modal title
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">Body</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional: Place to the bottom of scripts -->
+    <script>
+        const myModal = new bootstrap.Modal(
+            document.getElementById("modalId"),
+            options,
+        );
+    </script>
+
 @endsection
 
 @section('script')
