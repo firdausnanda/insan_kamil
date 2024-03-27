@@ -253,6 +253,22 @@
                                         </table>
                                     </div>
                                 </div>
+                                <div class="col-6">
+                                    <div class="container">
+                                        <table class="table">
+                                            <thead class="bg-warning">
+                                                <th>HIMBAUAN</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Mohon untuk kerjasamanya untuk mempermudah administrasi kami, setiap
+                                                        melakukan transaksi pembelian dibawah 500rb pembayaran via qris, lebih
+                                                        dari 500rb bisa dengan transfer bank. terimakasih atas kerjasamanya</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                             <div class="card-body p-6">
                                 <div class="row">
