@@ -11,7 +11,12 @@ class Pdf extends FPDF
 	function Header()
 	{
 		//Header
-		$this->Image(asset('images/logo/logo3.jpeg'), 10, 5, 30);
+		// Kertas A5
+		// $this->Image(asset('images/logo/logo3.jpeg'), 10, 5, 30);
+		// $this->Ln(14);
+
+		// Kertas 100 mm x 150 mm
+		$this->Image(asset('images/logo/logo3.jpeg'), 3, 3, 20);
 		$this->Ln(14);
 	}
 	
