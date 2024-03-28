@@ -266,6 +266,7 @@ class ProdukController extends Controller
             $stok = Stok::where('id', $produk->id_stok)->first();
             $stok->update([
                 'jumlah_produk' => $request->stok,
+                'sisa_produk' => $request->stok
             ]);
 
             return ResponseFormatter::success($stok, 'Data berhasil diubah');   
