@@ -181,10 +181,9 @@ class ProdukController extends Controller
 
     public function removeImage(Request $request) 
     {
-        // var_dump($request->all());
-        // dd(asset('storage/produk/' . $request->name));
         // delete Image
-        $path = Storage::delete('public/produk/' . $request->name);
+        $path = Storage::delete('storage/produk/' . $request->name);
+        GambarProduk::where('id', $request->id)->delete();
 
         return ResponseFormatter::success($path, 'sukses');
     }
@@ -201,7 +200,16 @@ class ProdukController extends Controller
             $string = Str::replace('x', ',', $produk->ukuran_produk);
             $ukuran = Str::of($string)->split('/[\s,]+/');
 
+            
             if ($request->ajax()) {
+
+                foreach ($produk->gambar_produk as $key => $value) {
+
+                    $fileSize = Storage::size('public/produk/' . $produk->gambar_produk[0]->gambar);
+                    $produk->gambar_produk[$key]->ukuran = $fileSize;
+                    
+                }
+
                 return ResponseFormatter::success($produk->gambar_produk, 'Data diambil');
             }
 
@@ -268,6 +276,14 @@ class ProdukController extends Controller
                 'jumlah_produk' => $request->stok,
                 'sisa_produk' => $request->stok
             ]);
+
+            // Create on Gambar
+            foreach ($request->document as $d) {
+                $gambar = GambarProduk::create([
+                    'id_produk' => $produk->id,
+                    'gambar' => $d,
+                ]);
+            }
 
             return ResponseFormatter::success($stok, 'Data berhasil diubah');   
         } catch (\Exception $e) {

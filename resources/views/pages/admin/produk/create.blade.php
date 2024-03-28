@@ -245,8 +245,8 @@
                                 <!-- input -->
                                 <div class="mb-3">
                                     <label class="form-label">Tanggal Mulai Diskon</label>
-                                    <input type="date" class="form-control" value="{{ now() }}" name="tanggal_mulai_diskon"
-                                        id="tanggal_mulai_diskon" />
+                                    <input type="date" class="form-control" value="{{ now() }}"
+                                        name="tanggal_mulai_diskon" id="tanggal_mulai_diskon" />
                                 </div>
                                 <!-- input -->
                                 <div class="mb-3">
@@ -298,7 +298,7 @@
                 theme: 'bootstrap-5',
                 placeholder: '-- Pilih Kategori --',
             });
-            
+
             $('#bahasa').select2({
                 theme: 'bootstrap-5',
                 placeholder: '-- Pilih Bahasa --',
@@ -347,6 +347,23 @@
             myDropzone.on("addedfile", function(o) {
                 console.log("File added: " + o.name)
             }), myDropzone.on("removedfile", function(o) {
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('admin.produk.removeImage') }}",
+                    data: {
+                        id: o.id,
+                        name: o.name
+                    },
+                    dataType: "JSON",
+                    beforeSend: function(response) {
+                        $.LoadingOverlay('show')
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide')
+                        console.log(response);
+                    }
+                });
+
                 console.log("File removed: " + o.name)
             }), myDropzone.on("success", function(o, e) {
                 console.log("File uploaded successfully:", e)

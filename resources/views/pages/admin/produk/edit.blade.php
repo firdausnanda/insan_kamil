@@ -315,6 +315,7 @@
             const myDropzone = new Dropzone("#my-dropzone", {
                 url: "{{ route('admin.produk.image') }}",
                 maxFilesize: 4,
+                thumbnailWidth: 120,
                 acceptedFiles: "image/*",
                 addRemoveLinks: !0,
                 autoProcessQueue: !0,
@@ -362,10 +363,10 @@
                         name: o.name
                     },
                     dataType: "JSON",
-                    beforeSend: function (response){
+                    beforeSend: function(response) {
                         $.LoadingOverlay('show')
                     },
-                    success: function (response) {
+                    success: function(response) {
                         $.LoadingOverlay('hide')
                         console.log(response);
                     }
@@ -389,7 +390,7 @@
                     $.each(response.data, function(index, value) {
                         let a = {}
                         a.name = value.gambar
-                        a.size = null
+                        a.size = value.ukuran
                         a.id = value.id
                         b.push(a)
                     });
