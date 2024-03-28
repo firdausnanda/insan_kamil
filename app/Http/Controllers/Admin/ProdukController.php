@@ -9,11 +9,15 @@ use App\Models\Diskon;
 use App\Models\GambarProduk;
 use App\Models\Harga;
 use App\Models\Kategori;
+use App\Models\Keranjang;
+use App\Models\Member;
 use App\Models\Order;
 use App\Models\Pembayaran;
 use App\Models\Penerbit;
 use App\Models\Produk;
 use App\Models\Stok;
+use App\Models\TempOrder;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -274,13 +278,80 @@ class ProdukController extends Controller
     {
         try {
 
-            $order = Order::where('id', $request->id_order)->update([
-                'status' => 2
+            // Update Pembayaran
+            $pembayaran = Pembayaran::where('id_order', $request->id_order)->first();
+                
+            $pembayaran->update([
+                'status_pembayaran' => 2,
+            ]);
+            
+            // Cek Order
+            $order = Order::with('produk_dikirim')->where('id', $request->id_order)->first();
+            
+            // Update Member
+            $user = User::with('member')->where('id', $order->id_user)->first();
+            
+            // Update pada table Order status & Member yang lama
+            $order->update([
+                'status' => 2,
+                'id_member' => $user->id_member,
             ]);
 
-            $pembayaran = Pembayaran::where('id_order', $request->id_order)->update([
-                'status_pembayaran' => 2
-            ]);
+            // Cek apakah sudah menjadi member apa belum
+            if ($user->id_member) {
+                $cekmember = Member::where('pembelian_minimum', '>', $user->member->pembelian_minimum)->orderBy('pembelian_minimum', 'desc')->get();
+            }else{
+                $cekmember = Member::orderBy('pembelian_minimum', 'desc')->get();   
+            }
+
+            // Cek total pembelian keseluruhan
+            $cek_pembayaran_total = Order::where('id_user', $order->id_user)->wherehas('pembayaran', function($query){
+                $query->where('status_pembayaran', 2); 
+             })->withSum('pembayaran', 'harga_jual')->get();
+
+            $pembayaran_total = $cek_pembayaran_total->sum('pembayaran_sum_harga_jual');
+
+            if($cekmember->count() > 0){
+                 foreach ($cekmember as $v) {
+
+                     // Check if pembelian lebih besar dari pembelian mininum member 
+                     if ($pembayaran_total >= $v->pembelian_minimum) {
+
+                         $user->update([
+                             'id_member' => $v->id
+                         ]);
+
+                         break;
+                     }
+                 }
+            }
+
+            // Remove Keranjang dan TempOrder
+            $temp = TempOrder::where('id_user', $order->id_user)->get();
+                
+            foreach ($temp as $v) {
+                Keranjang::where('id_produk', $v->id_produk)->where('id_user', $order->id_user)->delete();
+            } 
+
+            TempOrder::where('id_user', $order->id_user)->delete();
+
+            // Stok dikurangi
+            foreach ($order->produk_dikirim as $key => $value) {
+
+                // Stok Dikurangi
+                $cekProduk = Produk::where('id', $value->id_produk)->first();
+                Stok::where('id', $cekProduk->id_stok)->update([
+                    'sisa_produk' => $cekProduk->stok->sisa_produk - $value->jumlah_produk
+                ]);
+            }
+
+            // $order = Order::where('id', $request->id_order)->update([
+            //     'status' => 2
+            // ]);
+
+            // $pembayaran = Pembayaran::where('id_order', $request->id_order)->update([
+            //     'status_pembayaran' => 2
+            // ]);
 
             return ResponseFormatter::success('Sukses', 'Data berhasil dikonfirmasi');   
 
