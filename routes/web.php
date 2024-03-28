@@ -70,6 +70,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 		Route::get('', [ProdukController::class, 'index'])->name('index');
 		Route::post('', [ProdukController::class, 'store'])->name('store');
 		Route::post('/image', [ProdukController::class, 'image'])->name('image');
+		Route::post('/konfirmasi', [ProdukController::class, 'konfirmasi'])->name('konfirmasi');
+		Route::post('/delete', [ProdukController::class, 'removeImage'])->name('removeImage');
 		Route::get('/create', [ProdukController::class, 'create'])->name('create');
 		Route::post('/update', [ProdukController::class, 'update'])->name('update');
 		Route::get('/edit/{id}', [ProdukController::class, 'edit'])->name('edit');
@@ -201,7 +203,8 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['role:user']
 	// Order
 	Route::group(['prefix' => 'order', 'as' => 'order.'], function () {
 		Route::get('', [UserOrderController::class, 'index'])->name('index');
-		Route::post('', [UserOrderController::class, 'store'])->name('store');
+		// Route::post('', [UserOrderController::class, 'store'])->name('store');
+		Route::post('/pembayaran-manual', [UserOrderController::class, 'store_manual'])->name('store_manual');
 		Route::put('/catatan', [UserOrderController::class, 'catatan'])->name('catatan');
 		Route::post('/detail-store', [UserOrderController::class, 'detail_store'])->name('detail_store');
 		Route::post('/beli', [UserOrderController::class, 'beli'])->name('beli');
@@ -216,6 +219,7 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['role:user']
 		Route::get('/dropship', [UserOrderController::class, 'dropship'])->name('dropship');
 		Route::put('/dropship', [UserOrderController::class, 'edit_dropship'])->name('edit_dropship');
 		Route::get('/cetak', [UserOrderController::class, 'cetak'])->name('cetak');
+		Route::post('/bukti-transaksi', [UserOrderController::class, 'addBukti'])->name('addBukti');
 		Route::get('/detail-konfirmasi/{id}', [UserOrderController::class, 'detail_konfirmasi'])->name('detail_konfirmasi');
 	});
 

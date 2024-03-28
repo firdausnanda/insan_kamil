@@ -9,6 +9,8 @@ use App\Models\Diskon;
 use App\Models\GambarProduk;
 use App\Models\Harga;
 use App\Models\Kategori;
+use App\Models\Order;
+use App\Models\Pembayaran;
 use App\Models\Penerbit;
 use App\Models\Produk;
 use App\Models\Stok;
@@ -154,17 +156,50 @@ class ProdukController extends Controller
         ]);
     }
 
-    public function edit($id) 
+    public function addImage(Request $request) 
+    {
+        
+        $file = $request->file('file');
+        $fileName =  uniqid() . '_' . time() . '.' . trim($file->getClientOriginalExtension());
+
+        // Store Image
+        $path = Storage::putFileAs(
+            'public/produk',
+            $request->file('file'),
+            $fileName
+        );
+
+        return response()->json([
+            'name'          => $fileName,
+            'original_name' => $file->getClientOriginalName(),
+        ]);
+    }
+
+    public function removeImage(Request $request) 
+    {
+        // var_dump($request->all());
+        // dd(asset('storage/produk/' . $request->name));
+        // delete Image
+        $path = Storage::delete('public/produk/' . $request->name);
+
+        return ResponseFormatter::success($path, 'sukses');
+    }
+
+    public function edit(Request $request, $id) 
     {
         try {
             $kategori = Kategori::all();
             $penerbit = Penerbit::all();
             $bahasa = Bahasa::all();
-            $produk = Produk::with('stok', 'harga')->where('id', $id)->first();
+            $produk = Produk::with('stok', 'harga', 'gambar_produk')->where('id', $id)->first();
             // dd($produk);
             // string
             $string = Str::replace('x', ',', $produk->ukuran_produk);
             $ukuran = Str::of($string)->split('/[\s,]+/');
+
+            if ($request->ajax()) {
+                return ResponseFormatter::success($produk->gambar_produk, 'Data diambil');
+            }
 
             return view('pages.admin.produk.edit', compact('kategori', 'penerbit', 'produk', 'ukuran', 'bahasa'));
         } catch (\Exception $e) {
@@ -233,5 +268,26 @@ class ProdukController extends Controller
             Log::error($e->getMessage());
             return ResponseFormatter::error('Error!', $e->getMessage(), 500);
         }
+    }
+
+    public function konfirmasi(Request $request)
+    {
+        try {
+
+            $order = Order::where('id', $request->id_order)->update([
+                'status' => 2
+            ]);
+
+            $pembayaran = Pembayaran::where('id_order', $request->id_order)->update([
+                'status_pembayaran' => 2
+            ]);
+
+            return ResponseFormatter::success('Sukses', 'Data berhasil dikonfirmasi');   
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error('Error!', $e->getMessage(), 500);
+        }
+        
     }
 }

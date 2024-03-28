@@ -53,6 +53,7 @@
                                 <div class="col-lg-4">
                                     <label for="status">Status</label>
                                     <select name="status" class="form-select" id="status">
+                                        <option value="6">Transaksi Diperiksa</option>
                                         <option value="2">Belum Diproses</option>
                                         <option value="3">Diproses</option>
                                         <option value="4">Pengiriman</option>
@@ -85,11 +86,54 @@
             </div>
         </div>
     </main>
+
+    <!-- Modal Bukti Transaksi -->
+    <div class="modal fade" id="modal-bukti" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId">
+                        Upload Bukti Transaksi
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-lg-12">
+                            <label for="" class="form-label">Nama Rekening</label>
+                            <input type="text" class="form-control" name="nama_rekening" readonly id="nama_rekening">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="" class="form-label">Tranfer ke</label>
+                            <input type="text" class="form-control" name="transfer_ke" readonly id="transfer_ke">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="" class="form-label">Tanggal Transfer</label>
+                            <input type="text" class="form-control" name="tgl_transfer" readonly id="tgl_transfer">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="" class="form-label d-block">Lihat Bukti</label>
+                            <input type="hidden" id="lihat-bukti">
+                            <input type="hidden" id="id_order">
+                            <button class="btn btn-primary btn-lihat-bukti"><i class="fa-solid fa-eye"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-konfirmasi">Konfirmasi</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
     <script>
         $(document).ready(function() {
+
             // init datatable
             var table = $('#produks').DataTable({
                 ajax: {
@@ -119,7 +163,11 @@
                             var link = "{{ route('admin.order.detail', ':id') }}";
                             link = link.replace(':id', data);
 
-                            return `<a class="btn btn-link p-0 text-decoration-none text-info" href="${link}">${row.user.name}</a> <br> <span style="font-size: 12px">${data}</span>`
+                            if (row.status == 1) {
+                                return `<button class="btn btn-link p-0 text-decoration-none text-info btn-bukti">${row.user.name}</button> <br> <span style="font-size: 12px">${data}</span>`
+                            } else {
+                                return `<a class="btn btn-link p-0 text-decoration-none text-info" href="${link}">${row.user.name}</a> <br> <span style="font-size: 12px">${data}</span>`
+                            }
                         }
                     },
                     {
@@ -128,7 +176,7 @@
                         data: 'created_at',
                         render: function(data, type, row, meta) {
                             if (data)
-                            return `${moment(data).format('DD-MM-YYYY', 'de')} <br> <i>${moment(data).format('hh:mm:ss', 'de')}`
+                                return `${moment(data).format('DD-MM-YYYY', 'de')} <br> <i>${moment(data).format('hh:mm:ss', 'de')}`
                             return `-`
                         }
                     },
@@ -140,7 +188,7 @@
                             if (row.pembayaran_sum_harga_jual) {
                                 return $.fn.dataTable.render.number('.', ',', 0, 'Rp ', ',-')
                                     .display(row.pembayaran_sum_harga_jual)
-                            }else{
+                            } else {
                                 return 0
                             }
                         }
@@ -156,6 +204,8 @@
                                 return `<span class="badge bg-light-warning text-dark-warning">Diproses</span>`
                             } else if (data == 4) {
                                 return `<span class="badge bg-light-info text-dark-info">Dikirim</span>`
+                            } else if (data == 1) {
+                                return `<span class="badge bg-secondary text-white">Konfirmasi Pembayaran</span>`
                             } else {
                                 return `<span class="badge bg-light-primary text-dark-primary">Selesai</span>`
                             }
@@ -170,27 +220,30 @@
                             var link = "{{ route('admin.order.detail', ':id') }}";
                             link = link.replace(':id', data);
 
-                            return `<div class="dropdown">
+                            let menu = `<li>
+                                            <a class="dropdown-item" href="${link}">
+                                                <i class="bi bi-pencil-square me-3"></i>
+                                                    Edit
+                                            </a>
+                                        </li>`
+
+                            if (row.status == 1) {
+                                menu = `<li>
+                                            <button class="dropdown-item btn-bukti">
+                                                <i class="bi bi-check-square me-3"></i>
+                                                    Konfirmasi
+                                            </button>
+                                        </li>`
+                            }
+
+                            return (`<div class="dropdown">
                                         <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="feather-icon icon-more-vertical fs-5"></i>
                                         </a>
                                         <ul class="dropdown-menu">
-                                            <li>
-                                                <a class="dropdown-item" href="${link}">
-                                                    <i class="bi bi-pencil-square me-3"></i>
-                                                    Edit
-                                                </a>
-                                            </li>
+                                            ${menu}
                                         </ul>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <a class="dropdown-item" href="#">
-                                                    <i class="bi bi-pencil-square me-3"></i>
-                                                    Non Aktifkan
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>`;
+                                    </div>`);
                         }
                     },
                 ]
@@ -200,6 +253,55 @@
             $('#status').change(function(e) {
                 e.preventDefault();
                 table.ajax.reload()
+            });
+
+            // Detail
+            $('#produks tbody').on('click', '.btn-bukti', function(event) {
+                event.preventDefault()
+
+                var data = table.row($(this).parents('tr')).data();
+
+                $('#id_order').val(data.id)
+                $('#nama_rekening').val(data.bukti_transaksi[0].nama_rekening)
+                $('#transfer_ke').val(data.bukti_transaksi[0].transfer_ke)
+                $('#tgl_transfer').val(data.bukti_transaksi[0].tgl_transfer)
+                $('#lihat-bukti').val(data.bukti_transaksi[0].gambar)
+                $('#modal-bukti').modal('show')
+
+            })
+
+            // Klik Lihat
+            $('.btn-lihat-bukti').click(function(e) {
+                e.preventDefault();
+
+                let a = $('#lihat-bukti').val()
+                let b = `{{ asset('storage/bukti-transaksi/${a}') }}`
+
+                window.open(b, '_blank');
+
+            });
+
+            // Konfirmasi Pembayaran
+            $('.btn-konfirmasi').click(function (e) { 
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('admin.produk.konfirmasi') }}",
+                    data: {
+                        id_order: $('#id_order').val()
+                    },
+                    dataType: "JSON",
+                    beforeSend: function(){
+                        $.LoadingOverlay('show')                        
+                    },
+                    success: function (response) {
+                        $.LoadingOverlay('hide')
+                        table.ajax.reload();
+                        $('#modal-bukti').modal('hide')
+                        Swal.fire('Sukses!', response.meta.message, 'success');
+                    }
+                });
+
             });
         });
     </script>

@@ -23,7 +23,8 @@
                                         <!-- button -->
                                         <div class="ms-md-3">
                                             @if ($order->status == 1)
-                                                <button id="btn-bayar" class="btn btn-primary">Lakukan Pembayaran</button>
+                                                {{-- <button id="btn-bayar" class="btn btn-primary">Lakukan Pembayaran</button> --}}
+                                                <button id="btn-bukti" class="btn btn-info">Unggah Bukti Pembayaran</button>
                                             @elseif ($order->status == 6)
                                             @else
                                                 <button type="button" class="btn btn-info btn-download">Download Bukti
@@ -253,7 +254,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 p-5">
+                                {{-- <div class="col-lg-6 p-5">
                                     <div class="container border rounded p-4 text-center position-relative"
                                         style="background-color: #f7c331; bottom: 120px; left: 45px">
                                         <div class="container border border-white border-5 p-4 rounded">
@@ -268,7 +269,7 @@
                                                 dan kerja samanya.</p>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="card-body p-6">
                                 <div class="row">
@@ -344,6 +345,94 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Body -->
+    <div class="modal fade" id="modal-bukti" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId">
+                        Upload Bukti Transaksi
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                @if ($bukti)
+                    <div class="container p-5">
+                        <div class="alert alert-primary" role="alert">
+                            <strong>Bukti Transaksi sudah diterima.</strong> <br>
+                            Harap menunggu konfirmasi dari Admin Kami
+                        </div>
+                    </div>
+                @else
+                    <form id="form-bukti" method="post" enctype="multipart/form-data">
+                        <div class="modal-body">
+
+                            <div class="alert alert-primary" role="alert">
+                                <strong>Perhatian</strong><br>
+                                Silakan kirimkan pembayaran ke salah satu rekening berikut.
+                                <ol>
+                                    <li>
+                                        <strong>BRI 6903 01 001436 50 7</strong> <br>
+                                        An. Eko Wicaksono
+                                    </li>
+                                    <li>
+                                        <strong>BCA 3920370747 </strong><br>
+                                        An. Eko Wicaksono
+                                    </li>
+                                    <li>
+                                        <strong>BSI 6227979170 </strong><br>
+                                        An. Eko wicaksono
+                                    </li>
+                                    <li>
+                                        <strong>BSM 7002044824</strong> <br>
+                                        An. RIYANTO
+                                    </li>
+                                </ol>
+                            </div>
+
+
+                            <div class="row g-3">
+                                <div class="col-lg-12">
+                                    <label for="" class="form-label">Nama Rekening</label>
+                                    <input type="text" class="form-control" name="nama_rekening">
+                                </div>
+                                <div class="col-lg-12">
+                                    <label for="" class="form-label">Tranfer ke</label>
+                                    <select class="form-select" name="transfer_ke">
+                                        <option value="BRI">BRI (No Rek : 6903 01 001436 50 7 A.n Eko Wicaksono)
+                                        </option>
+                                        <option value="BCA">BCA (No Rek : 3920370747 A.n Eko Wicaksono)</option>
+                                        <option value="BSI">BSI (No Rek : 6227979170 A.n Eko Wicaksono)</option>
+                                        <option value="BSM">BSM (No Rek : 7002044824 A.n Riyanto)</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-12">
+                                    <label for="" class="form-label">Tanggal Transfer</label>
+                                    <input type="text" class="form-control" name="tgl_transfer" id="tgl_transfer">
+                                </div>
+                                <div class="col-lg-12">
+                                    <!-- input -->
+                                    <input type="file" class="upload-berkas-dropify" name="gambar"
+                                        data-max-file-size="2M" data-allowed-file-extensions="jpg png jpeg pdf"
+                                        id="berkas" data-errors-position="outside" />
+
+                                    <input type="hidden" name="id_order" value="{{ $order->id }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                @endif
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('script')
@@ -607,6 +696,69 @@
                     },
                 });
 
+            });
+
+            // init Dropify
+            if ($('.upload-berkas-dropify')) {
+                $('.upload-berkas-dropify').dropify({
+                    messages: {
+                        'default': '<i class="fa-regular fa-image icon-file"></i> <br> Unggah file anda disini <br> <span>  Type: JPG | PNG | PDF (Max. 2MB) </span> <br> <button class="btn btn-yellow mt-3">Pilih File</button>',
+                        'replace': 'Klik untuk mengganti file anda',
+                        'remove': 'Hapus',
+                        'error': 'Ooops, something wrong happended.'
+                    },
+                });
+            }
+
+            // Bukti Transfer
+            $('#btn-bukti').click(function(e) {
+                e.preventDefault();
+                $('#modal-bukti').modal('show');
+            });
+
+            // Submit Simpan
+            $("#form-bukti").submit(function(e) {
+                e.preventDefault();
+
+                var formDataa = new FormData(document.getElementById("form-bukti"));
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('user.order.addBukti') }}",
+                    data: formDataa,
+                    dataType: "JSON",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        if (response.meta.status == "success") {
+                            Swal.fire({
+                                icon: 'success',
+                                title: "Sukses!",
+                                text: response.meta.message,
+                            }).then((result) => {
+                                location.href = "{{ route('user.order.konfirmasi') }}"
+                            });
+                        }
+                    },
+                    error: function(response) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
+                        console.log(response.responseJSON.message);
+                    },
+                });
+            });
+
+            //Flatpickr
+            flatpickr("#tgl_transfer", {
+                locale: "id",
+                altInput: true,
+                altFormat: "j F Y",
+                dateFormat: "Y-m-d",
             });
 
         });

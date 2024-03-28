@@ -15,6 +15,15 @@ class OrderController extends Controller
 {
     public function index(Request $request) {
         if ($request->ajax()) {
+            if ($request->status == 6) {
+                $order = Order::with('user', 'member', 'pembayaran', 'bukti_transaksi')
+                                ->withSum('pembayaran', 'harga_jual')
+                                ->has('bukti_transaksi')
+                                ->where('status', 1)
+                                ->orderBy('created_at', 'desc')
+                                ->get();
+                return ResponseFormatter::success($order, 'Data berhasil diambil!');
+            }
             $order = Order::with('user', 'member', 'pembayaran')->withSum('pembayaran', 'harga_jual')->where('status', $request->status)->orderBy('created_at', 'desc')->get();
             return ResponseFormatter::success($order, 'Data berhasil diambil!');
         }

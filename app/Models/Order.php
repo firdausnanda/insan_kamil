@@ -67,5 +67,9 @@ class Order extends Model
         return $this->belongsTo(Member::class, 'id_member', 'id');
     }
 
+    public function bukti_transaksi() {
+        return $this->hasMany(BuktiTransaksi::class, 'order_id', 'id');
+    }
+
 
 }

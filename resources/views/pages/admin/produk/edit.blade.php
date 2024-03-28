@@ -118,7 +118,8 @@
                                                     <option selected>Pilih Bahasa</option>
                                                     @foreach ($bahasa as $b)
                                                         <option value="{{ $b->id }}"
-                                                            {{ $b->id == $produk->id_bahasa }} selected>{{ $b->bahasa }}
+                                                            {{ $b->id == $produk->id_bahasa }} selected>
+                                                            {{ $b->bahasa }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -254,7 +255,8 @@
                                 <!-- input -->
                                 <div class="mb-3">
                                     <label class="form-label">Tanggal Mulai Diskon</label>
-                                    <input type="date" class="form-control" value="{{ $produk->harga->mulai_diskon }}" name="tanggal_mulai_diskon"
+                                    <input type="date" class="form-control"
+                                        value="{{ $produk->harga->mulai_diskon }}" name="tanggal_mulai_diskon"
                                         id="tanggal_mulai_diskon" />
                                 </div>
                                 <!-- input -->
@@ -351,9 +353,53 @@
             myDropzone.on("addedfile", function(o) {
                 console.log("File added: " + o.name)
             }), myDropzone.on("removedfile", function(o) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('admin.produk.removeImage') }}",
+                    data: {
+                        id: o.id,
+                        name: o.name
+                    },
+                    dataType: "JSON",
+                    beforeSend: function (response){
+                        $.LoadingOverlay('show')
+                    },
+                    success: function (response) {
+                        $.LoadingOverlay('hide')
+                        console.log(response);
+                    }
+                });
+
                 console.log("File removed: " + o.name)
             }), myDropzone.on("success", function(o, e) {
                 console.log("File uploaded successfully:", e)
+            });
+
+            var gambar_link = "{{ route('admin.produk.edit', ':id') }}"
+            var gambar_url = gambar_link.replace(':id', '{{ $produk->id }}')
+
+            $.ajax({
+                type: "GET",
+                url: gambar_url,
+                data: "data",
+                dataType: "JSON",
+                success: function(response) {
+                    let b = []
+                    $.each(response.data, function(index, value) {
+                        let a = {}
+                        a.name = value.gambar
+                        a.size = null
+                        a.id = value.id
+                        b.push(a)
+                    });
+
+                    for (i = 0; i < b.length; i++) {
+                        myDropzone.emit("addedfile", b[i]);
+                        myDropzone.emit("thumbnail", b[i], `/storage/produk/${b[i].name}`);
+                        myDropzone.emit("complete", b[i]);
+                    }
+                }
             });
 
             // Form Store

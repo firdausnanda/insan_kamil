@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Helpers\Pdf;
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
+use App\Models\BuktiTransaksi;
 use App\Models\Diskon;
 use App\Models\Dropship;
 use App\Models\DropshipMaster;
@@ -22,6 +23,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Kavist\RajaOngkir\Facades\RajaOngkir;
 use Midtrans\Snap;
@@ -396,6 +398,136 @@ class OrderController extends Controller
         }
     }
 
+    public function store_manual(Request $request)
+    {
+        try {
+
+            // Cek Stok
+            foreach ($request->data as $v) {
+
+                $cekStok = Produk::with('stok')->where('id', $v['id_produk'])->first();
+                
+                if ($cekStok->stok->sisa_produk < $v['jumlah_produk']) {
+                    return ResponseFormatter::error('Stok tidak tersedia/mencukupi', 'Data gagal disimpan');
+                }
+            }
+
+            $collect = collect($request->data);
+
+            // harga produk total
+            $subTotal = $collect->sum(function($q) {
+                return $q['jumlah_produk'] * $q['harga_jual']; 
+            });
+
+            // berat produk total
+            $beratProduk = $collect->sum(function($q) {
+                return $q['jumlah_produk'] * $q['berat_produk']; 
+            });
+
+            // Cek Produk yang termasuk dalam diskon event
+            $cekDiskon = Diskon::with('produk')
+                            ->whereHas('produk', function($query) use ($request){
+                                $query->whereIn('id_produk', collect($request->data)->pluck('id_produk'));
+                            })
+                            ->where('status', 2)
+                            ->where('mulai_diskon', '<=', Carbon::now())
+                            ->where('selesai_diskon', '>=', Carbon::now())
+                            ->first();
+
+            $isflash = $cekDiskon ? 1 : 0;
+
+            // Create Order
+            $order = Order::create([
+                'id_user' => $request->user,
+                'no_invoice' => 'INV-' . Str::upper(Str::random(9)),
+                'harga_total' => $subTotal,
+                'jumlah_produk_total' => $beratProduk,
+                'courier' => $request->courier,
+                'courier_detail' => $request->courier_detail,
+                'biaya_pengiriman' => $request->biaya_pengiriman,
+                'origin' => $request->origin,
+                'destination' => $request->destination,
+                'catatan_pembelian' => $request->catatan,
+                'is_flash' => $isflash
+            ]);
+
+            // cek order User
+            $cekOrder = Order::with('user.member')->where('id', $order->id)->first();
+
+            $diskon_alquran = 0; // Diskon Alquran
+
+            foreach ($request->data as $v) {
+
+                // Cek Stok
+                $cek = Produk::with('stok')->where('id', $v['id_produk'])->first();
+
+                // Create Produk Dikirim
+                ProdukDikirim::create([
+                    'id_order' => $order->id,
+                    'id_produk' => $v['id_produk'],
+                    'harga_jual' => $v['harga_jual'],
+                    'jumlah_produk' => $v['jumlah_produk'],
+                ]);
+
+                // Diskon Alquran
+                if ($cek->id_kategori == '17') {
+                    if ($cekOrder->user->id_member) {
+                        $diskon_alquran += $cek->harga->harga_akhir * $v['jumlah_produk'] * 30 / 100;
+                    }else{
+                        $diskon_alquran += $cek->harga->harga_akhir * $v['jumlah_produk'] * 20 / 100;
+                    }
+                }
+            }
+
+            // Diskon Member
+            if ($cekDiskon) {
+                $member_diskon = 0;
+            }elseif ($cekOrder->user->id_member){
+                $member_diskon = $subTotal * $cekOrder->user->member->diskon / 100;
+            }elseif ($subTotal >= 50000) {
+                $member_diskon = $subTotal * 10 / 100;
+            }else{
+                $member_diskon = 0;
+            }
+
+            // Hitung Total Biaya
+            $total_biaya = $order->harga_total + $order->biaya_pengiriman - $member_diskon - $diskon_alquran;
+
+            // Create Pembayaran
+            Pembayaran::create([
+                'id_order' => $order->id,
+                'status_pembayaran' => 1,
+                'snap_token' => null,
+                'harga_jual' => $total_biaya,
+                'jumlah_produk' => $beratProduk,
+            ]);
+            
+            // Dropship
+            if ($request->status_dropship == 1) {
+                $cekDropship = DropshipMaster::where('id_user', $request->user)->first();
+    
+                Dropship::create([
+                    'id_user' => $request->user,
+                    'id_order' => $order->id,
+                    'nama_pengirim' => $cekDropship->nama_pengirim,
+                    'no_telp_pengirim' => $cekDropship->no_telp_pengirim,
+                    'email_pengirim' => $cekDropship->email_pengirim,
+                    'alamat_penerima' => $cekDropship->alamat_penerima,
+                    'kota_penerima' => $cekDropship->kota_penerima,
+                    'provinsi_penerima' => $cekDropship->provinsi_penerima,
+                    'desa_penerima' => $cekDropship->desa_penerima,
+                    'no_telp_penerima' => $cekDropship->no_telp_penerima,
+                ]);
+            }
+
+            return ResponseFormatter::success($cekOrder, 'data berhasil disimpan');
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }
+    }
+
     public function temp(Request $request)
     {
         try {
@@ -545,10 +677,13 @@ class OrderController extends Controller
                     }
                 }
             }
+
+            // Detail Konfirmasi
+            $bukti = BuktiTransaksi::where('order_id', $id)->first(); 
     
             return view('pages.user.keranjang.detail_konfirmasi', compact('order', 'subTotal', 
                                                                         'dropship', 'member_diskon',
-                                                                        'diskon_alquran'));
+                                                                        'diskon_alquran', 'bukti'));
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
@@ -731,6 +866,53 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }
+    }
+
+    public function addBukti(Request $request) 
+    {
+        $validator = Validator::make($request->all(), [
+			'id_order' => 'required|string|max:255',
+			'nama_rekening' => 'required|string|max:255',
+			'transfer_ke' => 'required|string|max:255',
+			'tgl_transfer' => 'required|string|max:255',
+            'gambar' => 'required|mimes:jpg,jpeg,png,pdf',
+         ]);
+
+		if ($validator->fails()) {
+			return ResponseFormatter::error($validator->errors(), 'Data Bukti tidak valid', 422);
+		}
+
+        try {
+            
+            if ($request->hasFile('gambar')) {
+                $file = $request->file('gambar');
+                $fileName =  uniqid() . '_' . time() . '.' . trim($file->getClientOriginalExtension());
+        
+                // Store Image
+                $path = Storage::putFileAs(
+                    'public/bukti-transaksi',
+                    $request->file('gambar'),
+                    $fileName
+                );
+            }else{
+                $fileName = '';
+            }
+
+            $data = BuktiTransaksi::create([
+                'nama_rekening' => $request->nama_rekening,
+                'order_id' => $request->id_order,
+                'transfer_ke' => $request->transfer_ke,
+                'tgl_transfer' => $request->tgl_transfer,
+                'gambar' => $fileName,
+                'status' => 0
+            ]);
+
+            return ResponseFormatter::success($data, 'Data berhasil disimpan');
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            abort(404);
         }
     }
 
