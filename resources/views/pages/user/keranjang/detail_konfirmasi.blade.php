@@ -389,6 +389,12 @@
                                         An. RIYANTO
                                     </li>
                                 </ol>
+
+                                <div class="my-2 text-center">
+                                    <span class="fw-bold p-2 border rounded bg-info text-white fs-4">Total Tagihan Anda : <span
+                                            id="total_pembayaran"></span></span>
+                                </div>
+
                             </div>
 
 
@@ -714,6 +720,12 @@
             $('#btn-bukti').click(function(e) {
                 e.preventDefault();
                 $('#modal-bukti').modal('show');
+                $('#modal-bukti #total_pembayaran').text($.fn.dataTable.render.number('.', ',', 0, 'Rp ',
+                        ',-')
+                    .display(
+                        `{{ rupiah($order->biaya_pengiriman + $subTotal - $member_diskon - $diskon_alquran) }}`
+                        ))
+
             });
 
             // Submit Simpan

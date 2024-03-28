@@ -498,10 +498,13 @@
                                     An. RIYANTO
                                 </li>
                             </ol>
-                        </div>
 
-                        <div>
-                            <p>Total Pembayaran : <span id="total_pembayaran" class="fw-bold"></span></p>
+                            
+                            <div class="my-2 text-center">
+                                <span class="fw-bold p-2 border rounded bg-info text-white fs-4">Total Tagihan Anda : <span
+                                        id="total_pembayaran"></span></span>
+                            </div>
+
                         </div>
 
                         <div class="row g-3">
