@@ -3,7 +3,8 @@
     <!-- Logo -->
     <div class="row align-items-center ">
       <div class="col-8 col-md-12 col-lg-4">
-        <a href="#"><img src="{{ asset('images/logo/logo_putih.png') }}" style="width: 170px; height: 36px;" alt=""></a>
+        <a href="#"><img src="{{ asset('images/logo/logo2.png') }}" style="width: 170px;" alt=""></a>
+        {{-- <a href="#"><img src="{{ asset('images/logo/logo_putih.png') }}" style="width: 170px; height: 36px;" alt=""></a> --}}
       </div>
     </div>
     <!-- Menu Footer -->
