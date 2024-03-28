@@ -253,20 +253,20 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="col-6">
-                                    <div class="container">
-                                        <table class="table">
-                                            <thead class="bg-warning">
-                                                <th>HIMBAUAN</th>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Mohon untuk kerjasamanya untuk mempermudah administrasi kami, setiap
-                                                        melakukan transaksi pembelian dibawah 500rb pembayaran via qris, lebih
-                                                        dari 500rb bisa dengan transfer bank. terimakasih atas kerjasamanya</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                <div class="col-lg-6 p-5">
+                                    <div class="container border rounded p-4 text-center position-relative"
+                                        style="background-color: #f7c331; bottom: 120px; left: 45px">
+                                        <div class="container border border-white border-5 p-4 rounded">
+                                            <img src="{{ asset('images/warning.png') }}" style="width: 80px">
+                                            <h4 class="text-danger">Perhatian</h4>
+                                            <p class="text-dark fs-5">Ditujukan kepada seluruh customer kami untuk
+                                                mempermudah
+                                                administrasi, setiap transaksi pembelian kurang dari Rp 500.00 silahkan
+                                                menggunakan pembayaran via <strong>Qris</strong>. Untuk transaksi lebih dari
+                                                Rp 500.000
+                                                dianjurkan pembayaran transfer via bank. Terima kasih atas perhatian
+                                                dan kerja samanya.</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
