@@ -277,7 +277,7 @@
         $(document).ready(function() {
 
             // Masking
-            $('#berat').mask('0000000');
+            $('#berat').mask('0000000000');
             $('#panjang').mask('0000');
             $('#lebar').mask('0000');
             $('#stok').mask('00000');
