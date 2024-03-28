@@ -500,6 +500,10 @@
                             </ol>
                         </div>
 
+                        <div>
+                            <p>Total Pembayaran : <span id="total_pembayaran" class="fw-bold"></span></p>
+                        </div>
+
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="" class="form-label">Nama Rekening</label>
@@ -907,6 +911,8 @@
 
                         $('#modal-bukti').modal('show')
                         $('#modal-bukti #id_order').val(response.data.id)
+                        $('#modal-bukti #total_pembayaran').text($.fn.dataTable.render.number('.', ',', 0, 'Rp ', ',-')
+                                    .display(response.data.pembayaran[0].harga_jual))
                     },
                     error: function(response) {
                         $.LoadingOverlay('hide');
@@ -1196,6 +1202,43 @@
                     },
                 });
 
+            });
+
+            // Submit Simpan
+            $("#form-bukti").submit(function(e) {
+                e.preventDefault();
+
+                var formDataa = new FormData(document.getElementById("form-bukti"));
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('user.order.addBukti') }}",
+                    data: formDataa,
+                    dataType: "JSON",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        if (response.meta.status == "success") {
+                            Swal.fire({
+                                icon: 'success',
+                                title: "Sukses!",
+                                text: response.meta.message,
+                            }).then((result) => {
+                                location.href = "{{ route('user.order.konfirmasi') }}"
+                            });
+                        }
+                    },
+                    error: function(response) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
+                        console.log(response.responseJSON.message);
+                    },
+                });
             });
 
         });

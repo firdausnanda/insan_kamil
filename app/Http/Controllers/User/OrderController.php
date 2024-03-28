@@ -520,7 +520,9 @@ class OrderController extends Controller
                 ]);
             }
 
-            return ResponseFormatter::success($cekOrder, 'data berhasil disimpan');
+            $cek_order = Order::with('pembayaran')->where('id', $order->id)->first();
+
+            return ResponseFormatter::success($cek_order, 'data berhasil disimpan');
 
         } catch (\Exception $e) {
             Log::error($e->getMessage());
