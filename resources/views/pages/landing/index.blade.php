@@ -138,14 +138,14 @@
                         <div class="mb-12">
                             <div class="mb-6">
                                 <div class="row">
-                                    <div class="col-auto p-0">
+                                    <div class="col-auto py-0 pe-0 ps-2">
                                         <img src="{{ asset('images/flash/Flash Sale Logo.png') }}" style="width: 100px">
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-lg-4">
                                         <h3 class="mb-0 text-primary">{{ $flash_sale->nama ?? '-' }}</h3>
-                                        <p class="mb-0">{{ $flash_sale->keterangan ?? '-' }}</p>
+                                        <p class="mb-0">{{ $flash_sale->keterangan ?? '' }}</p>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-lg-4 d-flex align-items-end">
                                         <div class="deals-countdown text-center"
                                             data-countdown="{{ $flash_sale->selesai_diskon }}">
                                         </div>
