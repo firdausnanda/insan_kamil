@@ -6,7 +6,7 @@
         <div class="container">
             <!-- row -->
             <div class="row justify-content-center align-items-center">
-                <div class="col-12 col-md-6 col-lg-4 order-lg-1 order-2">
+                <div class="col-12 col-md-6 col-lg-4 order-lg-1 order-2 d-sm-none d-none d-md-block">
                     <!-- img -->
                     <img src="{{ asset('images/svg-graphics/signin-g.svg') }}" alt="" class="img-fluid" />
                 </div>
