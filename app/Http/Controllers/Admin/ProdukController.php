@@ -278,11 +278,13 @@ class ProdukController extends Controller
             ]);
 
             // Create on Gambar
-            foreach ($request->document as $d) {
-                $gambar = GambarProduk::create([
-                    'id_produk' => $produk->id,
-                    'gambar' => $d,
-                ]);
+            if ($request->document) {
+                foreach ($request->document as $d) {
+                    $gambar = GambarProduk::create([
+                        'id_produk' => $produk->id,
+                        'gambar' => $d,
+                    ]);
+                }
             }
 
             return ResponseFormatter::success($stok, 'Data berhasil diubah');   
