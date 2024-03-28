@@ -263,11 +263,12 @@ class ProdukController extends Controller
             ]);
 
             // Create on Stok
-            Stok::where('id', $produk->id_stok)->update([
+            $stok = Stok::where('id', $produk->id_stok)->first();
+            $stok->update([
                 'jumlah_produk' => $request->stok,
             ]);
 
-            return ResponseFormatter::success('Sukses', 'Data berhasil diubah');   
+            return ResponseFormatter::success($stok, 'Data berhasil diubah');   
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error('Error!', $e->getMessage(), 500);
