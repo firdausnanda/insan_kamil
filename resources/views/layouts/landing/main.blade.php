@@ -44,6 +44,14 @@
 
 <body>
 
+    <!-- Impersonate -->
+    @if (session('impersonated_by'))
+        <nav class="main-header navbar navbar-dark bg-danger fixed-top p-3 py-2" style="z-index: 1035">
+            <a class="navbar-brand">Anda Login Sebagai : <b>{{ Auth::user()->name }}</b></a>
+            <a href="{{ route('leave-impersonate') }}" class="btn btn-warning my-2 my-sm-0">Logout</a>
+        </nav>
+    @endif
+
     @include('layouts.landing.header')
 
 
@@ -98,8 +106,8 @@
         @if ($popup && $popup->status == 1)
 
             <!-- Modal Body -->
-            <div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
-                role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+            <div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static"
+                data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -196,8 +204,8 @@
     <script src="{{ asset('vendor/dropify/dropify.js') }}"></script>
     <script src="{{ asset('vendor/flatpickr/dist/flatpickr.min.js') }}"></script>
     <script src="{{ asset('vendor/flatpickr/dist/id.js') }}"></script>
-    <script src="https://app.midtrans.com/snap/snap.js"
-        data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
+    <script src="https://app.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.clientKey') }}">
+    </script>
     <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js"
         type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.js"></script>

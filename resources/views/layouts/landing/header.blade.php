@@ -150,8 +150,8 @@
 
 
                         <div class="input-group ">
-                            <input class="form-control rounded w-100" name="query" type="search" id="search" value="{{ $query ?? '' }}"
-                                placeholder="Cari Judul Buku">
+                            <input class="form-control rounded w-100" name="query" type="search" id="search"
+                                value="{{ $query ?? '' }}" placeholder="Cari Judul Buku">
                             <span class="input-group-append">
                                 <button class="btn bg-white border border-start-0 ms-n10 rounded-0 rounded-end"
                                     type="button">
@@ -279,19 +279,20 @@
                                                     </a>
                                                 </li>
                                             </ul>
-                                            <div class="border-top px-5 py-3">
-                                                <a class="d-block" href="{{ route('logout') }}"
-                                                    onclick="event.preventDefault();
+                                            @if (!session('impersonated_by'))
+                                                <div class="border-top px-5 py-3">
+                                                    <a class="d-block" href="{{ route('logout') }}"
+                                                        onclick="event.preventDefault();
                                                   document.getElementById('logout-formm').submit();">
-                                                    Logout
-                                                </a>
+                                                        Logout
+                                                    </a>
 
-                                                <form id="logout-formm" action="{{ route('logout') }}" method="POST"
-                                                    class="d-none">
-                                                    @csrf
-                                                </form>
-                                            </div>
-
+                                                    <form id="logout-formm" action="{{ route('logout') }}"
+                                                        method="POST" class="d-none">
+                                                        @csrf
+                                                    </form>
+                                                </div>
+                                            @endif
 
 
                                         </div>

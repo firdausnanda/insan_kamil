@@ -384,6 +384,19 @@
                         className: 'align-middle text-center',
                         render: function(data, type, row, meta) {
                             var button
+                            var login
+
+                            if (row.roles[0].name == 'user') {
+                                login = `<li>
+                                            <button class="dropdown-item btn-impersonate" type="button">
+                                                <i class="fa-solid fa-right-to-bracket me-3"></i>
+                                                    Masuk ke Akun
+                                            </button>
+                                        </li>`
+                            } else {
+                                login = ''
+                            }
+
                             if (row.google_id == null) {
                                 button = `<div class="dropdown">
                                         <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
@@ -402,6 +415,7 @@
                                                     Ubah Password
                                                 </button>
                                             </li>
+                                            ${login}
                                         </ul>
                                     </div>`
                             } else {
@@ -416,6 +430,7 @@
                                                     Edit
                                                 </button>
                                             </li>
+                                            ${login}
                                         </ul>
                                     </div>`
                             }
@@ -748,6 +763,32 @@
                     },
                 });
             });
+
+            // Login On User
+            $('#pengguna tbody').on('click', '.btn-impersonate', function(event) {
+                event.preventDefault();
+
+                var data = table.row($(this).parents('tr')).data();
+                var text = `Anda akan login sebagai ${data.nama}`
+
+                Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: text,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Lanjutkan!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var route = `{{ route('impersonate', ':slug') }}`;
+                        var link = route.replace(':slug', data.id);
+                        location.href = link;
+                    }
+                })
+
+            })
         });
     </script>
 @endsection
