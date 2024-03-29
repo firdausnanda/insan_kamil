@@ -585,8 +585,10 @@ class OrderController extends Controller
     public function ongkir(Request $request)
     {
         try {
-
-            if($request->courier == 'ambil_gudang'){
+            
+            if (!$request->courier ||$request->courier == '') {
+                return ResponseFormatter::error('kurir kosong', 'Data gagal diambil!');
+            }elseif($request->courier == 'ambil_gudang'){
 
                 $cost = [[
                     'code' => 'ambil_gudang',
