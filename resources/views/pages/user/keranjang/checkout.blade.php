@@ -714,7 +714,7 @@
 
             // Select Kota Dropship
             var kota_dropship = "{{ route('user.profile.kota', ':id') }}";
-            kota_dropship = kota_dropship.replace(':id', {{ $dropship->provinsi_penerima }});
+            kota_dropship = kota_dropship.replace(':id', {{ $dropship ? $dropship->provinsi_penerima : 0 }});
 
             $.ajax({
                 url: kota_dropship,
@@ -730,7 +730,7 @@
 
             // Select Desa Dropship
             var desa_dropship = "{{ route('user.profile.desa', ':id') }}";
-            desa_dropship = desa_dropship.replace(':id', {{ $dropship->kota_penerima }});
+            desa_dropship = desa_dropship.replace(':id', {{ $dropship ? $dropship->kota_penerima : 0 }});
 
             $.ajax({
                 url: desa_dropship,
