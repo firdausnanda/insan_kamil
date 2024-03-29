@@ -924,6 +924,7 @@ class OrderController extends Controller
         try {
 
             $order = Order::with('user', 'produk_dikirim.produk', 'member', 'pembayaran')->where('id', $request->id)->first();
+            $dropship = Dropship::where('id_order', $order->id)->first();
 
             // Diskon Alquran
             $diskon_alquran = 0;
@@ -975,17 +976,29 @@ class OrderController extends Controller
             $pdf->Cell(20, 5,  "Nama Pembeli" , 0, 0, "L", true);
             $pdf->Cell(2, 5, ':', 0, 0, 'L', true);
             $pdf->SetFont( "Arial", "", 6 );
-            $pdf->Cell(30, 5,  $order->user->name, 0, 0, "", true );
+            if ($dropship) {
+                $pdf->Cell(30, 5,  $dropship->nama_penerima, 0, 0, "", true );
+            }else{
+                $pdf->Cell(30, 5,  $order->user->name, 0, 0, "", true );
+            }
                         
             $pdf->SetFont( "Arial", "B", 6 );
             $pdf->Cell(20, 5,  "Nama Penjual" , 0, 0, "L", true);
             $pdf->Cell(2, 5, ':', 0, 0, 'L', true);
             $pdf->SetFont( "Arial", "", 6 );
-            $pdf->Cell(21, 5,  "Insan Kamil", 0, 1, "", true );
+            if ($dropship) {
+                $pdf->Cell(21, 5,  $dropship->nama_pengirim, 0, 1, "", true );
+            }else{
+                $pdf->Cell(21, 5,  "Insan Kamil", 0, 1, "", true );
+            }
 
             $pdf->SetFont( "Arial", "B", 6 );
 
-            $alamat = $order->user->alamat . ', Kec. ' . $order->user->district->name . " " . $order->user->city->name . ', ' . $order->user->province->name . ', ' . $order->user->kode_pos;
+            if ($dropship) {
+                $alamat = $dropship->alamat_penerima . ', Kec. ' . $dropship->district->name . " " . $dropship->city->name . ', ' . $dropship->province->name . ', ' . $dropship->city->postal_code;
+            }else{
+                $alamat = $order->user->alamat . ', Kec. ' . $order->user->district->name . " " . $order->user->city->name . ', ' . $order->user->province->name . ', ' . $order->user->kode_pos;
+            }
             $h = $pdf->GetMultiCellHeight(101, 5,  $alamat, 0, "", true );
 
             $pdf->SetXY(3, 26);
@@ -999,7 +1012,11 @@ class OrderController extends Controller
             $pdf->Cell(20, 5,  "No. Hp Pembeli" , 0, 0, "L", true);
             $pdf->Cell(2, 5, ':', 0, 0, 'L', true);
             $pdf->SetFont( "Arial", "", 6 );
-            $pdf->Cell(73, 5,  $order->user->no_telp, 0, 1, "", true );     
+            if ($dropship) {
+                $pdf->Cell(73, 5,  $dropship->no_telp_penerima, 0, 1, "", true );     
+            }else{
+                $pdf->Cell(73, 5,  $order->user->no_telp, 0, 1  , "", true );     
+            }
             
             $pdf->SetFont( "Arial", "B", 6 );
             $pdf->SetXY(3, 36);
