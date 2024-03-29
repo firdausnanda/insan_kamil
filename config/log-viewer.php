@@ -46,7 +46,7 @@ return [
 
     'back_to_system_url' => '/admin',
 
-    'back_to_system_label' => null, // Displayed by default: "Back to {{ app.name }}"
+    'back_to_system_label' => 'Kembali ke Dashboard', // Displayed by default: "Back to {{ app.name }}"
 
     /*
     |--------------------------------------------------------------------------
