@@ -1169,7 +1169,12 @@
             // Ubah Dropship
             $('#detail_dropship').on('click', '.btn-dropship', function(e) {
                 e.preventDefault();
-
+                $('input').removeClass(
+                    "is-invalid")
+                $('textarea').removeClass(
+                    "is-invalid")
+                $('select').removeClass(
+                    "is-invalid")
                 $('#modal-dropship').modal('show')
             });
 
