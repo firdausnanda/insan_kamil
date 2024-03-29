@@ -243,9 +243,9 @@
     </section>
 
     {{-- Modal Edit --}}
-    <div class="modal fade" id="modal-edit" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
-        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+    <div class="modal fade" id="modal-edit" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
+        aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Ubah Data Pengguna</h5>
@@ -326,108 +326,116 @@
     </div>
 
     {{-- Modal Dropship --}}
-    <div class="modal fade" id="modal-dropship" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
-        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal fade" id="modal-dropship" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
+        aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Ubah Data Pengguna</h5>
                 </div>
                 <form id="form-edit-dropship">
                     <div class="modal-body">
+
                         <div class="row">
-
-                            <span class="p-3 text-primary">
-                                Detail Pengirim
-                            </span>
-
-                            <!-- input -->
-                            <div class="col-md-12 mb-3">
-                                <!-- input -->
-                                <label class="form-label" for="nama">
-                                    Nama Pengirim
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" name="nama_pengirim" class="form-control"
-                                    placeholder="Nama Lengkap" value="{{ $dropship ? $dropship->nama_pengirim : '' }}" />
-                                <input type="hidden" name="id_dropship" value="{{ $dropship ? $dropship->id : '' }}" />
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <span class="p-3 text-primary">
+                                        Detail Pengirim
+                                    </span>
+                                    <!-- input -->
+                                    <div class="col-md-12 mb-3">
+                                        <!-- input -->
+                                        <label class="form-label" for="nama">
+                                            Nama Pengirim
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" name="nama_pengirim" class="form-control"
+                                            placeholder="Nama Lengkap"
+                                            value="{{ $dropship ? $dropship->nama_pengirim : '' }}" />
+                                        <input type="hidden" name="id_dropship"
+                                            value="{{ $dropship ? $dropship->id : '' }}" />
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label" for="no_telepon">
+                                            Nomor Telepon Pengirim
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" name="no_telp_pengirim" class="form-control"
+                                            placeholder="Nomor Telepon"
+                                            value="{{ $dropship ? $dropship->no_telp_pengirim : '' }}" />
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label" for="no_telepon">
+                                            Alamat Email Pengirim
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" name="email_pengirim" class="form-control"
+                                            placeholder="Alamat Email"
+                                            value="{{ $dropship ? $dropship->email_pengirim : '' }}" />
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label" for="no_telepon">
-                                    Nomor Telepon Pengirim
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" name="no_telp_pengirim" class="form-control"
-                                    placeholder="Nomor Telepon"
-                                    value="{{ $dropship ? $dropship->no_telp_pengirim : '' }}" />
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label" for="no_telepon">
-                                    Alamat Email Pengirim
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" name="email_pengirim" class="form-control"
-                                    placeholder="Alamat Email"
-                                    value="{{ $dropship ? $dropship->email_pengirim : '' }}" />
-                            </div>
-
-                            <span class="p-3 text-primary">
-                                Alamat Penerima
-                            </span>
-
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label" for="no_telepon">
-                                    Nama Penerima
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" name="nama_penerima" class="form-control"
-                                    placeholder="Nama Penerima"
-                                    value="{{ $dropship ? $dropship->nama_penerima : '' }}" />
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label" for="no_telepon">
-                                    Nomor Telepon Penerima
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" name="no_telp_penerima" class="form-control"
-                                    placeholder="Nomor Telepon"
-                                    value="{{ $dropship ? $dropship->no_telp_penerima : '' }}" />
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <!-- input -->
-                                <label class="form-label" for="alamat">Alamat</label>
-                                <textarea rows="3" id="alamat_penerima" name="alamat" class="form-control" placeholder="Nama Lengkap">{{ $dropship ? $dropship->alamat_penerima : '' }}</textarea>
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <!-- input -->
-                                <label class="form-label" for="provinsi">Provinsi</label>
-                                <select name="provinsi" id="provinsi_penerima" class="form-select">
-                                    <option value="">Pilih Provinsi</option>
-                                    <option value="{{ $dropship ? $dropship->provinsi_penerima : '' }}" selected>
-                                        {{ $dropship ? $dropship->province->name : '' }}</option>
-                                </select>
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <!-- input -->
-                                <label class="form-label" for="kota">Kota</label>
-                                <select name="kota" id="kota_penerima" class="form-select">
-                                    <option value="">Pilih Kota</option>
-                                    <option value="{{ $dropship ? $dropship->kota_penerima : '' }}" selected>
-                                        {{ $dropship ? $dropship->city->name : '' }}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <!-- input -->
-                                <label class="form-label" for="desa">Kecamatan</label>
-                                <select name="desa" id="desa_penerima" class="form-select">
-                                    <option value="">Pilih Kecamatan</option>
-                                    <option value="{{ $dropship ? $dropship->desa_penerima : '' }}" selected>
-                                        {{ $dropship ? $dropship->district->name : '' }}
-                                    </option>
-                                </select>
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <span class="p-3 text-primary">
+                                        Alamat Penerima
+                                    </span>
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label" for="no_telepon">
+                                            Nama Penerima
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" name="nama_penerima" class="form-control"
+                                            placeholder="Nama Penerima"
+                                            value="{{ $dropship ? $dropship->nama_penerima : '' }}" />
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label" for="no_telepon">
+                                            Nomor Telepon Penerima
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" name="no_telp_penerima" class="form-control"
+                                            placeholder="Nomor Telepon"
+                                            value="{{ $dropship ? $dropship->no_telp_penerima : '' }}" />
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <!-- input -->
+                                        <label class="form-label" for="alamat">Alamat</label>
+                                        <textarea rows="3" id="alamat_penerima" name="alamat" class="form-control" placeholder="Nama Lengkap">{{ $dropship ? $dropship->alamat_penerima : '' }}</textarea>
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <!-- input -->
+                                        <label class="form-label" for="provinsi_penerima">Provinsi</label>
+                                        <select name="provinsi" id="provinsi_penerima" class="form-select">
+                                            <option value="">Pilih Provinsi</option>
+                                            <option value="{{ $dropship ? $dropship->provinsi_penerima : '' }}" selected>
+                                                {{ $dropship ? $dropship->province->name : '' }}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <!-- input -->
+                                        <label class="form-label" for="kota_penerima">Kota</label>
+                                        <select name="kota" id="kota_penerima" class="form-select">
+                                            <option value="">Pilih Kota</option>
+                                            <option value="{{ $dropship ? $dropship->kota_penerima : '' }}" selected>
+                                                {{ $dropship ? $dropship->city->name : '' }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <!-- input -->
+                                        <label class="form-label" for="desa_penerima">Kecamatan</label>
+                                        <select name="desa" id="desa_penerima" class="form-select">
+                                            <option value="">Pilih Kecamatan</option>
+                                            <option value="{{ $dropship ? $dropship->desa_penerima : '' }}" selected>
+                                                {{ $dropship ? $dropship->district->name : '' }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
@@ -702,6 +710,39 @@
                             `<option value="${value['id']}">${value['name']}</option>`);
                     });
                 },
+            });
+
+            // Select Kota Dropship
+            var kota_dropship = "{{ route('user.profile.kota', ':id') }}";
+            kota_dropship = kota_dropship.replace(':id', {{ $dropship->provinsi_penerima }});
+
+            $.ajax({
+                url: kota_dropship,
+                dataType: "JSON",
+                delay: 250,
+                success: function(data) {
+                    $.each(data.data, function(index, value) {
+                        $("#kota_penerima").append(
+                            `<option value="${value['id']}"> ${value['name']} </option>`)
+                    });
+                }
+            });
+
+            // Select Desa Dropship
+            var desa_dropship = "{{ route('user.profile.desa', ':id') }}";
+            desa_dropship = desa_dropship.replace(':id', {{ $dropship->kota_penerima }});
+
+            $.ajax({
+                url: desa_dropship,
+                dataType: "JSON",
+                delay: 250,
+                success: function(data) {
+                    $.each(data.data, function(index, value) {
+                        $("#desa_penerima").append("<option value='" + value['id'] +
+                            "'>" +
+                            value['name'] + "</option>");
+                    });
+                }
             });
 
             // Init Select 2 Dropship
@@ -1156,9 +1197,20 @@
                             },
                             success: function(response) {
                                 $.LoadingOverlay('hide');
+
                                 $('#modal-dropship').modal('hide')
+
                                 $('#pilih_paket').empty();
+                                $("#pilih_paket").append(
+                                    `<option value="">Pilih Paket Pengiriman</option>`
+                                );
+                                $("#pilih_paket").select2().next().hide();
+
                                 $('#jasa_pengiriman').val('').change();
+
+                                $('#loading').addClass('d-none').removeClass(
+                                    'd-block')
+
                                 $('#detail_dropship').append(`
                                         <div class="col-lg-4 col-md-4 col-12">
                                             <div class="mb-6">
