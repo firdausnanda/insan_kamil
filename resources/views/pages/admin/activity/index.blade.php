@@ -33,11 +33,11 @@
                                 <div class="row mb-3">
                                     <div class="col">
                                         <label class="form-label">Date From</label>
-                                        <input type="date" class="form-control" name="from" required>
+                                        <input type="date" id="from" class="form-control" name="from" required>
                                     </div>
                                     <div class="col">
                                         <label class="form-label">Date To</label>
-                                        <input type="date" class="form-control" name="to" required>
+                                        <input type="date" id="to" class="form-control" name="to" required>
                                     </div>
                                     <div class="col">
                                         <label class="form-label w-100">&nbsp;</label>
@@ -108,6 +108,7 @@
                 },
                 lengthChange: false,
                 ordering: false,
+                processing: true,
                 columnDefs: [{
                         targets: 0,
                         width: '8%',
@@ -188,6 +189,20 @@
                 var pretty = JSON.stringify(details, undefined, 4);
                 $("#detail").val(pretty);
                 $('#modal-detail').modal('show');
+            });
+
+            //Flatpickr
+            flatpickr("#from", {
+                locale: "id",
+                altInput: true,
+                altFormat: "j F Y",
+            });
+
+            //Flatpickr
+            flatpickr("#to", {
+                locale: "id",
+                altInput: true,
+                altFormat: "j F Y",
             });
         });
     </script>
