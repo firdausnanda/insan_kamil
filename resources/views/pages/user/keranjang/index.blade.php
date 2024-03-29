@@ -243,8 +243,12 @@
 
                 var cell_harga = table.row($(this).parents('tr')).data();
                 var cell = $($(this).parents('tr')).find('input[name=quantity]').val();
+                
+                var nilai = 1
 
-                var nilai = parseInt(cell);
+                if (parseInt(cell) < 1) {
+                    nilai = parseInt(cell) + 1;
+                }
 
                 $.ajax({
                     type: "GET",
