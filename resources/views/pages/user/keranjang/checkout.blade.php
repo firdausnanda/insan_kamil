@@ -499,7 +499,7 @@
                                 </li>
                             </ol>
 
-                            
+
                             <div class="my-2 text-center">
                                 <span class="fw-bold p-2 border rounded bg-info text-white fs-4">Total Tagihan Anda : <span
                                         id="total_pembayaran"></span></span>
@@ -914,8 +914,9 @@
 
                         $('#modal-bukti').modal('show')
                         $('#modal-bukti #id_order').val(response.data.id)
-                        $('#modal-bukti #total_pembayaran').text($.fn.dataTable.render.number('.', ',', 0, 'Rp ', ',-')
-                                    .display(response.data.pembayaran[0].harga_jual))
+                        $('#modal-bukti #total_pembayaran').text($.fn.dataTable.render.number(
+                                '.', ',', 0, 'Rp ', ',-')
+                            .display(response.data.pembayaran[0].harga_jual))
                     },
                     error: function(response) {
                         $.LoadingOverlay('hide');
@@ -1059,8 +1060,11 @@
                     success: function(response) {
                         $.LoadingOverlay('hide');
                         if ($('#dropship:checkbox:checked').length > 0) {
-
                             $('#pilih_paket').empty();
+                            $("#pilih_paket").append(
+                                `<option value="">Pilih Paket Pengiriman</option>`);
+                            $("#pilih_paket").select2().next().hide();
+
                             $('#jasa_pengiriman').val('').change();
 
                             $('#detail_dropship').append(`
@@ -1068,7 +1072,10 @@
                                             <div class="mb-6">
                                                 <h6>Alamat Penerima</h6>
                                                 <p class="mb-1 lh-lg">
-                                                    ${response.data.nama_penerima} <br>
+                                                    ${response.data.nama_penerima} 
+                                                    <br>
+                                                    ${response.data.no_telp_penerima}
+                                                    <br>
                                                     ${response.data.alamat_penerima}
                                                     <br>
                                                     ${response.data.district.name}
@@ -1098,8 +1105,19 @@
                                             </div>
                                         </div>
                             `)
+
+                            $('#loading').addClass('d-none').removeClass('d-block')
                         } else {
+                            $('#pilih_paket').empty();
+                            $("#pilih_paket").append(
+                                `<option value="">Pilih Paket Pengiriman</option>`);
+                            $("#pilih_paket").select2().next().hide();
+
+                            $('#jasa_pengiriman').val('').change();
+
                             $('#detail_dropship').empty()
+
+                            $('#loading').addClass('d-none').removeClass('d-block')
                         }
                     }
                 });

@@ -102,6 +102,8 @@
                                                     <p class="mb-1 lh-lg">
                                                         {{ $dropship->nama_penerima }}
                                                         <br>
+                                                        {{ $dropship->no_telp_penerima }}
+                                                        <br>    
                                                         {{ $dropship->alamat_penerima }}
                                                         <br>
                                                         {{ $dropship->district->name }}
