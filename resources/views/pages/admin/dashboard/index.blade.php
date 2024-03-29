@@ -510,7 +510,7 @@
                     
                     $.each(response.data, function(i, v) {
                         status.push(v['status'])
-                        total.push(v['total'])
+                        total.push(parseInt(v['total']))
                     });
 
                     penjualan.series = total
