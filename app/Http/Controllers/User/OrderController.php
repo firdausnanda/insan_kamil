@@ -1008,7 +1008,8 @@ class OrderController extends Controller
             $pdf->MultiCell(73, 5,  $alamat, 0, "", true );
             
             $pdf->SetFont( "Arial", "B", 6 );
-            $pdf->SetXY(3, 31);
+            $yy = $pdf->getY();
+            $pdf->SetXY(3, $yy);
             $pdf->Cell(20, 5,  "No. Hp Pembeli" , 0, 0, "L", true);
             $pdf->Cell(2, 5, ':', 0, 0, 'L', true);
             $pdf->SetFont( "Arial", "", 6 );
@@ -1019,7 +1020,7 @@ class OrderController extends Controller
             }
             
             $pdf->SetFont( "Arial", "B", 6 );
-            $pdf->SetXY(3, 36);
+            $pdf->SetXY(3, $yy + 5);
             $pdf->Cell(20, 5,  "No. Pesanan" , 0, 0, "L", true);
             $pdf->Cell(2, 5, ':', 0, 0, 'L', true);
             $pdf->SetFont( "Arial", "", 6 );
@@ -1027,7 +1028,7 @@ class OrderController extends Controller
             $pdf->Ln(6);
             
             $pdf->SetFont( "Arial", "B", 6 );
-            $pdf->SetXY(3, 41);
+            $pdf->SetXY(3, $yy + 10);
             $pdf->Cell(20, 5,  "Waktu Pembayaran" , 0, 0, "C");
             $pdf->Cell(15, 5,  "" , 0, 0, "C");
             $pdf->Cell(20, 5,  "Pembayaran" , 0, 0, "C");
@@ -1037,7 +1038,7 @@ class OrderController extends Controller
             $pdf->Ln(5);
 
             $pdf->SetFont( "Arial", "", 6 );
-            $pdf->SetXY(3, 46);
+            $pdf->SetXY(3, $yy + 15);
             $pdf->Cell(20, 5,  $order->pembayaran[0]->created_at , 0, 0, "C");
             $pdf->Cell(15, 5,  "" , 0, 0, "C");
             $pdf->Cell(20, 5,  "QRIS" , 0, 0, "C");
@@ -1047,12 +1048,12 @@ class OrderController extends Controller
             $pdf->Ln(2);
 
             $pdf->SetFont( "Arial", "B", 6 );
-            $pdf->SetXY(3, 51);
+            $pdf->SetXY(3, $yy + 20);
             $pdf->Cell(35, 5,  "Rincian Pesanan" , 0, 1, "L");
 
             $pdf->SetFont('Arial', 'B', 6);
             $pdf->SetFillColor('224', '224', '224');
-            $pdf->SetXY(3, 56);
+            $pdf->SetXY(3, $yy + 25);
 
             $pdf->Cell(5, 5,'No', "T,B", 0, 'C');
             $pdf->Cell(40, 5,'Produk', "T,B", 0, 'L');
@@ -1062,7 +1063,7 @@ class OrderController extends Controller
             
             $subTotal = 0;
 
-            $jarak = 56;
+            $jarak = $yy + 25;
             
             foreach ($order->produk_dikirim as $k => $v) {
                 
