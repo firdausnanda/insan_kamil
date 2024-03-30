@@ -60,7 +60,8 @@
                                     <!-- button -->
                                     <div class="ms-md-3">
                                         <button id="btn-simpan" class="btn btn-primary">Simpan</button>
-                                        <button type="button" class="btn btn-secondary btn-download">Download Invoice</button>
+                                        <button type="button" class="btn btn-secondary btn-download">Download
+                                            Invoice</button>
                                     </div>
                                 </div>
                             </div>
@@ -398,7 +399,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalTitleId">
-                        Upload Bukti Transaksi
+                        Bukti Transaksi
                     </h5>
                 </div>
                 <div class="modal-body">
@@ -579,7 +580,7 @@
             });
 
             // Modal Show
-            $('.btn-bukti').click(function (e) { 
+            $('.btn-bukti').click(function(e) {
                 e.preventDefault();
                 $('#modal-bukti').modal('show')
             });
