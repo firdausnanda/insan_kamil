@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
+use App\Models\BuktiTransaksi;
 use App\Models\Dropship;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -34,6 +35,7 @@ class OrderController extends Controller
     {
         $order = Order::with('user.province', 'user.city', 'user.district', 'produk_dikirim.produk.gambar_produk')->where('id', $id)->first();
         $dropship = Dropship::where('id_order', $id)->first();
+        $bukti = BuktiTransaksi::where('order_id', $id)->first();
         
         switch (env('RAJAONGKIR_PACKAGE')) {
             case 'starter':
@@ -86,7 +88,7 @@ class OrderController extends Controller
 
         return view('pages.admin.order.detail', compact('order', 'subTotal', 'courier_search', 
                                                         'dropship', 'member_diskon',
-                                                        'diskon_alquran'));
+                                                        'diskon_alquran', 'bukti'));
     }
 
     public function store(Request $request)

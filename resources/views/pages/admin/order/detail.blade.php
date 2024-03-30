@@ -60,8 +60,7 @@
                                     <!-- button -->
                                     <div class="ms-md-3">
                                         <button id="btn-simpan" class="btn btn-primary">Simpan</button>
-                                        <button type="button" class="btn btn-secondary btn-download">Download Bukti
-                                            Transaksi</button>
+                                        <button type="button" class="btn btn-secondary btn-download">Download Invoice</button>
                                     </div>
                                 </div>
                             </div>
@@ -123,7 +122,7 @@
                                     </div>
                                     <!-- address -->
                                     <div class="col-lg-4 col-md-4 col-12">
-                                        <div class="mb-6">
+                                        <div class="mb-3">
                                             <h6>Detail Order</h6>
                                             <p class="mb-1 lh-lg">
                                                 Tanggal Order:
@@ -135,6 +134,7 @@
                                                     class="text-dark">{{ rupiah($order->harga_total + $order->biaya_pengiriman - $member_diskon - $diskon_alquran) }}</span>
                                             </p>
                                         </div>
+                                        <button type="button" class="btn btn-info btn-bukti">Download Invoice</button>
                                     </div>
 
                                     @if ($dropship)
@@ -390,6 +390,50 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Bukti Transaksi -->
+    <div class="modal fade" id="modal-bukti" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId">
+                        Upload Bukti Transaksi
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-lg-12">
+                            <label for="" class="form-label">Nama Rekening</label>
+                            <input type="text" class="form-control" value="{{ $bukti ? $bukti->nama_rekening : '' }}"
+                                name="nama_rekening" readonly id="nama_rekening">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="" class="form-label">Tranfer ke</label>
+                            <input type="text" class="form-control" value="{{ $bukti ? $bukti->transfer_ke : '' }}"
+                                name="transfer_ke" readonly id="transfer_ke">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="" class="form-label">Tanggal Transfer</label>
+                            <input type="text" class="form-control" value="{{ $bukti ? $bukti->tgl_transfer : '' }}"
+                                name="tgl_transfer" readonly id="tgl_transfer">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="" class="form-label d-block">Lihat Bukti</label>
+                            <input type="hidden" value="{{ $bukti ? $bukti->gambar : '' }}" id="lihat-bukti">
+                            <input type="hidden" value="{{ $bukti ? $bukti->id : '' }}" id="id_order">
+                            <button class="btn btn-primary btn-lihat-bukti"><i class="fa-solid fa-eye"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -521,6 +565,23 @@
                     },
                 });
 
+            });
+
+            // Klik Lihat
+            $('.btn-lihat-bukti').click(function(e) {
+                e.preventDefault();
+
+                let a = $('#lihat-bukti').val()
+                let b = `{{ asset('storage/bukti-transaksi/${a}') }}`
+
+                window.open(b, '_blank');
+
+            });
+
+            // Modal Show
+            $('.btn-bukti').click(function (e) { 
+                e.preventDefault();
+                $('#modal-bukti').modal('show')
             });
 
         });
