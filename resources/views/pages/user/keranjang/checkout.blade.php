@@ -560,7 +560,7 @@
         $(document).ready(function(state) {
 
             // Modal
-            if ("{{ $data[0]->user->alamat }}" == '') {
+            if (`{{ $data[0]->user->alamat }}` == '') {
                 $('#modal-edit').modal('show')
             }
 
