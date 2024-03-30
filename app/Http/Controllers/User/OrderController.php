@@ -1074,9 +1074,9 @@ class OrderController extends Controller
 
                 $jarak = $jarak + 5;
                 
-                // if ($jarak > 126) {
-                if ($jarak > 130) {
-                    $jarak = $pdf->getY();
+                if ($jarak >= 131) {
+                    $jarak = (int)$pdf->getY();
+                    $pdf->SetAutoPageBreak(true, 5);
                 }
 
                 $pdf->SetXY(3, $jarak);
