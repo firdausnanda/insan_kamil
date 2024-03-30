@@ -382,6 +382,7 @@ class OrderController extends Controller
                     'nama_pengirim' => $cekDropship->nama_pengirim,
                     'no_telp_pengirim' => $cekDropship->no_telp_pengirim,
                     'email_pengirim' => $cekDropship->email_pengirim,
+                    'nama_penerima' => $cekDropship->alamat_penerima,
                     'alamat_penerima' => $cekDropship->alamat_penerima,
                     'kota_penerima' => $cekDropship->kota_penerima,
                     'provinsi_penerima' => $cekDropship->provinsi_penerima,
@@ -1075,6 +1076,7 @@ class OrderController extends Controller
                 
                 if ($jarak > 126) {
                     $jarak = $pdf->getY();
+                    $pdf->SetAutoPageBreak(true, 100);
                 }
 
                 $pdf->SetXY(3, $jarak);
