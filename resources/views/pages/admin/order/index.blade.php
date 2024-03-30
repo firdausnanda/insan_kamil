@@ -164,9 +164,9 @@
                             link = link.replace(':id', data);
 
                             if (row.status == 1) {
-                                return `<button class="btn btn-link p-0 text-decoration-none text-info btn-bukti">${row.user.name}</button> <br> <span style="font-size: 12px">${data}</span>`
+                                return `<button class="btn btn-link p-0 text-decoration-none text-info btn-bukti text-start">${row.user.name}</button> <br> <span style="font-size: 12px">${data}</span>`
                             } else {
-                                return `<a class="btn btn-link p-0 text-decoration-none text-info" href="${link}">${row.user.name}</a> <br> <span style="font-size: 12px">${data}</span>`
+                                return `<a class="btn btn-link p-0 text-decoration-none text-info text-start" href="${link}">${row.user.name}</a> <br> <span style="font-size: 12px">${data}</span>`
                             }
                         }
                     },
