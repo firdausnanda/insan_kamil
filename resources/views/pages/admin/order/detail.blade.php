@@ -134,7 +134,7 @@
                                                     class="text-dark">{{ rupiah($order->harga_total + $order->biaya_pengiriman - $member_diskon - $diskon_alquran) }}</span>
                                             </p>
                                         </div>
-                                        <button type="button" class="btn btn-info btn-bukti">Download Invoice</button>
+                                        <button type="button" class="btn btn-info btn-bukti">Lihat Bukti Transaksi</button>
                                     </div>
 
                                     @if ($dropship)
