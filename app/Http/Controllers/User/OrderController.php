@@ -1043,7 +1043,7 @@ class OrderController extends Controller
             $pdf->SetXY(3, $yy + 15);
             $pdf->Cell(20, 5,  $order->pembayaran[0]->created_at , 0, 0, "C");
             $pdf->Cell(15, 5,  "" , 0, 0, "C");
-            $pdf->Cell(20, 5,  "QRIS" , 0, 0, "C");
+            $pdf->Cell(20, 5,  "Transfer Bank" , 0, 0, "C");
             $pdf->Cell(15, 5,  "" , 0, 0, "C");
             $pdf->Cell(20, 5,  $courier_search , 0, 0, "C");
             $pdf->Cell(15, 5,  "" , 0, 1, "C");
@@ -1072,8 +1072,12 @@ class OrderController extends Controller
                 $pdf->SetFont('Arial', '', 6);
 
                 $jarak = $jarak + 5;
-                $pdf->SetXY(3, $jarak);
+                
+                if ($jarak > 126) {
+                    $jarak = $pdf->getY();
+                }
 
+                $pdf->SetXY(3, $jarak);
                 $pdf->Cell(5, 4, $k + 1, 0, 0, 'C');
                 $pdf->Cell(40, 4,$v->produk->nama_produk, 0, 0, 'L');
                 $pdf->Cell(5, 4,$v->jumlah_produk, 0, 0, 'C');
