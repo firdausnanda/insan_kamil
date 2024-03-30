@@ -12,13 +12,13 @@
                         <strong>Perhatian</strong> <br>
                         Harap melengkapi form berikut dengan benar
                     </div>
-                    
+
                     <div class="mb-8">
                         <!-- heading -->
                         <h1 class="h3">Profil Pengguna</h1>
                         <p>Profil pengguna harap dilengkapi</p>
                     </div>
-                    
+
                     <!-- form -->
                     <form id="profile" class="row">
                         <!-- input -->
@@ -292,6 +292,40 @@
                     }
                 });
             })
+
+            // Select Kota
+            var kota = "{{ route('user.profile.kota', ':id') }}";
+            kota = kota.replace(':id', `{{ $user->provinsi ?? 0 }}`);
+
+            $.ajax({
+                url: kota,
+                dataType: "JSON",
+                delay: 250,
+                success: function(data) {
+                    console.log(data);
+                    $.each(data.data, function(index, value) {
+                        $("#kota").append(
+                            `<option value="${value['id']}"> ${value['name']} </option>`)
+                    });
+                }
+            });
+
+            // Select Desa Dropship
+            var desa = "{{ route('user.profile.desa', ':id') }}";
+            desa = desa.replace(':id', `{{ $user->kota ?? 0 }}`);
+
+            $.ajax({
+                url: desa,
+                dataType: "JSON",
+                delay: 250,
+                success: function(data) {
+                    $.each(data.data, function(index, value) {
+                        $("#desa").append("<option value='" + value['id'] +
+                            "'>" +
+                            value['name'] + "</option>");
+                    });
+                }
+            });
         });
     </script>
 @endsection

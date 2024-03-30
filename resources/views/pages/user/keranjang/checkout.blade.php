@@ -619,6 +619,40 @@
             });
 
             // Select Kota
+            var kota = "{{ route('user.profile.kota', ':id') }}";
+            kota = kota.replace(':id', `{{ $data[0]->user->provinsi }}`);
+
+            $.ajax({
+                url: kota,
+                dataType: "JSON",
+                delay: 250,
+                success: function(data) {
+                    console.log(data);
+                    $.each(data.data, function(index, value) {
+                        $("#kota").append(
+                            `<option value="${value['id']}"> ${value['name']} </option>`)
+                    });
+                }
+            });
+
+            // Select Desa Dropship
+            var desa = "{{ route('user.profile.desa', ':id') }}";
+            desa = desa.replace(':id', `{{ $data[0]->user->kota }}`);
+
+            $.ajax({
+                url: desa,
+                dataType: "JSON",
+                delay: 250,
+                success: function(data) {
+                    $.each(data.data, function(index, value) {
+                        $("#desa").append("<option value='" + value['id'] +
+                            "'>" +
+                            value['name'] + "</option>");
+                    });
+                }
+            });
+
+            // Select Kota
             $('#provinsi').on('select2:select', function(e) {
                 var id = e.params.data.id;
 
@@ -689,6 +723,7 @@
             $('#provinsi_penerima').select2({
                 theme: 'bootstrap-5',
                 placeholder: '-- Pilih Provinsi --',
+                dropdownPosition: 'below',
                 dropdownParent: $("#modal-dropship")
             });
 
@@ -696,6 +731,7 @@
             $('#desa_penerima').select2({
                 theme: 'bootstrap-5',
                 placeholder: '-- Pilih Kecamatan --',
+                dropdownPosition: 'below',
                 dropdownParent: $("#modal-dropship")
             });
 
@@ -714,7 +750,7 @@
 
             // Select Kota Dropship
             var kota_dropship = "{{ route('user.profile.kota', ':id') }}";
-            kota_dropship = kota_dropship.replace(':id', {{ $dropship ? $dropship->provinsi_penerima : 0 }});
+            kota_dropship = kota_dropship.replace(':id', `{{ $dropship ? $dropship->provinsi_penerima : 0 }}`);
 
             $.ajax({
                 url: kota_dropship,
@@ -730,7 +766,7 @@
 
             // Select Desa Dropship
             var desa_dropship = "{{ route('user.profile.desa', ':id') }}";
-            desa_dropship = desa_dropship.replace(':id', {{ $dropship ? $dropship->kota_penerima : 0 }});
+            desa_dropship = desa_dropship.replace(':id', `{{ $dropship ? $dropship->kota_penerima : 0 }}`);
 
             $.ajax({
                 url: desa_dropship,
@@ -749,6 +785,7 @@
             $('#kota_penerima').select2({
                 theme: 'bootstrap-5',
                 placeholder: '-- Pilih Kota --',
+                dropdownPosition: 'below',
                 dropdownParent: $("#modal-dropship")
             });
 
