@@ -226,9 +226,9 @@
                                             <tr>
                                                 <td class="border-bottom-0 pb-0"></td>
                                                 <td class="border-bottom-0 pb-0"></td>
-                                                <td colspan="1" class="fw-medium text-dark">
-                                                    <!-- text -->
-                                                    Sub Total :
+                                                <td class="fw-medium text-dark">
+                                                    {{ $order->produk_dikirim->sum('jumlah_produk') }} 
+                                                    (Berat Total : {{ $order->jumlah_produk_total }}gr)
                                                 </td>
                                                 <td class="fw-medium text-dark">
                                                     <!-- text -->
