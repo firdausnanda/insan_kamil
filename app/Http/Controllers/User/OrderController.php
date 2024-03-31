@@ -1106,7 +1106,7 @@ class OrderController extends Controller
             $pdf->SetXY(3, $y + 3);
             $pdf->SetFont('Arial', 'B', 6);
             $pdf->Cell(52, 4, '', 0, 0);
-            $pdf->Cell(43, 4, "Total Jumlah Produk (Aktif) " . $order->produk_dikirim->count() . " Produk", 0, 1, 'L');
+            $pdf->Cell(43, 4, "Total Jumlah Produk (Aktif) " . $order->produk_dikirim->sum('jumlah_produk') . " Produk", 0, 1, 'L');
             $pdf->Ln(1);
             
             $pdf->SetFillColor('247', '247', '247');
