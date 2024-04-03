@@ -382,7 +382,7 @@ class OrderController extends Controller
                     'nama_pengirim' => $cekDropship->nama_pengirim,
                     'no_telp_pengirim' => $cekDropship->no_telp_pengirim,
                     'email_pengirim' => $cekDropship->email_pengirim,
-                    'nama_penerima' => $cekDropship->alamat_penerima,
+                    'nama_penerima' => $cekDropship->nama_penerima,
                     'alamat_penerima' => $cekDropship->alamat_penerima,
                     'kota_penerima' => $cekDropship->kota_penerima,
                     'provinsi_penerima' => $cekDropship->provinsi_penerima,
@@ -517,7 +517,7 @@ class OrderController extends Controller
                     'kota_penerima' => $cekDropship->kota_penerima,
                     'provinsi_penerima' => $cekDropship->provinsi_penerima,
                     'desa_penerima' => $cekDropship->desa_penerima,
-                    'nama_penerima' => $cekDropship->alamat_penerima,
+                    'nama_penerima' => $cekDropship->nama_penerima,
                     'no_telp_penerima' => $cekDropship->no_telp_penerima,
                 ]);
             }
