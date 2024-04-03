@@ -517,6 +517,7 @@ class OrderController extends Controller
                     'kota_penerima' => $cekDropship->kota_penerima,
                     'provinsi_penerima' => $cekDropship->provinsi_penerima,
                     'desa_penerima' => $cekDropship->desa_penerima,
+                    'nama_penerima' => $cekDropship->alamat_penerima,
                     'no_telp_penerima' => $cekDropship->no_telp_penerima,
                 ]);
             }
