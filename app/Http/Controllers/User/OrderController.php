@@ -733,7 +733,7 @@ class OrderController extends Controller
             $diskon_alquran = 0;
             foreach ($order->produk_dikirim as $key => $value) {
                 // Diskon Alquran
-                if ($value->produk->id_kategori == '17') {
+                if ($value->produk && $value->produk->id_kategori == '17') {
                     if ($order->id_member) {
                         $diskon_alquran += $value->harga_jual * $value->jumlah_produk * 30 / 100;
                     }else{

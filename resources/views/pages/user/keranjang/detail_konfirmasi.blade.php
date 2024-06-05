@@ -189,7 +189,7 @@
                                                             <td>
                                                                 <div class="d-flex align-items-center">
                                                                     <div>
-                                                                        @if ($i->produk->gambar_produk->count() > 0)
+                                                                        @if ($i->produk && $i->produk->gambar_produk->count() > 0)
                                                                             <img src="{{ asset('storage/produk/' . $i->produk->gambar_produk[0]->gambar) }}"
                                                                                 alt="" class="icon-shape icon-lg" />
                                                                         @else
@@ -198,7 +198,7 @@
                                                                         @endif
                                                                     </div>
                                                                     <div class="ms-lg-4 mt-2 mt-lg-0">
-                                                                        <h5 class="mb-0 h6">{{ $i->produk->nama_produk }}
+                                                                        <h5 class="mb-0 h6">{{ $i->produk ? $i->produk->nama_produk : '' }}
                                                                         </h5>
                                                                     </div>
                                                                 </div>
@@ -340,7 +340,7 @@
                         @foreach ($order->produk_dikirim as $i)
                             <div class="row mb-2">
                                 <div class="col-1">
-                                    @if ($i->produk->gambar_produk->count() > 0)
+                                    @if ($i->produk && $i->produk->gambar_produk->count() > 0)
                                         <img src="{{ asset('storage/produk/' . $i->produk->gambar_produk[0]->gambar) }}"
                                             alt="" class="icon-shape icon-lg" />
                                     @else
@@ -349,8 +349,8 @@
                                     @endif
                                 </div>
                                 <div class="col-11">
-                                    <h5>{{ $i->produk->nama_produk }}</h5>
-                                    <input type="hidden" name="id_produk[]" value="{{ $i->produk->id }}">
+                                    <h5>{{ $i->produk ? $i->produk->nama_produk : null }}</h5>
+                                    <input type="hidden" name="id_produk[]" value="{{ $i->produk ? $i->produk->id : null }}">
                                     <h6 class="text-secondary fw-light fs-6">Bagaimana produk ini menurut anda?</h6>
                                     <input name="rating[]" class="rating rating-loading input-1" value="5"
                                         data-size="sm" data-show-clear="false" data-show-caption="true" data-min="0"
