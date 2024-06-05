@@ -203,6 +203,7 @@ Route::group(['middleware' => 'auth'], function () {
 		// Keranjang Belanja
 		Route::group(['prefix' => 'keranjang', 'as' => 'keranjang.'], function () {
 			Route::get('', [KeranjangController::class, 'index'])->name('index');
+			Route::get('/subtotal', [KeranjangController::class, 'subtotal'])->name('subtotal');
 			Route::post('', [KeranjangController::class, 'store'])->name('store');
 			Route::delete('', [KeranjangController::class, 'destroy'])->name('destroy');
 		});
@@ -211,6 +212,7 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::group(['prefix' => 'order', 'as' => 'order.'], function () {
 			Route::get('', [UserOrderController::class, 'index'])->name('index');
 			// Route::post('', [UserOrderController::class, 'store'])->name('store');
+			Route::post('/alamat', [UserOrderController::class, 'store_alamat'])->name('store_alamat');
 			Route::post('/pembayaran-manual', [UserOrderController::class, 'store_manual'])->name('store_manual');
 			Route::put('/catatan', [UserOrderController::class, 'catatan'])->name('catatan');
 			Route::post('/detail-store', [UserOrderController::class, 'detail_store'])->name('detail_store');
@@ -227,6 +229,7 @@ Route::group(['middleware' => 'auth'], function () {
 			Route::put('/dropship', [UserOrderController::class, 'edit_dropship'])->name('edit_dropship');
 			Route::get('/cetak', [UserOrderController::class, 'cetak'])->name('cetak');
 			Route::post('/bukti-transaksi', [UserOrderController::class, 'addBukti'])->name('addBukti');
+			Route::post('/upload-bukti-transaksi', [UserOrderController::class, 'uploadBukti'])->name('uploadBukti');
 			Route::get('/detail-konfirmasi/{id}', [UserOrderController::class, 'detail_konfirmasi'])->name('detail_konfirmasi');
 		});
 

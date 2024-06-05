@@ -13,287 +13,311 @@
                     <div class="card h-100 card-lg pb-5">
                         <div class="card h-100 card-lg">
                             <div class="card-body p-6">
-                                <div class="d-md-flex justify-content-between">
-                                    <div class="d-flex align-items-center mb-2 mb-md-0">
-                                        <h2>Detail Pesanan</h2>
-                                    </div>
-                                    <!-- select option -->
-                                    <div class="d-md-flex">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Menunggu Pembayaran</h4>
 
-                                        <!-- button -->
-                                        <div class="ms-md-3">
-                                            @if ($order->status == 1)
-                                                {{-- <button id="btn-bayar" class="btn btn-primary">Lakukan Pembayaran</button> --}}
-                                                <button id="btn-bukti" class="btn btn-info">Unggah Bukti Pembayaran</button>
-                                            @elseif ($order->status == 6)
-                                            @else
-                                                <button type="button" class="btn btn-info btn-download">Download Bukti
-                                                    Pembayaran</button>
-                                            @endif
-                                            <a href="{{ route('user.order.konfirmasi') }}"
-                                                class="btn btn-secondary">Kembali</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mt-8">
-                                    <div class="row">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div>
+                                                    <i class="fa-solid fa-bag-shopping me-2"></i>
+                                                    <strong class="text-dark fs-5">
+                                                        Belanja
+                                                    </strong>
+                                                </div>
 
-                                        @if ($dropship)
-                                            <div class="col-12">
-                                                <div class="alert alert-primary" role="alert">
-                                                    Dikirim Melalui Dropship
+                                                <div class="row mt-3 justify-content-center align-items-center">
+                                                    <div class="col-lg-1 text-center">
+                                                        <img style="width: 45px"
+                                                            src="{{ asset('images/bank/logo_bca.png') }}">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <strong>Metode Pembayaran</strong>
+                                                        <p class="mb-0">Transfer Manual</p>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <strong>Total Pembayaran</strong>
+                                                        <p class="mb-0">
+                                                            {{ rupiah($order->harga_total + $order->biaya_pengiriman - $member_diskon - $diskon_alquran) }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="row g-3">
+                                                            @if ($order->status == 1)
+                                                                <button id="btn-bukti" class="btn btn-primary">Upload Bukti
+                                                                    Pembayaran</button>
+                                                            @elseif ($order->status == 6)
+                                                            @else
+                                                                <button type="button"
+                                                                    class="btn btn-primary btn-download">Download Bukti
+                                                                    Pembayaran</button>
+                                                            @endif
+
+                                                            <button class="btn btn-outline-secondary">Detail
+                                                                Pesanan</button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        @endif
+                                        </div>
 
-                                        <!-- address -->
-                                        <div class="col-lg-4 col-md-4 col-12">
-                                            <div class="mb-6">
-                                                <h6>Detail Customer</h6>
-                                                <p class="mb-1 lh-lg">
-                                                    {{ $order->user->name }}
-                                                    <br />
-                                                    {{ $order->user->email }}
-                                                    <br />
-                                                    {{ $order->user->no_telp }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <!-- address -->
-                                        <div class="col-lg-4 col-md-4 col-12">
-                                            <div class="mb-6">
-                                                <h6>Alamat Pengiriman</h6>
-                                                <p class="mb-1 lh-lg">
-                                                    {{ $order->user->alamat }}
-                                                    <br>
-                                                    {{ $order->user->district ? $order->user->district->name : '' }},
-                                                    {{ $order->user->city ? $order->user->city->name : '' }}
-                                                    <br>
-                                                    {{ $order->user->province ? $order->user->province->name : '' }}
-                                                    Kode Pos.
-                                                    {{ $order->user->kode_pos ?? '' }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <!-- address -->
-                                        <div class="col-lg-4 col-md-4 col-12">
-                                            <div class="mb-6">
-                                                <h6>Detail Order</h6>
-                                                <p class="mb-1 lh-lg">
-                                                    Tanggal Order:
-                                                    <span
-                                                        class="text-dark">{{ \Carbon\Carbon::parse($order->created_at)->isoFormat('D MMMM Y') }}</span>
-                                                    <br />
-                                                    Total Order:
-                                                    <span
-                                                        class="text-dark">{{ rupiah($order->harga_total + $order->biaya_pengiriman - $member_diskon - $diskon_alquran) }}</span>
-                                                    <br />
-                                                    Status:
-                                                <h5>
-                                                    <span id="btn-status" class="badge"></span>
-                                                </h5>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        @if ($dropship)
-                                            <div class="col-lg-4 col-md-4 col-12">
-                                                <div class="mb-6">
-                                                    <h6>Alamat Penerima</h6>
-                                                    <p class="mb-1 lh-lg">
-                                                        {{ $dropship->nama_penerima }}
-                                                        <br>
-                                                        {{ $dropship->no_telp_penerima }}
-                                                        <br>    
-                                                        {{ $dropship->alamat_penerima }}
-                                                        <br>
-                                                        {{ $dropship->district->name }}
-                                                        {{ $dropship->city->name }}
-                                                        <br>
-                                                        {{ $dropship->province->name }}
-                                                        Kode Pos.
-                                                        {{ $dropship->city->postal_code }}
-                                                        <br />
-                                                    </p>
-                                                </div>
-                                                <input type="hidden" id="subdistrict" value="${response.data.desa}">
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-12">
-                                                <div class="mb-6">
-                                                    <h6>Data Pengirim Dropshipper</h6>
-                                                    <p class="mb-1 lh-lg">
-                                                        {{ $dropship->nama_pengirim }}
-                                                        <br />
-                                                        {{ $dropship->email_pengirim }}
-                                                        <br />
-                                                        {{ $dropship->no_telp_pengirim }}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        @endif
+
 
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="table-responsive">
-                                        <!-- Table -->
-                                        <table class="table mb-0 text-nowrap table-centered">
-                                            <!-- Table Head -->
-                                            <thead class="bg-light">
-                                                <tr>
-                                                    <th>Produk</th>
-                                                    <th>Harga</th>
-                                                    <th>Jumlah Produk</th>
-                                                    <th>Total</th>
-                                                </tr>
-                                            </thead>
-                                            <!-- tbody -->
-                                            <tbody>
-                                                @foreach ($order->produk_dikirim as $i)
-                                                    <tr>
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-                                                                <div>
-                                                                    @if ($i->produk->gambar_produk->count() > 0)
-                                                                        <img src="{{ asset('storage/produk/' . $i->produk->gambar_produk[0]->gambar) }}"
-                                                                            alt="" class="icon-shape icon-lg" />
-                                                                    @else
-                                                                        <img src="{{ asset('images/avatar/no-image.png') }}"
-                                                                            alt="" class="icon-shape icon-lg" />
-                                                                    @endif
-                                                                </div>
-                                                                <div class="ms-lg-4 mt-2 mt-lg-0">
-                                                                    <h5 class="mb-0 h6">{{ $i->produk->nama_produk }}</h5>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <span class="text-body">{{ rupiah($i->harga_jual) }}</span>
-                                                        </td>
-                                                        <td>
-                                                            {{ $i->jumlah_produk }}
-                                                        </td>
-                                                        <td>
-                                                            {{ rupiah($i->harga_jual * $i->jumlah_produk) }}
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
 
-                                                {{-- Total --}}
-                                                <tr>
-                                                    <td class="border-bottom-0 pb-0"></td>
-                                                    <td class="border-bottom-0 pb-0"></td>
-                                                    <td colspan="1" class="fw-medium text-dark">
-                                                        <!-- text -->
-                                                        Sub Total :
-                                                    </td>
-                                                    <td class="fw-medium text-dark">
-                                                        <!-- text -->
-                                                        {{ rupiah($subTotal) }}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="border-bottom-0 pb-0"></td>
-                                                    <td class="border-bottom-0 pb-0"></td>
-                                                    <td colspan="1" class="fw-medium text-dark">
-                                                        <!-- text -->
-                                                        Shipping Cost
-                                                    </td>
-                                                    <td class="fw-medium text-dark">
-                                                        <!-- text -->
-                                                        {{ rupiah($order->biaya_pengiriman) }}
-                                                    </td>
-                                                </tr>
+                                <div class="card mt-5">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Detail Pesanan</h4>
 
-                                                @if ($order->id_member)
-                                                    <tr>
-                                                        <td class="border-bottom-0 pb-0"></td>
-                                                        <td class="border-bottom-0 pb-0"></td>
-                                                        <td colspan="1" class="fw-medium text-success">
-                                                            <!-- text -->
-                                                            Member Diskon
-                                                        </td>
-                                                        <td class="fw-medium text-success">
-                                                            <!-- text -->
-                                                            <span id="member_diskon">
-                                                                {{ rupiah($member_diskon) }}
-                                                            </span>
-                                                        </td>
-                                                    </tr>
+                                        <div class="mt-8">
+                                            <div class="row">
+
+                                                @if ($dropship)
+                                                    <div class="col-12">
+                                                        <div class="alert alert-primary" role="alert">
+                                                            Dikirim Melalui Dropship
+                                                        </div>
+                                                    </div>
                                                 @endif
 
-                                                @if ($diskon_alquran)
+                                                <!-- address -->
+                                                <div class="col-lg-4 col-md-4 col-12">
+                                                    <div class="mb-6">
+                                                        <h6>Detail Customer</h6>
+                                                        <p class="mb-1 lh-lg">
+                                                            {{ $order->user->name }}
+                                                            <br />
+                                                            {{ $order->user->email }}
+                                                            <br />
+                                                            {{ $order->user->no_telp }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <!-- address -->
+                                                <div class="col-lg-4 col-md-4 col-12">
+                                                    <div class="mb-6">
+                                                        <h6>Alamat Pengiriman</h6>
+                                                        <p class="mb-1 lh-lg">
+                                                            {{ $order->user->alamat }}
+                                                            <br>
+                                                            {{ $order->user->district ? $order->user->district->name : '' }},
+                                                            {{ $order->user->city ? $order->user->city->name : '' }}
+                                                            <br>
+                                                            {{ $order->user->province ? $order->user->province->name : '' }}
+                                                            Kode Pos.
+                                                            {{ $order->user->kode_pos ?? '' }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <!-- address -->
+                                                <div class="col-lg-4 col-md-4 col-12">
+                                                    <div class="mb-6">
+                                                        <h6>Detail Order</h6>
+                                                        <p class="mb-1 lh-lg">
+                                                            Tanggal Order:
+                                                            <span
+                                                                class="text-dark">{{ \Carbon\Carbon::parse($order->created_at)->isoFormat('D MMMM Y') }}</span>
+                                                            <br />
+                                                            Total Order:
+                                                            <span
+                                                                class="text-dark">{{ rupiah($order->harga_total + $order->biaya_pengiriman - $member_diskon - $diskon_alquran) }}</span>
+                                                            <br />
+                                                            Status:
+                                                        <h5>
+                                                            <span id="btn-status" class="badge"></span>
+                                                        </h5>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                @if ($dropship)
+                                                    <div class="col-lg-4 col-md-4 col-12">
+                                                        <div class="mb-6">
+                                                            <h6>Alamat Penerima</h6>
+                                                            <p class="mb-1 lh-lg">
+                                                                {{ $dropship->nama_penerima }}
+                                                                <br>
+                                                                {{ $dropship->no_telp_penerima }}
+                                                                <br>
+                                                                {{ $dropship->alamat_penerima }}
+                                                                <br>
+                                                                {{ $dropship->district->name }}
+                                                                {{ $dropship->city->name }}
+                                                                <br>
+                                                                {{ $dropship->province->name }}
+                                                                Kode Pos.
+                                                                {{ $dropship->city->postal_code }}
+                                                                <br />
+                                                            </p>
+                                                        </div>
+                                                        <input type="hidden" id="subdistrict"
+                                                            value="${response.data.desa}">
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-12">
+                                                        <div class="mb-6">
+                                                            <h6>Data Pengirim Dropshipper</h6>
+                                                            <p class="mb-1 lh-lg">
+                                                                {{ $dropship->nama_pengirim }}
+                                                                <br />
+                                                                {{ $dropship->email_pengirim }}
+                                                                <br />
+                                                                {{ $dropship->no_telp_pengirim }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                @endif
+
+                                            </div>
+                                        </div>
+
+                                        <div class="table-responsive">
+                                            <!-- Table -->
+                                            <table class="table mb-0 text-nowrap table-centered">
+                                                <!-- Table Head -->
+                                                <thead class="bg-light">
+                                                    <tr>
+                                                        <th>Produk</th>
+                                                        <th>Harga</th>
+                                                        <th>Jumlah Produk</th>
+                                                        <th>Total</th>
+                                                    </tr>
+                                                </thead>
+                                                <!-- tbody -->
+                                                <tbody>
+                                                    @foreach ($order->produk_dikirim as $i)
+                                                        <tr>
+                                                            <td>
+                                                                <div class="d-flex align-items-center">
+                                                                    <div>
+                                                                        @if ($i->produk->gambar_produk->count() > 0)
+                                                                            <img src="{{ asset('storage/produk/' . $i->produk->gambar_produk[0]->gambar) }}"
+                                                                                alt="" class="icon-shape icon-lg" />
+                                                                        @else
+                                                                            <img src="{{ asset('images/avatar/no-image.png') }}"
+                                                                                alt="" class="icon-shape icon-lg" />
+                                                                        @endif
+                                                                    </div>
+                                                                    <div class="ms-lg-4 mt-2 mt-lg-0">
+                                                                        <h5 class="mb-0 h6">{{ $i->produk->nama_produk }}
+                                                                        </h5>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <span class="text-body">{{ rupiah($i->harga_jual) }}</span>
+                                                            </td>
+                                                            <td>
+                                                                {{ $i->jumlah_produk }}
+                                                            </td>
+                                                            <td>
+                                                                {{ rupiah($i->harga_jual * $i->jumlah_produk) }}
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+
+                                                    {{-- Total --}}
                                                     <tr>
                                                         <td class="border-bottom-0 pb-0"></td>
                                                         <td class="border-bottom-0 pb-0"></td>
-                                                        <td colspan="1" class="fw-medium text-success">
+                                                        <td colspan="1" class="fw-medium text-dark">
                                                             <!-- text -->
-                                                            Diskon Alquran
+                                                            Sub Total :
                                                         </td>
-                                                        <td class="fw-medium text-success">
+                                                        <td class="fw-medium text-dark">
                                                             <!-- text -->
-                                                            <span id="member_diskon">
-                                                                {{ rupiah($diskon_alquran) }}
-                                                            </span>
+                                                            {{ rupiah($subTotal) }}
                                                         </td>
                                                     </tr>
-                                                @endif
+                                                    <tr>
+                                                        <td class="border-bottom-0 pb-0"></td>
+                                                        <td class="border-bottom-0 pb-0"></td>
+                                                        <td colspan="1" class="fw-medium text-dark">
+                                                            <!-- text -->
+                                                            Shipping Cost
+                                                        </td>
+                                                        <td class="fw-medium text-dark">
+                                                            <!-- text -->
+                                                            {{ rupiah($order->biaya_pengiriman) }}
+                                                        </td>
+                                                    </tr>
 
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td colspan="1" class="fw-semibold text-dark">
-                                                        <!-- text -->
-                                                        Grand Total
-                                                    </td>
-                                                    <td class="fw-semibold text-dark">
-                                                        <!-- text -->
-                                                        {{ rupiah($order->biaya_pengiriman + $subTotal - $member_diskon - $diskon_alquran) }}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                {{-- <div class="col-lg-6 p-5">
-                                    <div class="container border rounded p-4 text-center position-relative"
-                                        style="background-color: #f7c331; bottom: 120px; left: 45px">
-                                        <div class="container border border-white border-5 p-4 rounded">
-                                            <img src="{{ asset('images/warning.png') }}" style="width: 80px">
-                                            <h4 class="text-danger">Perhatian</h4>
-                                            <p class="text-dark fs-5">Ditujukan kepada seluruh customer kami untuk
-                                                mempermudah
-                                                administrasi, setiap transaksi pembelian kurang dari Rp 500.00 silahkan
-                                                menggunakan pembayaran via <strong>Qris</strong>. Untuk transaksi lebih dari
-                                                Rp 500.000
-                                                dianjurkan pembayaran transfer via bank. Terima kasih atas perhatian
-                                                dan kerja samanya.</p>
+                                                    @if ($order->id_member)
+                                                        <tr>
+                                                            <td class="border-bottom-0 pb-0"></td>
+                                                            <td class="border-bottom-0 pb-0"></td>
+                                                            <td colspan="1" class="fw-medium text-success">
+                                                                <!-- text -->
+                                                                Member Diskon
+                                                            </td>
+                                                            <td class="fw-medium text-success">
+                                                                <!-- text -->
+                                                                <span id="member_diskon">
+                                                                    {{ rupiah($member_diskon) }}
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    @endif
+
+                                                    @if ($diskon_alquran)
+                                                        <tr>
+                                                            <td class="border-bottom-0 pb-0"></td>
+                                                            <td class="border-bottom-0 pb-0"></td>
+                                                            <td colspan="1" class="fw-medium text-success">
+                                                                <!-- text -->
+                                                                Diskon Alquran
+                                                            </td>
+                                                            <td class="fw-medium text-success">
+                                                                <!-- text -->
+                                                                <span id="member_diskon">
+                                                                    {{ rupiah($diskon_alquran) }}
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    @endif
+
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td colspan="1" class="fw-semibold text-dark">
+                                                            <!-- text -->
+                                                            Grand Total
+                                                        </td>
+                                                        <td class="fw-semibold text-dark">
+                                                            <!-- text -->
+                                                            {{ rupiah($order->biaya_pengiriman + $subTotal - $member_diskon - $diskon_alquran) }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                </div> --}}
-                            </div>
-                            <div class="card-body p-6">
-                                <div class="row">
-                                    @if ($order->status == 4 || $order->status == 5)
-                                        <div class="col-md-6 mb-4 mb-lg-0">
-                                            <h6>Detail Pengiriman</h6>
-                                            <!-- Section: Timeline -->
-                                            <section class="p-5">
-                                                <ul class="timeline">
-                                                    <div id="pengiriman"></div>
-                                                </ul>
-                                            </section>
-                                            <!-- Section: Timeline -->
-                                            @if ($order->status < 5)
-                                                <span class="text-secondary d-block mb-2">Paket Telah diterima?</span>
-                                                <button class="btn btn-info btn-sm btn-diterima"><i
-                                                        class="fa-solid fa-check me-2"></i>Paket Diterima</button>
-                                            @endif
-                                        </div>
-                                    @endif
                                 </div>
+
+                                @if ($order->status == 4 || $order->status == 5)
+                                    <div class="card mt-5">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Detail Pengiriman</h4>
+                                            <div class="col-md-6 mb-4 mb-lg-0">
+                                                <h6>Detail Pengiriman</h6>
+                                                <!-- Section: Timeline -->
+                                                <section class="p-5">
+                                                    <ul class="timeline">
+                                                        <div id="pengiriman"></div>
+                                                    </ul>
+                                                </section>
+                                                <!-- Section: Timeline -->
+                                                @if ($order->status < 5)
+                                                    <span class="text-secondary d-block mb-2">Paket Telah diterima?</span>
+                                                    <button class="btn btn-info btn-sm btn-diterima"><i
+                                                            class="fa-solid fa-check me-2"></i>Paket Diterima</button>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -370,55 +394,36 @@
                     <form id="form-bukti" method="post" enctype="multipart/form-data">
                         <div class="modal-body">
 
-                            <div class="alert alert-primary" role="alert">
-                                <strong>Perhatian</strong><br>
-                                Silakan kirimkan pembayaran ke salah satu rekening berikut.
-                                <ol>
-                                    <li>
-                                        <strong>BRI 6903 01 001436 50 7</strong> <br>
-                                        An. Eko Wicaksono
-                                    </li>
-                                    <li>
-                                        <strong>BCA 3920370747 </strong><br>
-                                        An. Eko Wicaksono
-                                    </li>
-                                    <li>
-                                        <strong>BSI 6227979170 </strong><br>
-                                        An. Eko wicaksono
-                                    </li>
-                                    <li>
-                                        <strong>BSM 7002044824</strong> <br>
-                                        An. RIYANTO
-                                    </li>
-                                </ol>
-
-                                <div class="my-2 text-center">
-                                    <span class="fw-bold p-2 border rounded bg-info text-white fs-4">Total Tagihan Anda : <span
-                                            id="total_pembayaran"></span></span>
+                            <div class="card border-0 mb-3">
+                                <div class="card-body p-0 p-3 bg-light rounded text-success">
+                                    <i class="fa-regular fa-lightbulb me-2"></i>
+                                    <span>Unggah bukti pembayaran dapat mempercepat verifikasi pembayaran</span>
                                 </div>
+                            </div>
+                            
+                            <p>Pastikan bukti pembayaran menampilkan : </p>
 
+                            <div class="row mb-4">
+                                <div class="col-lg-6">
+                                    <ul>
+                                        <li>
+                                            <strong class="d-block">Tanggal / Waktu Transfer</strong>
+                                            <span class="fst-italic text-secondary">contoh: tgl . 24/04/2024 / jam 09:20:36</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-6">
+                                    <ul>
+                                        <li>
+                                            <strong class="d-block">Status Berhasil</strong>
+                                            <span class="fst-italic text-secondary">contoh: Transfer BERHASIL, Transaksi Sukses</span>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
 
 
                             <div class="row g-3">
-                                <div class="col-lg-12">
-                                    <label for="" class="form-label">Nama Rekening</label>
-                                    <input type="text" class="form-control" name="nama_rekening">
-                                </div>
-                                <div class="col-lg-12">
-                                    <label for="" class="form-label">Tranfer ke</label>
-                                    <select class="form-select" name="transfer_ke">
-                                        <option value="BRI">BRI (No Rek : 6903 01 001436 50 7 A.n Eko Wicaksono)
-                                        </option>
-                                        <option value="BCA">BCA (No Rek : 3920370747 A.n Eko Wicaksono)</option>
-                                        <option value="BSI">BSI (No Rek : 6227979170 A.n Eko Wicaksono)</option>
-                                        <option value="BSM">BSM (No Rek : 7002044824 A.n Riyanto)</option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-12">
-                                    <label for="" class="form-label">Tanggal Transfer</label>
-                                    <input type="text" class="form-control" name="tgl_transfer" id="tgl_transfer">
-                                </div>
                                 <div class="col-lg-12">
                                     <!-- input -->
                                     <input type="file" class="upload-berkas-dropify" name="gambar"
@@ -726,7 +731,7 @@
                         ',-')
                     .display(
                         `{{ rupiah($order->biaya_pengiriman + $subTotal - $member_diskon - $diskon_alquran) }}`
-                        ))
+                    ))
 
             });
 
@@ -738,7 +743,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('user.order.addBukti') }}",
+                    url: "{{ route('user.order.uploadBukti') }}",
                     data: formDataa,
                     dataType: "JSON",
                     cache: false,

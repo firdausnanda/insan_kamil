@@ -42,4 +42,10 @@ class Keranjang extends Model
     {
         return $this->belongsTo(Produk::class, 'id_produk', 'id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user', 'id');
+    }
+
 }

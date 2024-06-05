@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('bukti_transfer', function (Blueprint $table) {
             $table->id();
             $table->string('order_id');
-            $table->string('gambar');
+            $table->string('gambar')->nullable();
             $table->boolean('status');
             $table->string('nama_rekening')->nullable();
             $table->string('transfer_ke')->nullable();

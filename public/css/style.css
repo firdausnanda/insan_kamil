@@ -110,3 +110,11 @@ table.dataTable tr.selected th.select-checkbox:after {
 .dropzone .dz-preview .dz-image img {
     width: 120px;
 }
+
+.card-input:hover {
+    cursor: pointer;
+}
+
+.card-shadow {
+    box-shadow: 0 0 1px 1px #2ecc71;
+}

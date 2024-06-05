@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Helpers\Pdf;
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
+use App\Models\AlamatUser;
 use App\Models\BuktiTransaksi;
 use App\Models\Diskon;
 use App\Models\Dropship;
@@ -48,6 +49,8 @@ class OrderController extends Controller
         })->get();
 
         $dropship = DropshipMaster::where('id_user', Auth::user()->id)->first();
+
+        $alamat = AlamatUser::where('id_user', Auth::user()->id)->orderBy('updated_at', 'desc')->paginate(3);
 
         $subTotal = $data->sum(function($q) {
            return $q->jumlah_produk * $q->harga_jual; 
@@ -118,11 +121,48 @@ class OrderController extends Controller
         }
 
         if ($data->first() != '') {
-            return view('pages.user.keranjang.checkout', compact('data', 'subTotal', 'beratProduk', 
+            return view('pages.user.keranjang.checkout2', compact('data', 'subTotal', 'beratProduk', 
                                                             'courier', 'dropship', 'member_diskon',
-                                                            'diskon_alquran'));
+                                                            'diskon_alquran', 'alamat'));
         }else{
             return redirect()->route('user.keranjang.index');
+        }
+    }
+
+    public function store_alamat(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+			'nama_penerima' => 'required|string|max:255',
+			'no_telp_penerima' => 'required|string|max:255',
+			'alamat' => 'required|string',
+			'provinsi' => 'required|numeric',
+			'kota' => 'required|numeric',
+			'desa' => 'required|numeric',
+			'kode_pos' => 'required|numeric',
+		]);
+
+		if ($validator->fails()) {
+			return ResponseFormatter::error($validator->errors(), 'Data tidak valid', 422);
+		}
+
+        try {
+
+            $store = AlamatUser::create([
+                'id_user' => Auth::user()->id,
+                'nama_penerima' => $request->nama_penerima,
+                'no_telp_penerima' => $request->no_telp_penerima,
+                'alamat_penerima' => $request->alamat,
+                'provinsi_penerima' => $request->provinsi,
+                'kota_penerima' => $request->kota,
+                'desa_penerima' => $request->desa,
+                'kode_pos' => $request->kode_pos,
+            ]);
+
+            return ResponseFormatter::success($store, 'Data Berhasil ditambahkan');
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
         }
     }
 
@@ -539,14 +579,32 @@ class OrderController extends Controller
             // Remove TempOrder if exist
             TempOrder::where('id_user', $request->id_user)->delete();
 
-            foreach ($request->dataProduk as $v) {
+            // foreach ($request->dataProduk as $v) {
+            //     // Store ke Temp Order
+            //     $order = TempOrder::create([
+            //         'id_produk' => $v['id_produk'],
+            //         'id_user' => $request->id_user,
+            //         'harga_jual' => $v['harga'],
+            //         'berat_produk' => $v['berat_produk'],
+            //         'jumlah_produk' => $v['jumlah'],
+            //     ]);
+            // }
+
+            $cek_keranjang = Keranjang::with('produk.harga', 'produk.stok', 'produk.gambar_produk')
+                                    ->where('id_user', $request->id_user)->get();
+            
+            if (count($cek_keranjang) < 1) {
+                return ResponseFormatter::error('Silakan belanja terlebih dulu', 'Error!');
+            }
+
+            foreach ($cek_keranjang as $v) {
                 // Store ke Temp Order
                 $order = TempOrder::create([
-                    'id_produk' => $v['id_produk'],
-                    'id_user' => $request->id_user,
-                    'harga_jual' => $v['harga'],
-                    'berat_produk' => $v['berat_produk'],
-                    'jumlah_produk' => $v['jumlah'],
+                    'id_produk' => $v->id_produk,
+                    'id_user' => $v->id_user,
+                    'harga_jual' => $v->produk->harga->harga_akhir,
+                    'berat_produk' => $v->produk->berat_produk,
+                    'jumlah_produk' => $v->jumlah_produk,
                 ]);
             }
 
@@ -685,8 +743,8 @@ class OrderController extends Controller
             }
 
             // Detail Konfirmasi
-            $bukti = BuktiTransaksi::where('order_id', $id)->first(); 
-    
+            $bukti = BuktiTransaksi::where('order_id', $id)->where('status', 0)->first(); 
+
             return view('pages.user.keranjang.detail_konfirmasi', compact('order', 'subTotal', 
                                                                         'dropship', 'member_diskon',
                                                                         'diskon_alquran', 'bukti'));
@@ -825,13 +883,13 @@ class OrderController extends Controller
 			'id_dropship' => 'required|string|max:255',
 			'nama_pengirim' => 'required|string|max:255',
 			'no_telp_pengirim' => 'required|string|max:255',
-			'no_telp_penerima' => 'required|string|max:255',
-			'email_pengirim' => 'required|string|max:255',
-			'nama_penerima' => 'required|string|max:255',
-			'alamat' => 'required|string|max:255',
-			'provinsi' => 'required|string|max:255',
-			'kota' => 'required|string|max:255',
-			'desa' => 'required|string|max:255',
+			// 'no_telp_penerima' => 'required|string|max:255',
+			// 'email_pengirim' => 'required|string|max:255',
+			// 'nama_penerima' => 'required|string|max:255',
+			// 'alamat' => 'required|string|max:255',
+			// 'provinsi' => 'required|string|max:255',
+			// 'kota' => 'required|string|max:255',
+			// 'desa' => 'required|string|max:255',
 		]);
 
 		if ($validator->fails()) {
@@ -843,13 +901,13 @@ class OrderController extends Controller
             $user = DropshipMaster::where('id', $request->id_dropship)->update([
                 'nama_pengirim' => $request->nama_pengirim,
                 'no_telp_pengirim' => $request->no_telp_pengirim,
-                'email_pengirim' => $request->email_pengirim,
-                'nama_penerima' => $request->nama_penerima,
-                'alamat_penerima' => $request->alamat,
-                'provinsi_penerima' => $request->provinsi,
-                'kota_penerima' => $request->kota,
-                'desa_penerima' => $request->desa,
-                'no_telp_penerima' => $request->no_telp_penerima,
+                // 'email_pengirim' => $request->email_pengirim,
+                // 'nama_penerima' => $request->nama_penerima,
+                // 'alamat_penerima' => $request->alamat,
+                // 'provinsi_penerima' => $request->provinsi,
+                // 'kota_penerima' => $request->kota,
+                // 'desa_penerima' => $request->desa,
+                // 'no_telp_penerima' => $request->no_telp_penerima,
             ]);
 
             return ResponseFormatter::success($user, 'Data berhasil diubah!');
@@ -880,8 +938,54 @@ class OrderController extends Controller
         $validator = Validator::make($request->all(), [
 			'id_order' => 'required|string|max:255',
 			'nama_rekening' => 'required|string|max:255',
+			'no_rekening' => 'required|numeric',
 			'transfer_ke' => 'required|string|max:255',
-			'tgl_transfer' => 'required|string|max:255',
+			// 'tgl_transfer' => 'required|string|max:255',
+            // 'gambar' => 'required|mimes:jpg,jpeg,png,pdf',
+         ]);
+
+		if ($validator->fails()) {
+			return ResponseFormatter::error($validator->errors(), 'Data Bukti tidak valid', 422);
+		}
+
+        try {
+            
+            // if ($request->hasFile('gambar')) {
+            //     $file = $request->file('gambar');
+            //     $fileName =  uniqid() . '_' . time() . '.' . trim($file->getClientOriginalExtension());
+        
+            //     // Store Image
+            //     $path = Storage::putFileAs(
+            //         'public/bukti-transaksi',
+            //         $request->file('gambar'),
+            //         $fileName
+            //     );
+            // }else{
+            //     $fileName = '';
+            // }
+
+            $data = BuktiTransaksi::create([
+                'nama_rekening' => $request->nama_rekening,
+                'no_rekening' => $request->no_rekening,
+                'order_id' => $request->id_order,
+                'transfer_ke' => $request->transfer_ke,
+                'tgl_transfer' => $request->tgl_transfer,
+                // 'gambar' => $fileName,
+                'status' => 0
+            ]);
+
+            return ResponseFormatter::success($data, 'Data berhasil disimpan');
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            abort(404);
+        }
+    }
+
+    public function uploadBukti(Request $request) 
+    {
+        $validator = Validator::make($request->all(), [
+			'id_order' => 'required|string|max:255',
             'gambar' => 'required|mimes:jpg,jpeg,png,pdf',
          ]);
 
@@ -905,13 +1009,8 @@ class OrderController extends Controller
                 $fileName = '';
             }
 
-            $data = BuktiTransaksi::create([
-                'nama_rekening' => $request->nama_rekening,
-                'order_id' => $request->id_order,
-                'transfer_ke' => $request->transfer_ke,
-                'tgl_transfer' => $request->tgl_transfer,
+            $data = BuktiTransaksi::where('order_id', $request->id_order)->update([
                 'gambar' => $fileName,
-                'status' => 0
             ]);
 
             return ResponseFormatter::success($data, 'Data berhasil disimpan');

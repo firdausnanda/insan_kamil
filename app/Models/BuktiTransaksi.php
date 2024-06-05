@@ -16,6 +16,7 @@ class BuktiTransaksi extends Model
         'gambar',
         'status',
         'nama_rekening',
+        'no_rekening',
         'transfer_ke',
         'tgl_transfer',
     ];
