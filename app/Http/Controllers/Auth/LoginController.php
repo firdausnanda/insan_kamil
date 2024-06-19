@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
+use GuzzleHttp\Exception\ClientException;
 class LoginController extends Controller
 {
     /*
@@ -65,7 +66,12 @@ class LoginController extends Controller
 
     public function redirectToProvider()
     {
-        return Socialite::driver('google')->redirect();
+        try {
+            return Socialite::driver('google')->redirect();
+        }
+        catch (ClientException $e) {
+            Log::error($e->getMessage(), 'Kesalahan Server!');
+        }
     }
 
     public function handleProviderCallback()
