@@ -95,7 +95,7 @@ class LoginController extends Controller
                 return redirect()->route('home');
             }
         } catch (\Exception $e) {
-            Log::error($e, 'Kesalahan Server!');
+            Log::error($e->getMessage(), 'Kesalahan Server!');
             return redirect()->route('login');
         }
     }
