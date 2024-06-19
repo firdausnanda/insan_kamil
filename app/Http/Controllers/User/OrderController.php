@@ -125,7 +125,7 @@ class OrderController extends Controller
                                                             'courier', 'dropship', 'member_diskon',
                                                             'diskon_alquran', 'alamat'));
         }else{
-            return redirect()->route('user.keranjang.index');
+            return redirect()->route('user.keranjang.index2');
         }
     }
 

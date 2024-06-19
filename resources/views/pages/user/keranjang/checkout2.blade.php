@@ -598,7 +598,32 @@
                                     <div id="categoryFlushTwo" class="accordion-collapse collapse"
                                         data-bs-parent="#categoryCollapseMenu">
                                         <div>
-                                            Bank BCA
+                                            <form id="form-bca">
+                                                <div class="mb-3">
+                                                    <label for="exampleInputEmail1" class="form-label">No.
+                                                        Rekening</label>
+                                                    <input type="text" class="form-control" name="no_rekening">
+                                                    <input type="hidden" name="transfer_ke" value="BCA">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="exampleInputPassword1" class="form-label">Nama
+                                                        Pemilik</label>
+                                                    <input type="text" class="form-control" name="nama_rekening">
+                                                    <input type="hidden" name="id_order" class="id_order">
+                                                </div>
+                                                <div class="alert alert-warning" role="alert">
+                                                    <ol class="ms-0 ps-0 ps-5">
+                                                        <li>Masukkan Info terkait diatas sesuai pada buku tabungan</li>
+                                                        <li>Untuk pembayaran melalui teller, isi <strong>"No
+                                                                Rekening"</strong> dengan 0000 dan <strong>"Nama
+                                                                Pemilik"</strong> dengan nama anda</li>
+                                                    </ol>
+                                                </div>
+                                                <div class="mb-3 float-end">
+                                                    <button type="submit" class="btn btn-primary btn-bayar">Bayar
+                                                        Sekarang</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </li>
@@ -618,7 +643,32 @@
                                     <div id="categoryFlushThree" class="accordion-collapse collapse"
                                         data-bs-parent="#categoryCollapseMenu">
                                         <div>
-                                            Bank BSI
+                                            <form id="form-bsi">
+                                                <div class="mb-3">
+                                                    <label for="exampleInputEmail1" class="form-label">No.
+                                                        Rekening</label>
+                                                    <input type="text" class="form-control" name="no_rekening">
+                                                    <input type="hidden" name="transfer_ke" value="BSI">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="exampleInputPassword1" class="form-label">Nama
+                                                        Pemilik</label>
+                                                    <input type="text" class="form-control" name="nama_rekening">
+                                                    <input type="hidden" name="id_order" class="id_order">
+                                                </div>
+                                                <div class="alert alert-warning" role="alert">
+                                                    <ol class="ms-0 ps-0 ps-5">
+                                                        <li>Masukkan Info terkait diatas sesuai pada buku tabungan</li>
+                                                        <li>Untuk pembayaran melalui teller, isi <strong>"No
+                                                                Rekening"</strong> dengan 0000 dan <strong>"Nama
+                                                                Pemilik"</strong> dengan nama anda</li>
+                                                    </ol>
+                                                </div>
+                                                <div class="mb-3 float-end">
+                                                    <button type="submit" class="btn btn-primary btn-bayar">Bayar
+                                                        Sekarang</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </li>
@@ -1224,6 +1274,106 @@
                     },
                 });
             });
+
+            // Submit Simpan
+            $('#form-bca').submit(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('user.order.addBukti') }}",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        if (response.meta.status == "success") {
+
+                            let a = "{{ route('user.order.detail_konfirmasi', ':id') }}"
+                            let b = a.replace(':id', $('#modal-bukti .id_order').val())
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: "Sukses!",
+                                text: response.meta.message,
+                            }).then((result) => {
+                                location.href = b
+                            });
+                        }
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
+                        switch (xhr.status) {
+                            case 422:
+                                $.each(xhr.responseJSON.data, function(index, value) {
+                                    $('input[name="' + index + '"]').addClass(
+                                        "is-invalid")
+                                });
+                                break;
+                            default:
+                                Swal.fire('Data Gagal Disimpan!',
+                                    'Periksa kembali data anda',
+                                    'error');
+                                break;
+                        }
+                        console.log(response.responseJSON);
+                    },
+                });
+            });
+            
+            // Submit Simpan
+            $('#form-bsi').submit(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('user.order.addBukti') }}",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        if (response.meta.status == "success") {
+
+                            let a = "{{ route('user.order.detail_konfirmasi', ':id') }}"
+                            let b = a.replace(':id', $('#modal-bukti .id_order').val())
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: "Sukses!",
+                                text: response.meta.message,
+                            }).then((result) => {
+                                location.href = b
+                            });
+                        }
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
+                        switch (xhr.status) {
+                            case 422:
+                                $.each(xhr.responseJSON.data, function(index, value) {
+                                    $('input[name="' + index + '"]').addClass(
+                                        "is-invalid")
+                                });
+                                break;
+                            default:
+                                Swal.fire('Data Gagal Disimpan!',
+                                    'Periksa kembali data anda',
+                                    'error');
+                                break;
+                        }
+                        console.log(response.responseJSON);
+                    },
+                });
+            });
+
+            
         });
     </script>
 @endsection

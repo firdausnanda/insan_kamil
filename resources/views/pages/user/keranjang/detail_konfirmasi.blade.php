@@ -28,8 +28,24 @@
 
                                                 <div class="row mt-3 justify-content-center align-items-center">
                                                     <div class="col-lg-1 text-center">
-                                                        <img style="width: 45px"
-                                                            src="{{ asset('images/bank/logo_bca.png') }}">
+                                                        @switch($bukti->transfer_ke)
+                                                            @case('BRI')
+                                                                <img style="width: 45px"
+                                                                    src="{{ asset('images/bank/logo_bri.png') }}">
+                                                            @break
+
+                                                            @case('BCA')
+                                                                <img style="width: 45px"
+                                                                    src="{{ asset('images/bank/logo_bca.png') }}">
+                                                            @break
+
+                                                            @case('BSI')
+                                                                <img style="width: 45px"
+                                                                    src="{{ asset('images/bank/logo_bsi.svg') }}">
+                                                            @break
+
+                                                            @default
+                                                        @endswitch
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <strong>Metode Pembayaran</strong>
@@ -198,7 +214,8 @@
                                                                         @endif
                                                                     </div>
                                                                     <div class="ms-lg-4 mt-2 mt-lg-0">
-                                                                        <h5 class="mb-0 h6">{{ $i->produk ? $i->produk->nama_produk : '' }}
+                                                                        <h5 class="mb-0 h6">
+                                                                            {{ $i->produk ? $i->produk->nama_produk : '' }}
                                                                         </h5>
                                                                     </div>
                                                                 </div>
@@ -350,7 +367,8 @@
                                 </div>
                                 <div class="col-11">
                                     <h5>{{ $i->produk ? $i->produk->nama_produk : null }}</h5>
-                                    <input type="hidden" name="id_produk[]" value="{{ $i->produk ? $i->produk->id : null }}">
+                                    <input type="hidden" name="id_produk[]"
+                                        value="{{ $i->produk ? $i->produk->id : null }}">
                                     <h6 class="text-secondary fw-light fs-6">Bagaimana produk ini menurut anda?</h6>
                                     <input name="rating[]" class="rating rating-loading input-1" value="5"
                                         data-size="sm" data-show-clear="false" data-show-caption="true" data-min="0"
@@ -383,7 +401,7 @@
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                @if ($bukti)
+                @if (!$bukti)
                     <div class="container p-5">
                         <div class="alert alert-primary" role="alert">
                             <strong>Bukti Transaksi sudah diterima.</strong> <br>
@@ -400,7 +418,7 @@
                                     <span>Unggah bukti pembayaran dapat mempercepat verifikasi pembayaran</span>
                                 </div>
                             </div>
-                            
+
                             <p>Pastikan bukti pembayaran menampilkan : </p>
 
                             <div class="row mb-4">
@@ -408,7 +426,8 @@
                                     <ul>
                                         <li>
                                             <strong class="d-block">Tanggal / Waktu Transfer</strong>
-                                            <span class="fst-italic text-secondary">contoh: tgl . 24/04/2024 / jam 09:20:36</span>
+                                            <span class="fst-italic text-secondary">contoh: tgl . 24/04/2024 / jam
+                                                09:20:36</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -416,7 +435,8 @@
                                     <ul>
                                         <li>
                                             <strong class="d-block">Status Berhasil</strong>
-                                            <span class="fst-italic text-secondary">contoh: Transfer BERHASIL, Transaksi Sukses</span>
+                                            <span class="fst-italic text-secondary">contoh: Transfer BERHASIL, Transaksi
+                                                Sukses</span>
                                         </li>
                                     </ul>
                                 </div>
