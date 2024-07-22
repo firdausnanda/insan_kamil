@@ -14,72 +14,84 @@
                         <div class="card h-100 card-lg">
                             <div class="card-body p-6">
                                 <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Menunggu Pembayaran</h4>
+                                    @if ($order->pembayaran[0]->status_pembayaran == 1)
+                                        <div class="card-body">
+                                            <h4 class="card-title">Menunggu Pembayaran</h4>
 
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div>
-                                                    <i class="fa-solid fa-bag-shopping me-2"></i>
-                                                    <strong class="text-dark fs-5">
-                                                        Belanja
-                                                    </strong>
-                                                </div>
-
-                                                <div class="row mt-3 justify-content-center align-items-center">
-                                                    <div class="col-lg-1 text-center">
-                                                        @switch($bukti->transfer_ke)
-                                                            @case('BRI')
-                                                                <img style="width: 45px"
-                                                                    src="{{ asset('images/bank/logo_bri.png') }}">
-                                                            @break
-
-                                                            @case('BCA')
-                                                                <img style="width: 45px"
-                                                                    src="{{ asset('images/bank/logo_bca.png') }}">
-                                                            @break
-
-                                                            @case('BSI')
-                                                                <img style="width: 45px"
-                                                                    src="{{ asset('images/bank/logo_bsi.svg') }}">
-                                                            @break
-
-                                                            @default
-                                                        @endswitch
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div>
+                                                        <i class="fa-solid fa-bag-shopping me-2"></i>
+                                                        <strong class="text-dark fs-5">
+                                                            Belanja
+                                                        </strong>
                                                     </div>
-                                                    <div class="col-lg-4">
-                                                        <strong>Metode Pembayaran</strong>
-                                                        <p class="mb-0">Transfer Manual</p>
-                                                    </div>
-                                                    <div class="col-lg-3">
-                                                        <strong>Total Pembayaran</strong>
-                                                        <p class="mb-0">
-                                                            {{ rupiah($order->harga_total + $order->biaya_pengiriman - $member_diskon - $diskon_alquran) }}
-                                                        </p>
-                                                    </div>
-                                                    <div class="col-lg-4">
-                                                        <div class="row g-3">
-                                                            @if ($order->status == 1)
-                                                                <button id="btn-bukti" class="btn btn-primary">Upload Bukti
-                                                                    Pembayaran</button>
-                                                            @elseif ($order->status == 6)
-                                                            @else
-                                                                <button type="button"
-                                                                    class="btn btn-primary btn-download">Download Bukti
-                                                                    Pembayaran</button>
-                                                            @endif
 
-                                                            <button class="btn btn-outline-secondary">Detail
-                                                                Pesanan</button>
+                                                    <div class="row mt-3 justify-content-center align-items-center">
+                                                        <div class="col-lg-1 text-center">
+                                                            @switch($bukti->transfer_ke)
+                                                                @case('BRI')
+                                                                    <img style="width: 45px"
+                                                                        src="{{ asset('images/bank/logo_bri.png') }}">
+                                                                @break
+
+                                                                @case('BCA')
+                                                                    <img style="width: 45px"
+                                                                        src="{{ asset('images/bank/logo_bca.png') }}">
+                                                                @break
+
+                                                                @case('BSI')
+                                                                    <img style="width: 45px"
+                                                                        src="{{ asset('images/bank/logo_bsi.svg') }}">
+                                                                @break
+
+                                                                @default
+                                                            @endswitch
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <strong>Metode Pembayaran</strong>
+                                                            <p class="mb-0">Transfer Manual</p>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <strong>Total Pembayaran</strong>
+                                                            <p class="mb-0">
+                                                                {{ rupiah($order->harga_total + $order->biaya_pengiriman - $member_diskon - $diskon_alquran) }}
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <div class="row g-3">
+                                                                @if ($order->status == 1)
+                                                                    <button id="btn-bukti" class="btn btn-primary">Upload
+                                                                        Bukti
+                                                                        Pembayaran</button>
+                                                                @elseif ($order->status == 6)
+                                                                @else
+                                                                    <button type="button"
+                                                                        class="btn btn-primary btn-download">Download Bukti
+                                                                        Pembayaran</button>
+                                                                @endif
+
+                                                                <button class="btn btn-outline-secondary">Detail
+                                                                    Pesanan</button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+
+
+
                                         </div>
+                                    @elseif($order->pembayaran[0]->status_pembayaran == 3)
+                                        <div class="card-body">
+                                            {{-- <h4 class="card-title">Pembayaran Kadaluarsa</h4> --}}
+                                            <div class="alert alert-danger mb-0" role="alert">
+                                                <strong>Pembayaran Kadaluarsa</strong><br>
+                                                Pembayaran telah melebihi batas waktu yang telah ditentukan
+                                            </div>
 
-
-
-                                    </div>
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="card mt-5">

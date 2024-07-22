@@ -1242,7 +1242,7 @@
                         $.LoadingOverlay('hide');
                         if (response.meta.status == "success") {
 
-                            let a = "{{ route('user.order.detail_konfirmasi', ':id') }}"
+                            let a = "{{ route('user.order.detail_checkout', ':id') }}"
                             let b = a.replace(':id', $('#modal-bukti .id_order').val())
 
                             Swal.fire({
@@ -1291,7 +1291,7 @@
                         $.LoadingOverlay('hide');
                         if (response.meta.status == "success") {
 
-                            let a = "{{ route('user.order.detail_konfirmasi', ':id') }}"
+                            let a = "{{ route('user.order.detail_checkout', ':id') }}"
                             let b = a.replace(':id', $('#modal-bukti .id_order').val())
 
                             Swal.fire({
@@ -1340,7 +1340,7 @@
                         $.LoadingOverlay('hide');
                         if (response.meta.status == "success") {
 
-                            let a = "{{ route('user.order.detail_konfirmasi', ':id') }}"
+                            let a = "{{ route('user.order.detail_checkout', ':id') }}"
                             let b = a.replace(':id', $('#modal-bukti .id_order').val())
 
                             Swal.fire({

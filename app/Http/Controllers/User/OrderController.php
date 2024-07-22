@@ -40,11 +40,11 @@ class OrderController extends Controller
         \Midtrans\Config::$isSanitized  = config('services.midtrans.isSanitized');
         \Midtrans\Config::$is3ds        = config('services.midtrans.is3ds');
     }
-        
-    public function index() 
+
+    public function index()
     {
 
-        $data = TempOrder::with('user.member', 'user.province', 'user.city', 'user.district', 'produk.gambar_produk')->whereHas('user', function($query){
+        $data = TempOrder::with('user.member', 'user.province', 'user.city', 'user.district', 'produk.gambar_produk')->whereHas('user', function ($query) {
             $query->where('id', Auth::user()->id);
         })->get();
 
@@ -52,12 +52,12 @@ class OrderController extends Controller
 
         $alamat = AlamatUser::where('id_user', Auth::user()->id)->orderBy('updated_at', 'desc')->paginate(3);
 
-        $subTotal = $data->sum(function($q) {
-           return $q->jumlah_produk * $q->harga_jual; 
+        $subTotal = $data->sum(function ($q) {
+            return $q->jumlah_produk * $q->harga_jual;
         });
 
-        $beratProduk = $data->sum(function($q) {
-            return $q->jumlah_produk * $q->berat_produk; 
+        $beratProduk = $data->sum(function ($q) {
+            return $q->jumlah_produk * $q->berat_produk;
         });
 
         // Courier
@@ -70,7 +70,7 @@ class OrderController extends Controller
                 break;
             case 'pro':
                 $courier = config('rajaongkir.courier.pro');
-                break;            
+                break;
             default:
                 $courier = null;
                 break;
@@ -78,22 +78,22 @@ class OrderController extends Controller
 
         // Cek Produk yang termasuk dalam diskon event
         $cekDiskon = Diskon::with('produk')
-                        ->whereHas('produk', function($query) use ($data){
-                            $query->whereIn('id_produk', $data->pluck('id_produk'));
-                        })
-                        ->where('status', 2)
-                        ->where('mulai_diskon', '<=', Carbon::now())
-                        ->where('selesai_diskon', '>=', Carbon::now())
-                        ->first();
+            ->whereHas('produk', function ($query) use ($data) {
+                $query->whereIn('id_produk', $data->pluck('id_produk'));
+            })
+            ->where('status', 2)
+            ->where('mulai_diskon', '<=', Carbon::now())
+            ->where('selesai_diskon', '>=', Carbon::now())
+            ->first();
 
         // Diskon Member
         if ($cekDiskon) {
             $member_diskon = 0;
-        }elseif($data[0]->user->id_member){
+        } elseif ($data[0]->user->id_member) {
             $member_diskon = $subTotal * $data[0]->user->member->diskon / 100;
-        }elseif ($subTotal >= 50000) {
+        } elseif ($subTotal >= 50000) {
             $member_diskon = $subTotal * 10 / 100;
-        }else{
+        } else {
             $member_diskon = 0;
         }
 
@@ -114,17 +114,24 @@ class OrderController extends Controller
             if ($cek->id_kategori == '17') {
                 if ($data[0]->user->id_member) {
                     $diskon_alquran += $cek->harga->harga_akhir * $v->jumlah_produk * 30 / 100;
-                }else{
+                } else {
                     $diskon_alquran += $cek->harga->harga_akhir * $v->jumlah_produk * 20 / 100;
                 }
             }
         }
 
         if ($data->first() != '') {
-            return view('pages.user.keranjang.checkout2', compact('data', 'subTotal', 'beratProduk', 
-                                                            'courier', 'dropship', 'member_diskon',
-                                                            'diskon_alquran', 'alamat'));
-        }else{
+            return view('pages.user.keranjang.checkout2', compact(
+                'data',
+                'subTotal',
+                'beratProduk',
+                'courier',
+                'dropship',
+                'member_diskon',
+                'diskon_alquran',
+                'alamat'
+            ));
+        } else {
             return redirect()->route('user.keranjang.index2');
         }
     }
@@ -132,18 +139,18 @@ class OrderController extends Controller
     public function store_alamat(Request $request)
     {
         $validator = Validator::make($request->all(), [
-			'nama_penerima' => 'required|string|max:255',
-			'no_telp_penerima' => 'required|string|max:255',
-			'alamat' => 'required|string',
-			'provinsi' => 'required|numeric',
-			'kota' => 'required|numeric',
-			'desa' => 'required|numeric',
-			'kode_pos' => 'required|numeric',
-		]);
+            'nama_penerima' => 'required|string|max:255',
+            'no_telp_penerima' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'provinsi' => 'required|numeric',
+            'kota' => 'required|numeric',
+            'desa' => 'required|numeric',
+            'kode_pos' => 'required|numeric',
+        ]);
 
-		if ($validator->fails()) {
-			return ResponseFormatter::error($validator->errors(), 'Data tidak valid', 422);
-		}
+        if ($validator->fails()) {
+            return ResponseFormatter::error($validator->errors(), 'Data tidak valid', 422);
+        }
 
         try {
 
@@ -159,17 +166,16 @@ class OrderController extends Controller
             ]);
 
             return ResponseFormatter::success($store, 'Data Berhasil ditambahkan');
-
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
         }
     }
 
-    public function jumlah(Request $request) 
+    public function jumlah(Request $request)
     {
         try {
-            
+
             $order = Keranjang::where('id', $request->id_keranjang)->update([
                 'jumlah_produk' => $request->jumlah
             ]);
@@ -178,7 +184,7 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
-        }   
+        }
     }
 
     public function pembayaran(Request $request)
@@ -189,17 +195,17 @@ class OrderController extends Controller
 
                 // Update Pembayaran
                 $pembayaran = Pembayaran::where('id_order', $request->id)->first();
-                
+
                 $pembayaran->update([
                     'status_pembayaran' => 2,
                 ]);
-                
+
                 // Cek Order
                 $order = Order::with('produk_dikirim')->where('id', $request->id)->first();
-                
+
                 // Update Member
                 $user = User::with('member')->where('id', $order->id_user)->first();
-                
+
                 // Update pada table Order status & Member yang lama
                 $order->update([
                     'status' => 2,
@@ -210,18 +216,18 @@ class OrderController extends Controller
                 // Cek apakah sudah menjadi member apa belum
                 if ($user->id_member) {
                     $cekmember = Member::where('pembelian_minimum', '>', $user->member->pembelian_minimum)->orderBy('pembelian_minimum', 'desc')->get();
-                }else{
-                    $cekmember = Member::orderBy('pembelian_minimum', 'desc')->get();   
+                } else {
+                    $cekmember = Member::orderBy('pembelian_minimum', 'desc')->get();
                 }
 
                 // Cek total pembelian keseluruhan
-                $cek_pembayaran_total = Order::where('id_user', $order->id_user)->wherehas('pembayaran', function($query){
-                   $query->where('status_pembayaran', 2); 
+                $cek_pembayaran_total = Order::where('id_user', $order->id_user)->wherehas('pembayaran', function ($query) {
+                    $query->where('status_pembayaran', 2);
                 })->withSum('pembayaran', 'harga_jual')->get();
 
                 $pembayaran_total = $cek_pembayaran_total->sum('pembayaran_sum_harga_jual');
 
-                if($cekmember->count() > 0){
+                if ($cekmember->count() > 0) {
                     foreach ($cekmember as $v) {
 
                         // Check if pembelian lebih besar dari pembelian mininum member 
@@ -238,10 +244,10 @@ class OrderController extends Controller
 
                 // Remove Keranjang dan TempOrder
                 $temp = TempOrder::where('id_user', $request->user)->get();
-                
+
                 foreach ($temp as $v) {
                     Keranjang::where('id_produk', $v->id_produk)->where('id_user', $request->user)->delete();
-                } 
+                }
 
                 TempOrder::where('id_user', $request->user)->delete();
 
@@ -254,36 +260,31 @@ class OrderController extends Controller
                         'sisa_produk' => $cekProduk->stok->sisa_produk - $value->jumlah_produk
                     ]);
                 }
-    
-                Log::info("success! : . $pembayaran");                
+
+                Log::info("success! : . $pembayaran");
                 return ResponseFormatter::success($pembayaran, 'data berhasil disimpan');
+            } elseif ($request->status == 2) {
 
-            }elseif ($request->status == 2) {
-
-                $pembayaran = Pembayaran::where('id_order', $request->id)->first();    
+                $pembayaran = Pembayaran::where('id_order', $request->id)->first();
                 Log::error("Pending! : . $pembayaran");
                 return ResponseFormatter::success($pembayaran, 'data gagal disimpan');
+            } elseif ($request->status == 3) {
 
-            }elseif ($request->status == 3) {
-                
                 // Update Order
                 $order = Order::where('id', $request->id)->first();
                 $order->update([
                     'status' => 6,
                 ]);
-                
-                $pembayaran = Pembayaran::where('id_order', $request->id)->first();    
-                
+
+                $pembayaran = Pembayaran::where('id_order', $request->id)->first();
+
                 Log::error("Error! : . $pembayaran");
                 return ResponseFormatter::error($pembayaran, 'data gagal disimpan');
             }
-
-
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
         }
-
     }
 
     public function store(Request $request)
@@ -294,7 +295,7 @@ class OrderController extends Controller
             foreach ($request->data as $v) {
 
                 $cekStok = Produk::with('stok')->where('id', $v['id_produk'])->first();
-                
+
                 if ($cekStok->stok->sisa_produk < $v['jumlah_produk']) {
                     return ResponseFormatter::error('Stok tidak tersedia/mencukupi', 'Data gagal disimpan');
                 }
@@ -303,24 +304,24 @@ class OrderController extends Controller
             $collect = collect($request->data);
 
             // harga produk total
-            $subTotal = $collect->sum(function($q) {
-                return $q['jumlah_produk'] * $q['harga_jual']; 
+            $subTotal = $collect->sum(function ($q) {
+                return $q['jumlah_produk'] * $q['harga_jual'];
             });
 
             // berat produk total
-            $beratProduk = $collect->sum(function($q) {
-                return $q['jumlah_produk'] * $q['berat_produk']; 
+            $beratProduk = $collect->sum(function ($q) {
+                return $q['jumlah_produk'] * $q['berat_produk'];
             });
 
             // Cek Produk yang termasuk dalam diskon event
             $cekDiskon = Diskon::with('produk')
-                            ->whereHas('produk', function($query) use ($request){
-                                $query->whereIn('id_produk', collect($request->data)->pluck('id_produk'));
-                            })
-                            ->where('status', 2)
-                            ->where('mulai_diskon', '<=', Carbon::now())
-                            ->where('selesai_diskon', '>=', Carbon::now())
-                            ->first();
+                ->whereHas('produk', function ($query) use ($request) {
+                    $query->whereIn('id_produk', collect($request->data)->pluck('id_produk'));
+                })
+                ->where('status', 2)
+                ->where('mulai_diskon', '<=', Carbon::now())
+                ->where('selesai_diskon', '>=', Carbon::now())
+                ->first();
 
             $isflash = $cekDiskon ? 1 : 0;
 
@@ -361,7 +362,7 @@ class OrderController extends Controller
                 if ($cek->id_kategori == '17') {
                     if ($cekOrder->user->id_member) {
                         $diskon_alquran += $cek->harga->harga_akhir * $v['jumlah_produk'] * 30 / 100;
-                    }else{
+                    } else {
                         $diskon_alquran += $cek->harga->harga_akhir * $v['jumlah_produk'] * 20 / 100;
                     }
                 }
@@ -370,11 +371,11 @@ class OrderController extends Controller
             // Diskon Member
             if ($cekDiskon) {
                 $member_diskon = 0;
-            }elseif ($cekOrder->user->id_member){
+            } elseif ($cekOrder->user->id_member) {
                 $member_diskon = $subTotal * $cekOrder->user->member->diskon / 100;
-            }elseif ($subTotal >= 50000) {
+            } elseif ($subTotal >= 50000) {
                 $member_diskon = $subTotal * 10 / 100;
-            }else{
+            } else {
                 $member_diskon = 0;
             }
 
@@ -411,11 +412,11 @@ class OrderController extends Controller
                 'harga_jual' => $order->harga_total + $order->biaya_pengiriman - $member_diskon - $diskon_alquran,
                 'jumlah_produk' => $beratProduk,
             ]);
-            
+
             // Dropship
             if ($request->status_dropship == 1) {
                 $cekDropship = DropshipMaster::where('id_user', $request->user)->first();
-    
+
                 Dropship::create([
                     'id_user' => $request->user,
                     'id_order' => $order->id,
@@ -432,7 +433,6 @@ class OrderController extends Controller
             }
 
             return ResponseFormatter::success($snapToken, 'data berhasil disimpan');
-
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
@@ -447,7 +447,7 @@ class OrderController extends Controller
             foreach ($request->data as $v) {
 
                 $cekStok = Produk::with('stok')->where('id', $v['id_produk'])->first();
-                
+
                 if ($cekStok->stok->sisa_produk < $v['jumlah_produk']) {
                     return ResponseFormatter::error('Stok tidak tersedia/mencukupi', 'Data gagal disimpan');
                 }
@@ -456,24 +456,24 @@ class OrderController extends Controller
             $collect = collect($request->data);
 
             // harga produk total
-            $subTotal = $collect->sum(function($q) {
-                return $q['jumlah_produk'] * $q['harga_jual']; 
+            $subTotal = $collect->sum(function ($q) {
+                return $q['jumlah_produk'] * $q['harga_jual'];
             });
 
             // berat produk total
-            $beratProduk = $collect->sum(function($q) {
-                return $q['jumlah_produk'] * $q['berat_produk']; 
+            $beratProduk = $collect->sum(function ($q) {
+                return $q['jumlah_produk'] * $q['berat_produk'];
             });
 
             // Cek Produk yang termasuk dalam diskon event
             $cekDiskon = Diskon::with('produk')
-                            ->whereHas('produk', function($query) use ($request){
-                                $query->whereIn('id_produk', collect($request->data)->pluck('id_produk'));
-                            })
-                            ->where('status', 2)
-                            ->where('mulai_diskon', '<=', Carbon::now())
-                            ->where('selesai_diskon', '>=', Carbon::now())
-                            ->first();
+                ->whereHas('produk', function ($query) use ($request) {
+                    $query->whereIn('id_produk', collect($request->data)->pluck('id_produk'));
+                })
+                ->where('status', 2)
+                ->where('mulai_diskon', '<=', Carbon::now())
+                ->where('selesai_diskon', '>=', Carbon::now())
+                ->first();
 
             $isflash = $cekDiskon ? 1 : 0;
 
@@ -514,7 +514,7 @@ class OrderController extends Controller
                 if ($cek->id_kategori == '17') {
                     if ($cekOrder->user->id_member) {
                         $diskon_alquran += $cek->harga->harga_akhir * $v['jumlah_produk'] * 30 / 100;
-                    }else{
+                    } else {
                         $diskon_alquran += $cek->harga->harga_akhir * $v['jumlah_produk'] * 20 / 100;
                     }
                 }
@@ -523,11 +523,11 @@ class OrderController extends Controller
             // Diskon Member
             if ($cekDiskon) {
                 $member_diskon = 0;
-            }elseif ($cekOrder->user->id_member){
+            } elseif ($cekOrder->user->id_member) {
                 $member_diskon = $subTotal * $cekOrder->user->member->diskon / 100;
-            }elseif ($subTotal >= 50000) {
+            } elseif ($subTotal >= 50000) {
                 $member_diskon = $subTotal * 10 / 100;
-            }else{
+            } else {
                 $member_diskon = 0;
             }
 
@@ -542,11 +542,11 @@ class OrderController extends Controller
                 'harga_jual' => $total_biaya,
                 'jumlah_produk' => $beratProduk,
             ]);
-            
+
             // Dropship
             if ($request->status_dropship == 1) {
                 $cekDropship = DropshipMaster::where('id_user', $request->user)->first();
-    
+
                 Dropship::create([
                     'id_user' => $request->user,
                     'id_order' => $order->id,
@@ -565,7 +565,6 @@ class OrderController extends Controller
             $cek_order = Order::with('pembayaran')->where('id', $order->id)->first();
 
             return ResponseFormatter::success($cek_order, 'data berhasil disimpan');
-
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
@@ -591,8 +590,8 @@ class OrderController extends Controller
             // }
 
             $cek_keranjang = Keranjang::with('produk.harga', 'produk.stok', 'produk.gambar_produk')
-                                    ->where('id_user', $request->id_user)->get();
-            
+                ->where('id_user', $request->id_user)->get();
+
             if (count($cek_keranjang) < 1) {
                 return ResponseFormatter::error('Silakan belanja terlebih dulu', 'Error!');
             }
@@ -618,7 +617,7 @@ class OrderController extends Controller
     public function beli(Request $request)
     {
         try {
-            
+
             // Remove TempOrder if exist
             TempOrder::where('id_user', $request->id_user)->delete();
 
@@ -634,21 +633,19 @@ class OrderController extends Controller
             ]);
 
             return ResponseFormatter::success($order, 'Data Tersimpan!');
-
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
         }
-        
     }
 
     public function ongkir(Request $request)
     {
         try {
-            
-            if (!$request->courier ||$request->courier == '') {
+
+            if (!$request->courier || $request->courier == '') {
                 return ResponseFormatter::error('kurir kosong', 'Data gagal diambil!');
-            }elseif($request->courier == 'ambil_gudang'){
+            } elseif ($request->courier == 'ambil_gudang') {
 
                 $cost = [[
                     'code' => 'ambil_gudang',
@@ -663,8 +660,7 @@ class OrderController extends Controller
                         ]],
                     ]],
                 ]];
-
-            }else{
+            } else {
 
                 $cost = RajaOngkir::ongkosKirim([
                     'origin'            => config('rajaongkir.origin'), // ID kota/kabupaten asal
@@ -672,7 +668,7 @@ class OrderController extends Controller
                     'destination'       => $request->city_destination, // ID kota/kabupaten tujuan
                     'destinationType'   => 'subdistrict', // ID kota/kabupaten tujuan
                     'weight'            => $request->weight, // berat barang dalam gram
-                    'courier'           => $request->courier 
+                    'courier'           => $request->courier
                 ])->get();
             }
 
@@ -689,7 +685,7 @@ class OrderController extends Controller
             if ($request->status == 1) {
                 $penjualan = Order::with('user', 'member', 'pembayaran')->withSum('pembayaran', 'harga_jual')->where('id_user', $request->id_user)->orderBy('created_at', 'desc')->get();
                 return ResponseFormatter::success($penjualan, "Data berhasil diambil!");
-            }else{
+            } else {
                 switch ($request->status) {
                     case '2':
                         $status = 1;
@@ -699,7 +695,7 @@ class OrderController extends Controller
                         break;
                     case '4':
                         $status = 4;
-                        break;                    
+                        break;
                 }
                 $penjualan = Order::with('user', 'member', 'pembayaran')->withSum('pembayaran', 'harga_jual')->where('id_user', $request->id_user)->where('status', $status)->orderBy('created_at', 'desc')->get();
                 return ResponseFormatter::success($penjualan, "Data berhasil diambil!");
@@ -713,19 +709,19 @@ class OrderController extends Controller
         try {
             $order = Order::with('user.province', 'user.city', 'user.district', 'user.member', 'produk_dikirim.produk.gambar_produk')->where('id', $id)->first();
             $dropship = Dropship::where('id_order', $id)->first();
-    
+
             // harga produk total
-            $subTotal = $order->produk_dikirim->sum(function($q) {
-                return $q['jumlah_produk'] * $q['harga_jual']; 
+            $subTotal = $order->produk_dikirim->sum(function ($q) {
+                return $q['jumlah_produk'] * $q['harga_jual'];
             });
 
             if ($order->is_flash == 1) {
                 $member_diskon = 0;
-            }elseif($order->id_member){
+            } elseif ($order->id_member) {
                 $member_diskon = $subTotal * $order->member->diskon / 100;
-            }elseif ($subTotal >= 50000) {
+            } elseif ($subTotal >= 50000) {
                 $member_diskon = $subTotal * 10 / 100;
-            }else{
+            } else {
                 $member_diskon = 0;
             }
 
@@ -736,18 +732,84 @@ class OrderController extends Controller
                 if ($value->produk && $value->produk->id_kategori == '17') {
                     if ($order->id_member) {
                         $diskon_alquran += $value->harga_jual * $value->jumlah_produk * 30 / 100;
-                    }else{
+                    } else {
                         $diskon_alquran += $value->harga_jual * $value->jumlah_produk * 20 / 100;
                     }
                 }
             }
 
             // Detail Konfirmasi
-            $bukti = BuktiTransaksi::where('order_id', $id)->where('status', 0)->first(); 
+            $bukti = BuktiTransaksi::where('order_id', $id)->where('status', 0)->first();
 
-            return view('pages.user.keranjang.detail_konfirmasi', compact('order', 'subTotal', 
-                                                                        'dropship', 'member_diskon',
-                                                                        'diskon_alquran', 'bukti'));
+            return view('pages.user.keranjang.detail_konfirmasi', compact(
+                'order',
+                'subTotal',
+                'dropship',
+                'member_diskon',
+                'diskon_alquran',
+                'bukti'
+            ));
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }
+    }
+
+    public function detail_checkout(Request $request, $id)
+    {
+        try {
+            $order = Order::with('user.province', 'user.city', 'user.district', 'user.member', 'produk_dikirim.produk.gambar_produk', 'pembayaran')->where('id', $id)->first();
+            $dropship = Dropship::where('id_order', $id)->first();
+
+            // harga produk total
+            $subTotal = $order->produk_dikirim->sum(function ($q) {
+                return $q['jumlah_produk'] * $q['harga_jual'];
+            });
+
+            if ($order->is_flash == 1) {
+                $member_diskon = 0;
+            } elseif ($order->id_member) {
+                $member_diskon = $subTotal * $order->member->diskon / 100;
+            } elseif ($subTotal >= 50000) {
+                $member_diskon = $subTotal * 10 / 100;
+            } else {
+                $member_diskon = 0;
+            }
+
+            // Diskon Alquran
+            $diskon_alquran = 0;
+            foreach ($order->produk_dikirim as $key => $value) {
+                // Diskon Alquran
+                if ($value->produk && $value->produk->id_kategori == '17') {
+                    if ($order->id_member) {
+                        $diskon_alquran += $value->harga_jual * $value->jumlah_produk * 30 / 100;
+                    } else {
+                        $diskon_alquran += $value->harga_jual * $value->jumlah_produk * 20 / 100;
+                    }
+                }
+            }
+
+            // Detail Konfirmasi
+            $bukti = BuktiTransaksi::where('order_id', $id)->where('status', 0)->first();
+
+            if ($order->pembayaran[0]->created_at->addDays(1) > now()) {
+                return view('pages.user.keranjang.detail_konfirmasi', compact(
+                    'order',
+                    'subTotal',
+                    'dropship',
+                    'member_diskon',
+                    'diskon_alquran',
+                    'bukti'
+                ));
+            }
+            return view('pages.user.keranjang.aftercheckout', compact(
+                'order',
+                'subTotal',
+                'dropship',
+                'member_diskon',
+                'diskon_alquran',
+                'bukti'
+            ));
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
@@ -761,12 +823,10 @@ class OrderController extends Controller
             $pembayaran = Pembayaran::where('id_order', $request->order_id)->first();
 
             return ResponseFormatter::success($pembayaran->snap_token, 'data berhasil disimpan');
-
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
         }
-        
     }
 
     public function waybill(Request $request)
@@ -774,7 +834,7 @@ class OrderController extends Controller
         try {
 
             if ($request->waybill != '') {
-                
+
                 // Raja Ongkir
                 // $waybill = Http::withHeaders([
                 //     'key' => env('RAJAONGKIR_API_KEY')
@@ -784,7 +844,7 @@ class OrderController extends Controller
                 // ])->json();
 
                 // Binderbyte
-                $waybill = Http::get('http://api.binderbyte.com/v1/track',[
+                $waybill = Http::get('http://api.binderbyte.com/v1/track', [
                     'api_key' => '3bfb848a4ae0da02a5534152b07c10050610993801b1c177cd48db46d6e99174',
                     'awb' => $request->waybill,
                     'courier' => $request->courier
@@ -792,7 +852,7 @@ class OrderController extends Controller
 
                 // Raja Ongkir
                 // $tracking = $waybill['rajaongkir']['result'];
-                
+
                 // Binderbyte
                 if ($request->courier == 'ambil_gudang') {
                     $tracking = [
@@ -801,7 +861,7 @@ class OrderController extends Controller
                             "desc" => 'diambil di gudang.'
                         ]
                     ];
-                }else{
+                } else {
                     $tracking = $waybill['data']['history'];
                 }
 
@@ -809,12 +869,10 @@ class OrderController extends Controller
             }
 
             return '';
-
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error('Error!', $e->getMessage(), 500);
         }
-
     }
 
     public function diterima(Request $request)
@@ -839,7 +897,6 @@ class OrderController extends Controller
             }
 
             return ResponseFormatter::success($produk, 'data berhasil disimpan');
-
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error('Error!', $e->getMessage(), 500);
@@ -865,12 +922,11 @@ class OrderController extends Controller
                         'provinsi_penerima' => $user->provinsi,
                         'desa_penerima' => $user->desa,
                         'no_telp_penerima' => $user->no_telp,
-                    ]);    
+                    ]);
                 }
                 $data = DropshipMaster::with('province', 'city', 'district')->where('id_user', Auth::user()->id)->first();
                 return ResponseFormatter::success($data, 'data berhasil diambil!');
             }
-
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error('Error!', $e->getMessage(), 500);
@@ -880,24 +936,24 @@ class OrderController extends Controller
     public function edit_dropship(Request $request)
     {
         $validator = Validator::make($request->all(), [
-			'id_dropship' => 'required|string|max:255',
-			'nama_pengirim' => 'required|string|max:255',
-			'no_telp_pengirim' => 'required|string|max:255',
-			// 'no_telp_penerima' => 'required|string|max:255',
-			// 'email_pengirim' => 'required|string|max:255',
-			// 'nama_penerima' => 'required|string|max:255',
-			// 'alamat' => 'required|string|max:255',
-			// 'provinsi' => 'required|string|max:255',
-			// 'kota' => 'required|string|max:255',
-			// 'desa' => 'required|string|max:255',
-		]);
+            'id_dropship' => 'required|string|max:255',
+            'nama_pengirim' => 'required|string|max:255',
+            'no_telp_pengirim' => 'required|string|max:255',
+            // 'no_telp_penerima' => 'required|string|max:255',
+            // 'email_pengirim' => 'required|string|max:255',
+            // 'nama_penerima' => 'required|string|max:255',
+            // 'alamat' => 'required|string|max:255',
+            // 'provinsi' => 'required|string|max:255',
+            // 'kota' => 'required|string|max:255',
+            // 'desa' => 'required|string|max:255',
+        ]);
 
-		if ($validator->fails()) {
-			return ResponseFormatter::error($validator->errors(), 'Data tidak valid', 422);
-		}
+        if ($validator->fails()) {
+            return ResponseFormatter::error($validator->errors(), 'Data tidak valid', 422);
+        }
 
         try {
-            
+
             $user = DropshipMaster::where('id', $request->id_dropship)->update([
                 'nama_pengirim' => $request->nama_pengirim,
                 'no_telp_pengirim' => $request->no_telp_pengirim,
@@ -911,49 +967,47 @@ class OrderController extends Controller
             ]);
 
             return ResponseFormatter::success($user, 'Data berhasil diubah!');
-            
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
-        }   
-    }
-    
-    public function catatan(Request $request)
-    {
-        try {
-            $order = TempOrder::where('id', $request->id)->update([
-                'catatan_pembelian' => $request->catatan
-            ]);
-            
-            return ResponseFormatter::success($order, 'Data berhasil diubah!');
-            
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
         }
     }
 
-    public function addBukti(Request $request) 
+    public function catatan(Request $request)
+    {
+        try {
+            $order = TempOrder::where('id', $request->id)->update([
+                'catatan_pembelian' => $request->catatan
+            ]);
+
+            return ResponseFormatter::success($order, 'Data berhasil diubah!');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }
+    }
+
+    public function addBukti(Request $request)
     {
         $validator = Validator::make($request->all(), [
-			'id_order' => 'required|string|max:255',
-			'nama_rekening' => 'required|string|max:255',
-			'no_rekening' => 'required|numeric',
-			'transfer_ke' => 'required|string|max:255',
-			// 'tgl_transfer' => 'required|string|max:255',
+            'id_order' => 'required|string|max:255',
+            'nama_rekening' => 'required|string|max:255',
+            'no_rekening' => 'required|numeric',
+            'transfer_ke' => 'required|string|max:255',
+            // 'tgl_transfer' => 'required|string|max:255',
             // 'gambar' => 'required|mimes:jpg,jpeg,png,pdf',
-         ]);
+        ]);
 
-		if ($validator->fails()) {
-			return ResponseFormatter::error($validator->errors(), 'Data Bukti tidak valid', 422);
-		}
+        if ($validator->fails()) {
+            return ResponseFormatter::error($validator->errors(), 'Data Bukti tidak valid', 422);
+        }
 
         try {
-            
+
             // if ($request->hasFile('gambar')) {
             //     $file = $request->file('gambar');
             //     $fileName =  uniqid() . '_' . time() . '.' . trim($file->getClientOriginalExtension());
-        
+
             //     // Store Image
             //     $path = Storage::putFileAs(
             //         'public/bukti-transaksi',
@@ -975,37 +1029,36 @@ class OrderController extends Controller
             ]);
 
             return ResponseFormatter::success($data, 'Data berhasil disimpan');
-
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             abort(404);
         }
     }
 
-    public function uploadBukti(Request $request) 
+    public function uploadBukti(Request $request)
     {
         $validator = Validator::make($request->all(), [
-			'id_order' => 'required|string|max:255',
+            'id_order' => 'required|string|max:255',
             'gambar' => 'required|mimes:jpg,jpeg,png,pdf',
-         ]);
+        ]);
 
-		if ($validator->fails()) {
-			return ResponseFormatter::error($validator->errors(), 'Data Bukti tidak valid', 422);
-		}
+        if ($validator->fails()) {
+            return ResponseFormatter::error($validator->errors(), 'Data Bukti tidak valid', 422);
+        }
 
         try {
-            
+
             if ($request->hasFile('gambar')) {
                 $file = $request->file('gambar');
                 $fileName =  uniqid() . '_' . time() . '.' . trim($file->getClientOriginalExtension());
-        
+
                 // Store Image
                 $path = Storage::putFileAs(
                     'public/bukti-transaksi',
                     $request->file('gambar'),
                     $fileName
                 );
-            }else{
+            } else {
                 $fileName = '';
             }
 
@@ -1014,14 +1067,13 @@ class OrderController extends Controller
             ]);
 
             return ResponseFormatter::success($data, 'Data berhasil disimpan');
-
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             abort(404);
         }
     }
 
-    public function cetak(Request $request) 
+    public function cetak(Request $request)
     {
 
         try {
@@ -1035,7 +1087,7 @@ class OrderController extends Controller
                 if ($value->produk->id_kategori == '17') {
                     if ($order->id_member) {
                         $diskon_alquran += $value->harga_jual * $value->jumlah_produk * 30 / 100;
-                    }else{
+                    } else {
                         $diskon_alquran += $value->harga_jual * $value->jumlah_produk * 20 / 100;
                     }
                 }
@@ -1050,12 +1102,12 @@ class OrderController extends Controller
                     break;
                 case 'pro':
                     $courier = config('rajaongkir.courier.pro');
-                    break;            
+                    break;
                 default:
                     $courier = null;
                     break;
             }
-    
+
             foreach ($courier as $c) {
                 if ($c['kode'] == $order->courier) {
                     $courier_search = $c['nama'];
@@ -1070,110 +1122,110 @@ class OrderController extends Controller
             $pdf->Cell(100, 5, "Nota Pesanan", 0, 1);
 
             $pdf->Ln(3);
-                        
+
             $pdf->SetFillColor('236', '236', '236');
 
-            $pdf->SetFont( "Arial", "B", 6 );
+            $pdf->SetFont("Arial", "B", 6);
 
             $pdf->SetXY(3, 21);
-            $pdf->Cell(20, 5,  "Nama Pembeli" , 0, 0, "L", true);
+            $pdf->Cell(20, 5,  "Nama Pembeli", 0, 0, "L", true);
             $pdf->Cell(2, 5, ':', 0, 0, 'L', true);
-            $pdf->SetFont( "Arial", "", 6 );
+            $pdf->SetFont("Arial", "", 6);
             if ($dropship) {
-                $pdf->Cell(30, 5,  $dropship->nama_penerima, 0, 0, "", true );
-            }else{
-                $pdf->Cell(30, 5,  $order->user->name, 0, 0, "", true );
-            }
-                        
-            $pdf->SetFont( "Arial", "B", 6 );
-            $pdf->Cell(20, 5,  "Nama Penjual" , 0, 0, "L", true);
-            $pdf->Cell(2, 5, ':', 0, 0, 'L', true);
-            $pdf->SetFont( "Arial", "", 6 );
-            if ($dropship) {
-                $pdf->Cell(21, 5,  $dropship->nama_pengirim, 0, 1, "", true );
-            }else{
-                $pdf->Cell(21, 5,  "Insan Kamil", 0, 1, "", true );
+                $pdf->Cell(30, 5,  $dropship->nama_penerima, 0, 0, "", true);
+            } else {
+                $pdf->Cell(30, 5,  $order->user->name, 0, 0, "", true);
             }
 
-            $pdf->SetFont( "Arial", "B", 6 );
+            $pdf->SetFont("Arial", "B", 6);
+            $pdf->Cell(20, 5,  "Nama Penjual", 0, 0, "L", true);
+            $pdf->Cell(2, 5, ':', 0, 0, 'L', true);
+            $pdf->SetFont("Arial", "", 6);
+            if ($dropship) {
+                $pdf->Cell(21, 5,  $dropship->nama_pengirim, 0, 1, "", true);
+            } else {
+                $pdf->Cell(21, 5,  "Insan Kamil", 0, 1, "", true);
+            }
+
+            $pdf->SetFont("Arial", "B", 6);
 
             if ($dropship) {
                 $alamat = $dropship->alamat_penerima . ', Kec. ' . $dropship->district->name . " " . $dropship->city->name . ', ' . $dropship->province->name . ', ' . $dropship->city->postal_code;
-            }else{
+            } else {
                 $alamat = $order->user->alamat . ', Kec. ' . $order->user->district->name . " " . $order->user->city->name . ', ' . $order->user->province->name . ', ' . $order->user->kode_pos;
             }
-            $h = $pdf->GetMultiCellHeight(101, 5,  $alamat, 0, "", true );
+            $h = $pdf->GetMultiCellHeight(101, 5,  $alamat, 0, "", true);
 
             $pdf->SetXY(3, 26);
-            $pdf->Cell(20, $h,  "Alamat Pembeli" , 0, 0, "L", true);
+            $pdf->Cell(20, $h,  "Alamat Pembeli", 0, 0, "L", true);
             $pdf->Cell(2, $h, ':', 0, 0, 'L', true);
-            $pdf->SetFont( "Arial", "", 6 );
-            $pdf->MultiCell(73, 5,  $alamat, 0, "", true );
-            
-            $pdf->SetFont( "Arial", "B", 6 );
+            $pdf->SetFont("Arial", "", 6);
+            $pdf->MultiCell(73, 5,  $alamat, 0, "", true);
+
+            $pdf->SetFont("Arial", "B", 6);
             $yy = $pdf->getY();
             $pdf->SetXY(3, $yy);
-            $pdf->Cell(20, 5,  "No. Hp Pembeli" , 0, 0, "L", true);
+            $pdf->Cell(20, 5,  "No. Hp Pembeli", 0, 0, "L", true);
             $pdf->Cell(2, 5, ':', 0, 0, 'L', true);
-            $pdf->SetFont( "Arial", "", 6 );
+            $pdf->SetFont("Arial", "", 6);
             if ($dropship) {
-                $pdf->Cell(73, 5,  $dropship->no_telp_penerima, 0, 1, "", true );     
-            }else{
-                $pdf->Cell(73, 5,  $order->user->no_telp, 0, 1  , "", true );     
+                $pdf->Cell(73, 5,  $dropship->no_telp_penerima, 0, 1, "", true);
+            } else {
+                $pdf->Cell(73, 5,  $order->user->no_telp, 0, 1, "", true);
             }
-            
-            $pdf->SetFont( "Arial", "B", 6 );
+
+            $pdf->SetFont("Arial", "B", 6);
             $pdf->SetXY(3, $yy + 5);
-            $pdf->Cell(20, 5,  "No. Pesanan" , 0, 0, "L", true);
+            $pdf->Cell(20, 5,  "No. Pesanan", 0, 0, "L", true);
             $pdf->Cell(2, 5, ':', 0, 0, 'L', true);
-            $pdf->SetFont( "Arial", "", 6 );
-            $pdf->Cell(73, 5,  $order->no_invoice == null ? $order->id : $order->no_invoice, 0, 0, "", true );
+            $pdf->SetFont("Arial", "", 6);
+            $pdf->Cell(73, 5,  $order->no_invoice == null ? $order->id : $order->no_invoice, 0, 0, "", true);
             $pdf->Ln(6);
-            
-            $pdf->SetFont( "Arial", "B", 6 );
+
+            $pdf->SetFont("Arial", "B", 6);
             $pdf->SetXY(3, $yy + 10);
-            $pdf->Cell(20, 5,  "Waktu Pembayaran" , 0, 0, "C");
-            $pdf->Cell(15, 5,  "" , 0, 0, "C");
-            $pdf->Cell(20, 5,  "Pembayaran" , 0, 0, "C");
-            $pdf->Cell(15, 5,  "" , 0, 0, "C");
-            $pdf->Cell(20, 5,  "Kurir" , 0, 0, "C");
-            $pdf->Cell(15, 5,  "" , 0, 0, "C");
+            $pdf->Cell(20, 5,  "Waktu Pembayaran", 0, 0, "C");
+            $pdf->Cell(15, 5,  "", 0, 0, "C");
+            $pdf->Cell(20, 5,  "Pembayaran", 0, 0, "C");
+            $pdf->Cell(15, 5,  "", 0, 0, "C");
+            $pdf->Cell(20, 5,  "Kurir", 0, 0, "C");
+            $pdf->Cell(15, 5,  "", 0, 0, "C");
             $pdf->Ln(5);
 
-            $pdf->SetFont( "Arial", "", 6 );
+            $pdf->SetFont("Arial", "", 6);
             $pdf->SetXY(3, $yy + 15);
-            $pdf->Cell(20, 5,  $order->pembayaran[0]->created_at , 0, 0, "C");
-            $pdf->Cell(15, 5,  "" , 0, 0, "C");
-            $pdf->Cell(20, 5,  "Transfer Bank" , 0, 0, "C");
-            $pdf->Cell(15, 5,  "" , 0, 0, "C");
-            $pdf->Cell(20, 5,  $courier_search , 0, 0, "C");
-            $pdf->Cell(15, 5,  "" , 0, 1, "C");
+            $pdf->Cell(20, 5,  $order->pembayaran[0]->created_at, 0, 0, "C");
+            $pdf->Cell(15, 5,  "", 0, 0, "C");
+            $pdf->Cell(20, 5,  "Transfer Bank", 0, 0, "C");
+            $pdf->Cell(15, 5,  "", 0, 0, "C");
+            $pdf->Cell(20, 5,  $courier_search, 0, 0, "C");
+            $pdf->Cell(15, 5,  "", 0, 1, "C");
             $pdf->Ln(2);
 
-            $pdf->SetFont( "Arial", "B", 6 );
+            $pdf->SetFont("Arial", "B", 6);
             $pdf->SetXY(3, $yy + 20);
-            $pdf->Cell(35, 5,  "Rincian Pesanan" , 0, 1, "L");
+            $pdf->Cell(35, 5,  "Rincian Pesanan", 0, 1, "L");
 
             $pdf->SetFont('Arial', 'B', 6);
             $pdf->SetFillColor('224', '224', '224');
             $pdf->SetXY(3, $yy + 25);
 
-            $pdf->Cell(5, 5,'No', "T,B", 0, 'C');
-            $pdf->Cell(40, 5,'Produk', "T,B", 0, 'L');
-            $pdf->Cell(5, 5,'Jumlah', "T,B", 0, 'C');
-            $pdf->Cell(23, 5,'Harga', "T,B", 0, 'C');
-            $pdf->Cell(22, 5,'Sub Total', "T,B", 1, 'C');
-            
+            $pdf->Cell(5, 5, 'No', "T,B", 0, 'C');
+            $pdf->Cell(40, 5, 'Produk', "T,B", 0, 'L');
+            $pdf->Cell(5, 5, 'Jumlah', "T,B", 0, 'C');
+            $pdf->Cell(23, 5, 'Harga', "T,B", 0, 'C');
+            $pdf->Cell(22, 5, 'Sub Total', "T,B", 1, 'C');
+
             $subTotal = 0;
 
             $jarak = $yy + 25;
-            
+
             foreach ($order->produk_dikirim as $k => $v) {
-                
+
                 $pdf->SetFont('Arial', '', 6);
 
                 $jarak = $jarak + 5;
-                
+
                 if ($jarak >= 131) {
                     $jarak = (int)$pdf->getY();
                     $pdf->SetAutoPageBreak(true, 5);
@@ -1181,16 +1233,16 @@ class OrderController extends Controller
 
                 $pdf->SetXY(3, $jarak);
                 $pdf->Cell(5, 4, $k + 1, 0, 0, 'C');
-                $pdf->Cell(40, 4,$v->produk->nama_produk, 0, 0, 'L');
-                $pdf->Cell(5, 4,$v->jumlah_produk, 0, 0, 'C');
-                $pdf->Cell(23, 4, "Rp " . number_format($v->harga_jual, 0,',','.'), 0, 0, 'C');
-                $pdf->Cell(22, 4, "Rp " . number_format($v->harga_jual * $v->jumlah_produk, 0,',','.'), 0, 1, 'C');                
+                $pdf->Cell(40, 4, $v->produk->nama_produk, 0, 0, 'L');
+                $pdf->Cell(5, 4, $v->jumlah_produk, 0, 0, 'C');
+                $pdf->Cell(23, 4, "Rp " . number_format($v->harga_jual, 0, ',', '.'), 0, 0, 'C');
+                $pdf->Cell(22, 4, "Rp " . number_format($v->harga_jual * $v->jumlah_produk, 0, ',', '.'), 0, 1, 'C');
                 $subTotal += $v->harga_jual * $v->jumlah_produk;
             }
 
             // Garis bawah tabel
             $y = $pdf->GetY();
-            
+
             $pdf->SetXY(3, $y);
             $pdf->Cell(95, 3, '', "T", 1);
 
@@ -1201,88 +1253,86 @@ class OrderController extends Controller
             $pdf->Cell(55, 4, '', 0, 0);
             $pdf->SetFont('Arial', 'B', 6);
             $pdf->Cell(18, 4, 'SubTotal', 0, 0, 'L');
-            $pdf->Cell(22, 4, "Rp " . number_format($subTotal, 0,',','.'), 0, 1, 'C');
+            $pdf->Cell(22, 4, "Rp " . number_format($subTotal, 0, ',', '.'), 0, 1, 'C');
 
             $pdf->SetXY(3, $y + 3);
             $pdf->SetFont('Arial', 'B', 6);
             $pdf->Cell(52, 4, '', 0, 0);
             $pdf->Cell(43, 4, "Total Jumlah Produk (Aktif) " . $order->produk_dikirim->sum('jumlah_produk') . " Produk", 0, 1, 'L');
             $pdf->Ln(1);
-            
+
             $pdf->SetFillColor('247', '247', '247');
-            $pdf->SetFont( "Arial", "", 6 );
-            
+            $pdf->SetFont("Arial", "", 6);
+
             // $pdf->SetXY(3, 7);
             $pdf->Cell(34, 4, '', 0, 0);
-            $pdf->Cell(20, 4,  "Sub Total Produk" , 0, 0, "L", true);
+            $pdf->Cell(20, 4,  "Sub Total Produk", 0, 0, "L", true);
             $pdf->Cell(2, 4, ':', 0, 0, 'L', true);
-            $pdf->Cell(29, 4,  "Rp " . number_format($subTotal, 0,',','.'), 0, 1, "R", true );            
-            
+            $pdf->Cell(29, 4,  "Rp " . number_format($subTotal, 0, ',', '.'), 0, 1, "R", true);
+
             $pdf->Cell(34, 4, '', 0, 0);
-            $pdf->Cell(20, 4,  "Ongkos Kirim" , 0, 0, "L", true);
+            $pdf->Cell(20, 4,  "Ongkos Kirim", 0, 0, "L", true);
             $pdf->Cell(2, 4, ':', 0, 0, 'L', true);
-            $pdf->Cell(29, 4,  "Rp " . number_format($order->biaya_pengiriman, 0,',','.'), 0, 1, "R", true );            
-            
+            $pdf->Cell(29, 4,  "Rp " . number_format($order->biaya_pengiriman, 0, ',', '.'), 0, 1, "R", true);
+
             $pdf->Cell(34, 4, '', 0, 0);
-            $pdf->Cell(20, 4,  "Diskon Member" , 0, 0, "L", true);
+            $pdf->Cell(20, 4,  "Diskon Member", 0, 0, "L", true);
             $pdf->Cell(2, 4, ':', 0, 0, 'L', true);
 
             // Cek Produk yang termasuk dalam diskon event
             $cekDiskon = Diskon::with('produk')
-                            ->whereHas('produk', function($query) use ($order){
-                                $query->whereIn('id_produk', $order->produk_dikirim->pluck('id_produk'));
-                            })
-                            ->where('status', 2)
-                            ->where('mulai_diskon', '<=', Carbon::now())
-                            ->where('selesai_diskon', '>=', Carbon::now())
-                            ->first();
+                ->whereHas('produk', function ($query) use ($order) {
+                    $query->whereIn('id_produk', $order->produk_dikirim->pluck('id_produk'));
+                })
+                ->where('status', 2)
+                ->where('mulai_diskon', '<=', Carbon::now())
+                ->where('selesai_diskon', '>=', Carbon::now())
+                ->first();
 
             if ($cekDiskon) {
                 $diskon_member = 0;
-            }elseif($order->user->id_member){
+            } elseif ($order->user->id_member) {
                 $diskon_member = $subTotal * $order->user->member->diskon / 100;
-            }elseif ($subTotal >= 50000) {
+            } elseif ($subTotal >= 50000) {
                 $diskon_member = $subTotal * 10 / 100;
-            }else{
+            } else {
                 $diskon_member = 0;
             }
 
-            $pdf->Cell(29, 4,  "Rp " . number_format($diskon_member, 0,',','.'), 0, 1, "R", true );
-            
+            $pdf->Cell(29, 4,  "Rp " . number_format($diskon_member, 0, ',', '.'), 0, 1, "R", true);
+
             if ($diskon_alquran) {
                 $pdf->Cell(34, 4, '', 0, 0);
-                $pdf->Cell(20, 4,  "Diskon Alquran" , 0, 0, "L", true);
+                $pdf->Cell(20, 4,  "Diskon Alquran", 0, 0, "L", true);
                 $pdf->Cell(2, 4, ':', 0, 0, 'L', true);
-                $pdf->Cell(29, 4,  "Rp " . number_format($diskon_alquran, 0,',','.'), 0, 1, "R", true );
+                $pdf->Cell(29, 4,  "Rp " . number_format($diskon_alquran, 0, ',', '.'), 0, 1, "R", true);
             }
-            
+
             $pdf->Cell(34, 2, '', 0, 0);
             $pdf->Cell(51, 2, '', "B", 1, '', true);
 
             $pdf->Cell(34, 2, '', 0, 0);
             $pdf->Cell(51, 2, '', 0, 1, '', true);
-            
-            $pdf->SetFont( "Arial", "B", 6 );
+
+            $pdf->SetFont("Arial", "B", 6);
             $pdf->Cell(34, 4, '', 0, 0);
-            $pdf->Cell(20, 4, 'Total Bayar', 0, 0, '',true);
+            $pdf->Cell(20, 4, 'Total Bayar', 0, 0, '', true);
             $pdf->Cell(2, 4, ':', 0, 0, 'L', true);
-            $pdf->Cell(29, 4, "Rp " . number_format($order->pembayaran[0]->harga_jual, 0,',','.'), 0, 1, 'R', true);
-            
+            $pdf->Cell(29, 4, "Rp " . number_format($order->pembayaran[0]->harga_jual, 0, ',', '.'), 0, 1, 'R', true);
+
             $pdf->Cell(34, 4, '', 0, 0);
             $pdf->Cell(51, 4, '', 0, 1, '', true);
-            
+
             $pdf->Ln(4);
 
             $pdf->Cell(85, 4, '', "T", 0);
 
             header('Access-Control-Allow-Origin: *');
             $pdf->Output('D', 'Invoice.pdf');
-
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
         }
-        
     }
 
     // public function cetak(Request $request) 
@@ -1318,7 +1368,7 @@ class OrderController extends Controller
     //                 $courier = null;
     //                 break;
     //         }
-    
+
     //         foreach ($courier as $c) {
     //             if ($c['kode'] == $order->courier) {
     //                 $courier_search = $c['nama'];
@@ -1332,7 +1382,7 @@ class OrderController extends Controller
     //         $pdf->Cell(100, 5, "Nota Pesanan", 0, 1);
 
     //         $pdf->Ln(3);
-                        
+
     //         $pdf->SetFillColor('236', '236', '236');
 
     //         $pdf->SetFont( "Arial", "B", 8 );
@@ -1340,9 +1390,9 @@ class OrderController extends Controller
     //         $pdf->Cell(5, 5, ':', 0, 0, 'L', true);
     //         $pdf->SetFont( "Arial", "", 8 );
     //         $pdf->Cell(45, 5,  $order->user->name, 0, 0, "", true );
-            
+
     //         $pdf->Cell(5, 5,  "", 0, 0, "L", true);
-            
+
     //         $pdf->SetFont( "Arial", "B", 8 );
     //         $pdf->Cell(25, 5,  "Nama Penjual" , 0, 0, "L", true);
     //         $pdf->Cell(5, 5, ':', 0, 0, 'L', true);
@@ -1353,12 +1403,12 @@ class OrderController extends Controller
 
     //         $alamat = $order->user->alamat . ', Kec. ' . $order->user->district->name . " " . $order->user->city->name . ', ' . $order->user->province->name . ', ' . $order->user->kode_pos;
     //         $h = $pdf->GetMultiCellHeight(101, 5,  $alamat, 0, "", true );
-            
+
     //         $pdf->Cell(27, $h,  "Alamat Pembeli" , 0, 0, "L", true);
     //         $pdf->Cell(5, $h, ':', 0, 0, 'L', true);
     //         $pdf->SetFont( "Arial", "", 8 );
     //         $pdf->MultiCell(101, 5,  $alamat, 0, "", true );
-            
+
     //         $pdf->SetFont( "Arial", "B", 8 );
     //         $pdf->Cell(27, 5,  "No. Hp Pembeli" , 0, 0, "L", true);
     //         $pdf->Cell(5, 5, ':', 0, 0, 'L', true);
@@ -1370,7 +1420,7 @@ class OrderController extends Controller
     //         $pdf->SetFont( "Arial", "", 8 );
     //         $pdf->Cell(101, 5,  $order->no_invoice == null ? $order->id : $order->no_invoice, 0, 0, "", true );
     //         $pdf->Ln(6);
-            
+
     //         $pdf->SetFont( "Arial", "B", 8 );
     //         $pdf->Cell(35, 5,  "Waktu Pembayaran" , 0, 0, "C");
     //         $pdf->Cell(10, 5,  "" , 0, 0, "C");
@@ -1399,9 +1449,9 @@ class OrderController extends Controller
     //         $pdf->Cell(5, 5,'Jumlah', "T,B", 0, 'C');
     //         $pdf->Cell(30, 5,'Harga', "T,B", 0, 'C');
     //         $pdf->Cell(30, 5,'Sub Total', "T,B", 1, 'C');
-            
+
     //         $subTotal = 0;
-            
+
     //         foreach ($order->produk_dikirim as $k => $v) {
     //             $pdf->SetFont('Arial', '', 8);
     //             $pdf->Cell(10, 4, $k + 1, 0, 0, 'C');
@@ -1437,12 +1487,12 @@ class OrderController extends Controller
     //         $pdf->Cell(27, 4,  "Sub Total Produk" , 0, 0, "L", true);
     //         $pdf->Cell(5, 4, ':', 0, 0, 'L', true);
     //         $pdf->Cell(28, 4,  "Rp " . number_format($subTotal, 0,',','.'), 0, 1, "R", true );            
-            
+
     //         $pdf->Cell(75, 4, '', 0, 0);
     //         $pdf->Cell(27, 4,  "Ongkos Kirim" , 0, 0, "L", true);
     //         $pdf->Cell(5, 4, ':', 0, 0, 'L', true);
     //         $pdf->Cell(28, 4,  "Rp " . number_format($order->biaya_pengiriman, 0,',','.'), 0, 1, "R", true );            
-            
+
     //         $pdf->Cell(75, 4, '', 0, 0);
     //         $pdf->Cell(27, 4,  "Diskon Member" , 0, 0, "L", true);
     //         $pdf->Cell(5, 4, ':', 0, 0, 'L', true);
@@ -1454,29 +1504,29 @@ class OrderController extends Controller
     //         }
 
     //         $pdf->Cell(28, 4,  "Rp " . number_format($diskon_member, 0,',','.'), 0, 1, "R", true );
-            
+
     //         if ($diskon_alquran) {
     //             $pdf->Cell(75, 4, '', 0, 0);
     //             $pdf->Cell(27, 4,  "Diskon Alquran" , 0, 0, "L", true);
     //             $pdf->Cell(5, 4, ':', 0, 0, 'L', true);
     //             $pdf->Cell(28, 4,  "Rp " . number_format($diskon_alquran, 0,',','.'), 0, 1, "R", true );
     //         }
-            
+
     //         $pdf->Cell(75, 2, '', 0, 0);
     //         $pdf->Cell(60, 2, '', "B", 1, '', true);
 
     //         $pdf->Cell(75, 2, '', 0, 0);
     //         $pdf->Cell(60, 2, '', 0, 1, '', true);
-            
+
     //         $pdf->SetFont( "Arial", "B", 8 );
     //         $pdf->Cell(75, 4, '', 0, 0);
     //         $pdf->Cell(27, 4, 'Total Bayar', 0, 0, '',true);
     //         $pdf->Cell(5, 4, ':', 0, 0, 'L', true);
     //         $pdf->Cell(28, 4, "Rp " . number_format($order->pembayaran[0]->harga_jual, 0,',','.'), 0, 1, 'R', true);
-            
+
     //         $pdf->Cell(75, 4, '', 0, 0);
     //         $pdf->Cell(60, 4, '', 0, 1, '', true);
-            
+
     //         $pdf->Ln(4);
 
     //         $pdf->Cell(135, 4, '', "T", 0);
@@ -1488,6 +1538,6 @@ class OrderController extends Controller
     //         Log::error($e->getMessage());
     //         return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
     //     }
-        
+
     // }
 }

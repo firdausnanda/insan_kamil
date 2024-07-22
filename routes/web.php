@@ -230,6 +230,7 @@ Route::group(['middleware' => 'auth'], function () {
 			Route::get('/cetak', [UserOrderController::class, 'cetak'])->name('cetak');
 			Route::post('/bukti-transaksi', [UserOrderController::class, 'addBukti'])->name('addBukti');
 			Route::post('/upload-bukti-transaksi', [UserOrderController::class, 'uploadBukti'])->name('uploadBukti');
+			Route::get('/aftercheckout/{id}', [UserOrderController::class, 'detail_checkout'])->name('detail_checkout');
 			Route::get('/detail-konfirmasi/{id}', [UserOrderController::class, 'detail_konfirmasi'])->name('detail_konfirmasi');
 		});
 
