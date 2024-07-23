@@ -71,8 +71,8 @@
                                                                         Pembayaran</button>
                                                                 @endif
 
-                                                                <button class="btn btn-outline-secondary">Detail
-                                                                    Pesanan</button>
+                                                                <a href="{{ route('user.order.detail_checkout', $order->id) }}" class="btn btn-outline-secondary">Detail
+                                                                    Pesanan</a>
                                                             </div>
                                                         </div>
                                                     </div>
