@@ -792,7 +792,7 @@ class OrderController extends Controller
             // Detail Konfirmasi
             $bukti = BuktiTransaksi::where('order_id', $id)->where('status', 0)->first();
 
-            if ($order->pembayaran[0]->created_at->addDays(1) > now()) {
+            if ($order->pembayaran[0]->created_at->addDays(1) < now()) {
                 return view('pages.user.keranjang.detail_konfirmasi', compact(
                     'order',
                     'subTotal',
