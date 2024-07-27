@@ -34,7 +34,7 @@
     </section>
 
 
-    <div class=" mt-lg-12 mb-lg-14 mb-8">
+    <div class=" mt-lg-12">
         <!-- container -->
         <div class="container">
             <!-- row -->
@@ -52,6 +52,30 @@
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="offcanvas-body p-lg-0 ">
+
+                                    <div class="mb-4">
+                                        <!-- title -->
+                                        <h3 class="mb-4 h5">Imprint</h3>
+                                        <!-- nav -->
+                                        <div class="card">
+                                            <ul class="nav nav-category" id="categoryCollapseMenu">
+                                                @foreach ($penerbit as $k)
+                                                    <li class="nav-item border-bottom w-100 collapsed px-4 py-1">
+                                                        <a href="{{ route('landing.penerbit', $k->slug) }}"
+                                                            class="nav-link">
+                                                            @if ($k->gambar)
+                                                                <img src="{{ asset('storage/penerbit/' . $k->gambar) }}"
+                                                                    style="width: 25px;">
+                                                            @endif
+                                                            {{ $k->nama_penerbit }}
+                                                            <i class="feather-icon icon-chevron-right"></i>
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+
+                                        </div>
+                                    </div>
 
                                     <div class="mb-4">
                                         <!-- title -->
@@ -624,6 +648,57 @@
                             Tidak ditemukan
                         </div>
                     @endforelse
+                </div>
+            </div>
+        </section>
+
+        <!-- section cta -->
+        <section class="bg-dark p-5"
+            style="background: url({{ asset('images/svg-graphics/pattern.svg') }}) no-repeat; background-size: cover; background-position: center">
+            <div class="container">
+                <!-- row -->
+                <div class="row">
+                    <div class="col-lg-11">
+                        <div class="row align-items-center">
+                            <!-- col -->
+                            <div class="col-lg-10">
+                                <div class="text-white mt-8 mt-lg-0">
+                                    <h2 class="h2 text-white my-4">Informasi Update Promo</h2>
+                                    <p class="text-white-50 mb-0">Masukkan Nomor WA Anda untuk Dapatkan penawaran terbaik
+                                        dan
+                                        promo menarik dari kami.</p>
+                                    <p class="text-white-50">Bergabunglah dengan langganan melalui nomor WhatsApp anda
+                                        sekarang, untuk mendapatkan informasi pembaruan tentang promosi dan kupon.</p>
+                                    <!-- form -->
+                                    <div class="row">
+                                        <div class="col-lg-8 col-sm-12">
+                                            <form class="row g-3 needs-validation" novalidate>
+                                                <div class="col-12">
+                                                    <input type="email" class="form-control"
+                                                        style="background: transparent; color: white"
+                                                        placeholder="Masukkan Nomor WhatsApp Anda" required />
+                                                    <div class="invalid-feedback">Please enter email.</div>
+                                                </div>
+                                                <!-- btn -->
+                                                <div class="col-12">
+                                                    <button type="submit"
+                                                        class="btn btn-primary mb-3 w-100">Bergabung</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- col -->
+                            <div class="col-lg-2">
+                                <div class="text-center">
+                                    <!-- img -->
+                                    <img src="{{ asset('images/png/pendi.png') }}" style="min-width: 250px;"
+                                        alt="" class="img-fluid" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

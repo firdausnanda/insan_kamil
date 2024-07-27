@@ -47,6 +47,7 @@ Route::get('/promo', [HomeController::class, 'detail_popup'])->name('landing.det
 Route::get('/member', [HomeController::class, 'member'])->name('landing.member');
 Route::get('/blog/{id}', [HomeController::class, 'detail_blog'])->name('landing.detail_blog');
 Route::get('/kategori/{kategori}', [HomeController::class, 'kategori'])->name('landing.kategori');
+Route::get('/penerbit/{penerbit}', [HomeController::class, 'penerbit'])->name('landing.penerbit');
 Route::get('/detail/{id}', [HomeController::class, 'detail'])->name('landing.detail');
 Route::get('/new-produk', [HomeController::class, 'new_produk'])->name('landing.new_produk');
 Route::get('/search', [HomeController::class, 'search'])->name('search');
@@ -107,7 +108,7 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::group(['prefix' => 'penerbit', 'as' => 'penerbit.'], function () {
 			Route::get('', [PenerbitController::class, 'index'])->name('index');
 			Route::post('', [PenerbitController::class, 'store'])->name('store');
-			Route::put('', [PenerbitController::class, 'update'])->name('update');
+			Route::post('/edit', [PenerbitController::class, 'update'])->name('update');
 		});
 
 		// Bahasa

@@ -12,7 +12,8 @@
                             <!-- breacrumb -->
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb mb-0">
-                                    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}" class="text-inherit">Dashboard</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}"
+                                            class="text-inherit">Dashboard</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Penerbit</li>
                                 </ol>
                             </nav>
@@ -61,12 +62,21 @@
                     <h5 class="modal-title" id="exampleModalLabel">Tambah Data Penerbit</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="form-tambah">
+                <form id="form-tambah" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="row mb-3">
                             <label for="colFormLabel" class="col-sm-4 col-form-label">Nama Penerbit</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" name="nama" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Gambar</label>
+                            <!-- input -->
+                            <div class="col-sm-8">
+                                <input type="file" class="upload-berkas-dropify" name="gambar" data-max-file-size="2M"
+                                    data-allowed-file-extensions="jpg png jpeg" id="berkas"
+                                    data-errors-position="outside" />
                             </div>
                         </div>
                     </div>
@@ -77,7 +87,7 @@
             </div>
         </div>
     </div>
-    
+
     {{-- Modal Edit --}}
     <div class="modal fade" id="modal-edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -86,13 +96,22 @@
                     <h5 class="modal-title" id="exampleModalLabel">Edit Data Penerbit</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="form-edit">
+                <form id="form-edit" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="row mb-3">
                             <label for="colFormLabel" class="col-sm-4 col-form-label">Nama Penerbit</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" name="nama" id="nama" required>
                                 <input type="hidden" class="form-control" name="id" id="id">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Gambar</label>
+                            <!-- input -->
+                            <div class="col-sm-8">
+                                <input type="file" class="upload-berkas-dropify" name="gambar" data-max-file-size="2M"
+                                    data-allowed-file-extensions="jpg png jpeg" id="berkas"
+                                    data-errors-position="outside" />
                             </div>
                         </div>
                     </div>
@@ -130,6 +149,9 @@
                         targets: 1,
                         className: 'align-middle',
                         data: 'nama_penerbit',
+                        render: function(data, type, row, meta) {
+                            return `<img style="width:25px" src="{{ asset('storage/penerbit/${row.gambar}') }}" alt=""> ${data}`
+                        }
                     },
                     {
                         targets: 2,
@@ -154,7 +176,7 @@
             });
 
             // Modal Tambah Show
-            $(".btn-tambah").click(function (e) { 
+            $(".btn-tambah").click(function(e) {
                 e.preventDefault();
                 $("#modal-tambah").modal('show')
             });
@@ -163,11 +185,17 @@
             $("#form-tambah").submit(function(e) {
                 e.preventDefault();
 
+                var formData = new FormData(this);
+
                 $.ajax({
                     type: "POST",
                     url: "{{ route('admin.penerbit.store') }}",
-                    data: $(this).serialize(),
+                    type: "POST",
+                    data: formData,
                     dataType: "JSON",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
                     beforeSend: function() {
                         $.LoadingOverlay('show');
                     },
@@ -204,10 +232,16 @@
             $("#form-edit").submit(function(e) {
                 e.preventDefault();
 
+                var formDataa = new FormData(document.getElementById("form-edit"));
+
                 $.ajax({
-                    type: "PUT",
+                    type: "POST",
                     url: "{{ route('admin.penerbit.update') }}",
-                    data: $(this).serialize(),
+                    data: formDataa,
+                    dataType: "JSON",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
                     dataType: "JSON",
                     beforeSend: function() {
                         $.LoadingOverlay('show');
@@ -227,6 +261,18 @@
                     },
                 });
             });
+
+            // init Dropify
+            if ($('.upload-berkas-dropify')) {
+                $('.upload-berkas-dropify').dropify({
+                    messages: {
+                        'default': '<i class="fa-regular fa-image icon-file"></i> <br> Unggah gambar anda disini <br> <span>  Type: JPG | JPEG | PNG (Max. 2MB) </span> <br> <button class="btn btn-yellow mt-3">Pilih File</button>',
+                        'replace': 'Klik untuk mengganti gambar anda',
+                        'remove': 'Hapus',
+                        'error': 'Ooops, something wrong happended.'
+                    },
+                });
+            }
         });
     </script>
 @endsection
