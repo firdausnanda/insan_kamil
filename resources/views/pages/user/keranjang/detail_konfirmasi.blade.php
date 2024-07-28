@@ -716,9 +716,9 @@
                         <div class="mb-3">
                             <label class="form-label">Nama Bank</label>
                             <select name="nama_bank" class="form-select">
-                                <option value="bca" {{ $bukti->transfer_ke == 'BCA' ? 'selected' : '' }}>BCA</option>
-                                <option value="bri" {{ $bukti->transfer_ke == 'BRI' ? 'selected' : '' }}>BRI</option>
-                                <option value="bsi" {{ $bukti->transfer_ke == 'BSI' ? 'selected' : '' }}>BSI</option>
+                                <option value="BCA" {{ $bukti->transfer_ke == 'BCA' ? 'selected' : '' }}>BCA</option>
+                                <option value="BRI" {{ $bukti->transfer_ke == 'BRI' ? 'selected' : '' }}>BRI</option>
+                                <option value="BSI" {{ $bukti->transfer_ke == 'BSI' ? 'selected' : '' }}>BSI</option>
                             </select>
                             <input type="hidden" name="id" value="{{ $bukti->id }}">
                         </div>
