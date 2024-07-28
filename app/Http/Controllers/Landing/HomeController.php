@@ -56,11 +56,14 @@ class HomeController extends Controller
             $promo = '';
         }
 
-        // Menu Grup
-        $menu = GroupMenu::with('produk.harga', 'produk.stok', 'produk.gambar_produk')->where('status', 1)->get();
+        // Menu All
+        $menu_all = GroupMenu::with('produk.harga', 'produk.stok', 'produk.gambar_produk')->where('status', 1)->get();
+
+        // Menu Group
+        $menu = $menu_all->where('preorder', 0);
 
         // Menu Preorder 
-        $preorder = $menu->where('preorder', 1);
+        $preorder = $menu_all->where('preorder', 1);
 
         // Flash Sale
         $flash_sale = Diskon::where('status', 2)->first();
