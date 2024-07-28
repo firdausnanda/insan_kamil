@@ -1335,6 +1335,35 @@ class OrderController extends Controller
         }
     }
 
+    public function ubah_rekening(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nama_bank' => 'required|string|max:255',
+            'nama_pengirim' => 'required|string|max:255',
+            'no_rekening' => 'required|string',
+            'id' => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseFormatter::error($validator->errors(), 'Data tidak valid', 422);
+        }
+
+        try {
+            
+            $bukti = BuktiTransaksi::where('id', $request->id)->update([
+                'transfer_ke' => $request->nama_bank,
+                'nama_rekening' => $request->nama_pengirim,
+                'no_rekening' => $request->no_rekening,
+            ]);
+
+            return ResponseFormatter::success($bukti, 'data berhasil diubah');
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }
+    }
+
     // public function cetak(Request $request) 
     // {
 

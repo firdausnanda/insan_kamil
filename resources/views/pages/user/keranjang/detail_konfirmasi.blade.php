@@ -1,5 +1,43 @@
 @extends('layouts.landing.main')
 
+@section('css')
+    <style>
+        .deals-countdown .countdown-section {
+            color: #0aad0a;
+            border: 0 !important;
+        }
+
+        .countdown-section span {
+            color: #0aad0a !important;
+            min-width: 40px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold !important;
+            width: 100% !important;
+        }
+
+        .copy-notification {
+            color: #ffffff;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 30px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 150px;
+            margin-top: -30px;
+            margin-left: -85px;
+            display: none;
+            text-align: center;
+        }
+
+        .deals-countdown .countdown-section .countdown-amount {
+            margin-bottom: 0 !important;
+            height: 25px !important;
+        }
+    </style>
+@endsection
+
 @section('content')
     {{-- Konten --}}
     <section class="mt-8">
@@ -20,66 +58,116 @@
 
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <div>
-                                                        <i class="fa-solid fa-bag-shopping me-2"></i>
-                                                        <strong class="text-dark fs-5">
-                                                            Belanja
-                                                        </strong>
+                                                    <div class="row align-items-start justify-content-between">
+                                                        <div class="col-lg-6">
+                                                            <i class="fa-solid fa-bag-shopping me-2"></i>
+                                                            <strong class="text-dark fs-5">
+                                                                Belanja
+                                                            </strong>
+                                                            <span class="ms-2 text-secondary">
+                                                                {{ $order->created_at->isoFormat('dddd, D MMMM Y') }}
+                                                            </span>
+                                                        </div>
+                                                        <div class="col-lg-4 text-lg-end">
+                                                            <span class="me-2 text-secondary">
+                                                                Bayar Sebelum
+                                                            </span>
+                                                            <i class="text-warning fw-bold fa-solid fa-clock"></i>
+                                                            <span class="text-primary fw-bold">
+                                                                {{ $order->pembayaran[0]->created_at->addDays(1)->isoFormat('dddd, D MMMM Y H:mm') }}
+                                                            </span>
+                                                        </div>
                                                     </div>
 
-                                                    <div class="row mt-3 justify-content-center align-items-center">
-                                                        <div class="col-lg-1 text-center">
-                                                            @switch($bukti->transfer_ke)
-                                                                @case('BRI')
-                                                                    <img style="width: 45px"
-                                                                        src="{{ asset('images/bank/logo_bri.png') }}">
-                                                                @break
+                                                    <div class="row g-3 mt-3 justify-content-between align-items-center">
+                                                        <div class="col-lg-7">
+                                                            <div class="row g-3">
+                                                                <div class="col-lg-2">
+                                                                    @switch($bukti->transfer_ke)
+                                                                        @case('BRI')
+                                                                            <img style="width: 45px"
+                                                                                src="{{ asset('images/bank/logo_bri.png') }}">
+                                                                        @break
 
-                                                                @case('BCA')
-                                                                    <img style="width: 45px"
-                                                                        src="{{ asset('images/bank/logo_bca.png') }}">
-                                                                @break
+                                                                        @case('BCA')
+                                                                            <img style="width: 45px"
+                                                                                src="{{ asset('images/bank/logo_bca.png') }}">
+                                                                        @break
 
-                                                                @case('BSI')
-                                                                    <img style="width: 45px"
-                                                                        src="{{ asset('images/bank/logo_bsi.svg') }}">
-                                                                @break
+                                                                        @case('BSI')
+                                                                            <img style="width: 45px"
+                                                                                src="{{ asset('images/bank/logo_bsi.svg') }}">
+                                                                        @break
 
-                                                                @default
-                                                            @endswitch
+                                                                        @default
+                                                                    @endswitch
+                                                                </div>
+                                                                <div class="col-lg-10">
+                                                                    <strong>Metode Pembayaran</strong>
+                                                                    <p class="mb-0">Transfer Manual</p>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-lg-4">
-                                                            <strong>Metode Pembayaran</strong>
-                                                            <p class="mb-0">Transfer Manual</p>
-                                                        </div>
-                                                        <div class="col-lg-3">
+                                                        <div class="col-lg-3 text-lg-end">
                                                             <strong>Total Pembayaran</strong>
                                                             <p class="mb-0">
                                                                 {{ rupiah($order->harga_total + $order->biaya_pengiriman - $member_diskon - $diskon_alquran) }}
                                                             </p>
                                                         </div>
-                                                        <div class="col-lg-4">
-                                                            <div class="row g-3">
-                                                                @if ($order->status == 1)
-                                                                    <button id="btn-bukti" class="btn btn-primary">Upload
-                                                                        Bukti
-                                                                        Pembayaran</button>
-                                                                @elseif ($order->status == 6)
-                                                                @else
-                                                                    <button type="button"
-                                                                        class="btn btn-primary btn-download">Download Bukti
-                                                                        Pembayaran</button>
-                                                                @endif
+                                                    </div>
 
-                                                                <a href="{{ route('user.order.detail_checkout', $order->id) }}" class="btn btn-outline-secondary">Detail
-                                                                    Pesanan</a>
+                                                    <div class="row justify-content-end mt-4">
+                                                        <div class="col-lg-4">
+                                                            <div class="row justify-content-end g-3">
+                                                                <div class="col-lg-5">
+                                                                    <a href="{{ route('user.order.detail_checkout', $order->id) }}"
+                                                                        class="btn btn-outline-secondary w-100">Lihat
+                                                                        Detail</a>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    @if ($order->status == 1)
+                                                                        <button id="btn-cara-bayar" class="btn btn-primary"
+                                                                            style="width: 87%">Cara Pembayaran</button>
+                                                                        <span class="dropdown">
+                                                                            <a href="#" class="text-reset"
+                                                                                data-bs-toggle="dropdown"
+                                                                                aria-expanded="false">
+                                                                                <i
+                                                                                    class="feather-icon icon-more-horizontal fs-5"></i>
+                                                                            </a>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li>
+                                                                                    <button class="dropdown-item"
+                                                                                        type="button" id="btn-bukti">
+                                                                                        <i
+                                                                                            class="bi bi-pencil-square me-3"></i>
+                                                                                        Upload Bukti Pembayaran
+                                                                                    </button>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <button class="dropdown-item btn-edit"
+                                                                                        id="btn-ubah-rekening"
+                                                                                        type="button">
+                                                                                        <i
+                                                                                            class="fa-solid fa-arrow-up-from-bracket me-3"></i>
+                                                                                        Ubah Rekening Pengirim
+                                                                                    </button>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </span>
+                                                                    @elseif ($order->status == 6)
+                                                                    @else
+                                                                        <button type="button"
+                                                                            class="btn btn-primary btn-download">Download
+                                                                            Bukti
+                                                                            Pembayaran</button>
+                                                                    @endif
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-
-
 
                                         </div>
                                     @elseif($order->pembayaran[0]->status_pembayaran == 3)
@@ -219,10 +307,12 @@
                                                                     <div>
                                                                         @if ($i->produk && $i->produk->gambar_produk->count() > 0)
                                                                             <img src="{{ asset('storage/produk/' . $i->produk->gambar_produk[0]->gambar) }}"
-                                                                                alt="" class="icon-shape icon-lg" />
+                                                                                alt=""
+                                                                                class="icon-shape icon-lg" />
                                                                         @else
                                                                             <img src="{{ asset('images/avatar/no-image.png') }}"
-                                                                                alt="" class="icon-shape icon-lg" />
+                                                                                alt=""
+                                                                                class="icon-shape icon-lg" />
                                                                         @endif
                                                                     </div>
                                                                     <div class="ms-lg-4 mt-2 mt-lg-0">
@@ -233,7 +323,8 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <span class="text-body">{{ rupiah($i->harga_jual) }}</span>
+                                                                <span
+                                                                    class="text-body">{{ rupiah($i->harga_jual) }}</span>
                                                             </td>
                                                             <td>
                                                                 {{ $i->jumlah_produk }}
@@ -354,7 +445,7 @@
         </div>
     </section>
 
-    <!-- Modal Body -->
+    <!-- Modal Rating -->
     <div class="modal fade" id="modal-rating" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
         role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
@@ -402,7 +493,7 @@
         </div>
     </div>
 
-    <!-- Modal Body -->
+    <!-- Modal Upload Bukti -->
     <div class="modal fade" id="modal-bukti" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
         role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -474,6 +565,182 @@
                         </div>
                     </form>
                 @endif
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Cara Bayar -->
+    <div class="modal fade" id="modal-cara-bayar" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId">
+                        Cara Pembayaran
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row align-items-center g-3">
+                        <div class="col-lg-8">
+                            <b>Transfer Manual</b>
+                        </div>
+                        <div class="col-lg-4 text-lg-end">
+                            @switch($bukti->transfer_ke)
+                                @case('BRI')
+                                    <img style="width: 45px" src="{{ asset('images/bank/logo_bri.png') }}">
+                                @break
+
+                                @case('BCA')
+                                    <img style="width: 45px" src="{{ asset('images/bank/logo_bca.png') }}">
+                                @break
+
+                                @case('BSI')
+                                    <img style="width: 45px" src="{{ asset('images/bank/logo_bsi.svg') }}">
+                                @break
+
+                                @default
+                            @endswitch
+                        </div>
+                        <div class="col-lg-6 p-2">
+                            <div>
+                                <b>
+                                    Nomor Rekening Tujuan
+                                </b>
+                            </div>
+                            <div class="fw-light mt-2">
+                                @switch($bukti->transfer_ke)
+                                    @case('BRI')
+                                        <div class="fw-bold">6903 01 001436 50 7</div>
+                                        <input type="text" class="d-none" id="norek" value="690301001436507" readonly>
+                                        Eko Wicaksono
+                                    @break
+
+                                    @case('BCA')
+                                        <div class="fw-bold">392 037 0747</div>
+                                        <input type="text" class="d-none" id="norek" value="392 037 0747" readonly>
+                                        Eko Wicaksono
+                                    @break
+
+                                    @case('BSI')
+                                        <div class="fw-bold">6227979170</div>
+                                        <input type="text" class="d-none" id="norek" value="6227979170" readonly>
+                                        Eko Wicaksono
+                                    @break
+
+                                    @default
+                                @endswitch
+                            </div>
+                        </div>
+                        <div class="col-lg-6 p-2 text-lg-end">
+                            <button id="copyrekening" class="btn btn-link text-decoration-none text-secondary p-0">
+                                Salin
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="col-lg-6 p-2">
+                            <div>
+                                <b>
+                                    Total Pembayaran
+                                </b>
+                            </div>
+                            <div class="fw-light mt-2">
+                                <span
+                                    class="fw-light">{{ rupiah($order->harga_total + $order->biaya_pengiriman - $member_diskon - $diskon_alquran) }}</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 p-2 text-lg-end">
+                            <input id="tagihan_nominal" type="text" class="d-none"
+                                value="{{ $order->harga_total + $order->biaya_pengiriman - $member_diskon - $diskon_alquran }}">
+                            <button id="tagihan" class="btn btn-link text-decoration-none text-secondary p-0">
+                                Salin
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="alert" style="color: #055160; background-color: #eafbff; border-color: #9eeaf9"
+                            role="alert">
+                            <i class="fa-solid fa-circle-exclamation me-2"></i>
+                            <strong>Penting! Transfer dengan jumlah yang tepat</strong>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <span style="font-size: 12px">Pastikan pembayaran Anda sudah BERHASIL dan UNGGAH BUKTI untuk
+                        mempercepat proses
+                        verifikasi</span>
+                    <hr style="height: 15px; border: none; background: #EAE6E6;">
+
+                    <div class="row g-3">
+                        <div class="col-lg-1">
+                            <img style="min-height: 40px" class="img-fluid" src="{{ asset('images/payment/1.png') }}"
+                                alt="">
+                        </div>
+                        <div class="col-lg-11">
+                            <b class="text-primary">Pembayaran Terjamin</b><br>
+                            <span>
+                                Insan kamil menjamin keamanan dana yang kamu bayarkan di tiap transaksi.
+                            </span>
+                        </div>
+                        <div class="col-lg-1">
+                            <img style="min-height: 40px" class="img-fluid" src="{{ asset('images/payment/2.png') }}"
+                                alt="">
+                        </div>
+                        <div class="col-lg-11">
+                            <b class="text-primary">Jaga keamanan datamu</b><br>
+                            <span>
+                                Jangan menyebarkan bukti & data pembayaran ke pihak mana pun kecuali Penerbit Insan Kamil.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Ubah Rekening -->
+    <div class="modal fade" id="modal-ubah-rekening" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId">
+                        Ubah Akun Bank
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <form id="form-ubah-rekening">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Nama Bank</label>
+                            <select name="nama_bank" class="form-select">
+                                <option value="bca" {{ $bukti->transfer_ke == 'BCA' ? 'selected' : '' }}>BCA</option>
+                                <option value="bri" {{ $bukti->transfer_ke == 'BRI' ? 'selected' : '' }}>BRI</option>
+                                <option value="bsi" {{ $bukti->transfer_ke == 'BSI' ? 'selected' : '' }}>BSI</option>
+                            </select>
+                            <input type="hidden" name="id" value="{{ $bukti->id }}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nama Pengirim</label>
+                            <input type="text" value="{{ $bukti->nama_rekening }}" name="nama_pengirim"
+                                class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nomor Rekening</label>
+                            <input type="text" value="{{ $bukti->no_rekening }}" name="no_rekening"
+                                class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+
+                </form>
             </div>
         </div>
     </div>
@@ -597,6 +864,32 @@
                     },
                 });
             });
+
+            // Ubah Rekening
+            $('#form-ubah-rekening').submit(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "PUT",
+                    url: "{{ route('user.order.ubah_rekening') }}",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        $('#modal-ubah-rekening').modal('hide')
+                        Swal.fire('Sukses!', 'Data berhasil diubah.', 'success');
+                    },
+                    error: function(response) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
+                    },
+                });
+
+            });
+
 
             // Get Waybill
             $.ajax({
@@ -810,6 +1103,83 @@
                 altInput: true,
                 altFormat: "j F Y",
                 dateFormat: "Y-m-d",
+            });
+
+            // Countdown
+            $("[data-countdown]").each(function() {
+                var n = $(this),
+                    s = $(this).data("countdown");
+                n.countdown(s, function(n) {
+                    $(this).html(n.strftime(
+                        `<span class="countdown-section">
+                            <span class="countdown-amount hover-up">%H : %M : %S</span>
+                        </span>`
+                    ))
+                }).on('finish.countdown', function() {
+                    setTimeout(
+                        function() {
+                            location.reload()
+                        }, 1000);
+                });
+            });
+
+            $('#btn-cara-bayar').click(function(e) {
+                e.preventDefault();
+                $('#modal-cara-bayar').modal('show')
+            });
+
+            $('#copyrekening').click(function(e) {
+                e.preventDefault();
+
+                CopyToClipboard($('#norek').val(), true, "Copied");
+
+            });
+
+            $('#tagihan').click(function(e) {
+                e.preventDefault();
+
+                CopyToClipboard($('#tagihan_nominal').val(), true, "Copied");
+
+            });
+
+            function CopyToClipboard(value, showNotification, notificationText) {
+                var $temp = $("<input>");
+                $("body").append($temp);
+                $temp.val(value).select();
+                document.execCommand("copy");
+                $temp.remove();
+
+                if (typeof showNotification === 'undefined') {
+                    showNotification = true;
+                }
+                if (typeof notificationText === 'undefined') {
+                    notificationText = "Copied to clipboard";
+                }
+
+                var notificationTag = $("div.copy-notification");
+                if (showNotification && notificationTag.length == 0) {
+                    notificationTag = $("<div/>", {
+                        "class": "copy-notification",
+                        text: notificationText
+                    });
+                    $("body").append(notificationTag);
+
+                    notificationTag.fadeIn("slow", function() {
+                        setTimeout(function() {
+                            notificationTag.fadeOut("slow", function() {
+                                notificationTag.remove();
+                            });
+                        }, 1000);
+                    });
+                }
+            }
+
+            // Modal Ubah Rekening
+            $('#btn-ubah-rekening').click(function(e) {
+                e.preventDefault();
+
+                $('#modal-ubah-rekening').modal('show')
+
             });
 
         });

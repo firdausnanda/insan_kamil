@@ -41,7 +41,7 @@
 
             <!-- row -->
             <div class="row justify-content-center">
-                <div class="col-xl-8 col-8 mb-5">
+                <div class="col-xl-8 mb-5">
                     <!-- card -->
                     <div class="card h-100 card-lg pb-5">
                         <div class="card h-100 card-lg">
@@ -68,13 +68,13 @@
                                                 {{ $order->pembayaran[0]->created_at->addDays(1)->isoFormat('dddd, D MMMM Y H:mm') }}
                                             </h5>
 
-                                            <div class="row m-5 align-items-center">
+                                            <div class="row g-2 m-5 align-items-center">
                                                 <div class="col-lg-6 p-2 border-bottom">
                                                     <b>
                                                         Transfer Bank
                                                     </b>
                                                 </div>
-                                                <div class="col-lg-6 p-2 border-bottom text-end">
+                                                <div class="col-lg-6 p-2 border-bottom text-lg-end">
                                                     @switch($bukti->transfer_ke)
                                                         @case('BRI')
                                                             <img style="width: 45px" src="{{ asset('images/bank/logo_bri.png') }}">
@@ -124,7 +124,7 @@
                                                         @endswitch
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-6 p-2 text-end">
+                                                <div class="col-lg-6 p-2 text-lg-end">
                                                     <button id="copyrekening"
                                                         class="btn btn-link text-decoration-none text-secondary p-0">
                                                         Salin
@@ -142,7 +142,7 @@
                                                             class="fw-light">{{ rupiah($order->harga_total + $order->biaya_pengiriman - $member_diskon - $diskon_alquran) }}</span>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-6 p-2 text-end">
+                                                <div class="col-lg-6 p-2 text-lg-end">
                                                     <input id="tagihan_nominal" type="text" class="d-none"
                                                         value="{{ $order->harga_total + $order->biaya_pengiriman - $member_diskon - $diskon_alquran }}">
                                                     <button id="tagihan"
