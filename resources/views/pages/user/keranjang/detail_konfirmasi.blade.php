@@ -81,8 +81,8 @@
 
                                                     <div class="row g-3 mt-3 justify-content-between align-items-center">
                                                         <div class="col-lg-7">
-                                                            <div class="row g-3">
-                                                                <div class="col-lg-2">
+                                                            <div class="row g-3 align-items-center">
+                                                                <div class="col-lg-2 text-lg-center">
                                                                     @switch($bukti->transfer_ke)
                                                                         @case('BRI')
                                                                             <img style="width: 45px"
