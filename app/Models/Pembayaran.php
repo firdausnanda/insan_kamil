@@ -43,7 +43,8 @@ class Pembayaran extends Model
 
     protected static function booted()
     {
-        $expired = Pembayaran::whereBetween('created_at', [Carbon::yesterday(), Carbon::now()->addDays(2)])->get();
+        // $expired = Pembayaran::whereBetween('created_at', [Carbon::yesterday(), Carbon::now()->addDays(2)])->get();
+        $expired = Pembayaran::where('status_pembayaran', 1)->get();
 
         foreach ($expired as $value) {
             if ($value->created_at->addDays(1) < now() && $value->status_pembayaran != 2) {
