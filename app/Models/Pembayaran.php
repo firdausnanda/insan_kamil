@@ -51,6 +51,10 @@ class Pembayaran extends Model
                 Pembayaran::where('id', $value->id)->update([
                     'status_pembayaran' => 3,
                 ]);
+
+                Order::where('id', $value->id_order)->update([
+                    'status' => 6
+                ]);
             }
         }
     }
