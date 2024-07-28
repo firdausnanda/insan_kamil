@@ -189,6 +189,40 @@
             </div>
         </div>
     </div>
+
+    {{-- Modal Rentang Tanggal --}}
+    <div class="modal fade" id="modal-rentang-tanggal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Rentang Tanggal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-rentang">
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Tanggal Mulai</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control" name="tanggal_mulai" id="tanggal_mulai" />
+                                <input type="hidden" class="form-control" name="id" id="id_rentang" />
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label">Tanggal Selesai</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control" name="tanggal_selesai"
+                                    id="tanggal_selesai" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -216,6 +250,15 @@
                         targets: 1,
                         className: 'align-middle',
                         data: 'nama',
+                        render: function(data, type, row, meta) {
+                            let rentang = row.tanggal_mulai == null && row.tanggal_selesai == null ? '' : `${row.tanggal_mulai} s/d ${row.tanggal_selesai}` 
+
+                            if (row.preorder == 1) {
+                                return `${data} <span class="badge bg-warning">Preorder!</span> <br> <span class='fst-italic' style='font-size:11px'>${rentang}</span>`;
+                            } else {
+                                return data
+                            }
+                        }
                     },
                     {
                         targets: 2,
@@ -248,6 +291,18 @@
                                                 <button class="dropdown-item btn-edit" type="button">
                                                     <i class="bi bi-pencil-square me-3"></i>
                                                     Edit
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item btn-rentang" type="button">
+                                                    <i class="fa-solid fa-clock me-3"></i>
+                                                    Rentang Tanggal
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item btn-preorder" type="button">
+                                                    <i class="fa-solid fa-bars-staggered me-3"></i>
+                                                    Preorder
                                                 </button>
                                             </li>
                                             <li>
@@ -320,6 +375,37 @@
                 $.ajax({
                     type: "PUT",
                     url: "{{ route('admin.menu.aktif') }}",
+                    data: {
+                        id: data.id
+                    },
+                    dataType: "JSON",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        if (response.meta.status == "success") {
+                            table.ajax.reload();
+                            Swal.fire('Sukses!', response.meta.message, 'success');
+                        }
+                    },
+                    error: function(response) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
+                        console.log(response.responseJSON.message);
+                    },
+                });
+
+            });
+            
+            // Modal Preorder
+            $('#menu tbody').on('click', '.btn-preorder', function(event) {
+                event.preventDefault();
+                var data = table.row($(this).parents('tr')).data();
+
+                $.ajax({
+                    type: "PUT",
+                    url: "{{ route('admin.menu.preorder') }}",
                     data: {
                         id: data.id
                     },
@@ -607,6 +693,62 @@
 
                 $('#modal-tambah-produk').modal('show')
             })
+
+            // Modal Rentang Tanggal Show
+            $('#menu tbody').on('click', '.btn-rentang', function(e) {
+                e.preventDefault();
+                var data = table.row($(this).parents('tr')).data();
+                var id = data.id;
+
+                $('#id_rentang').val(id)
+                $("#modal-rentang-tanggal").modal('show')
+            });
+
+            // Submit Edit
+            $("#form-rentang").submit(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "PUT",
+                    url: "{{ route('admin.menu.rentang') }}",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        if (response.meta.status == "success") {
+                            $('#modal-rentang-tanggal').modal('hide');
+                            table.ajax.reload();
+                            Swal.fire('Sukses!', response.meta.message, 'success');
+                        }
+                    },
+                    error: function(response) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
+                        console.log(response.responseJSON.message);
+                    },
+                });
+            });
+
+            //Flatpickr
+            flatpickr("#tanggal_selesai", {
+                locale: "id",
+                altInput: true,
+                altFormat: "j F Y, H:i",
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+            });
+
+            //Flatpickr
+            flatpickr("#tanggal_mulai", {
+                locale: "id",
+                altInput: true,
+                altFormat: "j F Y, H:i",
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+            });
         });
     </script>
 @endsection

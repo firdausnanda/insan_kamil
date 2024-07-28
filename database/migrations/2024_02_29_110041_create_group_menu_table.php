@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('group_menu', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->text('deskripsi');
+            $table->text('deskripsi')->nullable();
             $table->boolean('status')->default(1);
             $table->timestamps();
         });

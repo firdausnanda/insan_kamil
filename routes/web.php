@@ -182,6 +182,8 @@ Route::group(['middleware' => 'auth'], function () {
 			Route::post('/produk-store', [MenuGroupController::class, 'produk_store'])->name('produk_store');		
 			Route::delete('/produk-destroy', [MenuGroupController::class, 'produk_destroy'])->name('produk_destroy');		
 			Route::put('/aktif', [MenuGroupController::class, 'aktif'])->name('aktif');		
+			Route::put('/rentang', [MenuGroupController::class, 'rentang'])->name('rentang');		
+			Route::put('/preorder', [MenuGroupController::class, 'preorder'])->name('preorder');		
 		});
 		
 		// Activity

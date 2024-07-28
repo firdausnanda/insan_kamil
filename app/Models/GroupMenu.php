@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
@@ -17,8 +18,26 @@ class GroupMenu extends Model
     protected $fillable = [
         'nama',
         'deskripsi',
+        'preorder',
+        'tanggal_mulai',
+        'tanggal_selesai',
         'status'
     ];
+
+    protected static function booted()
+    {
+        $expired = GroupMenu::where('status', 1)->get();
+
+        foreach ($expired as $value) {
+            if ($value->tanggal_mulai != null && $value->tanggal_selesai < now()) {
+                $expired = GroupMenu::where('id', $value->id)->update([
+                    'tanggal_mulai' => null,
+                    'tanggal_selesai' => null,
+                    'status' => 0
+                ]);
+            }
+        }
+    }
 
     public function tapActivity(Activity $activity, string $eventName)
 	{

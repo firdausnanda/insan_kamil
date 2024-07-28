@@ -119,6 +119,31 @@ class MenuGroupController extends Controller
         }
     }
 
+    public function preorder(Request $request)
+    {
+        try {
+
+            $data = GroupMenu::query()->update(['preorder' => 0]);
+            $menu = GroupMenu::where('id', $request->id)->first();
+
+            if ($menu->preorder == 1) {
+                $status = 0;
+            }else{
+                $status = 1;
+            }
+            
+            $menu->update([
+                'preorder' => $status
+            ]);
+
+            return ResponseFormatter::success($menu, 'Data berhasil disimpan!');
+            
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }
+    }
+
     public function produk_store(Request $request)
     {
         try {
@@ -137,6 +162,32 @@ class MenuGroupController extends Controller
             $menu = GroupMenu::where('id', $request->id_menu)->first();
             $menu->produk()->detach($request->id_produk);
             return ResponseFormatter::success($menu, 'Data berhasil dihapus');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }
+    }
+
+    public function rentang(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+			'tanggal_mulai' => 'required|string|max:255',
+			'tanggal_selesai' => 'required|string|max:255',
+		]);
+
+		if ($validator->fails()) {
+			return ResponseFormatter::error($validator->errors(), 'Data Kategori tidak valid', 422);
+		}
+
+        try {
+
+            $menu = GroupMenu::where('id', $request->id)->update([
+                'tanggal_mulai' => $request->tanggal_mulai,
+                'tanggal_selesai' => $request->tanggal_selesai
+            ]);
+
+            return ResponseFormatter::success($menu, 'Data berhasil diubah');
+
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');

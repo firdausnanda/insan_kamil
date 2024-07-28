@@ -59,6 +59,9 @@ class HomeController extends Controller
         // Menu Grup
         $menu = GroupMenu::with('produk.harga', 'produk.stok', 'produk.gambar_produk')->where('status', 1)->get();
 
+        // Menu Preorder 
+        $preorder = $menu->where('preorder', 1);
+
         // Flash Sale
         $flash_sale = Diskon::where('status', 2)->first();
 
@@ -81,7 +84,8 @@ class HomeController extends Controller
             'menu',
             'flash',
             'flash_sale',
-            'penerbit'
+            'penerbit',
+            'preorder'
         ));
     }
 
