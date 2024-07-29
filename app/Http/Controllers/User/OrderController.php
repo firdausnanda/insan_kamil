@@ -489,6 +489,7 @@ class OrderController extends Controller
                 'origin' => $request->origin,
                 'destination' => $request->destination,
                 'catatan_pembelian' => $request->catatan,
+                'id_member' => Auth::user()->id_member,
                 'is_flash' => $isflash
             ]);
 
