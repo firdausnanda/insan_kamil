@@ -333,6 +333,9 @@
                                                                     <div class="position-absolute top-0 end-0">
                                                                         <span class="badge bg-warning">Preorder</span>
                                                                     </div>
+                                                                    <div class="position-absolute" style="top: 87%; right: 2%">
+                                                                        <span class="badge bg-danger rounded">{{ Carbon\Carbon::parse($item->tanggal_selesai)->longAbsoluteDiffForHumans() . ' lagi' }}</span>
+                                                                    </div>
                                                                     <!-- img -->
                                                                     @if ($p->gambar_produk->count() > 0)
                                                                         <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
@@ -351,7 +354,7 @@
                                                         <div>
                                                             @if ($p->harga->mulai_diskon <= now() && $p->harga->diskon > 0)
                                                                 <span
-                                                                    class="badge bg-danger rounded-pill">{{ '-' . diskon($p->harga) . '%' }}</span>
+                                                                    class="badge bg-danger rounded-pill">{{ 'Hemat -' . diskon($p->harga) . '%' }}</span>
                                                             @endif
                                                             <h2 class="mt-1 fs-6"> <a
                                                                     href="{{ route('landing.detail', $p->id) }}"
@@ -376,6 +379,9 @@
                                                                     <span
                                                                         class="text-muted small">{{ round($p->averageRating(), 2) }}</span>
                                                                 @endif
+                                                            </div>
+                                                            <div style="background-color: #E9EFF1" class="py-1 ps-2 mt-2">
+                                                                <span class="text-dark fw-bold">PO Berakhir : {{ Carbon\Carbon::parse($item->tanggal_selesai)->isoFormat('D MMMM Y') }}</span>
                                                             </div>
 
                                                         </div>
