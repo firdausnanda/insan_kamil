@@ -57,6 +57,7 @@
                                                                 name="alamat" id="homeRadio" checked />
                                                             <span class="form-check-label text-dark"
                                                                 for="homeRadio">Home</span>
+                                                            <input type="hidden" value="0">
                                                         </div>
 
                                                         <!-- address -->
@@ -116,6 +117,7 @@
                                                                                 value="{{ $a->district ? $a->district->id : '' }}" />
                                                                             <span class="form-check-label fw-bold"
                                                                                 for="officeRadio1">{{ $a->nama_penerima }}</span>
+                                                                            <input type="hidden" value="{{ $a->id }}">
                                                                         </div>
                                                                         <address>
 
@@ -1013,7 +1015,7 @@
                     type: "GET",
                     url: "{{ route('user.order.ongkir') }}",
                     data: {
-                        city_destination: $("input[name=alamat]").val(),
+                        city_destination: $('input:radio[name="alamat"]:checked').val(),
                         courier: $('#jasa_pengiriman').val(),
                         weight: "{{ $beratProduk }}"
                     },
@@ -1190,6 +1192,7 @@
                     .parent().find('#deskripsi').text()
                 let biaya_pengiriman = $('#daftar_paket').find('input:radio[name="kurir"]:checked').val()
                 let destination = $('input:radio[name="alamat"]:checked').val()
+                let alamat_user = $('input:radio[name="alamat"]:checked').siblings('input').val()
 
                 $.ajax({
                     type: "POST",
@@ -1203,6 +1206,7 @@
                         destination: destination,
                         catatan: $('#catatan').val(),
                         status_dropship: dropship,
+                        alamat_user: alamat_user,
                         data: js,
                     },
                     dataType: "JSON",

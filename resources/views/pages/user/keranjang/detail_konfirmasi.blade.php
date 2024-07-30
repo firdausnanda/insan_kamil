@@ -275,8 +275,6 @@
                                                             <p class="mb-1 lh-lg">
                                                                 {{ $dropship->nama_pengirim }}
                                                                 <br />
-                                                                {{ $dropship->email_pengirim }}
-                                                                <br />
                                                                 {{ $dropship->no_telp_pengirim }}
                                                             </p>
                                                         </div>

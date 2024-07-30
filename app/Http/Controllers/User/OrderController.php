@@ -547,19 +547,21 @@ class OrderController extends Controller
             // Dropship
             if ($request->status_dropship == 1) {
                 $cekDropship = DropshipMaster::where('id_user', $request->user)->first();
+                $cekAlamat = AlamatUser::where('id', $request->alamat_user)->first();
 
                 Dropship::create([
                     'id_user' => $request->user,
                     'id_order' => $order->id,
                     'nama_pengirim' => $cekDropship->nama_pengirim,
                     'no_telp_pengirim' => $cekDropship->no_telp_pengirim,
-                    'email_pengirim' => $cekDropship->email_pengirim,
-                    'alamat_penerima' => $cekDropship->alamat_penerima,
-                    'kota_penerima' => $cekDropship->kota_penerima,
-                    'provinsi_penerima' => $cekDropship->provinsi_penerima,
-                    'desa_penerima' => $cekDropship->desa_penerima,
-                    'nama_penerima' => $cekDropship->nama_penerima,
-                    'no_telp_penerima' => $cekDropship->no_telp_penerima,
+                    'email_pengirim' => null,
+                    
+                    'alamat_penerima' => $cekAlamat ? $cekAlamat->alamat_penerima : $cekDropship->alamat_penerima,
+                    'kota_penerima' => $cekAlamat ? $cekAlamat->kota_penerima : $cekDropship->kota_penerima,
+                    'provinsi_penerima' => $cekAlamat ? $cekAlamat->provinsi_penerima : $cekDropship->provinsi_penerima,
+                    'desa_penerima' => $cekAlamat ? $cekAlamat->desa_penerima : $cekDropship->desa_penerima,
+                    'nama_penerima' => $cekAlamat ? $cekAlamat->nama_penerima : $cekDropship->nama_penerima,
+                    'no_telp_penerima' => $cekAlamat ? $cekAlamat->no_telp_penerima : $cekDropship->no_telp_penerima,
                 ]);
             }
 
