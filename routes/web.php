@@ -124,6 +124,7 @@ Route::group(['middleware' => 'auth'], function () {
 			Route::post('', [OrderController::class, 'store'])->name('store');
 			Route::get('/waybill', [OrderController::class, 'waybill'])->name('waybill');
 			Route::get('/cetak', [UserOrderController::class, 'cetak'])->name('cetak');
+			Route::get('/cetak/pengiriman', [UserOrderController::class, 'cetak_pengiriman'])->name('cetak_pengiriman');
 			Route::get('/detail/{id}', [OrderController::class, 'detail'])->name('detail');
 		});
 
@@ -231,6 +232,7 @@ Route::group(['middleware' => 'auth'], function () {
 			Route::get('/dropship', [UserOrderController::class, 'dropship'])->name('dropship');
 			Route::put('/dropship', [UserOrderController::class, 'edit_dropship'])->name('edit_dropship');
 			Route::get('/cetak', [UserOrderController::class, 'cetak'])->name('cetak');
+			Route::get('/cetak/pengiriman', [UserOrderController::class, 'cetak_pengiriman'])->name('cetak_pengiriman');
 			Route::post('/bukti-transaksi', [UserOrderController::class, 'addBukti'])->name('addBukti');
 			Route::post('/upload-bukti-transaksi', [UserOrderController::class, 'uploadBukti'])->name('uploadBukti');
 			Route::put('/ubah-rekening', [UserOrderController::class, 'ubah_rekening'])->name('ubah_rekening');

@@ -108,10 +108,6 @@
                             <input type="text" class="form-control" name="transfer_ke" readonly id="transfer_ke">
                         </div>
                         <div class="col-lg-12">
-                            <label for="" class="form-label">Tanggal Transfer</label>
-                            <input type="text" class="form-control" name="tgl_transfer" readonly id="tgl_transfer">
-                        </div>
-                        <div class="col-lg-12">
                             <label for="" class="form-label d-block">Lihat Bukti</label>
                             <input type="hidden" id="lihat-bukti">
                             <input type="hidden" id="id_order">
@@ -275,9 +271,13 @@
                 e.preventDefault();
 
                 let a = $('#lihat-bukti').val()
-                let b = `{{ asset('storage/bukti-transaksi/${a}') }}`
 
-                window.open(b, '_blank');
+                if (a == null || a == '') {
+                    Swal.fire('Gagal!', 'Data bukti gambar tidak tersedia', 'error')
+                }else{
+                    let b = `{{ asset('storage/bukti-transaksi/${a}') }}`
+                    window.open(b, '_blank');
+                }
 
             });
 

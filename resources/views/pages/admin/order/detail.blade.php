@@ -60,8 +60,6 @@
                                     <!-- button -->
                                     <div class="ms-md-3">
                                         <button id="btn-simpan" class="btn btn-primary">Simpan</button>
-                                        <button type="button" class="btn btn-secondary btn-download">Download
-                                            Invoice</button>
                                     </div>
                                 </div>
                             </div>
@@ -135,7 +133,21 @@
                                                     class="text-dark">{{ rupiah($order->harga_total + $order->biaya_pengiriman - $member_diskon - $diskon_alquran) }}</span>
                                             </p>
                                         </div>
-                                        <button type="button" class="btn btn-info btn-bukti">Lihat Bukti Transaksi</button>
+                                        <div class="row g-2">
+                                            <div class="col-lg-4">
+                                                <button type="button" class="btn btn-sm btn-info btn-bukti">Lihat Bukti
+                                                    Transaksi</button>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <button type="button"
+                                                    class="btn btn-sm btn-primary btn-download">Download
+                                                    Invoice</button>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <button type="button" class="btn btn-sm btn-warning btn-pengiriman">
+                                                    Invoice Pengiriman</button>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     @if ($dropship)
@@ -165,8 +177,6 @@
                                                 <h6>Data Pengirim Dropshipper</h6>
                                                 <p class="mb-1 lh-lg">
                                                     {{ $dropship->nama_pengirim }}
-                                                    <br />
-                                                    {{ $dropship->email_pengirim }}
                                                     <br />
                                                     {{ $dropship->no_telp_pengirim }}
                                                 </p>
@@ -227,7 +237,7 @@
                                                 <td class="border-bottom-0 pb-0"></td>
                                                 <td class="border-bottom-0 pb-0"></td>
                                                 <td class="fw-medium text-dark">
-                                                    {{ $order->produk_dikirim->sum('jumlah_produk') }} 
+                                                    {{ $order->produk_dikirim->sum('jumlah_produk') }}
                                                     (Berat Total : {{ $order->jumlah_produk_total }}gr)
                                                 </td>
                                                 <td class="fw-medium text-dark">
@@ -415,11 +425,6 @@
                                 name="transfer_ke" readonly id="transfer_ke">
                         </div>
                         <div class="col-lg-12">
-                            <label for="" class="form-label">Tanggal Transfer</label>
-                            <input type="text" class="form-control" value="{{ $bukti ? $bukti->tgl_transfer : '' }}"
-                                name="tgl_transfer" readonly id="tgl_transfer">
-                        </div>
-                        <div class="col-lg-12">
                             <label for="" class="form-label d-block">Lihat Bukti</label>
                             <input type="hidden" value="{{ $bukti ? $bukti->gambar : '' }}" id="lihat-bukti">
                             <input type="hidden" value="{{ $bukti ? $bukti->id : '' }}" id="id_order">
@@ -543,6 +548,38 @@
                 $.ajax({
                     type: "GET",
                     url: "{{ route('admin.order.cetak') }}",
+                    data: {
+                        id: "{{ $order->id }}"
+                    },
+                    cache: false,
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    beforeSend: function() {
+                        $.LoadingOverlay('show')
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide')
+                        var blob = new Blob([response], {
+                            type: 'application/pdf'
+                        });
+                        var url = URL.createObjectURL(blob);
+                        window.open(url, '_blank');
+                    },
+                    error: function(xhr, status, error) {
+                        $.LoadingOverlay('hide')
+                    },
+                });
+
+            });
+
+            // Pengiriman
+            $('.btn-pengiriman').click(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('admin.order.cetak_pengiriman') }}",
                     data: {
                         id: "{{ $order->id }}"
                     },

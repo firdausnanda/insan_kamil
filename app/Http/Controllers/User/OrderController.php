@@ -555,7 +555,7 @@ class OrderController extends Controller
                     'nama_pengirim' => $cekDropship->nama_pengirim,
                     'no_telp_pengirim' => $cekDropship->no_telp_pengirim,
                     'email_pengirim' => null,
-                    
+
                     'alamat_penerima' => $cekAlamat ? $cekAlamat->alamat_penerima : $cekDropship->alamat_penerima,
                     'kota_penerima' => $cekAlamat ? $cekAlamat->kota_penerima : $cekDropship->kota_penerima,
                     'provinsi_penerima' => $cekAlamat ? $cekAlamat->provinsi_penerima : $cekDropship->provinsi_penerima,
@@ -1117,7 +1117,415 @@ class OrderController extends Controller
                 }
             }
 
-            $pdf = new Pdf('P', 'mm', array(100, 150)); //L For Landscape / P For Portrait
+            $pdf = new Pdf(); //L For Landscape / P For Portrait
+            $pdf->AddPage();
+
+            $pdf->SetFont('Arial', '', 12);
+            $pdf->Cell(100, 5, "Nota Pesanan", 0, 1);
+
+            $pdf->Ln(3);
+
+            $pdf->SetFillColor('236', '236', '236');
+
+            $pdf->SetFont("Arial", "B", 10);
+
+            $pdf->Cell(40, 7,  "Nama Pembeli", 0, 0, "L", true);
+            $pdf->Cell(5, 7, ':', 0, 0, 'L', true);
+            $pdf->SetFont("Arial", "", 10);
+            if ($dropship) {
+                $pdf->Cell(53, 7,  $dropship->nama_penerima, 0, 0, "", true);
+            } else {
+                $pdf->Cell(53, 7,  $order->user->name, 0, 0, "", true);
+            }
+
+            $pdf->SetFont("Arial", "B", 10);
+            $pdf->Cell(40, 7,  "Nama Penjual", 0, 0, "L", true);
+            $pdf->Cell(5, 7, ':', 0, 0, 'L', true);
+            $pdf->SetFont("Arial", "", 10);
+            if ($dropship) {
+                $pdf->Cell(50, 7,  $dropship->nama_pengirim, 0, 1, "", true);
+            } else {
+                $pdf->Cell(50, 7,  "Insan Kamil", 0, 0, "", true);
+            }
+
+            $pdf->SetFont("Arial", "B", 10);
+
+            if ($dropship) {
+                $alamat = $dropship->alamat_penerima . ', Kec. ' . $dropship->district->name . " " . $dropship->city->name . ', ' . $dropship->province->name . ', ' . $dropship->city->postal_code;
+            } else {
+                $alamat = $order->user->alamat . ', Kec. ' . $order->user->district->name . " " . $order->user->city->name . ', ' . $order->user->province->name . ', ' . $order->user->kode_pos;
+            }
+            $h = $pdf->GetMultiCellHeight(101, 7,  $alamat, 0, "", true);
+
+            $pdf->Cell(40, $h,  "Alamat Pembeli", 0, 0, "L", true);
+            $pdf->Cell(5, $h, ':', 0, 0, 'L', true);
+            $pdf->SetFont("Arial", "", 10);
+            $pdf->MultiCell(148, 7,  $alamat, 0, "", true);
+
+            $pdf->SetFont("Arial", "B", 10);
+            $pdf->Cell(40, 7,  "No. Hp Pembeli", 0, 0, "L", true);
+            $pdf->Cell(5, 7, ':', 0, 0, 'L', true);
+            $pdf->SetFont("Arial", "", 10);
+            if ($dropship) {
+                $pdf->Cell(148, 7,  $dropship->no_telp_penerima, 0, 1, "", true);
+            } else {
+                $pdf->Cell(148, 7,  $order->user->no_telp, 0, 1, "", true);
+            }
+
+            $pdf->SetFont("Arial", "B", 10);
+            $pdf->Cell(40, 7,  "No. Pesanan", 0, 0, "L", true);
+            $pdf->Cell(5, 7, ':', 0, 0, 'L', true);
+            $pdf->SetFont("Arial", "", 10);
+            $pdf->Cell(148, 7,  $order->no_invoice == null ? $order->id : $order->no_invoice, 0, 1, "", true);
+            $pdf->Ln(3);
+
+            $pdf->SetFont("Arial", "B", 10);
+            $pdf->Cell(45, 5,  "Waktu Pembayaran", 0, 0, "C");
+            $pdf->Cell(25, 5,  "", 0, 0, "C");
+            $pdf->Cell(45, 5,  "Pembayaran", 0, 0, "C");
+            $pdf->Cell(25, 5,  "", 0, 0, "C");
+            $pdf->Cell(45, 5,  "Kurir", 0, 0, "C");
+            $pdf->Cell(25, 5,  "", 0, 0, "C");
+            $pdf->Ln(5);
+
+            $pdf->SetFont("Arial", "", 10);
+            $pdf->Cell(45, 5,  $order->pembayaran[0]->created_at, 0, 0, "C");
+            $pdf->Cell(25, 5,  "", 0, 0, "C");
+            $pdf->Cell(45, 5,  "Transfer Bank " . $order->bukti_transaksi[0]->transfer_ke, 0, 0, "C");
+            $pdf->Cell(25, 5,  "", 0, 0, "C");
+            $pdf->Cell(45, 5,  $courier_search, 0, 0, "C");
+            $pdf->Cell(25, 5,  "", 0, 1, "C");
+
+            $pdf->SetFont("Arial", "B", 10);
+            $pdf->Cell(35, 7,  "Rincian Pesanan", 0, 1, "L");
+
+            $pdf->SetFont('Arial', 'B', 10);
+            $pdf->SetFillColor('224', '224', '224');
+
+            $pdf->Cell(10, 5, 'No', "T,B", 0, 'C');
+            $pdf->Cell(85, 5, 'Produk', "T,B", 0, 'L');
+            $pdf->Cell(10, 5, 'Jumlah', "T,B", 0, 'C');
+            $pdf->Cell(40, 5, 'Harga', "T,B", 0, 'C');
+            $pdf->Cell(40, 5, 'Sub Total', "T,B", 1, 'C');
+
+            $subTotal = 0;
+
+            foreach ($order->produk_dikirim as $k => $v) {
+
+                $pdf->SetFont('Arial', '', 8);
+                $pdf->Cell(10, 5, $k + 1, 0, 0, 'C');
+                $pdf->Cell(85, 5, $v->produk->nama_produk, 0, 0, 'L');
+                $pdf->Cell(10, 5, $v->jumlah_produk, 0, 0, 'C');
+                $pdf->Cell(40, 5, "Rp " . number_format($v->harga_jual, 0, ',', '.'), 0, 0, 'C');
+                $pdf->Cell(40, 5, "Rp " . number_format($v->harga_jual * $v->jumlah_produk, 0, ',', '.'), 0, 1, 'R');
+                $subTotal += $v->harga_jual * $v->jumlah_produk;
+            }
+
+            // Garis bawah tabel
+            $y = $pdf->GetY();
+
+            $pdf->SetY($y);
+            $pdf->Cell(185, 3, '', "T", 1);
+
+            $pdf->SetDrawColor('224', '224', '224');
+
+            // Subtotal
+            $pdf->SetY($y);
+            $pdf->Cell(127, 4, '', 0, 0);
+            $pdf->SetFont('Arial', 'B', 8);
+            $pdf->Cell(16, 4, 'SubTotal', 0, 0, 'L');
+            $pdf->Cell(42, 4, "Rp " . number_format($subTotal, 0, ',', '.'), 0, 1, 'R');
+
+            $pdf->SetY($y + 3);
+            $pdf->SetFont('Arial', 'B', 7);
+            $pdf->Cell(127, 4, '', 0, 0);
+            $pdf->Cell(43, 4, "Total Jumlah Produk (Aktif) " . $order->produk_dikirim->sum('jumlah_produk') . " Produk", 0, 1, 'L');
+            $pdf->Ln(2);
+
+            $pdf->SetFillColor('247', '247', '247');
+            $pdf->SetFont("Arial", "", 8);
+
+            // $pdf->SetXY(3, 7);
+            $pdf->Cell(122, 5, '', 0, 0);
+            $pdf->Cell(30, 5,  "Sub Total Produk", 0, 0, "L", true);
+            $pdf->Cell(2, 5, ':', 0, 0, 'L', true);
+            $pdf->Cell(32, 5,  "Rp " . number_format($subTotal, 0, ',', '.'), 0, 1, "R", true);
+
+            $pdf->Cell(122, 5, '', 0, 0);
+            $pdf->Cell(30, 5,  "Ongkos Kirim", 0, 0, "L", true);
+            $pdf->Cell(2, 5, ':', 0, 0, 'L', true);
+            $pdf->Cell(32, 5,  "Rp " . number_format($order->biaya_pengiriman, 0, ',', '.'), 0, 1, "R", true);
+
+            $pdf->Cell(122, 5, '', 0, 0);
+            $pdf->Cell(30, 5,  "Diskon Member", 0, 0, "L", true);
+            $pdf->Cell(2, 5, ':', 0, 0, 'L', true);
+
+            // Cek Produk yang termasuk dalam diskon event
+            $cekDiskon = Diskon::with('produk')
+                ->whereHas('produk', function ($query) use ($order) {
+                    $query->whereIn('id_produk', $order->produk_dikirim->pluck('id_produk'));
+                })
+                ->where('status', 2)
+                ->where('mulai_diskon', '<=', Carbon::now())
+                ->where('selesai_diskon', '>=', Carbon::now())
+                ->first();
+
+            if ($cekDiskon) {
+                $diskon_member = 0;
+            } elseif ($order->user->id_member) {
+                $diskon_member = $subTotal * $order->user->member->diskon / 100;
+            } elseif ($subTotal >= 50000) {
+                $diskon_member = $subTotal * 10 / 100;
+            } else {
+                $diskon_member = 0;
+            }
+
+            $pdf->Cell(32, 5,  "Rp " . number_format($diskon_member, 0, ',', '.'), 0, 1, "R", true);
+
+            if ($diskon_alquran) {
+                $pdf->Cell(122, 5, '', 0, 0);
+                $pdf->Cell(30, 5,  "Diskon Alquran", 0, 0, "L", true);
+                $pdf->Cell(2, 5, ':', 0, 0, 'L', true);
+                $pdf->Cell(32, 5,  "Rp " . number_format($diskon_alquran, 0, ',', '.'), 0, 1, "R", true);
+            }
+
+            $pdf->Cell(122, 2, '', 0, 0);
+            $pdf->Cell(64, 2, '', "B", 1, '', true);
+
+            $pdf->Cell(122, 2, '', 0, 0);
+            $pdf->Cell(64, 2, '', 0, 1, '', true);
+
+            $pdf->SetFont("Arial", "B", 8);
+            $pdf->Cell(122, 5, '', 0, 0);
+            $pdf->Cell(30, 5, 'Total Bayar', 0, 0, '', true);
+            $pdf->Cell(2, 5, ':', 0, 0, 'L', true);
+            $pdf->Cell(32, 5, "Rp " . number_format($order->pembayaran[0]->harga_jual, 0, ',', '.'), 0, 1, 'R', true);
+
+            $pdf->Cell(122, 5, '', 0, 0);
+            $pdf->Cell(64, 5, '', 0, 1, '', true);
+
+            $pdf->Ln(4);
+
+            $pdf->Cell(186, 4, '', "T", 0);
+
+            header('Access-Control-Allow-Origin: *');
+            $pdf->Output('D', 'Invoice.pdf');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }
+    }
+
+    public function cetak_pengiriman(Request $request)
+    {
+
+        try {
+
+            $order = Order::with('user', 'produk_dikirim.produk', 'member', 'pembayaran')->where('id', $request->id)->first();
+            $dropship = Dropship::where('id_order', $order->id)->first();
+
+            // Diskon Alquran
+            $diskon_alquran = 0;
+            foreach ($order->produk_dikirim as $key => $value) {
+                if ($value->produk->id_kategori == '17') {
+                    if ($order->id_member) {
+                        $diskon_alquran += $value->harga_jual * $value->jumlah_produk * 30 / 100;
+                    } else {
+                        $diskon_alquran += $value->harga_jual * $value->jumlah_produk * 20 / 100;
+                    }
+                }
+            }
+
+            switch (env('RAJAONGKIR_PACKAGE')) {
+                case 'starter':
+                    $courier = config('rajaongkir.courier.starter');
+                    break;
+                case 'basic':
+                    $courier = config('rajaongkir.courier.basic');
+                    break;
+                case 'pro':
+                    $courier = config('rajaongkir.courier.pro');
+                    break;
+                default:
+                    $courier = null;
+                    break;
+            }
+
+            foreach ($courier as $c) {
+                if ($c['kode'] == $order->courier) {
+                    $courier_search = $c['nama'];
+                }
+            }
+
+            $pdf = new Pdf('P', 'mm', array(221, 264)); //L For Landscape / P For Portrait
+
+            $pdf->AddPage();
+            $pdf->RoundedRect(5, 5, 211, 254, 3.5, 'D');
+
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->Cell(100, 5, $order->no_invoice, 0, 1);
+
+            $pdf->Ln(7);
+            $y = $pdf->getY() - 2;
+            if ($order->courier == 'ambil_gudang') {
+                $pdf->Image(asset('images/logo/logo4.png'), null, null, 20);
+            }else{
+                $pdf->Image(asset('images/kurir/' . $order->courier . '.png'), null, null, 20);
+            }
+            $pdf->SetXY(33, $y);
+            $pdf->Cell(50, 5, strtoupper($order->courier), 0, 1);
+            $pdf->SetFont('Arial', 'B', 10);
+            $pdf->SetXY(33, $y + 5);
+            $pdf->MultiCell(50, 5, str_replace("Deskripsi : ", "", $order->courier_detail));
+            $pdf->Ln(5);
+
+            $code = $order->no_invoice == null ? $order->id : $order->no_invoice;
+            $pdf->Code128(110, 45, $code, 70, 15);
+
+            $pdf->Ln(5);
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->Cell(25, 5, "Berat", 0, 0);
+            $pdf->Cell(15);
+            $pdf->Cell(25, 5, "Ongkir", 0, 0);
+            $pdf->Cell(35);
+            $pdf->SetFont('Arial', 'B', 10);
+            $pdf->Cell(25, 5, $order->no_invoice == null ? $order->id : $order->no_invoice, 0, 1);
+            $pdf->Cell(25, 5, $order->jumlah_produk_total . " gr", 0, 0);
+            $pdf->Cell(15);
+            $pdf->Cell(25, 5, "Rp " . number_format($order->biaya_pengiriman, 0, ',', '.'), 0, 0);
+            $pdf->Cell(35);
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->Cell(25, 5, "Kode Booking ini Bukan No Resi Pengiriman", 0, 0);
+            $pdf->Ln(10);
+
+            $x = $pdf->GetX();
+            $y = $pdf->GetY();
+
+            $pdf->SetDrawColor(223, 226, 225);
+            $pdf->DashedRect($x, $y, $x + 200, $y + 10, 0.5, 65);
+
+            $pdf->SetY($y + 2);
+            $pdf->Image(asset('images/payment/rupiah.png'), $pdf->GetPageWidth() / 5);
+            $pdf->SetY($y + 2);
+            $pdf->Cell(211, 5, "Pembeli tidak perlu bayar apapun ke kurir, sudah dibayarkan otomatis", 0, 0, 'C');
+            $pdf->Ln(13);
+
+            $pdf->SetFont('Arial', 'B', 10);
+            $pdf->Cell(120, 5, 'Kepada :');
+            $pdf->Cell(25, 5, '');
+            $pdf->Cell(50, 5, 'Dari :', 0, 1);
+
+            if ($dropship) {
+                $pdf->Cell(120, 5,  $dropship->nama_penerima, 0, 0, "");
+                $pdf->Cell(25);
+                $pdf->Cell(50, 5,  $dropship->nama_pengirim, 0, 1, "");
+            } else {
+                $pdf->Cell(120, 5,  $order->user->name, 0, 0, "");
+                $pdf->Cell(25);
+                $pdf->Cell(50, 5,  "Insan Kamil", 0, 1, "");
+            }
+
+            $pdf->SetFont('Arial', '', 10);
+            if ($dropship) {
+                $alamat = $dropship->alamat_penerima . ', Kec. ' . $dropship->district->name . " " . $dropship->city->name . ', ' . $dropship->province->name . ', ' . $dropship->city->postal_code . ' ' . $dropship->no_telp_penerima;
+                $no_telp = $dropship->no_telp_pengirim;
+            } else {
+                $alamat = $order->user->alamat . ', Kec. ' . $order->user->district->name . " " . $order->user->city->name . ', ' . $order->user->province->name . ', ' . $order->user->kode_pos . ' ' . $order->user->no_telp;
+                $no_telp = "085728557776";
+            }
+
+            $x = $pdf->GetY();
+            $h = $pdf->GetMultiCellHeight(120, 5,  $alamat, 0, "");
+
+            $pdf->SetFont("Arial", "", 10);
+            $pdf->MultiCell(120, 5,  $alamat, 0, "");
+
+            $pdf->SetY($x);
+            $pdf->Cell(145);
+            $pdf->Cell(50, 5,  $no_telp, 0, 1, "");
+
+            $pdf->SetDrawColor(223, 226, 225);
+            $pdf->DashedRect($pdf->GetX(), $pdf->GetY() + $h - 3, $pdf->GetX() + 200, $pdf->GetY() + $h - 3, 0.5, 65);
+
+            $pdf->SetY($pdf->GetY() + $h);
+            $pdf->SetFont("Arial", "B", 10);
+            $pdf->Cell(120, 5, 'Produk', 0, 0);
+            $pdf->Cell(20);
+            $pdf->Cell(20, 5, 'Jumlah', 0, 1);
+
+            $pdf->SetFont("Arial", "", 9);
+            foreach ($order->produk_dikirim->take(15) as $k => $v) {
+                $pdf->Cell(120, 5, $k + 1 . ". " . $v->produk->nama_produk, 0, 0);
+                if ($k == 0) {
+                    $pdf->Cell(20);
+                    $pdf->Cell(20, 5, $order->produk_dikirim->count() . ' pcs', 0, 0);
+                }
+                $pdf->Ln(5);
+            }
+            
+            $pdf->SetFont("Arial", "I", 10);
+            $pdf->SetTextColor(108, 117, 125);
+            if ($order->produk_dikirim->count() > 15) {
+                $pdf->Cell(120, 5, 'dan lain-lain...', 0, 1);
+            }
+            
+            $pdf->Ln(7);
+            $pdf->SetFont("Arial", "B", 10);
+            $pdf->SetTextColor(0, 0, 0);
+            $pdf->Cell(120, 5, 'Catatan Pembeli:', 0, 1);
+            $pdf->SetFont("Arial", "", 10);
+            $pdf->MultiCell(200, 5, $order->catatan_pembelian ?? '-');
+
+            header('Access-Control-Allow-Origin: *');
+            $pdf->Output('D', 'Invoice.pdf');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }
+    }
+
+    public function cetak_lama(Request $request)
+    {
+
+        try {
+
+            $order = Order::with('user', 'produk_dikirim.produk', 'member', 'pembayaran')->where('id', $request->id)->first();
+            $dropship = Dropship::where('id_order', $order->id)->first();
+
+            // Diskon Alquran
+            $diskon_alquran = 0;
+            foreach ($order->produk_dikirim as $key => $value) {
+                if ($value->produk->id_kategori == '17') {
+                    if ($order->id_member) {
+                        $diskon_alquran += $value->harga_jual * $value->jumlah_produk * 30 / 100;
+                    } else {
+                        $diskon_alquran += $value->harga_jual * $value->jumlah_produk * 20 / 100;
+                    }
+                }
+            }
+
+            switch (env('RAJAONGKIR_PACKAGE')) {
+                case 'starter':
+                    $courier = config('rajaongkir.courier.starter');
+                    break;
+                case 'basic':
+                    $courier = config('rajaongkir.courier.basic');
+                    break;
+                case 'pro':
+                    $courier = config('rajaongkir.courier.pro');
+                    break;
+                default:
+                    $courier = null;
+                    break;
+            }
+
+            foreach ($courier as $c) {
+                if ($c['kode'] == $order->courier) {
+                    $courier_search = $c['nama'];
+                }
+            }
+
+            $pdf = new Pdf(); //L For Landscape / P For Portrait
             $pdf->AddPage();
 
             $pdf->SetXY(3, 15);
@@ -1352,7 +1760,7 @@ class OrderController extends Controller
         }
 
         try {
-            
+
             $bukti = BuktiTransaksi::where('id', $request->id)->update([
                 'transfer_ke' => $request->nama_bank,
                 'nama_rekening' => $request->nama_pengirim,
@@ -1360,7 +1768,6 @@ class OrderController extends Controller
             ]);
 
             return ResponseFormatter::success($bukti, 'data berhasil diubah');
-
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
