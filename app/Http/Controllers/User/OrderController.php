@@ -1358,75 +1358,76 @@ class OrderController extends Controller
                 }
             }
 
-            $pdf = new Pdf('P', 'mm', array(221, 264)); //L For Landscape / P For Portrait
+            $pdf = new Pdf('P', 'mm', array(100, 150)); //L For Landscape / P For Portrait
 
             $pdf->AddPage();
-            $pdf->RoundedRect(5, 5, 211, 254, 3.5, 'D');
+            $pdf->RoundedRect(5, 5, 90, 140, 3.5, 'D');
 
-            $pdf->SetFont('Arial', '', 10);
-            $pdf->Cell(100, 5, $order->no_invoice, 0, 1);
+            $pdf->SetFont('Arial', '', 6);
+            $pdf->Cell(100, 5, $order->no_invoice, 0, 0);
 
-            $pdf->Ln(7);
-            $y = $pdf->getY() - 2;
+            $pdf->Ln(8);
+            $y = $pdf->getY() - 3;
             if ($order->courier == 'ambil_gudang') {
-                $pdf->Image(asset('images/logo/logo4.png'), null, null, 20);
+                $pdf->Image(asset('images/logo/logo4.png'), null, null, 10);
             }else{
-                $pdf->Image(asset('images/kurir/' . $order->courier . '.png'), null, null, 20);
+                $pdf->Image(asset('images/kurir/' . $order->courier . '.png'), null, null, 10);
             }
-            $pdf->SetXY(33, $y);
-            $pdf->Cell(50, 5, strtoupper($order->courier), 0, 1);
-            $pdf->SetFont('Arial', 'B', 10);
-            $pdf->SetXY(33, $y + 5);
-            $pdf->MultiCell(50, 5, str_replace("Deskripsi : ", "", $order->courier_detail));
-            $pdf->Ln(5);
+            $pdf->SetXY(23, $y);
+            $pdf->Cell(35, 5, strtoupper($order->courier), 0, 0);
+            $pdf->SetFont('Arial', 'B', 6);
+            $pdf->SetXY(23, $y + 4);
+            $pdf->MultiCell(35, 2, str_replace("Deskripsi : ", "", $order->courier_detail));
 
             $code = $order->no_invoice == null ? $order->id : $order->no_invoice;
-            $pdf->Code128(110, 45, $code, 70, 15);
+            $pdf->Code128(60, 25, $code, 30, 8);
 
+            $pdf->Ln(2);
+            $pdf->SetFont('Arial', '', 6);
+            $pdf->Cell(15, 5, "Berat", 0, 0);
+            $pdf->Cell(5);
+            $pdf->Cell(15, 5, "Ongkir", 0, 0);
+            $pdf->Cell(5);
+            $pdf->SetFont('Arial', 'B', 6);
+            $pdf->Cell(15, 5, $order->no_invoice == null ? $order->id : $order->no_invoice, 0, 0);
+            $pdf->Ln(3);
+            $pdf->Cell(15, 5, $order->jumlah_produk_total . " gr", 0, 0);
+            $pdf->Cell(5);
+            $pdf->Cell(15, 5, "Rp " . number_format($order->biaya_pengiriman, 0, ',', '.'), 0, 0);
+            $pdf->Cell(5);
+            $pdf->SetFont('Arial', '', 5);
+            $pdf->Cell(15, 5, "Kode Booking ini Bukan No Resi Pengiriman", 0, 0);
             $pdf->Ln(5);
-            $pdf->SetFont('Arial', '', 10);
-            $pdf->Cell(25, 5, "Berat", 0, 0);
-            $pdf->Cell(15);
-            $pdf->Cell(25, 5, "Ongkir", 0, 0);
-            $pdf->Cell(35);
-            $pdf->SetFont('Arial', 'B', 10);
-            $pdf->Cell(25, 5, $order->no_invoice == null ? $order->id : $order->no_invoice, 0, 1);
-            $pdf->Cell(25, 5, $order->jumlah_produk_total . " gr", 0, 0);
-            $pdf->Cell(15);
-            $pdf->Cell(25, 5, "Rp " . number_format($order->biaya_pengiriman, 0, ',', '.'), 0, 0);
-            $pdf->Cell(35);
-            $pdf->SetFont('Arial', '', 10);
-            $pdf->Cell(25, 5, "Kode Booking ini Bukan No Resi Pengiriman", 0, 0);
-            $pdf->Ln(10);
 
             $x = $pdf->GetX();
             $y = $pdf->GetY();
 
             $pdf->SetDrawColor(223, 226, 225);
-            $pdf->DashedRect($x, $y, $x + 200, $y + 10, 0.5, 65);
+            $pdf->DashedRect($x, $y, $x + 82, $y + 8, 0.5, 65);
 
-            $pdf->SetY($y + 2);
-            $pdf->Image(asset('images/payment/rupiah.png'), $pdf->GetPageWidth() / 5);
-            $pdf->SetY($y + 2);
-            $pdf->Cell(211, 5, "Pembeli tidak perlu bayar apapun ke kurir, sudah dibayarkan otomatis", 0, 0, 'C');
-            $pdf->Ln(13);
+            $pdf->SetY($y + 1);
+            $pdf->Image(asset('images/payment/rupiah.png'), $pdf->GetPageWidth() / 5, null, 10);
+            $pdf->SetY($y);
+            $pdf->Cell(85, 5, "Pembeli tidak perlu bayar apapun ke kurir,", 0, 0, 'C');
+            $pdf->Ln(3);
+            $pdf->Cell(85, 5, "sudah dibayarkan otomatis", 0, 0, 'C');
+            $pdf->Ln(6);
 
-            $pdf->SetFont('Arial', 'B', 10);
-            $pdf->Cell(120, 5, 'Kepada :');
-            $pdf->Cell(25, 5, '');
-            $pdf->Cell(50, 5, 'Dari :', 0, 1);
+            $pdf->SetFont('Arial', 'B', 6);
+            $pdf->Cell(60, 5, 'Kepada :');
+            $pdf->Cell(50, 5, 'Dari :', 0, 0);
+            $pdf->Ln(3);
 
             if ($dropship) {
-                $pdf->Cell(120, 5,  $dropship->nama_penerima, 0, 0, "");
-                $pdf->Cell(25);
-                $pdf->Cell(50, 5,  $dropship->nama_pengirim, 0, 1, "");
+                $pdf->Cell(60, 5,  $dropship->nama_penerima, 0, 0, "");
+                $pdf->Cell(50, 5,  $dropship->nama_pengirim, 0, 0, "");
+                $pdf->Ln(4);
             } else {
-                $pdf->Cell(120, 5,  $order->user->name, 0, 0, "");
-                $pdf->Cell(25);
-                $pdf->Cell(50, 5,  "Insan Kamil", 0, 1, "");
+                $pdf->Cell(60, 5,  $order->user->name, 0, 0, "");
+                $pdf->Cell(50, 5,  "Insan Kamil", 0, 0, "");
+                $pdf->Ln(4);
             }
 
-            $pdf->SetFont('Arial', '', 10);
             if ($dropship) {
                 $alamat = $dropship->alamat_penerima . ', Kec. ' . $dropship->district->name . " " . $dropship->city->name . ', ' . $dropship->province->name . ', ' . $dropship->city->postal_code . ' ' . $dropship->no_telp_penerima;
                 $no_telp = $dropship->no_telp_pengirim;
@@ -1436,46 +1437,46 @@ class OrderController extends Controller
             }
 
             $x = $pdf->GetY();
-            $h = $pdf->GetMultiCellHeight(120, 5,  $alamat, 0, "");
+            $h = $pdf->GetMultiCellHeight(45, 5,  $alamat, 0, "");
 
-            $pdf->SetFont("Arial", "", 10);
-            $pdf->MultiCell(120, 5,  $alamat, 0, "");
+            $pdf->SetFont("Arial", "", 6);
+            $pdf->MultiCell(60, 3,  $alamat, 0, "");
 
-            $pdf->SetY($x);
-            $pdf->Cell(145);
+            $pdf->SetY($x - 1);
+            $pdf->Cell(60);
             $pdf->Cell(50, 5,  $no_telp, 0, 1, "");
 
             $pdf->SetDrawColor(223, 226, 225);
-            $pdf->DashedRect($pdf->GetX(), $pdf->GetY() + $h - 3, $pdf->GetX() + 200, $pdf->GetY() + $h - 3, 0.5, 65);
+            $pdf->DashedRect($pdf->GetX(), $pdf->GetY() + 10, $pdf->GetX() + 80, $pdf->GetY() + 10, 0.5, 65);
 
-            $pdf->SetY($pdf->GetY() + $h);
-            $pdf->SetFont("Arial", "B", 10);
-            $pdf->Cell(120, 5, 'Produk', 0, 0);
-            $pdf->Cell(20);
-            $pdf->Cell(20, 5, 'Jumlah', 0, 1);
+            $pdf->SetY($pdf->GetY() + 10);
+            $pdf->SetFont("Arial", "B", 6);
+            $pdf->Cell(60, 5, 'Produk', 0, 0);
+            $pdf->Cell(20, 5, 'Jumlah', 0, 0);
+            $pdf->Ln(3);
 
-            $pdf->SetFont("Arial", "", 9);
-            foreach ($order->produk_dikirim->take(15) as $k => $v) {
-                $pdf->Cell(120, 5, $k + 1 . ". " . $v->produk->nama_produk, 0, 0);
+            $pdf->SetFont("Arial", "", 5);
+            foreach ($order->produk_dikirim->take(10) as $k => $v) {
+                $pdf->Cell(60, 5, $k + 1 . ". " . $v->produk->nama_produk, 0, 0);
                 if ($k == 0) {
-                    $pdf->Cell(20);
                     $pdf->Cell(20, 5, $order->produk_dikirim->count() . ' pcs', 0, 0);
                 }
-                $pdf->Ln(5);
+                $pdf->Ln(3);
             }
             
-            $pdf->SetFont("Arial", "I", 10);
+            $pdf->SetFont("Arial", "I", 6);
             $pdf->SetTextColor(108, 117, 125);
             if ($order->produk_dikirim->count() > 15) {
-                $pdf->Cell(120, 5, 'dan lain-lain...', 0, 1);
+                $pdf->Cell(60, 5, 'dan lain-lain...', 0, 0);
+                $pdf->Ln(6);
             }
             
-            $pdf->Ln(7);
-            $pdf->SetFont("Arial", "B", 10);
+            $pdf->SetFont("Arial", "B", 6);
             $pdf->SetTextColor(0, 0, 0);
-            $pdf->Cell(120, 5, 'Catatan Pembeli:', 0, 1);
-            $pdf->SetFont("Arial", "", 10);
-            $pdf->MultiCell(200, 5, $order->catatan_pembelian ?? '-');
+            $pdf->Cell(60, 5, 'Catatan Pembeli:', 0, 0);
+            $pdf->Ln(3);
+            $pdf->SetFont("Arial", "", 6);
+            $pdf->MultiCell(80, 3, $order->catatan_pembelian ?? '-');
 
             header('Access-Control-Allow-Origin: *');
             $pdf->Output('D', 'Invoice.pdf');

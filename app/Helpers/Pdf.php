@@ -257,8 +257,13 @@ class Pdf extends FPDF
 		// $this->Ln(14);
 
 		// Kertas 100 mm x 150 mm
-		$this->Image(asset('images/logo/logo3.jpeg'), null, null, 30);
-		$this->Ln(5);
+		if ($this->GetPageWidth() > 150) {
+			$this->Image(asset('images/logo/logo3.jpeg'), null, null, 30);
+			$this->Ln(5);
+		}else{
+			$this->Image(asset('images/logo/logo3.jpeg'), null, null, 15);
+			$this->Ln(2);
+		}
 	}
 
 	function GetMultiCellHeight($w, $h, $txt, $border = null, $align = 'J')
