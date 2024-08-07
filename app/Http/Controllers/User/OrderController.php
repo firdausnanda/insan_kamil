@@ -1145,7 +1145,7 @@ class OrderController extends Controller
             if ($dropship) {
                 $pdf->Cell(50, 7,  $dropship->nama_pengirim, 0, 1, "", true);
             } else {
-                $pdf->Cell(50, 7,  "Insan Kamil", 0, 0, "", true);
+                $pdf->Cell(50, 7,  "Insan Kamil", 0, 1, "", true);
             }
 
             $pdf->SetFont("Arial", "B", 10);
@@ -1155,6 +1155,7 @@ class OrderController extends Controller
             } else {
                 $alamat = $order->user->alamat . ', Kec. ' . $order->user->district->name . " " . $order->user->city->name . ', ' . $order->user->province->name . ', ' . $order->user->kode_pos;
             }
+
             $h = $pdf->GetMultiCellHeight(101, 7,  $alamat, 0, "", true);
 
             $pdf->Cell(40, $h,  "Alamat Pembeli", 0, 0, "L", true);
