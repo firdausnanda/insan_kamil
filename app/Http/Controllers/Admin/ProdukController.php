@@ -18,6 +18,7 @@ use App\Models\Produk;
 use App\Models\Stok;
 use App\Models\TempOrder;
 use App\Models\User;
+use App\Notifications\PaymentSuccesful;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -26,19 +27,19 @@ use Illuminate\Support\Str;
 
 class ProdukController extends Controller
 {
-    public function index(Request $request) 
+    public function index(Request $request)
     {
         $kategori = Kategori::all();
         if ($request->ajax()) {
-            $produk = Produk::with('kategori', 'harga', 'stok')->whereHas('kategori', function($query) use($request) {
+            $produk = Produk::with('kategori', 'harga', 'stok')->whereHas('kategori', function ($query) use ($request) {
                 $query->where('id', $request->kategori);
             })->get();
             return ResponseFormatter::success($produk, 'Data berhasil diambil');
         }
         return view('pages.admin.produk.index', compact('kategori'));
     }
-   
-    public function create() 
+
+    public function create()
     {
         $kategori = Kategori::all();
         $penerbit = Penerbit::all();
@@ -46,14 +47,14 @@ class ProdukController extends Controller
         return view('pages.admin.produk.create', compact('kategori', 'penerbit', 'bahasa'));
     }
 
-    public function store(Request $request) 
+    public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-			'judul' => 'required|string|max:255',
+            'judul' => 'required|string|max:255',
             'kategori' => 'required',
             'berat' => 'required|numeric',
-			'panjang' => 'numeric|max:255',
-			'lebar' => 'numeric|max:255',
+            'panjang' => 'numeric|max:255',
+            'lebar' => 'numeric|max:255',
             'penerbit' => 'nullable|string|max:255',
             'bahasa' => 'nullable|string|max:255',
             'isbn' => 'nullable|string|max:255',
@@ -69,11 +70,11 @@ class ProdukController extends Controller
             'catatan' => 'nullable|string',
             'jenis_isi' => 'nullable|string',
             'deskripsi' => 'required|string',
-		]);
+        ]);
 
-		if ($validator->fails()) {
-			return ResponseFormatter::error($validator->errors(), 'Data Produk tidak valid', 422);
-		}
+        if ($validator->fails()) {
+            return ResponseFormatter::error($validator->errors(), 'Data Produk tidak valid', 422);
+        }
 
         try {
 
@@ -81,11 +82,11 @@ class ProdukController extends Controller
             if ($request->harga_promo_clean == 0 || $request->tanggal_mulai_diskon > now()) {
                 $promo = $request->harga_normal_clean;
                 $diskon = $request->harga_promo_clean ? $request->harga_normal_clean - $request->harga_promo_clean : 0;
-                $persentase = $diskon > 0 ? $diskon / $request->harga_normal_clean * 100 : 0; 
-            }else{
+                $persentase = $diskon > 0 ? $diskon / $request->harga_normal_clean * 100 : 0;
+            } else {
                 $promo = $request->harga_promo_clean;
                 $diskon = $request->harga_normal_clean - $request->harga_promo_clean;
-                $persentase = $diskon / $request->harga_normal_clean * 100; 
+                $persentase = $diskon / $request->harga_normal_clean * 100;
             }
 
             // Create on Harga
@@ -134,16 +135,15 @@ class ProdukController extends Controller
             }
 
             return ResponseFormatter::success($produk, 'Data berhasil disimpan!', 200);
-            
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return ResponseFormatter::error('Error!', $e->getMessage(), 500);        
-        }        
+            return ResponseFormatter::error('Error!', $e->getMessage(), 500);
+        }
     }
-    
-    public function image(Request $request) 
+
+    public function image(Request $request)
     {
-        
+
         $file = $request->file('file');
         $fileName =  uniqid() . '_' . time() . '.' . trim($file->getClientOriginalExtension());
 
@@ -160,9 +160,9 @@ class ProdukController extends Controller
         ]);
     }
 
-    public function addImage(Request $request) 
+    public function addImage(Request $request)
     {
-        
+
         $file = $request->file('file');
         $fileName =  uniqid() . '_' . time() . '.' . trim($file->getClientOriginalExtension());
 
@@ -179,7 +179,7 @@ class ProdukController extends Controller
         ]);
     }
 
-    public function removeImage(Request $request) 
+    public function removeImage(Request $request)
     {
         // delete Image
         $path = Storage::delete('storage/produk/' . $request->name);
@@ -188,7 +188,7 @@ class ProdukController extends Controller
         return ResponseFormatter::success($path, 'sukses');
     }
 
-    public function edit(Request $request, $id) 
+    public function edit(Request $request, $id)
     {
         try {
             $kategori = Kategori::all();
@@ -200,14 +200,13 @@ class ProdukController extends Controller
             $string = Str::replace('x', ',', $produk->ukuran_produk);
             $ukuran = Str::of($string)->split('/[\s,]+/');
 
-            
+
             if ($request->ajax()) {
 
                 foreach ($produk->gambar_produk as $key => $value) {
 
                     $fileSize = Storage::size('public/produk/' . $produk->gambar_produk[0]->gambar);
                     $produk->gambar_produk[$key]->ukuran = $fileSize;
-                    
                 }
 
                 return ResponseFormatter::success($produk->gambar_produk, 'Data diambil');
@@ -216,11 +215,11 @@ class ProdukController extends Controller
             return view('pages.admin.produk.edit', compact('kategori', 'penerbit', 'produk', 'ukuran', 'bahasa'));
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return ResponseFormatter::error('Error!', $e->getMessage(), 500);        
+            return ResponseFormatter::error('Error!', $e->getMessage(), 500);
         }
     }
 
-    public function update(Request $request) 
+    public function update(Request $request)
     {
 
         try {
@@ -247,8 +246,8 @@ class ProdukController extends Controller
             if ($request->harga_promo_clean == 0 || $request->tanggal_mulai_diskon > now()) {
                 $diskon = 0;
                 $promo = $request->harga_normal_clean;
-                $persentase = $diskon > 0 ? $diskon / $request->harga_normal_clean * 100 : 0; 
-            }else{
+                $persentase = $diskon > 0 ? $diskon / $request->harga_normal_clean * 100 : 0;
+            } else {
                 $promo = $request->harga_promo_clean;
                 $diskon = $request->harga_normal_clean - $request->harga_promo_clean;
                 $persentase = $diskon / $request->harga_normal_clean * 100;
@@ -287,7 +286,7 @@ class ProdukController extends Controller
                 }
             }
 
-            return ResponseFormatter::success($stok, 'Data berhasil diubah');   
+            return ResponseFormatter::success($stok, 'Data berhasil diubah');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error('Error!', $e->getMessage(), 500);
@@ -300,17 +299,17 @@ class ProdukController extends Controller
 
             // Update Pembayaran
             $pembayaran = Pembayaran::where('id_order', $request->id_order)->first();
-                
+
             $pembayaran->update([
                 'status_pembayaran' => 2,
             ]);
-            
+
             // Cek Order
             $order = Order::with('produk_dikirim')->where('id', $request->id_order)->first();
-            
+
             // Update Member
             $user = User::with('member')->where('id', $order->id_user)->first();
-            
+
             // Update pada table Order status & Member yang lama
             $order->update([
                 'status' => 2,
@@ -320,38 +319,38 @@ class ProdukController extends Controller
             // Cek apakah sudah menjadi member apa belum
             if ($user->id_member) {
                 $cekmember = Member::where('pembelian_minimum', '>', $user->member->pembelian_minimum)->orderBy('pembelian_minimum', 'desc')->get();
-            }else{
-                $cekmember = Member::orderBy('pembelian_minimum', 'desc')->get();   
+            } else {
+                $cekmember = Member::orderBy('pembelian_minimum', 'desc')->get();
             }
 
             // Cek total pembelian keseluruhan
-            $cek_pembayaran_total = Order::where('id_user', $order->id_user)->wherehas('pembayaran', function($query){
-                $query->where('status_pembayaran', 2); 
-             })->withSum('pembayaran', 'harga_jual')->get();
+            $cek_pembayaran_total = Order::where('id_user', $order->id_user)->wherehas('pembayaran', function ($query) {
+                $query->where('status_pembayaran', 2);
+            })->withSum('pembayaran', 'harga_jual')->get();
 
             $pembayaran_total = $cek_pembayaran_total->sum('pembayaran_sum_harga_jual');
 
-            if($cekmember->count() > 0){
-                 foreach ($cekmember as $v) {
+            if ($cekmember->count() > 0) {
+                foreach ($cekmember as $v) {
 
-                     // Check if pembelian lebih besar dari pembelian mininum member 
-                     if ($pembayaran_total >= $v->pembelian_minimum) {
+                    // Check if pembelian lebih besar dari pembelian mininum member 
+                    if ($pembayaran_total >= $v->pembelian_minimum) {
 
-                         $user->update([
-                             'id_member' => $v->id
-                         ]);
+                        $user->update([
+                            'id_member' => $v->id
+                        ]);
 
-                         break;
-                     }
-                 }
+                        break;
+                    }
+                }
             }
 
             // Remove Keranjang dan TempOrder
             $temp = TempOrder::where('id_user', $order->id_user)->get();
-                
+
             foreach ($temp as $v) {
                 Keranjang::where('id_produk', $v->id_produk)->where('id_user', $order->id_user)->delete();
-            } 
+            }
 
             TempOrder::where('id_user', $order->id_user)->delete();
 
@@ -365,6 +364,9 @@ class ProdukController extends Controller
                 ]);
             }
 
+            // Notifikasi Konfirmasi sukses
+            $user->notify(new PaymentSuccesful($user));
+
             // $order = Order::where('id', $request->id_order)->update([
             //     'status' => 2
             // ]);
@@ -373,12 +375,10 @@ class ProdukController extends Controller
             //     'status_pembayaran' => 2
             // ]);
 
-            return ResponseFormatter::success('Sukses', 'Data berhasil dikonfirmasi');   
-
+            return ResponseFormatter::success('Sukses', 'Data berhasil dikonfirmasi');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error('Error!', $e->getMessage(), 500);
         }
-        
     }
 }

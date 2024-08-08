@@ -19,6 +19,7 @@ use App\Models\ProdukDikirim;
 use App\Models\Stok;
 use App\Models\TempOrder;
 use App\Models\User;
+use App\Notifications\OrderSuccesful;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -1031,6 +1032,12 @@ class OrderController extends Controller
                 'status' => 0
             ]);
 
+            $order = Order::with('pembayaran')->where('id', $request->id_order)->first();
+            $user = User::where('id', $order->id_user)->first();
+ 
+            // Notifikasi Konfirmasi sukses
+            $user->notify(new OrderSuccesful($user, $order->pembayaran[0]->harga_jual));
+
             return ResponseFormatter::success($data, 'Data berhasil disimpan');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -1370,7 +1377,7 @@ class OrderController extends Controller
             $y = $pdf->getY() - 3;
             if ($order->courier == 'ambil_gudang') {
                 $pdf->Image(asset('images/logo/logo4.png'), null, null, 10);
-            }else{
+            } else {
                 $pdf->Image(asset('images/kurir/' . $order->courier . '.png'), null, null, 10);
             }
             $pdf->SetXY(23, $y);
@@ -1463,14 +1470,14 @@ class OrderController extends Controller
                 }
                 $pdf->Ln(3);
             }
-            
+
             $pdf->SetFont("Arial", "I", 6);
             $pdf->SetTextColor(108, 117, 125);
             if ($order->produk_dikirim->count() > 15) {
                 $pdf->Cell(60, 5, 'dan lain-lain...', 0, 0);
                 $pdf->Ln(6);
             }
-            
+
             $pdf->SetFont("Arial", "B", 6);
             $pdf->SetTextColor(0, 0, 0);
             $pdf->Cell(60, 5, 'Catatan Pembeli:', 0, 0);

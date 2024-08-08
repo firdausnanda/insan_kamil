@@ -15,7 +15,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, LogsActivity, Impersonate;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, LogsActivity, Impersonate, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -59,6 +59,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function routeNotificationForWhatsapp()
+    {
+      return $this->no_telp;
+    }
 
     public function tapActivity(Activity $activity, string $eventName)
     {
