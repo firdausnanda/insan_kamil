@@ -1165,10 +1165,13 @@ class OrderController extends Controller
 
             $h = $pdf->GetMultiCellHeight(101, 7,  $alamat, 0, "", true);
 
-            $pdf->Cell(40, $h,  "Alamat Pembeli", 0, 0, "L", true);
-            $pdf->Cell(5, $h, ':', 0, 0, 'L', true);
+            $a = $pdf->GetY();
+            $pdf->Cell(40, 7,  "Alamat Pembeli", 0, 0, "L", true);
+            $pdf->Cell(5, 7, ':', 0, 0, 'L', true);
             $pdf->SetFont("Arial", "", 10);
             $pdf->MultiCell(148, 7,  $alamat, 0, "", true);
+            $b = $pdf->getX();
+            $pdf->Rect($b, $a + 7, 45, $h, "F");
 
             $pdf->SetFont("Arial", "B", 10);
             $pdf->Cell(40, 7,  "No. Hp Pembeli", 0, 0, "L", true);
@@ -1444,7 +1447,7 @@ class OrderController extends Controller
             }
 
             $x = $pdf->GetY();
-            $h = $pdf->GetMultiCellHeight(45, 5,  $alamat, 0, "");
+            $h = $pdf->GetMultiCellHeight(60, 3,  $alamat, 0, "");
 
             $pdf->SetFont("Arial", "", 6);
             $pdf->MultiCell(60, 3,  $alamat, 0, "");
@@ -1454,32 +1457,35 @@ class OrderController extends Controller
             $pdf->Cell(50, 5,  $no_telp, 0, 1, "");
 
             $pdf->SetDrawColor(223, 226, 225);
-            $pdf->DashedRect($pdf->GetX(), $pdf->GetY() + 10, $pdf->GetX() + 80, $pdf->GetY() + 10, 0.5, 65);
+            $pdf->DashedRect($pdf->GetX(), $x + $h + 2, $pdf->GetX() + 80, $x + $h + 2, 0.5, 65);
 
-            $pdf->SetY($pdf->GetY() + 10);
+            $pdf->SetY($pdf->GetY() + $h);
             $pdf->SetFont("Arial", "B", 6);
             $pdf->Cell(60, 5, 'Produk', 0, 0);
             $pdf->Cell(20, 5, 'Jumlah', 0, 0);
             $pdf->Ln(3);
 
-            $pdf->SetFont("Arial", "", 5);
-            foreach ($order->produk_dikirim->take(15) as $k => $v) {
+            $pdf->SetFont("Arial", "", 6);
+            foreach ($order->produk_dikirim->take(10) as $k => $v) {
                 $pdf->Cell(60, 5, $k + 1 . ". " . $v->produk->nama_produk, 0, 0);
-                if ($k == 0) {
-                    $pdf->Cell(20, 5, $order->produk_dikirim->count() . ' pcs', 0, 0);
-                }
+                $pdf->Cell(20, 5, $v->jumlah_produk . ' pcs', 0, 0);
                 $pdf->Ln(3);
             }
 
             $pdf->SetFont("Arial", "I", 6);
             $pdf->SetTextColor(108, 117, 125);
-            if ($order->produk_dikirim->count() > 15) {
+            if ($order->produk_dikirim->count() > 10) {
                 $pdf->Cell(60, 5, 'dan lain-lain...', 0, 0);
-                $pdf->Ln(6);
+                $pdf->Ln(3);
             }
 
             $pdf->SetFont("Arial", "B", 6);
             $pdf->SetTextColor(0, 0, 0);
+            
+            $pdf->Cell(60, 5, "Total Jumlah Produk Aktif", 0, 0, "R");
+            $pdf->Cell(20, 5, $order->produk_dikirim->count() . ' pcs', 0, 0);
+            $pdf->Ln(6);
+
             $pdf->Cell(60, 5, 'Catatan Pembeli:', 0, 0);
             $pdf->Ln(3);
             $pdf->SetFont("Arial", "", 6);
