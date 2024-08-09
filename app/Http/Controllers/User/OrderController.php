@@ -1034,7 +1034,7 @@ class OrderController extends Controller
 
             $order = Order::with('pembayaran')->where('id', $request->id_order)->first();
             $user = User::where('id', $order->id_user)->first();
- 
+
             // Notifikasi Konfirmasi sukses
             $user->notify(new OrderSuccesful($user, $order->pembayaran[0]->harga_jual));
 
@@ -1463,7 +1463,7 @@ class OrderController extends Controller
             $pdf->Ln(3);
 
             $pdf->SetFont("Arial", "", 5);
-            foreach ($order->produk_dikirim->take(10) as $k => $v) {
+            foreach ($order->produk_dikirim->take(15) as $k => $v) {
                 $pdf->Cell(60, 5, $k + 1 . ". " . $v->produk->nama_produk, 0, 0);
                 if ($k == 0) {
                     $pdf->Cell(20, 5, $order->produk_dikirim->count() . ' pcs', 0, 0);
@@ -1777,6 +1777,26 @@ class OrderController extends Controller
             ]);
 
             return ResponseFormatter::success($bukti, 'data berhasil diubah');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');
+        }
+    }
+
+    public function delete_alamat(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|string|max:255'
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseFormatter::error($validator->errors(), 'Data tidak valid', 422);
+        }
+
+        try {
+
+            $alamat = AlamatUser::where('id', $request->id)->delete();
+            return ResponseFormatter::success($alamat, 'data berhasil diubah');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return ResponseFormatter::error($e->getMessage(), 'Kesalahan Server!');

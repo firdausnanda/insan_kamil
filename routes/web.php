@@ -235,6 +235,7 @@ Route::group(['middleware' => 'auth'], function () {
 			Route::get('/cetak/pengiriman', [UserOrderController::class, 'cetak_pengiriman'])->name('cetak_pengiriman');
 			Route::post('/bukti-transaksi', [UserOrderController::class, 'addBukti'])->name('addBukti');
 			Route::post('/upload-bukti-transaksi', [UserOrderController::class, 'uploadBukti'])->name('uploadBukti');
+			Route::post('/delete-alamat-user', [UserOrderController::class, 'delete_alamat'])->name('delete_alamat');
 			Route::put('/ubah-rekening', [UserOrderController::class, 'ubah_rekening'])->name('ubah_rekening');
 			Route::get('/aftercheckout/{id}', [UserOrderController::class, 'detail_checkout'])->name('detail_checkout');
 			Route::get('/detail-konfirmasi/{id}', [UserOrderController::class, 'detail_konfirmasi'])->name('detail_konfirmasi');

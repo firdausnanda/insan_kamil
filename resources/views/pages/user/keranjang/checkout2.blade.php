@@ -117,7 +117,11 @@
                                                                                 value="{{ $a->district ? $a->district->id : '' }}" />
                                                                             <span class="form-check-label fw-bold"
                                                                                 for="officeRadio1">{{ $a->nama_penerima }}</span>
-                                                                            <input type="hidden" value="{{ $a->id }}">
+                                                                            <input type="hidden"
+                                                                                value="{{ $a->id }}">
+                                                                            <button data-alamat="{{ $a->id }}"
+                                                                                class="btn btn-sm btn-outline-danger float-end btn-hapus-alamat"><i
+                                                                                    class="fa-solid fa-trash-can"></i></button>
                                                                         </div>
                                                                         <address>
 
@@ -1327,7 +1331,7 @@
                     },
                 });
             });
-            
+
             // Submit Simpan
             $('#form-bsi').submit(function(e) {
                 e.preventDefault();
@@ -1377,7 +1381,54 @@
                 });
             });
 
-            
+            // Submit Delete Alamat
+            $('.btn-hapus-alamat').click(function(e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: "Apa anda yakin?",
+                    text: "Alamat akan dihapus",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#889397",
+                    confirmButtonText: "Lanjutkan",
+                    cancelButtonText: "Batalkan",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "POST",
+                            url: "{{ route('user.order.delete_alamat') }}",
+                            data: {
+                                id: $(this).data("alamat")
+                            },
+                            dataType: "JSON",
+                            beforeSend: function() {
+                                $.LoadingOverlay('show');
+                            },
+                            success: function(response) {
+                                $.LoadingOverlay('hide');
+                                if (response.meta.status == "success") {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: "Sukses!",
+                                        text: response.meta.message,
+                                    }).then((result) => {
+                                        location.reload()
+                                    });
+                                }
+                            },
+                            error: function(response) {
+                                $.LoadingOverlay('hide');
+                                Swal.fire('Gagal!', 'Periksa kembali data anda.',
+                                    'error');
+                            },
+                        });
+                    }
+                });
+            });
+
+
         });
     </script>
 @endsection
