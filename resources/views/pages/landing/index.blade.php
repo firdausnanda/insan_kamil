@@ -665,6 +665,7 @@
                                             <div class="col-xl-10 col-lg-9 col-8">
                                                 <div class="mb-4 mb-lg-0">
                                                     <h3 class="mb-1">Buku Terlaris</h3>
+                                                    <p class="mb-0">Buku yang banyak dicari dan dibicarakan.</p>
                                                 </div>
                                             </div>
                                         </div>
