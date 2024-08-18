@@ -26,7 +26,7 @@ class HomeController extends Controller
     public function index()
     {
         // Buku Best Seler
-        $produk_laris = Produk::with('harga', 'stok', 'gambar_produk')->has('produk_dikirim')->orderBy('created_at', 'desc')->where('status', 1)->limit(8)->get();
+        $produk_laris = Produk::with('harga', 'stok', 'gambar_produk', 'produk_dikirim')->withCount('produk_dikirim')->has('produk_dikirim')->orderBy('produk_dikirim_count', 'desc')->where('status', 1)->limit(8)->get();
         if ($produk_laris->count() < 5) {
             $produk_laris = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->where('status', 1)->limit(5)->get();
         }
