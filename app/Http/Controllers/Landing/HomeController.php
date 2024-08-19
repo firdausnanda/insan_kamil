@@ -15,6 +15,7 @@ use App\Models\Popup;
 use App\Models\Produk;
 use App\Models\Rating;
 use App\Models\Slideshow;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +27,11 @@ class HomeController extends Controller
     public function index()
     {
         // Buku Best Seler
-        $produk_laris = Produk::with('harga', 'stok', 'gambar_produk', 'produk_dikirim')->withCount('produk_dikirim')->has('produk_dikirim')->orderBy('produk_dikirim_count', 'desc')->where('status', 1)->limit(8)->get();
+        $produk_laris = Produk::with('harga', 'stok', 'gambar_produk')
+            ->withSum('produk_dikirim', 'jumlah_produk')
+            ->orderBy('produk_dikirim_sum_jumlah_produk', 'desc')
+            ->where('status', 1)->limit(8)->get();
+
         if ($produk_laris->count() < 5) {
             $produk_laris = Produk::with('harga', 'stok', 'gambar_produk')->orderBy('created_at', 'desc')->where('status', 1)->limit(5)->get();
         }
