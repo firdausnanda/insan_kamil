@@ -240,7 +240,7 @@
                                 <div class="mb-12">
                                     <div class="mb-6">
                                         <div class="row align-items-center mb-6">
-                                            <div class="col-xl-10 col-lg-9 col-8">
+                                            <div class="col-xl-10 col-lg-9 col-12">
                                                 <div class="mb-4 mb-lg-0">
                                                     <h3 class="mb-1">{{ $item->nama }}</h3>
                                                     <p class="mb-0">{{ $item->deskripsi ?? '' }}</p>
@@ -314,7 +314,7 @@
                                 <div class="row mt-5 mb-5">
                                     <div class="col-12">
                                         <div class="row align-items-center mb-6">
-                                            <div class="col-xl-10 col-lg-9 col-8">
+                                            <div class="col-xl-10 col-lg-9 col-12">
                                                 <div class="mb-4 mb-lg-0">
                                                     <h3 class="mb-1">{{ $item->nama }}</h3>
                                                     <p class="mb-0">{{ $item->deskripsi ?? '' }}</p>
@@ -404,14 +404,14 @@
                             <div class="row mt-5 mb-5">
                                 <div class="col-12">
                                     <div class="row align-items-center mb-6">
-                                        <div class="col-xl-10 col-lg-9 col-8">
+                                        <div class="col-xl-10 col-lg-9 col-12">
                                             <div class="mb-4 mb-lg-0">
                                                 <h3 class="mb-1">{{ $m->nama }}</h3>
                                                 <p class="mb-0">{{ $m->deskripsi ?? '' }}</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row row-cols-xl-4 row-cols-lg-3 g-4">
+                                    <div class="row row-cols-2 row-cols-lg-3 row-cols-xl-4 g-4">
                                         @foreach ($m->produk as $p)
                                             <!-- item -->
                                             <div class="col">
@@ -585,7 +585,7 @@
                                 <div class="row mb-5">
                                     <div class="col-12">
                                         <div class="row align-items-center mb-6">
-                                            <div class="col-xl-10 col-lg-9 col-8">
+                                            <div class="col-xl-10 col-lg-9 col-12">
                                                 <div class="mb-4 mb-lg-0">
                                                     <h3 class="mb-1">Produk Baru</h3>
                                                     <p class="mb-0">Produk baru dengan stok terupdate.</p>
@@ -596,7 +596,7 @@
                                                     class="btn btn-light">Selengkapnya</a>
                                             </div>
                                         </div>
-                                        <div class="row row-cols-xl-4 row-cols-lg-3 g-4">
+                                        <div class="row row-cols-2 row-cols-lg-3 row-cols-xl-4 g-4">
                                             @foreach ($produk_baru as $p)
                                                 <!-- item -->
                                                 <div class="col">
@@ -662,14 +662,14 @@
                                 <div class="row mb-5">
                                     <div class="col-12">
                                         <div class="row align-items-center mb-6">
-                                            <div class="col-xl-10 col-lg-9 col-8">
+                                            <div class="col-xl-10 col-lg-9 col-12">
                                                 <div class="mb-4 mb-lg-0">
                                                     <h3 class="mb-1">Buku Terlaris</h3>
                                                     <p class="mb-0">Buku yang banyak dicari dan dibicarakan.</p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row row-cols-xl-4 row-cols-lg-3 g-4">
+                                        <div class="row row-cols-2 row-cols-lg-3 row-cols-xl-4 g-4">
                                             @foreach ($produk_laris as $p)
                                                 <!-- item -->
                                                 <div class="col">
@@ -735,14 +735,14 @@
                             <div class="row mt-5 mb-5">
                                 <div class="col-12">
                                     <div class="row align-items-center mb-6">
-                                        <div class="col-xl-10 col-lg-9 col-8">
+                                        <div class="col-xl-10 col-lg-9 col-12">
                                             <div class="mb-4 mb-lg-0">
                                                 <h3 class="mb-1">{{ $m->nama }}</h3>
                                                 <p class="mb-0">{{ $m->deskripsi ?? '' }}</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row row-cols-xl-4 row-cols-lg-3 g-4">
+                                    <div class="row row-cols-2 row-cols-lg-3 row-cols-xl-4 g-4">
                                         @foreach ($m->produk as $p)
                                             <!-- item -->
                                             <div class="col">
@@ -891,7 +891,7 @@
         </section>
 
         <!-- section cta -->
-        <section class="bg-dark p-5"
+        <section class="bg-dark px-5 pt-5 pb-0"
             style="background: url({{ asset('images/svg-graphics/pattern.svg') }}) no-repeat; background-size: cover; background-position: center">
             <div class="container">
                 <!-- row -->
@@ -931,7 +931,7 @@
                             <div class="col-lg-2">
                                 <div class="text-center">
                                     <!-- img -->
-                                    <img src="{{ asset('images/png/pendi.png') }}" style="min-width: 250px;"
+                                    <img src="{{ asset('images/png/model-2.png') }}" style="min-width: 300px;"
                                         alt="" class="img-fluid" />
                                 </div>
                             </div>

@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.2",
         "midtrans/midtrans-php": "^2.5",
+        "munafio/chatify": "^1.6",
         "opcodesio/log-viewer": "^3.1",
         "romanzipp/laravel-queue-monitor": "^5.0",
         "spatie/laravel-activitylog": "^4.7",

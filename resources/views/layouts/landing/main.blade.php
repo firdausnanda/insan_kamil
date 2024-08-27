@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta content="Codescandy" name="author">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="url" content="{{ url('') . '/' . config('chatify.routes.prefix') }}" data-user="{{ auth()->id() }}">
+
     <title>Insan Kamil - Book Store </title>
     <link href="{{ asset('vendor/tiny-slider/dist/tiny-slider.css') }}" rel="stylesheet">
     <link href="{{ asset('vendor/slick-carousel/slick/slick.css') }}" rel="stylesheet">
@@ -43,6 +45,8 @@
 </head>
 
 <body>
+
+    {!! view('Chatify::layouts.ClientHeader') !!}
 
     <!-- Impersonate -->
     @if (session('impersonated_by'))
@@ -81,7 +85,8 @@
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" id="password" placeholder="Enter Password"
                                 required="">
-                            <small class="form-text">By Signup, you agree to our <a href="#!">Terms of Service</a>
+                            <small class="form-text">By Signup, you agree to our <a href="#!">Terms of
+                                    Service</a>
                                 & <a href="#!">Privacy Policy</a></small>
                         </div>
 
@@ -100,6 +105,62 @@
         @yield('content')
     </main>
 
+    <div class="bg-white position-fixed bottom-0 w-100 z-1 shadow-lg d-block d-lg-none text-center">
+        <div class="d-flex align-items-center">
+
+            <div class="w-25 ms-2 py-4 icon-hover">
+                <a href="{{ route('user.profile.edit') }}" class="text-inherit">
+                    <div class="text-center">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                                <path fill-rule="evenodd"
+                                    d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+                            </svg>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="w-25 ms-2 py-4 icon-hover">
+                <a href="{{ route('user.order.konfirmasi') }}" class="text-inherit">
+                    <div class="text-center">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                fill="currentColor" class="bi bi-archive" viewBox="0 0 16 16">
+                                <path
+                                    d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1V2zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5H2zm13-3H1v2h14V2zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z" />
+                            </svg>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="w-25 ms-2 py-4 icon-hover">
+                <a href="{{ route('user.keranjang.index') }}" role="button" aria-controls="offcanvasRight"
+                    class="text-inherit">
+                    <div class="text-center">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
+                                <path
+                                    d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="w-25 ms-2 py-4 icon-hover">
+                <a class="text-inherit" data-bs-toggle="offcanvas" href="#offcanvasCategory" role="button"
+                    aria-controls="offcanvasCategory">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                        class="bi bi-funnel" viewBox="0 0 16 16">
+                        <path
+                            d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal Pop Awal -->
     @if (Route::is('landing.home'))
@@ -169,6 +230,15 @@
             </div>
         @endif
     @endif
+
+    @auth
+        {!! view('Chatify::layouts.ClientChatBox') !!}
+        {!! view('Chatify::layouts.ClientFooter') !!}
+    @endauth
+    @guest
+        {!! view('Chatify::layouts.ClientChatBox') !!}
+        {!! view('Chatify::layouts.ClientFooter') !!}
+    @endguest
 
     <!-- Footer -->
     @include('layouts.landing.footer')

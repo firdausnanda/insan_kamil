@@ -302,7 +302,6 @@
                 dataType: "JSON",
                 delay: 250,
                 success: function(data) {
-                    console.log(data);
                     $.each(data.data, function(index, value) {
                         $("#kota").append(
                             `<option value="${value['id']}"> ${value['name']} </option>`)

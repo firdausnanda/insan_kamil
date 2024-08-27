@@ -1,4 +1,4 @@
-<footer class="footer bg-dark pb-6 pt-4 pt-md-12">
+<footer class="footer {{ request()->routeIs('landing.home') ? '' : 'bg-dark' }} pb-6 pt-4 pt-md-12">
     <div class="container">
         <!-- Logo -->
         <div class="row align-items-center ">
@@ -8,12 +8,12 @@
             </div>
         </div>
         <!-- Menu Footer -->
-        <hr class="my-lg-8 opacity-25">
+        <hr class="my-lg-8 opacity-25" style="height: 1.5px; background-color: {{ request()->routeIs('landing.home') ? '#000000' : '#dfe2e1' }}">
         <div class="row g-4 ">
             <div class="col-12 col-md-12 col-lg-4">
                 <div class="row">
                     <div class="col-10">
-                        <h6 class="mb-4 text-white">Penerbit Insan Kamil</h6>
+                        <h6 class="mb-4 {{ request()->routeIs('landing.home') ? 'text-dark' : 'text-white' }}">Penerbit Insan Kamil</h6>
                         Penerbit Insan Kamil adalah penerbit buku yang menerbitkan lebih dari 100 buku - buku
                         rujukan
                         islam diantaranya ( Sirah Rasulullah, Tafsir, Aqidah, Parenting, Fiqih, Hadits, Tazkiyatun
@@ -27,7 +27,7 @@
             <div class="col-12 col-md-12 col-lg-8">
                 <div class="row g-4">
                     <div class="col-6 col-sm-6 col-md-3">
-                        <h6 class="mb-4 text-white">Partner</h6>
+                        <h6 class="mb-4 {{ request()->routeIs('landing.home') ? 'text-dark' : 'text-white' }}">Partner</h6>
 
                         <div class="row g-4">
                             <div class="col-lg-6">
@@ -48,7 +48,7 @@
                         </div>
                     </div>
                     <div class="col-6 col-sm-6 col-md-3">
-                        <h6 class="mb-4 text-white">Social Network</h6>
+                        <h6 class="mb-4 {{ request()->routeIs('landing.home') ? 'text-dark' : 'text-white' }}">Social Network</h6>
                         <ul class="nav flex-column">
                             <!-- list -->
                             <li class="nav-item mb-2"><a href="#!" class="nav-link">Facebook</a></li>
@@ -57,7 +57,7 @@
                         </ul>
                     </div>
                     <div class="col-6 col-sm-6 col-md-3">
-                        <h6 class="mb-4 text-white">Contact</h6>
+                        <h6 class="mb-4 {{ request()->routeIs('landing.home') ? 'text-dark' : 'text-white' }}">Contact</h6>
                         <ul class="list-inline text-md-start mb-0 small">
                             <li class="list-inline-item me-2 mb-2">
                                 <i class="fa-solid fa-house-chimney"></i>
@@ -83,7 +83,7 @@
         </div>
     </div>
 
-    <hr class="mt-8 opacity-25">
+    <hr class="mt-8 opacity-25" style="height: 1.5px; background-color: {{ request()->routeIs('landing.home') ? '#000000' : '#dfe2e1' }}">
     <!-- Footer copyright -->
     <div>
         <div class="row align-items-center">
