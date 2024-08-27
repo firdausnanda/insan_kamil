@@ -8,6 +8,7 @@
  * -----------------------------------------------------------------
  */
 
+use App\Http\Controllers\Vendor\Chatify\MessagesController;
 use Illuminate\Support\Facades\Route;
 
 /*
