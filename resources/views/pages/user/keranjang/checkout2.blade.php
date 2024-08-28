@@ -1163,9 +1163,6 @@
                                     $('select[name="' + index + '"]').addClass(
                                         "is-invalid")
                                 });
-                                Swal.fire('Data Gagal Disimpan!',
-                                    'Periksa Kembali data anda',
-                                    'error');
                                 break;
                             default:
                                 Swal.fire('Data Gagal Disimpan!',
