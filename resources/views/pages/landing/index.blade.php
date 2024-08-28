@@ -931,7 +931,7 @@
                             <div class="col-lg-2">
                                 <div class="text-center">
                                     <!-- img -->
-                                    <img src="{{ asset('images/png/model-2.png') }}" style="min-width: 300px;"
+                                    <img src="{{ asset('images/png/model-3.png') }}" style="min-width: 350px;"
                                         alt="" class="img-fluid" />
                                 </div>
                             </div>
