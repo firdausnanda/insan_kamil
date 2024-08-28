@@ -972,42 +972,55 @@
                 e.preventDefault();
                 $('#card_dropship').empty()
                 if ($(this).is(':checked')) {
-                    $('#card_dropship').append(`<div class="card">
-                                                        <div class="card-header">
-                                                            <span class="fw-bold"><i class="fa-solid fa-xmark me-2"></i>
-                                                                Dropship</span>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <p style="font-size: 13px">Kirim pesanan dengan namamu sebagai
-                                                                pelapak</p>
-    
-                                                            <div class="mb-3">
-                                                                <label for="nama_pengirim" class="form-label"
-                                                                    style="font-size: 13px">Nama
-                                                                    Pengirim</label>
-                                                                <input type="hidden" name="id_dropship" id="id_dropship"
-                                                                    value="{{ $dropship ? $dropship->id : '' }}" />
-                                                                <input type="text" class="form-control" value="{{ $dropship ? $dropship->nama_pengirim : '' }}" id="nama_pengirim">
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label for="tambahan" class="form-label"
-                                                                    style="font-size: 13px">Info Tambahan (No. Handphone
-                                                                    Aktif)</label>
-                                                                <input type="text" class="form-control" value="{{ $dropship ? $dropship->no_telp_pengirim : '' }}" id="tambahan">
-                                                            </div>
-    
-                                                            <input style="cursor: pointer;" class="form-check-input me-2 mb-3"
-                                                                id="simpan_dropship" type="checkbox"><label class="fw-bold"
-                                                                style="cursor: pointer;" for="simpan_dropship">Simpan dropshiper
-                                                            </label>
-    
-                                                            <p class="text-secondary" style="font-size: 12px">
-                                                                Menyimpan data dropshipper akan mempermudah anda
-                                                                untuk pengisian pesanan yang akan datang.
-                                                            </p>
-    
-                                                        </div>
-                                                    </div>`)
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ route('user.order.dropship') }}",
+                        dataType: "JSON",
+                        beforeSend: function() {
+                            $.LoadingOverlay('show');
+                        },
+                        success: function(response) {
+                            $.LoadingOverlay('hide');
+                            
+                            $('#card_dropship').append(`<div class="card">
+                                                                <div class="card-header">
+                                                                    <span class="fw-bold"><i class="fa-solid fa-xmark me-2"></i>
+                                                                        Dropship</span>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <p style="font-size: 13px">Kirim pesanan dengan namamu sebagai
+                                                                        pelapak</p>
+            
+                                                                    <div class="mb-3">
+                                                                        <label for="nama_pengirim" class="form-label"
+                                                                            style="font-size: 13px">Nama
+                                                                            Pengirim</label>
+                                                                        <input type="hidden" name="id_dropship" id="id_dropship"
+                                                                            value="{{ $dropship ? $dropship->id : '' }}" />
+                                                                        <input type="text" class="form-control" value="{{ $dropship ? $dropship->nama_pengirim : '' }}" id="nama_pengirim">
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <label for="tambahan" class="form-label"
+                                                                            style="font-size: 13px">Info Tambahan (No. Handphone
+                                                                            Aktif)</label>
+                                                                        <input type="text" class="form-control" value="{{ $dropship ? $dropship->no_telp_pengirim : '' }}" id="tambahan">
+                                                                    </div>
+            
+                                                                    <input style="cursor: pointer;" class="form-check-input me-2 mb-3"
+                                                                        id="simpan_dropship" type="checkbox"><label class="fw-bold"
+                                                                        style="cursor: pointer;" for="simpan_dropship">Simpan dropshiper
+                                                                    </label>
+            
+                                                                    <p class="text-secondary" style="font-size: 12px">
+                                                                        Menyimpan data dropshipper akan mempermudah anda
+                                                                        untuk pengisian pesanan yang akan datang.
+                                                                    </p>
+            
+                                                                </div>
+                                                            </div>`)
+                            
+                        }
+                    })
                 }
             });
 
