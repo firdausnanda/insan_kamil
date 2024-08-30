@@ -214,7 +214,7 @@
                                                         class="text-decoration-line-through text-muted">{{ rupiah($p->harga->harga_awal) }}</span>
                                                 @endif
                                             </div>
-                                            <div class="text-warning">
+                                            <span class="text-warning">
                                                 <!-- rating -->
                                                 <small>
                                                     @if (round($p->averageRating()) > 0)
@@ -225,7 +225,18 @@
                                                     <span
                                                         class="text-muted small">{{ round($p->averageRating(), 2) }}</span>
                                                 @endif
-                                            </div>
+                                            </span>
+                                            @if (round($p->averageRating()) > 0 and $p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
+                                                <span class="text-secondary">
+                                                    |
+                                                </span>
+                                            @endif
+                                            @if ($p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
+                                                <small class="text-secondary">
+                                                    Terjual
+                                                    {{ $p->produk_dikirim->whereNotNull('order_dibayar')->count() }}
+                                                </small>
+                                            @endif
 
                                         </div>
                                     </div>
@@ -292,7 +303,7 @@
                                                                 class="text-decoration-line-through text-muted">{{ rupiah($p->harga->harga_awal) }}</span>
                                                         @endif
                                                     </div>
-                                                    <div class="text-warning">
+                                                    <span class="text-warning">
                                                         <!-- rating -->
                                                         <small>
                                                             @if (round($p->averageRating()) > 0)
@@ -303,7 +314,18 @@
                                                             <span
                                                                 class="text-muted small">{{ round($p->averageRating(), 2) }}</span>
                                                         @endif
-                                                    </div>
+                                                    </span>
+                                                    @if (round($p->averageRating()) > 0 and $p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
+                                                        <span class="text-secondary">
+                                                            |
+                                                        </span>
+                                                    @endif
+                                                    @if ($p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
+                                                        <small class="text-secondary">
+                                                            Terjual
+                                                            {{ $p->produk_dikirim->whereNotNull('order_dibayar')->count() }}
+                                                        </small>
+                                                    @endif
 
                                                 </div>
                                             </div>
@@ -370,7 +392,7 @@
                                                                         class="text-decoration-line-through text-muted">{{ rupiah($p->harga->harga_awal) }}</span>
                                                                 @endif
                                                             </div>
-                                                            <div class="text-warning">
+                                                            <span class="text-warning">
                                                                 <!-- rating -->
                                                                 <small>
                                                                     @if (round($p->averageRating()) > 0)
@@ -381,7 +403,18 @@
                                                                     <span
                                                                         class="text-muted small">{{ round($p->averageRating(), 2) }}</span>
                                                                 @endif
-                                                            </div>
+                                                            </span>
+                                                            @if (round($p->averageRating()) > 0 and $p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
+                                                                <span class="text-secondary">
+                                                                    |
+                                                                </span>
+                                                            @endif
+                                                            @if ($p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
+                                                                <small class="text-secondary">
+                                                                    Terjual
+                                                                    {{ $p->produk_dikirim->whereNotNull('order_dibayar')->count() }}
+                                                                </small>
+                                                            @endif
                                                             <div style="background-color: #E9EFF1" class="py-1 ps-2 mt-2">
                                                                 <span class="text-dark fw-bold">PO Berakhir :
                                                                     {{ Carbon\Carbon::parse($item->tanggal_selesai)->isoFormat('D MMMM Y') }}</span>
@@ -451,7 +484,7 @@
                                                                     class="text-decoration-line-through text-muted">{{ rupiah($p->harga->harga_awal) }}</span>
                                                             @endif
                                                         </div>
-                                                        <div class="text-warning">
+                                                        <span class="text-warning">
                                                             <!-- rating -->
                                                             <small>
                                                                 @if (round($p->averageRating()) > 0)
@@ -462,7 +495,18 @@
                                                                 <span
                                                                     class="text-muted small">{{ round($p->averageRating(), 2) }}</span>
                                                             @endif
-                                                        </div>
+                                                        </span>
+                                                        @if (round($p->averageRating()) > 0)
+                                                            <span class="text-secondary">
+                                                                |
+                                                            </span>
+                                                        @endif
+                                                        @if ($p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
+                                                            <small class="text-secondary">
+                                                                Terjual
+                                                                {{ $p->produk_dikirim->whereNotNull('order_dibayar')->count() }}
+                                                            </small>
+                                                        @endif
 
                                                     </div>
                                                 </div>
@@ -637,7 +681,7 @@
                                                                         class="text-decoration-line-through text-muted">{{ rupiah($p->harga->harga_awal) }}</span>
                                                                 @endif
                                                             </div>
-                                                            <div class="text-warning">
+                                                            <span class="text-warning">
                                                                 <!-- rating -->
                                                                 <small>
                                                                     @if (round($p->averageRating()) > 0)
@@ -648,7 +692,18 @@
                                                                     <span
                                                                         class="text-muted small">{{ round($p->averageRating(), 2) }}</span>
                                                                 @endif
-                                                            </div>
+                                                            </span>
+                                                            @if (round($p->averageRating()) > 0 and $p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
+                                                                <span class="text-secondary">
+                                                                    |
+                                                                </span>
+                                                            @endif
+                                                            @if ($p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
+                                                                <small class="text-secondary">
+                                                                    Terjual
+                                                                    {{ $p->produk_dikirim->whereNotNull('order_dibayar')->count() }}
+                                                                </small>
+                                                            @endif
 
                                                         </div>
                                                     </div>
@@ -710,7 +765,7 @@
                                                                         class="text-decoration-line-through text-muted">{{ rupiah($p->harga->harga_awal) }}</span>
                                                                 @endif
                                                             </div>
-                                                            <div class="text-warning">
+                                                            <span class="text-warning">
                                                                 <!-- rating -->
                                                                 <small>
                                                                     @if (round($p->averageRating()) > 0)
@@ -721,7 +776,18 @@
                                                                     <span
                                                                         class="text-muted small">{{ round($p->averageRating(), 2) }}</span>
                                                                 @endif
-                                                            </div>
+                                                            </span>
+                                                            @if (round($p->averageRating()) > 0 and $p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
+                                                                <span class="text-secondary">
+                                                                    |
+                                                                </span>
+                                                            @endif
+                                                            @if ($p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
+                                                                <small class="text-secondary">
+                                                                    Terjual
+                                                                    {{ $p->produk_dikirim->whereNotNull('order_dibayar')->count() }}
+                                                                </small>
+                                                            @endif
 
                                                         </div>
                                                     </div>
@@ -782,7 +848,7 @@
                                                                     class="text-decoration-line-through text-muted">{{ rupiah($p->harga->harga_awal) }}</span>
                                                             @endif
                                                         </div>
-                                                        <div class="text-warning">
+                                                        <span class="text-warning">
                                                             <!-- rating -->
                                                             <small>
                                                                 @if (round($p->averageRating()) > 0)
@@ -793,7 +859,18 @@
                                                                 <span
                                                                     class="text-muted small">{{ round($p->averageRating(), 2) }}</span>
                                                             @endif
-                                                        </div>
+                                                        </span>
+                                                        @if (round($p->averageRating()) > 0 and $p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
+                                                            <span class="text-secondary">
+                                                                |
+                                                            </span>
+                                                        @endif
+                                                        @if ($p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
+                                                            <small class="text-secondary">
+                                                                Terjual
+                                                                {{ $p->produk_dikirim->whereNotNull('order_dibayar')->count() }}
+                                                            </small>
+                                                        @endif
 
                                                     </div>
                                                 </div>

@@ -32,7 +32,7 @@
                         <span class="badge bg-danger rounded-pill mb-1">{{ '-' . diskon($p->harga) . '%' }}</span>
                     @endif
 
-                    <div>
+                    <span>
                         <!-- rating -->
                         <small class="text-warning">
                             @if (round($p->averageRating()) > 0)
@@ -44,7 +44,18 @@
                                 {{ round($p->averageRating(), 2) }}({{ $p->ratings()->count() }})
                             @endif
                         </span>
-                    </div>
+                    </span>
+                    @if (round($p->averageRating()) > 0 and $p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
+                        <span class="text-secondary">
+                            |
+                        </span>
+                    @endif
+                    @if ($p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
+                        <small class="text-secondary">
+                            Terjual
+                            {{ $p->produk_dikirim->whereNotNull('order_dibayar')->count() }}
+                        </small>
+                    @endif
                     <!-- price -->
                     <div class="d-flex justify-content-between align-items-center mt-3">
                         <div>

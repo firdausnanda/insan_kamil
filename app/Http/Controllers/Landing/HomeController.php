@@ -62,7 +62,7 @@ class HomeController extends Controller
         }
 
         // Menu All
-        $menu_all = GroupMenu::with('produk.harga', 'produk.stok', 'produk.gambar_produk')->where('status', 1)->get();
+        $menu_all = GroupMenu::with('produk.harga', 'produk.stok', 'produk.gambar_produk', 'produk.produk_dikirim.order_dibayar')->where('status', 1)->get();
 
         // Menu Group
         $menu = $menu_all->where('preorder', 0);

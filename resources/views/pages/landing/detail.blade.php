@@ -519,7 +519,7 @@
 
                                 <h2 class="fs-6"><a href="{{ route('landing.detail', $p->id) }}"
                                         class="text-inherit text-decoration-none">{{ $p->nama_produk }}</a></h2>
-                                <div>
+                                <span>
                                     <!-- rating -->
                                     <small class="text-warning">
                                         @if (round($p->averageRating()) > 0)
@@ -531,7 +531,18 @@
                                             {{ round($p->averageRating(), 2) }}({{ $p->ratings()->count() }})
                                         @endif
                                     </span>
-                                </div>
+                                </span>
+                                @if (round($p->averageRating()) > 0 and $p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
+                                    <span class="text-secondary">
+                                        |
+                                    </span>
+                                @endif
+                                @if ($p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
+                                    <small class="text-secondary">
+                                        Terjual
+                                        {{ $p->produk_dikirim->whereNotNull('order_dibayar')->count() }}
+                                    </small>
+                                @endif
                                 <!-- price -->
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <div>
@@ -549,37 +560,6 @@
             </div>
         </div>
     </section>
-
-
-    <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
-    <div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
-        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitleId">
-                        Modal title
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">Body</div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        Close
-                    </button>
-                    <button type="button" class="btn btn-primary">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Optional: Place to the bottom of scripts -->
-    <script>
-        const myModal = new bootstrap.Modal(
-            document.getElementById("modalId"),
-            options,
-        );
-    </script>
 
 @endsection
 
