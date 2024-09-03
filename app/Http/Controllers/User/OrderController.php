@@ -19,6 +19,7 @@ use App\Models\ProdukDikirim;
 use App\Models\Stok;
 use App\Models\TempOrder;
 use App\Models\User;
+use App\Notifications\OrderPaid;
 use App\Notifications\OrderSuccesful;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -1075,6 +1076,11 @@ class OrderController extends Controller
             $data = BuktiTransaksi::where('order_id', $request->id_order)->update([
                 'gambar' => $fileName,
             ]);
+
+            $user = User::where('id', 2)->first();
+            $order = Order::where('id', $request->id_order)->first();
+
+            $user->notify(new OrderPaid($order));
 
             return ResponseFormatter::success($data, 'Data berhasil disimpan');
         } catch (\Exception $e) {
