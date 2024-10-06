@@ -85,10 +85,12 @@
                                                 </label>
 
                                                 {{-- Dropship --}}
-                                                <input style="cursor: pointer;" class="form-check-input me-2 mb-3"
-                                                    id="dropship" type="checkbox"><label style="cursor: pointer;"
-                                                    for="dropship">Kirim
-                                                    sebagai dropshipper ? </label>
+                                                <div class="form-switch mb-3">
+                                                    <input style="cursor: pointer;" class="form-check-input me-2"
+                                                        id="dropship" type="checkbox"><label style="cursor: pointer;"
+                                                        for="dropship">Kirim
+                                                        sebagai dropshipper ? </label>
+                                                </div>
                                                 <div id="card_dropship"></div>
                                             </div>
                                             <div class="col-lg-6 col-12 mb-4">
@@ -981,7 +983,7 @@
                         },
                         success: function(response) {
                             $.LoadingOverlay('hide');
-                            
+
                             $('#card_dropship').append(`<div class="card">
                                                                 <div class="card-header">
                                                                     <span class="fw-bold"><i class="fa-solid fa-xmark me-2"></i>
@@ -1018,7 +1020,7 @@
             
                                                                 </div>
                                                             </div>`)
-                            
+
                         }
                     })
                 }
