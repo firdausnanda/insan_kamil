@@ -107,18 +107,18 @@ class User extends Authenticatable
 
   protected static function booted()
   {
-    // static::retrieved(function ($user) {
-    //   $totalOrder = Order::where('id_user', $user->id)
-    //     ->where('status', '>=', 2)
-    //     ->where('status', '!=', 6)
-    //     ->sum('total_point');
+    static::retrieved(function ($user) {
+      $totalOrder = Order::where('id_user', $user->id)
+        ->where('status', '>=', 2)
+        ->where('status', '!=', 6)
+        ->sum('total_point');
 
-    //   User::where('id', $user->id)->update(['earned_points' => $totalOrder]);
+      User::where('id', $user->id)->update(['earned_points' => $totalOrder]);
 
-    //   $totalPoint = $user->earned_points - $user->used_points;
+      $totalPoint = $user->earned_points - $user->used_points;
 
-    //   User::where('id', $user->id)->update(['total_points' => $totalPoint]);
-    // });
+      User::where('id', $user->id)->update(['total_points' => $totalPoint]);
+    });
 
 
     // $user = User::whereHas('roles', function ($query) {

@@ -91,12 +91,12 @@ class Order extends Model
         //     }
         // }
 
-        // static::updating(function ($order) {
-        //     $totalBelanja = $order->pembayaran()->sum('harga_jual');
-        //     if ($totalBelanja >= 50000) {
-        //         $poin = floor($totalBelanja / 50000);
-        //         $order->total_point = $poin;
-        //     }
-        // });
+        static::updating(function ($order) {
+            $totalBelanja = $order->pembayaran()->sum('harga_jual');
+            if ($totalBelanja >= 50000) {
+                $poin = floor($totalBelanja / 50000);
+                $order->total_point = $poin;
+            }
+        });
     }
 }
