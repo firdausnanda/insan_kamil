@@ -179,7 +179,7 @@
             // Init Datatable
             var table = $('#reward').DataTable({
                 ajax: {
-                    url: "{{ route('admin.reward.index') }}",
+                    url: "{{ route('admin.reward.master') }}",
                     type: "GET"
                 },
                 lengthChange: false,
