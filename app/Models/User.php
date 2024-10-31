@@ -121,21 +121,21 @@ class User extends Authenticatable
     // });
 
 
-    $user = User::whereHas('roles', function ($query) {
-      $query->where('name', 'user');
-    })->get();
+    // $user = User::whereHas('roles', function ($query) {
+    //   $query->where('name', 'user');
+    // })->get();
 
-    foreach ($user as $u) {
-      $totalOrder = Order::where('id_user', $u->id)
-        ->where('status', '>=', 2)
-        ->where('status', '!=', 6)
-        ->sum('total_point');
+    // foreach ($user as $u) {
+    //   $totalOrder = Order::where('id_user', $u->id)
+    //     ->where('status', '>=', 2)
+    //     ->where('status', '!=', 6)
+    //     ->sum('total_point');
 
-      User::where('id', $u->id)->update(['earned_points' => $totalOrder]);
+    //   User::where('id', $u->id)->update(['earned_points' => $totalOrder]);
 
-      $totalPoint = $u->earned_points - $u->used_points;
+    //   $totalPoint = $u->earned_points - $u->used_points;
 
-      User::where('id', $u->id)->update(['total_points' => $totalPoint]);
-    }
+    //   User::where('id', $u->id)->update(['total_points' => $totalPoint]);
+    // }
   }
 }

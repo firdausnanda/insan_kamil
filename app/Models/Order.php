@@ -80,16 +80,16 @@ class Order extends Model
 
     protected static function booted()
     {
-        $order = Order::where('status', '>=', 2)->where('status', '!=', 6)->get();
+        // $order = Order::where('status', '>=', 2)->where('status', '!=', 6)->get();
 
-        foreach ($order as $o) {
-            $totalBelanja = $o->pembayaran()->sum('harga_jual');
-            if ($totalBelanja >= 50000) {
-                $poin = floor($totalBelanja / 50000);
-                $o->total_point = $poin;
-                $o->save();
-            }
-        }
+        // foreach ($order as $o) {
+        //     $totalBelanja = $o->pembayaran()->sum('harga_jual');
+        //     if ($totalBelanja >= 50000) {
+        //         $poin = floor($totalBelanja / 50000);
+        //         $o->total_point = $poin;
+        //         $o->save();
+        //     }
+        // }
 
         // static::updating(function ($order) {
         //     $totalBelanja = $order->pembayaran()->sum('harga_jual');
