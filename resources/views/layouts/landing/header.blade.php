@@ -268,6 +268,11 @@
                                                 </a>
                                             </li>
                                             <li>
+                                                <a class="dropdown-item" href="{{ route('user.point.index') }}">
+                                                    Reward / Point
+                                                </a>
+                                            </li>
+                                            <li>
                                                 <a class="dropdown-item" href="{{ route('user.order.konfirmasi') }}">
                                                     Riwayat Transaksi
                                                 </a>

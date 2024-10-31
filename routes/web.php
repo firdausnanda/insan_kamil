@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PenerbitController;
 use App\Http\Controllers\Admin\PenggunaController;
+use App\Http\Controllers\Admin\RewardController;
 use App\Http\Controllers\Admin\SlideshowController;
 use App\Http\Controllers\Admin\UlasanController;
 use App\Http\Controllers\Auth\LoginController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\ImpersonateController;
 use App\Http\Controllers\Landing\HomeController;
 use App\Http\Controllers\MenuGroupController;
 use App\Http\Controllers\PaymentCallbackController;
+use App\Http\Controllers\PointController;
 use App\Http\Controllers\PopupController;
 use App\Http\Controllers\User\KeranjangController;
 use App\Http\Controllers\User\OrderController as UserOrderController;
@@ -165,6 +167,17 @@ Route::group(['middleware' => 'auth'], function () {
 			Route::post('/image', [SlideshowController::class, 'image'])->name('image');		
 		});
 
+		// Reward
+		Route::group(['prefix' => 'reward', 'as' => 'reward.', 'middleware' => ['role:admin|superadmin']], function () {
+			Route::get('', [RewardController::class, 'index'])->name('index');		
+			Route::post('', [RewardController::class, 'store'])->name('store');		
+			Route::get('/master', [RewardController::class, 'master'])->name('master');		
+			Route::get('/aktif', [RewardController::class, 'aktif'])->name('aktif');		
+			Route::post('/update', [RewardController::class, 'update'])->name('update');		
+			Route::post('/approve', [RewardController::class, 'approve'])->name('approve');	
+			Route::post('/reject', [RewardController::class, 'reject'])->name('reject');	
+		});
+
 		// Popup
 		Route::group(['prefix' => 'popup', 'as' => 'popup.', 'middleware' => ['role:admin|superadmin']], function () {
 			Route::get('', [PopupController::class, 'index'])->name('index');		
@@ -250,6 +263,16 @@ Route::group(['middleware' => 'auth'], function () {
 			Route::get('/provinsi', [ProfileController::class, 'provinsi'])->name('provinsi');
 			Route::get('/kota/{id}', [ProfileController::class, 'kota'])->name('kota');
 			Route::get('/desa/{id}', [ProfileController::class, 'desa'])->name('desa');
+		});
+
+		// Point
+		Route::group(['prefix' => 'point', 'as' => 'point.'], function () {
+			Route::get('', [PointController::class, 'index'])->name('index');
+			Route::group(['prefix' => 'redeem', 'as' => 'redeem.'], function () {
+				Route::get('', [PointController::class, 'redeem'])->name('index');
+				Route::post('', [PointController::class, 'redeem_store'])->name('store');
+			});
+			Route::get('/history', [PointController::class, 'history'])->name('history');
 		});
 
 	});
