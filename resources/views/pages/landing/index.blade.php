@@ -457,11 +457,11 @@
                                                                 @if ($p->gambar_produk->count() > 0)
                                                                     <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
                                                                         alt="{{ $p->nama_produk }}"
-                                                                        style="height: 150px;  width: 150px;">
+                                                                        style="height: 150px;">
                                                                 @else
                                                                     <img src="{{ asset('images/avatar/no-image.png') }}"
                                                                         alt="{{ $p->nama_produk }}"
-                                                                        style="height: 150px;  width: 150px;">
+                                                                        style="height: 150px;">
                                                                 @endif
                                                                 <!-- text -->
 
@@ -653,11 +653,11 @@
                                                                     @if ($p->gambar_produk->count() > 0)
                                                                         <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
                                                                             alt="{{ $p->nama_produk }}"
-                                                                            style="height: 150px;  width: 150px;">
+                                                                            style="height: 150px;">
                                                                     @else
                                                                         <img src="{{ asset('images/avatar/no-image.png') }}"
                                                                             alt="{{ $p->nama_produk }}"
-                                                                            style="height: 150px;  width: 150px;">
+                                                                            style="height: 150px;">
                                                                     @endif
                                                                     <!-- text -->
 
@@ -737,11 +737,11 @@
                                                                     @if ($p->gambar_produk->count() > 0)
                                                                         <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
                                                                             alt="{{ $p->nama_produk }}"
-                                                                            style="height: 150px;  width: 150px;">
+                                                                            style="height: 150px;">
                                                                     @else
                                                                         <img src="{{ asset('images/avatar/no-image.png') }}"
                                                                             alt="{{ $p->nama_produk }}"
-                                                                            style="height: 150px;  width: 150px;">
+                                                                            style="height: 150px;">
                                                                     @endif
                                                                     <!-- text -->
 
@@ -821,11 +821,11 @@
                                                                 @if ($p->gambar_produk->count() > 0)
                                                                     <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
                                                                         alt="{{ $p->nama_produk }}"
-                                                                        style="height: 150px;  width: 150px;">
+                                                                        style="height: 150px;">
                                                                 @else
                                                                     <img src="{{ asset('images/avatar/no-image.png') }}"
                                                                         alt="{{ $p->nama_produk }}"
-                                                                        style="height: 150px;  width: 150px;">
+                                                                        style="height: 150px;">
                                                                 @endif
                                                                 <!-- text -->
 
