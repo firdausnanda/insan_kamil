@@ -8,29 +8,31 @@
                 <!-- col -->
                 <div class="offset-lg-2 col-lg-8 col-12">
 
-                    <div class="card">
+                    <div class="card border-0"
+                        style="background-image: url({{ asset('images/point/10.svg') }}); background-size: cover; background-position: center; background-repeat: no-repeat;">
                         <div class="card-body">
-                            <h5 class="card-title text-center">Point</h5>
+                            <h5 class="card-title text-center text-dark">Point</h5>
 
                             <div class="row g-4">
                                 <div class="col-12">
                                     <div class="d-flex justify-content-center align-items-center">
                                         <img src="{{ asset('images/point/1.png') }}" alt="point" class="img-fluid"
                                             style="width: 25px; height: 25px;">
-                                        <h5 class="ms-2 card-title fw-bold mb-0">{{ $user->total_points }} Loyalty Points</h5>
+                                        <h5 class="ms-2 card-title fw-bold mb-0 text-dark">{{ $user->total_points }} Loyalty Points
+                                        </h5>
                                     </div>
                                 </div>
                                 <div class="col-12 d-flex justify-content-center">
-                                    <div class="card px-5">
+                                    <div class="card px-5" style="background-color: transparent">
                                         <div class="card-body text-center">
-                                            <h4 class="fw-bold card-title mb-0">Latest Update :
+                                            <h4 class="fw-bold card-title mb-0 text-dark">Latest Update :
                                                 {{ Carbon\Carbon::now()->translatedFormat('d F Y') }}</h4>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="container w-75">
-                                        <p class="text-center">Ayo, kumpulkan Poin dari setiap pembelian produk Penerbit
+                                        <p class="text-center text-dark">Ayo, kumpulkan Poin dari setiap pembelian produk Penerbit
                                             Insan Kamil
                                             dan tukarkan dengan hadiah menarik!</p>
 
@@ -41,20 +43,20 @@
                                         <div class="row g-2 text-center">
                                             <div class="col-6">
                                                 <a href="#activity_point_history"
-                                                    class="btn btn-sm btn-outline-secondary px-5">Point History</a>
+                                                    class="btn btn-sm btn-info px-5 text-dark border-0" style="background-color: #6CF5F5;">Point History</a>
                                             </div>
                                             <div class="col-6">
                                                 <a href="{{ route('user.point.redeem.index') }}"
-                                                    class="btn btn-sm btn-outline-secondary px-5">Redeem Point</a>
+                                                    class="btn btn-sm btn-info px-5 text-dark border-0" style="background-color: #6CF5F5;">Redeem Point</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="container w-75">
-                                        <div class="card border-dashed">
+                                        <div class="card border-dashed" style="background-color: transparent">
                                             <div class="card-body text-center">
-                                                <h5 class="card-title">Setiap Pembelanjaan Rp.50.000 (Nilai Transaksi Netto)
+                                                <h5 class="card-title text-dark">Setiap Pembelanjaan Rp.50.000 (Nilai Transaksi Netto)
                                                 </h5>
                                                 <span class="btn btn-sm bg-primary text-white px-5">1 Point</span>
                                             </div>
@@ -136,7 +138,8 @@
                                                     <div class="card-body">
                                                         <p class="card-title fw-bold mb-0">{{ rupiah($total_order) }}</p>
                                                         <p class="mb-0" style="font-size: 12px;">Setiap Pembelanjaan</p>
-                                                        <p class="mb-0" style="font-size: 12px;">(1 Point Kelipatan 50 Ribu)</p>
+                                                        <p class="mb-0" style="font-size: 12px;">(1 Point Kelipatan 50
+                                                            Ribu)</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -163,7 +166,8 @@
                                                         <img src="{{ asset('images/point/2.png') }}" alt="">
                                                     </div>
                                                     <div class="col-lg-8">
-                                                        <p class="mb-0">Order <span class="bg-light" style="padding: 5px">
+                                                        <p class="mb-0">Order <span class="bg-light"
+                                                                style="padding: 5px">
                                                                 {{ rupiah($order->pembayaran_sum_harga_jual) }}</span></p>
                                                         <p class="mb-0">
                                                             {{ Str::limit($order->produk_dikirim->pluck('produk.nama_produk')->implode(', '), 100) }}
@@ -182,7 +186,7 @@
                                         </div>
                                     @endforeach
                                 @empty
-                                <p>- Data Tidak ada -</p>
+                                    <p>- Data Tidak ada -</p>
                                 @endforelse
                             </div>
                         </div>

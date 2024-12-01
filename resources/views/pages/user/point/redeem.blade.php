@@ -69,11 +69,11 @@
                             <div class="row g-4">
                                 @foreach ($reward as $item)
                                     <div class="col-lg-6">
-                                        <div class="card border-dashed">
+                                        <div class="card border-dashed" style="background-image: url({{ asset('storage/reward/' . $item->gambar) }}); background-size: cover; background-position: center;">
                                             <div class="card-body">
                                                 <div class="row align-items-center g-2 justify-content-center">
                                                     <div class="col-lg-3">
-                                                        @if ($item->gambar != '' || $item->gambar != null)
+                                                        {{-- @if ($item->gambar != '' || $item->gambar != null)
                                                             <img class="img-fluid" style="min-width: 90px"
                                                                 src="{{ asset('storage/reward/' . $item->gambar) }}"
                                                                 alt="">
@@ -81,7 +81,7 @@
                                                             <img class="img-fluid" style="min-width: 90px"
                                                                 src="{{ asset('images/avatar/no-image.png') }}"
                                                                 alt="">
-                                                        @endif
+                                                        @endif --}}
                                                     </div>
                                                     <div class="col-lg-9 text-center">
                                                         <h5 class="card-title mb-0">{{ strtoupper($item->nama) }}</h5>
