@@ -5,7 +5,7 @@
         <div class="col">
             <!-- card -->
             <div class="card card-product">
-                <div class="card-body" style="min-height: 405px">
+                <div class="card-body p-0">
                     <!-- badge -->
                     <a href="{{ route('landing.detail', $p->id) }}">
                         <div class="text-center position-relative">
@@ -20,48 +20,51 @@
                             @endif
                         </div>
                     </a>
-                    <!-- heading -->
-                    <div class="text-small mb-1">
-                        <a href="#!"
-                            class="text-decoration-none text-muted"><small>{{ $p->kategori->nama_kategori }}</small></a>
-                    </div>
-                    <h2 class="fs-6"><a href="{{ route('landing.detail', $p->id) }}"
-                            class="text-inherit text-decoration-none">{{ $p->nama_produk }}</a></h2>
-                    @if ($p->harga->mulai_diskon <= now() && $p->harga->diskon > 0)
-                        <span class="badge bg-danger rounded-pill mb-1">{{ '-' . diskon($p->harga) . '%' }}</span>
-                    @endif
-                    <span>
-                        <!-- rating -->
-                        <small class="text-warning">
-                            @if (round($p->averageRating()) > 0)
-                                {{ tampilkanRating(round($p->averageRating(), 2)) }}
-                            @endif
-                        </small>
-                        <span class="text-muted small">
-                            @if (round($p->averageRating()) > 0)
-                                {{ round($p->averageRating(), 2) }}({{ $p->ratings()->count() }})
-                            @endif
+
+                    <div class="px-4 pb-3">
+                        <!-- heading -->
+                        <div class="text-small mb-1">
+                            <a href="#!"
+                                class="text-decoration-none text-muted"><small>{{ $p->kategori->nama_kategori }}</small></a>
+                        </div>
+                        <h2 class="fs-6"><a href="{{ route('landing.detail', $p->id) }}"
+                                class="text-inherit text-decoration-none">{{ $p->nama_produk }}</a></h2>
+                        @if ($p->harga->mulai_diskon <= now() && $p->harga->diskon > 0)
+                            <span class="badge bg-danger rounded-pill mb-1">{{ '-' . diskon($p->harga) . '%' }}</span>
+                        @endif
+                        <span>
+                            <!-- rating -->
+                            <small class="text-warning">
+                                @if (round($p->averageRating()) > 0)
+                                    {{ tampilkanRating(round($p->averageRating(), 2)) }}
+                                @endif
+                            </small>
+                            <span class="text-muted small">
+                                @if (round($p->averageRating()) > 0)
+                                    {{ round($p->averageRating(), 2) }}({{ $p->ratings()->count() }})
+                                @endif
+                            </span>
                         </span>
-                    </span>
-                    @if (round($p->averageRating()) > 0 and $p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
-                        <span class="text-secondary">
-                            |
-                        </span>
-                    @endif
-                    @if ($p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
-                        <small class="text-secondary">
-                            Terjual
-                            {{ $p->produk_dikirim->whereNotNull('order_dibayar')->count() }}
-                        </small>
-                    @endif
-                    <!-- price -->
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                        <div>
-                            <span class="text-dark">{{ rupiah($p->harga->harga_akhir) }}</span>
-                            @if ($p->harga->mulai_diskon <= now() && $p->harga->diskon > 0)
-                                <span
-                                    class="text-decoration-line-through text-muted">{{ rupiah($p->harga->harga_awal) }}</span>
-                            @endif
+                        @if (round($p->averageRating()) > 0 and $p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
+                            <span class="text-secondary">
+                                |
+                            </span>
+                        @endif
+                        @if ($p->produk_dikirim->whereNotNull('order_dibayar')->count() > 0)
+                            <small class="text-secondary">
+                                Terjual
+                                {{ $p->produk_dikirim->whereNotNull('order_dibayar')->count() }}
+                            </small>
+                        @endif
+                        <!-- price -->
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div>
+                                <span class="text-dark">{{ rupiah($p->harga->harga_akhir) }}</span>
+                                @if ($p->harga->mulai_diskon <= now() && $p->harga->diskon > 0)
+                                    <span
+                                        class="text-decoration-line-through text-muted">{{ rupiah($p->harga->harga_awal) }}</span>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>

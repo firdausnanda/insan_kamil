@@ -70,22 +70,25 @@
                             <div class="col">
                                 <!-- card -->
                                 <div class="card card-product">
-                                    <div class="card-body" style="min-height: 405px">
-                                        <!-- badge -->
-                                        <a href="{{ route('landing.detail', $p->id) }}">
+                                    <!-- badge -->
+                                    <a href="{{ route('landing.detail', $p->id) }}">
+                                        <div class="card-body p-0">
                                             <div class="text-center position-relative">
                                                 <!-- img -->
                                                 @if ($p->gambar_produk->count() > 0)
                                                     <img src="{{ asset('storage/produk/' . $p->gambar_produk[0]->gambar) }}"
-                                                        alt="{{ $p->nama_produk }}" class="mb-3 img-fluid"
+                                                        alt="{{ $p->nama_produk }}" class="img-fluid"
                                                         style="max-height: 193px; width: auto;">
                                                 @else
                                                     <img src="{{ asset('images/avatar/no-image.png') }}"
-                                                        alt="{{ $p->nama_produk }}" class="mb-3 img-fluid"
+                                                        alt="{{ $p->nama_produk }}" class="img-fluid"
                                                         style="max-height: 193px; width: auto;">
                                                 @endif
                                             </div>
-                                        </a>
+                                        </div>
+                                    </a>
+
+                                    <div class="px-4 pb-3">
                                         <!-- heading -->
                                         <div class="text-small mb-1">
                                             <a href="#!"
@@ -132,6 +135,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         @endforeach

@@ -70,9 +70,9 @@
                             <div class="col">
                                 <!-- card -->
                                 <div class="card card-product">
-                                    <div class="card-body" style="min-height: 405px">
-                                        <!-- badge -->
-                                        <a href="{{ route('landing.detail', $p->id) }}">
+                                    <!-- badge -->
+                                    <a href="{{ route('landing.detail', $p->id) }}">
+                                        <div class="card-body p-0">
                                             <div class="text-center position-relative">
                                                 <!-- img -->
                                                 @if (count($p->gambar_produk) > 0)
@@ -85,7 +85,10 @@
                                                         style="max-height: 193px; width: auto;">
                                                 @endif
                                             </div>
-                                        </a>
+                                        </div>
+                                    </a>
+
+                                    <div class="px-4 pb-3">
                                         <!-- heading -->
                                         <div class="text-small mb-1">
                                             <a href="#!"
