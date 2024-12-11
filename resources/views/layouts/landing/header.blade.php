@@ -144,7 +144,7 @@
                 </div>
                 <div class="col-xxl-5 col-lg-5 d-none d-lg-block">
 
-                    <form action="{{ route('cari') }}" method="GET">
+                    <form action="{{ route('cari') }}" method="GET" id="search-form">
                         <div class="input-group ">
                             <input class="form-control rounded w-100" name="query" type="search" id="search"
                                 value="{{ $query ?? '' }}" placeholder="Cari Judul Buku">
@@ -166,10 +166,15 @@
                 </div>
                 <div class="col-md-2 col-xxl-3 d-none d-lg-block">
                     <!-- Button trigger modal -->
-                    <button type="submit" class="btn btn-outline-gray-400 text-muted">
+                    <button type="submit" class="btn btn-outline-gray-400 text-muted" id="search-button">
                         <i class="fa-solid fa-magnifying-glass me-2"></i>Cari
                     </button>
                 </div>
+                <script>
+                    document.getElementById('search-button').addEventListener('click', function() {
+                        document.getElementById('search-form').submit();
+                    });
+                </script>   
                 <div class="col-md-2 col-xxl-2 text-end d-none d-lg-block">
 
                     <div class="list-inline">
