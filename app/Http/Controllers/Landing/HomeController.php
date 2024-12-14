@@ -15,6 +15,7 @@ use App\Models\Popup;
 use App\Models\Produk;
 use App\Models\Rating;
 use App\Models\Slideshow;
+use App\Models\SubscriptionNo;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -456,5 +457,15 @@ class HomeController extends Controller
     {
         $blog = Blog::where('status', 1)->paginate(10);
         return view('pages.landing.blog-all', compact('blog'));
+    }
+
+    public function subscription(Request $request)
+    {
+        $request->validate([
+            'no_hp' => 'required|string|max:15|unique:subscription_no,no_hp',
+        ]);
+
+        $subscription = SubscriptionNo::create($request->all());
+        return ResponseFormatter::success($subscription, 'data berhasil disimpan');
     }
 }

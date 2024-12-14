@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\PenerbitController;
 use App\Http\Controllers\Admin\PenggunaController;
 use App\Http\Controllers\Admin\RewardController;
 use App\Http\Controllers\Admin\SlideshowController;
+use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\Admin\UlasanController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BahasaController;
@@ -55,6 +56,7 @@ Route::get('/new-produk', [HomeController::class, 'new_produk'])->name('landing.
 Route::get('/search', [HomeController::class, 'search'])->name('search');
 Route::get('/cari', [HomeController::class, 'search'])->name('cari');
 Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
+Route::post('/subscription', [HomeController::class, 'subscription'])->name('subscription.store');
 
 // Auth
 Auth::routes();
@@ -176,6 +178,14 @@ Route::group(['middleware' => 'auth'], function () {
 			Route::post('/update', [RewardController::class, 'update'])->name('update');		
 			Route::post('/approve', [RewardController::class, 'approve'])->name('approve');	
 			Route::post('/reject', [RewardController::class, 'reject'])->name('reject');	
+		});
+
+		// Subscription
+		Route::group(['prefix' => 'subscription', 'as' => 'subscription.', 'middleware' => ['role:admin|superadmin']], function () {
+			Route::get('', [SubscriptionController::class, 'index'])->name('index');		
+			Route::post('', [SubscriptionController::class, 'store'])->name('store');		
+			Route::put('', [SubscriptionController::class, 'update'])->name('update');		
+			Route::delete('', [SubscriptionController::class, 'destroy'])->name('destroy');		
 		});
 
 		// Popup

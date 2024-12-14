@@ -69,7 +69,7 @@
                             <!-- col -->
                             <div class="col">
                                 <!-- card -->
-                                <div class="card card-product">
+                                <div class="card card-product h-100">
                                     <!-- badge -->
                                     <a href="{{ route('landing.detail', $p->id) }}">
                                         <div class="card-body p-0">

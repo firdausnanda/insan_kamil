@@ -139,6 +139,15 @@
                             </div>
                         </a>
                     </li>
+                    <li class="nav-item ">
+                        <a class="nav-link {{ request()->routeIs('admin.subscription.*') ? 'active' : '' }}"
+                            href="{{ route('admin.subscription.index') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"> <i class="bi bi-person-fill-add"></i></span>
+                                <span class="nav-link-text">Subscription</span>
+                            </div>
+                        </a>
+                    </li>
 
                     <li class="nav-item mt-6 mb-3">
                         <span class="nav-label">System Monitoring</span>
@@ -330,6 +339,16 @@
                             <div class="d-flex align-items-center">
                                 <span class="nav-link-icon"> <i class="bi bi-gift"></i></span>
                                 <span class="nav-link-text">Reward</span>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li class="nav-item ">
+                        <a class="nav-link {{ request()->routeIs('admin.subscription.*') ? 'active' : '' }}"
+                            href="{{ route('admin.subscription.index') }}">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"> <i class="bi bi-person-fill-add"></i></span>
+                                <span class="nav-link-text">Subscription</span>
                             </div>
                         </a>
                     </li>

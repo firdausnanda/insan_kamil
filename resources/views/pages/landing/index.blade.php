@@ -448,9 +448,9 @@
                                         @foreach ($m->produk as $p)
                                             <!-- item -->
                                             <div class="col">
-                                                <div class="mb-6">
+                                                <div class="h-100">
                                                     <!-- card -->
-                                                    <div class="card card-product mb-4">
+                                                    <div class="card card-product h-100">
                                                         <a href="{{ route('landing.detail', $p->id) }}">
                                                             <div class="card-body text-center p-0">
                                                                 <!-- img -->
@@ -644,9 +644,9 @@
                                             @foreach ($produk_baru as $p)
                                                 <!-- item -->
                                                 <div class="col">
-                                                    <div class="mb-6">
+                                                    <div class="h-100">
                                                         <!-- card -->
-                                                        <div class="card card-product mb-4">
+                                                        <div class="card card-product h-100">
                                                             <a href="{{ route('landing.detail', $p->id) }}">
                                                                 <div class="card-body text-center p-0">
                                                                     <!-- img -->
@@ -728,9 +728,9 @@
                                             @foreach ($produk_laris as $p)
                                                 <!-- item -->
                                                 <div class="col">
-                                                    <div class="mb-6">
+                                                    <div class="h-100">
                                                         <!-- card -->
-                                                        <div class="card card-product mb-4">
+                                                        <div class="card card-product h-100">
                                                             <a href="{{ route('landing.detail', $p->id) }}">
                                                                 <div class="card-body text-center p-0">
                                                                     <!-- img -->
@@ -812,9 +812,9 @@
                                         @foreach ($m->produk as $p)
                                             <!-- item -->
                                             <div class="col">
-                                                <div class="mb-6">
+                                                <div class="h-100">
                                                     <!-- card -->
-                                                    <div class="card card-product mb-4">
+                                                    <div class="card card-product h-100">
                                                         <a href="{{ route('landing.detail', $p->id) }}">
                                                             <div class="card-body text-center p-0">
                                                                 <!-- img -->
@@ -987,12 +987,13 @@
                                     <!-- form -->
                                     <div class="row">
                                         <div class="col-lg-8 col-sm-12">
-                                            <form class="row g-3 needs-validation" novalidate>
+                                            <form class="row g-3 needs-validation" novalidate id="form-subscription">
                                                 <div class="col-12">
-                                                    <input type="email" class="form-control"
-                                                        style="background: transparent; color: white"
+                                                    <input type="text" name="no_hp" class="form-control"
+                                                        style="background: transparent; color: white" 
+                                                        id="no_hp"
                                                         placeholder="Masukkan Nomor WhatsApp Anda" required />
-                                                    <div class="invalid-feedback">Please enter email.</div>
+                                                    <div class="invalid-feedback">Please enter No Whatsapps.</div>
                                                 </div>
                                                 <!-- btn -->
                                                 <div class="col-12">
@@ -1069,6 +1070,52 @@
                         }, 1000);
                 });
             });
+
+            $('#form-subscription').submit(function(e) {
+                e.preventDefault();
+
+                var no_hp = $('#no_hp').val();
+                $('#no_hp').val(no_hp.replace(/[^0-9]/g, ''));
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('subscription.store') }}",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire({
+                            title: 'Data Berhasil Disimpan!',
+                            text: 'Terima Kasih Telah Bergabung',
+                            icon: 'success'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        $.LoadingOverlay('hide');
+                        if (xhr.status == 422) {
+                            $.each(xhr.responseJSON.errors, function(key, value) {  
+                                $('#no_hp').addClass('is-invalid');
+                                $('#no_hp').next('.invalid-feedback').text(value);
+                            });
+                        } else {
+                            Swal.fire('Data Gagal Disimpan!',
+                                'Kesalahan Server',
+                                'error');
+                        }
+
+                        
+                    }
+                });
+            });
+
+            $('#no_hp').mask('0000-0000-0000');
         });
     </script>
 @endsection
