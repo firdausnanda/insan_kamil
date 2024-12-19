@@ -18,9 +18,6 @@
                                 </ol>
                             </nav>
                         </div>
-                        <button class="btn btn-primary mb-3" id="btn-kirim-pesan">
-                            Kirim Pesan
-                        </button>
                     </div>
                 </div>
             </div>
