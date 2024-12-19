@@ -186,6 +186,7 @@ Route::group(['middleware' => 'auth'], function () {
 			Route::post('', [SubscriptionController::class, 'store'])->name('store');		
 			Route::put('', [SubscriptionController::class, 'update'])->name('update');		
 			Route::delete('', [SubscriptionController::class, 'destroy'])->name('destroy');		
+			Route::post('/kirim-pesan', [SubscriptionController::class, 'kirim_pesan'])->name('kirim_pesan');		
 		});
 
 		// Popup

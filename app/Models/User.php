@@ -3,11 +3,15 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Bus\Queueable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Queue\SerializesModels;
 use Lab404\Impersonate\Models\Impersonate;
 use Laravel\Sanctum\HasApiTokens;
+use romanzipp\QueueMonitor\Traits\IsMonitored;
 use Spatie\Activitylog\Contracts\Activity;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -15,7 +19,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-  use HasApiTokens, HasFactory, Notifiable, HasRoles, LogsActivity, Impersonate, Notifiable;
+  use HasApiTokens, HasFactory, Notifiable, HasRoles, LogsActivity, Impersonate, Notifiable, IsMonitored;
 
   /**
    * The attributes that are mass assignable.

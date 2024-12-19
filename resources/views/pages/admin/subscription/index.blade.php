@@ -12,11 +12,15 @@
                             <!-- breacrumb -->
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb mb-0">
-                                    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}" class="text-inherit">Dashboard</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}"
+                                            class="text-inherit">Dashboard</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Subscription</li>
                                 </ol>
                             </nav>
                         </div>
+                        <button class="btn btn-primary mb-3" id="btn-kirim-pesan">
+                            Kirim Pesan
+                        </button>
                     </div>
                 </div>
             </div>
@@ -78,6 +82,37 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Kirim Pesan -->
+    <div class="modal fade" id="modal-pesan" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId">
+                        Kirim Pesan WhatsApp
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-kirim-pesan">
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col-lg-12">
+                                <label for="colFormLabel" class="col-sm-4 col-form-label">Pesan</label>
+                                <textarea name="pesan" id="pesan" class="form-control" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Batalkan
+                        </button>
+                        <button type="submit" class="btn btn-primary">Kirim</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -93,12 +128,24 @@
                 lengthChange: false,
                 ordering: false,
                 processing: true,
+                destroy: true,
+                buttons: [{
+                    text: 'Kirim Pesan',
+                    name: 'kirim',
+                    className: 'btn btn-primary btn-sm btn-kirim',
+                    action: function(e, dt, node, config) {
+                        getSelect()
+                    }
+                }],
                 columnDefs: [{
                         targets: 0,
                         width: '10%',
-                        className: 'align-middle text-center',
+                        className: 'select-checkbox align-middle checkbox-select',
+                        data: 'id',
                         render: function(data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
+                            return '<input type="text" name="' + data + '" value="' +
+                                data +
+                                '" hidden>';
                         }
                     },
                     {
@@ -106,7 +153,7 @@
                         className: 'align-middle',
                         data: 'no_hp',
                         render: function(data, type, row, meta) {
-                            return `${row.no_hp}`
+                            return `${row.no_hp} <br> <span class="badge bg-success">Aktif</span>`
                         }
                     },
                     {
@@ -134,8 +181,49 @@
                                     </div>`;
                         }
                     },
-                ]
+                ],
+                select: {
+                    style: 'multi',
+                    selector: 'td:first-child',
+                    blurable: false,
+                },
+                initComplete: function() {
+                    $('#subscription').DataTable().buttons().container().appendTo(
+                        '#subscription_wrapper .col-md-6:eq(0)');
+                    $('.btn-kirim').removeClass("btn-secondary");
+                },
             });
+
+            // Get Selected Row
+            function getSelect() {
+                var data = table.rows({
+                    selected: true
+                }).data();
+
+                if (data.length < 1) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Pilih minimal 1 data!',
+                    });
+                } else {
+                    $('#modal-pesan').modal('show');
+                    $('#pesan').trumbowyg({
+                        lang: 'id',
+                        btns: [
+                            ['viewHTML'],
+                            ['undo', 'redo'],
+                            ['formatting'],
+                            ['strong', 'em', 'del'],
+                            ['link'],
+                            ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+                            ['unorderedList', 'orderedList'],
+                            ['horizontalRule'],
+                            ['removeformat']
+                        ]
+                    });
+                }
+            };
 
             // Modal Edit
             $('#subscription tbody').on('click', '.btn-edit', function(event) {
@@ -223,6 +311,110 @@
                             },
                         });
                     }
+                });
+            });
+
+            // Format Pesan
+            function htmlToFormat(html) {
+                // Cek jika html kosong
+                if (!html) return '';
+
+                // Buat element div temporary untuk parsing HTML
+                let div = document.createElement('div');
+                div.innerHTML = html;
+
+                // Fungsi rekursif untuk memproses node
+                function processNode(node) {
+                    let result = '';
+                    
+                    // Proses child nodes
+                    for (let child of node.childNodes) {
+                        if (child.nodeType === 3) { // Text node
+                            result += child.textContent;
+                        } else if (child.nodeType === 1) { // Element node
+                            let content = processNode(child);
+                            
+                            // Tambahkan format sesuai tag
+                            switch(child.tagName.toUpperCase()) {
+                                case 'H1':
+                                    result += `#${content}#`;
+                                    break;
+                                case 'H2':
+                                    result += `##${content}##`;
+                                    break;
+                                case 'H3':
+                                    result += `###${content}###`;
+                                    break;
+                                case 'BR':
+                                    result += `\n`;
+                                    break;
+                                case 'P':
+                                    result += `${content}\n`;
+                                    break;
+                                case 'B':
+                                case 'STRONG':
+                                    result += `*${content}*`;
+                                    break;
+                                case 'I':
+                                case 'EM': 
+                                    result += `_${content}_`;
+                                    break;
+                                case 'STRIKE':
+                                case 'DEL':
+                                    result += `~${content}~`;
+                                    break;
+                                default:
+                                    result += content;
+                            }
+                        }
+                    }
+                    return result;
+                }
+
+                return processNode(div);
+            }
+
+            // Kirim Pesan
+            $('#form-kirim-pesan').submit(function(e) {
+                e.preventDefault();
+
+                var pesan = htmlToFormat($('#pesan').val());
+
+
+                // Get Selected Row
+                var data = table.rows({
+                    selected: true
+                }).data();
+
+                var dataNoHp = [];
+                for (var i = 0; i < data.length; i++) {
+                    dataNoHp.push(data[i].no_hp);
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('admin.subscription.kirim_pesan') }}",
+                    data: {
+                        data_no_hp: dataNoHp,
+                        pesan: pesan
+                    },
+                    dataType: "JSON",
+                    beforeSend: function() {
+                        $.LoadingOverlay('show');
+                    },
+                    success: function(response) {
+                        $.LoadingOverlay('hide');
+                        if (response.meta.status == "success") {
+                            $('#modal-pesan').modal('hide');
+                            table.ajax.reload();
+                            Swal.fire('Sukses!', response.meta.message, 'success');
+                        }
+                    },
+                    error: function(response) {
+                        $.LoadingOverlay('hide');
+                        Swal.fire('Gagal!', 'Periksa kembali data anda.', 'error');
+                        console.log(response.responseJSON.message);
+                    },
                 });
             });
 

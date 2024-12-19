@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="{{ asset('vendor/select2/select2-bootstrap-5-theme.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/dropify/dropify.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/flatpickr/dist/flatpickr.min.css') }}">
+    <link href="{{ asset('vendor/Trumbowyg/dist/ui/trumbowyg.min.css') }}" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/css/star-rating.min.css" media="all"
         rel="stylesheet" type="text/css" />
     <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.css"
@@ -76,6 +77,8 @@
     <script src="{{ asset('vendor/dropify/dropify.js') }}"></script>
     <script src="{{ asset('vendor/flatpickr/dist/flatpickr.min.js') }}"></script>
     <script src="{{ asset('vendor/flatpickr/dist/id.js') }}"></script>
+    <script src="{{ asset('vendor/trumbowyg/dist/trumbowyg.min.js') }}"></script>
+    <script src="{{ asset('vendor/trumbowyg/dist/langs/id.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js"
         type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.js"></script>
