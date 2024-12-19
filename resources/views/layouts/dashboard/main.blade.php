@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="{{ asset('vendor/select2/select2-bootstrap-5-theme.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/dropify/dropify.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/flatpickr/dist/flatpickr.min.css') }}">
-    <link href="{{ asset('vendor/Trumbowyg/dist/ui/trumbowyg.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('vendor/trumbowyg/dist/ui/trumbowyg.min.css') }}" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/css/star-rating.min.css" media="all"
         rel="stylesheet" type="text/css" />
     <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.css"
