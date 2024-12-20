@@ -17,7 +17,7 @@ class ProdukController extends Controller
 
     public function show(Request $request)
     {
-        $produk = Produk::with('kategori', 'penerbit', 'harga', 'stok', 'bahasa')->where('id', $request->id)->first();
+        $produk = Produk::with('kategori', 'penerbit', 'harga', 'stok', 'bahasa', 'gambar_produk')->where('id', $request->id)->first();
         return ResponseFormatter::success($produk);
     }
 }
