@@ -282,6 +282,11 @@
                                                     Riwayat Transaksi
                                                 </a>
                                             </li>
+                                            <li>
+                                                <a class="dropdown-item" href="{{ route('user.petunjuk.index') }}">
+                                                    Petunjuk Penggunaan
+                                                </a>
+                                            </li>
                                         </ul>
                                         @if (!session('impersonated_by'))
                                             <div class="border-top px-5 py-3">

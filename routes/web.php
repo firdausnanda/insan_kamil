@@ -20,6 +20,7 @@ use App\Http\Controllers\ImpersonateController;
 use App\Http\Controllers\Landing\HomeController;
 use App\Http\Controllers\MenuGroupController;
 use App\Http\Controllers\PaymentCallbackController;
+use App\Http\Controllers\PetunjukController;
 use App\Http\Controllers\PointController;
 use App\Http\Controllers\PopupController;
 use App\Http\Controllers\User\KeranjangController;
@@ -284,6 +285,11 @@ Route::group(['middleware' => 'auth'], function () {
 				Route::post('', [PointController::class, 'redeem_store'])->name('store');
 			});
 			Route::get('/history', [PointController::class, 'history'])->name('history');
+		});
+
+		// Petunjuk Penggunaan
+		Route::group(['prefix' => 'petunjuk', 'as' => 'petunjuk.'], function () {
+			Route::get('', [PetunjukController::class, 'index'])->name('index');
 		});
 
 	});
